@@ -2829,13 +2829,17 @@ class GrowthDiaryView extends HTMLElement {
         };
 
         window.setDailyRating = (rating) => {
-            localStorage.setItem('daily_rating_' + data.user.id, rating);
+            if (rating > 0) {
+                localStorage.setItem('daily_rating_' + data.user.id, rating);
+            } else {
+                localStorage.removeItem('daily_rating_' + data.user.id);
+            }
             document.querySelectorAll('.heart-btn').forEach((btn, i) => {
                 const r = i + 1;
                 const icon = btn.querySelector('.material-symbols-outlined');
                 const label = btn.querySelector('span:last-child');
                 const glow = btn.querySelector('.blur-xl');
-                if (r <= rating) {
+                if (r <= rating && rating > 0) {
                     btn.classList.remove('opacity-40');
                     btn.classList.add('scale-115');
                     icon.classList.add('text-red-500');
@@ -2855,7 +2859,7 @@ class GrowthDiaryView extends HTMLElement {
                     if (glow) glow.classList.remove('opacity-100');
                 }
             });
-            if (window.confetti) {
+            if (window.confetti && rating > 0) {
                 window.confetti({ particleCount: 20 * rating, spread: 85, origin: { y: 0.85 }, colors: ['#ef4444', '#ffffff'] });
             }
         };
@@ -2880,11 +2884,11 @@ class GrowthDiaryView extends HTMLElement {
                     }
                     window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
 
-                    // Reset UI for next time
+                    // CRITICAL: Reset UI and storage for next time
                     localStorage.removeItem('daily_rating_' + data.user.id);
                     localStorage.removeItem('daily_reflection_' + data.user.id);
 
-                    // Force UI update
+                    // Force UI cleanup on current elements
                     const textarea = document.getElementById('reflection-text');
                     if (textarea) textarea.value = '';
                     window.setDailyRating(0);
@@ -2892,8 +2896,10 @@ class GrowthDiaryView extends HTMLElement {
                     // Scroll to top to see the result
                     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                    // Call render again to ensure state consistency
-                    this.render(window.AppState.data);
+                    // Re-render to ensure consistency
+                    if (window.AppState) {
+                        this.render(window.AppState.data);
+                    }
                 } else {
                     window.showFamilyQuestAlert("Lỗi hệ thống", "Rất tiếc, đã có lỗi khi lưu nhật ký. Con hãy thử lại sau nhé! 🛠️", "error");
                 }
