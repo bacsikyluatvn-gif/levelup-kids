@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Đăng nhập Phụ huynh - LevelUp Kids</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <!-- Google Fonts: Montserrat & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-25..0" />
+
+    <script src="../shared/js/supabaseClient.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "primary-dark": "#d48215",
+                        "primary-light": "#ffb347",
+                    },
+                    fontFamily: {
+                        sans: ["Montserrat", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "4xl": "2rem",
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style type="text/css">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .input-focus-effect:focus-within {
+            box-shadow: 0 0 0 4px rgba(238, 157, 43, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-[#fdf9f3] dark:bg-[#15110c] min-h-screen flex items-center justify-center p-4 overflow-hidden">
+
+    <!-- Background Decor -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <div
+        class="w-full max-w-5xl z-10 grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20">
+
+        <!-- Left: Visual Side -->
+        <div
+            class="hidden lg:flex flex-col justify-center items-center p-16 bg-gradient-to-br from-primary/20 to-orange-500/5 dark:from-primary/10 dark:to-transparent border-r border-slate-100 dark:border-slate-800 relative">
+            <div class="text-center relative z-10 animate-float">
+                <div
+                    class="size-48 bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl flex items-center justify-center mx-auto mb-10 rotate-6 border-4 border-primary/20">
+                    <span class="material-symbols-outlined text-primary text-[100px]">family_restroom</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 dark:text-white mb-4">Chào mừng Ba Mẹ!</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-xs mx-auto">
+                    Kỷ luật là cầu nối giữa mục tiêu và thành tựu của con bạn.
+                </p>
+            </div>
+
+            <!-- Bottom stats or info -->
+            <div class="absolute bottom-10 left-0 right-0 px-10">
+                <div
+                    class="flex justify-between items-center p-4 bg-white/40 dark:bg-slate-800/40 rounded-2xl border border-white/40 backdrop-blur-sm">
+                    <div class="flex gap-2 items-center">
+                        <span class="material-symbols-outlined text-primary">verified</span>
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Dữ liệu an toàn</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <span class="material-symbols-outlined text-primary">sync</span>
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Đồng bộ tức thì</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Form Side -->
+        <div class="p-8 md:p-14 dark:bg-[#1a1612]">
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg rotate-3">
+                        <span class="material-symbols-outlined font-bold">castle</span>
+                    </div>
+                    <span class="text-primary font-black uppercase tracking-widest text-xs">LevelUp Kids</span>
+                </div>
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white mb-2">Đăng nhập ngay</h1>
+                <p
+                    class="text-slate-500 dark:text-slate-400 font-medium italic underline decoration-primary/30 underline-offset-4">
+                    Chào mừng bạn quay trở lại hành trình!</p>
+            </div>
+
+            <form class="space-y-6" onsubmit="handleLogin(event)">
+                <div class="space-y-2">
+                    <label
+                        class="block text-sm font-extrabold text-slate-700 dark:text-slate-300 ml-1 uppercase tracking-wider">Email
+                        Gia Đình</label>
+                    <div class="relative group input-focus-effect rounded-2xl overflow-hidden transition-all">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span
+                                class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">alternate_email</span>
+                        </div>
+                        <input id="email-input" type="email" required
+                            class="block w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-0 text-slate-900 dark:text-white font-bold text-lg placeholder-slate-400 transition-all"
+                            placeholder="email@giadinh.com">
+                    </div>
+                </div>
+
+                <div class="space-y-2" id="password-group">
+                    <div class="flex justify-between items-center px-1">
+                        <label
+                            class="text-sm font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Mật
+                            khẩu</label>
+                        <a href="javascript:void(0)" onclick="handleForgotPassword()"
+                            class="text-xs font-bold text-primary hover:underline">Quên mật khẩu?</a>
+                    </div>
+                    <div class="relative group input-focus-effect rounded-2xl overflow-hidden transition-all">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span
+                                class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">lock</span>
+                        </div>
+                        <input id="password-input" type="password" required
+                            class="block w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-0 text-slate-900 dark:text-white font-bold text-lg placeholder-slate-400 transition-all"
+                            placeholder="*************">
+                    </div>
+                </div>
+
+                <div id="alert-message" class="hidden p-4 rounded-2xl text-sm font-bold text-center"></div>
+
+                <div class="flex flex-col gap-3">
+                    <button id="submit-btn" type="submit"
+                        class="w-full bg-primary hover:bg-primary-dark text-white font-black py-5 rounded-2xl shadow-xl shadow-primary/30 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 text-xl tracking-tight">
+                        <span>ĐĂNG NHẬP</span>
+                        <span class="material-symbols-outlined text-2xl font-bold">login</span>
+                    </button>
+
+                    <button id="magic-link-btn" type="button" onclick="handleMagicLinkLogin()"
+                        class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold py-3 rounded-2xl transition-all hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center justify-center gap-2 text-sm">
+                        <span>Hoặc dùng Magic Link</span>
+                        <span class="material-symbols-outlined text-lg">auto_awesome</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-12 text-center pt-8 border-t border-slate-50 dark:border-slate-800">
+                <p class="text-slate-500 dark:text-slate-400 font-bold">
+                    Thành viên mới?
+                    <a href="../đăng_ký_tài_khoản/code.html" class="text-primary hover:underline font-black ml-1">Tạo
+                        tài khoản ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.loadSupabaseAndInit(() => {
+                console.log("Login module ready.");
+
+                // Kiểm tra xem có đang trong chế độ khôi phục mật khẩu không
+                const isRecovery = window.location.hash.includes('type=recovery') ||
+                    window.location.href.includes('type=recovery') ||
+                    localStorage.getItem('is_resetting_password') === 'true';
+
+                if (window.location.hash.includes('type=recovery')) {
+                    localStorage.setItem('is_resetting_password', 'true');
+                }
+
+                checkRecoveryMode();
+
+                window.supabaseClient.auth.getSession().then(({ data: { session } }) => {
+                    if (session && !isRecovery) {
+                        window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+                    }
+                });
+            });
+        });
+
+        function checkRecoveryMode() {
+            const hash = window.location.hash;
+            const isRecovery = hash.includes('type=recovery') || localStorage.getItem('is_resetting_password') === 'true';
+
+            if (isRecovery) {
+                // Thay đổi UI sang chế độ đặt lại mật khẩu
+                document.querySelector('h1').textContent = "Đặt mật khẩu mới";
+                document.querySelector('p.italic').textContent = "Hãy nhập mật khẩu mới cho tài khoản của bạn.";
+
+                // Ẩn các phần không cần thiết và bỏ required cho email
+                const emailInput = document.getElementById('email-input');
+                emailInput.closest('.space-y-2').classList.add('hidden');
+                emailInput.required = false;
+
+                document.querySelector('a[onclick="handleForgotPassword()"]').classList.add('hidden');
+                document.getElementById('magic-link-btn').classList.add('hidden');
+                document.querySelector('.mt-12.text-center').classList.add('hidden'); // Phần "Tạo tài khoản"
+
+                // Đổi nút đăng nhập thành nút cập nhật
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.innerHTML = `<span>CẬP NHẬT MẬT KHẨU</span> <span class="material-symbols-outlined text-2xl font-bold">task_alt</span>`;
+
+                // Đổi hành động form
+                const form = document.querySelector('form');
+                form.onsubmit = handleResetPassword;
+            }
+        }
+
+        async function handleResetPassword(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('password-input').value;
+            const btn = document.getElementById('submit-btn');
+            const alertBox = document.getElementById('alert-message');
+
+            if (!newPassword || newPassword.length < 6) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-orange-50 text-orange-600 mb-4';
+                alertBox.innerHTML = "Mật khẩu phải có ít nhất 6 ký tự nhé!";
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2">progress_activity</span> <span>ĐANG XỬ LÝ...</span>`;
+            alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-blue-50 text-blue-600 mb-4';
+            alertBox.innerHTML = "Đang gửi yêu cầu cập nhật mật khẩu...";
+
+            try {
+                // Đảm bảo session đã sẵn sàng từ link recovery
+                const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
+
+                if (sessionError) throw sessionError;
+                if (!session) {
+                    throw new Error("Phiên làm việc đã hết hạn. Ba/Mẹ vui lòng yêu cầu gửi lại link khôi phục mật khẩu nhé.");
+                }
+
+                console.log("Updating password for user:", session.user.email);
+
+                const { data, error } = await window.supabaseClient.auth.updateUser({
+                    password: newPassword
+                });
+
+                if (error) throw error;
+
+                console.log("Password updated successfully!");
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-green-50 text-green-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">check_circle</span> Mật khẩu đã được cập nhật thành công! Đang chuyển hướng...`;
+
+                localStorage.removeItem('is_resetting_password');
+
+                // Đợi một chút để người dùng thấy thông báo thành công
+                setTimeout(() => {
+                    window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+                }, 2000);
+
+            } catch (err) {
+                console.error("Reset password error:", err);
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">error</span> Lỗi: ${err.message}`;
+                btn.disabled = false;
+                btn.innerHTML = `<span>CẬP NHẬT MẬT KHẨU</span> <span class="material-symbols-outlined text-2xl font-bold">task_alt</span>`;
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const btn = document.getElementById('submit-btn');
+            const alertBox = document.getElementById('alert-message');
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">progress_activity</span> <span>ĐANG XÁC THỰC...</span>`;
+            alertBox.className = 'hidden';
+
+            try {
+                const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) throw error;
+                window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+
+            } catch (err) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">error</span> ${err.message}`;
+
+                btn.disabled = false;
+                btn.innerHTML = `<span>ĐĂNG NHẬP</span> <span class="material-symbols-outlined text-2xl font-bold">login</span>`;
+            }
+        }
+
+        async function handleMagicLinkLogin() {
+            const email = document.getElementById('email-input').value;
+            const btn = document.getElementById('magic-link-btn');
+            const alertBox = document.getElementById('alert-message');
+
+            if (!email) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-orange-50 text-orange-600 mb-4';
+                alertBox.innerHTML = "Vui lòng nhập email trước nhé!";
+                return;
+            }
+
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> <span>Gửi link...</span>`;
+
+            try {
+                const { error } = await window.supabaseClient.auth.signInWithOtp({
+                    email: email,
+                });
+
+                if (error) throw error;
+
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-green-50 text-green-600 mb-4';
+                alertBox.innerHTML = "Đã gửi Link! Ba/Mẹ kiểm tra email nhé.";
+                btn.innerHTML = `<span>ĐÃ GỬI XONG</span> <span class="material-symbols-outlined text-sm">check</span>`;
+
+            } catch (err) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-600 mb-4';
+                alertBox.innerHTML = `Lỗi: ${err.message}`;
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = document.getElementById('email-input').value;
+            const alertBox = document.getElementById('alert-message');
+
+            if (!email) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-orange-50 text-orange-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">info</span> Vui lòng nhập Email để chúng tôi gửi link khôi phục mật khẩu nhé!`;
+                return;
+            }
+
+            alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-blue-50 text-blue-600 mb-4';
+            alertBox.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2 text-sm">progress_activity</span> Đang xử lý...`;
+
+            try {
+                const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/đăng_nhập_phụ_huynh/code.html',
+                });
+
+                if (error) throw error;
+
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-green-50 text-green-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">mail</span> Đã gửi yêu cầu! Ba/Mẹ vui lòng kiểm tra hộp thư email để đặt lại mật khẩu mới.`;
+            } catch (err) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-600 mb-4';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">error</span> Lỗi: ${err.message}`;
+            }
+        }
+    </script>
+</body>
+
+</html>

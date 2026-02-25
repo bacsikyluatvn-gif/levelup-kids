@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LevelUp Kids - Quản lý Danh hiệu</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221a10",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"],
+                        "sans": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }</script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ee9d2b40;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-['Montserrat']">
+    <div class="layout-container flex h-full grow flex-col">
+        <!-- Top Navigation Bar -->
+        <header
+            class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-background-dark/50 px-6 py-4 lg:px-20">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3 text-primary">
+                    <span class="material-symbols-outlined text-3xl font-bold">storm</span>
+                    <h2 class="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">Family
+                        Quest</h2>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+                        href="#">Bảng điều khiển</a>
+                    <a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+                        href="#">Nhiệm vụ</a>
+                    <a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+                        href="#">Cửa hàng</a>
+                    <a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Danh hiệu</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 rounded-full bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+                    <span class="material-symbols-outlined text-xl">notifications</span>
+                </button>
+                <div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+                    <img class="w-full h-full object-cover" data-alt="Ảnh đại diện phụ huynh"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY_AZQ6aPGfw8MwOuzA3AlkoXSS3dyhqjFBBK0J8ZBWyCxBlQ5RDdnl2iSg5G0lFJFbc-U5h5RD9iiX-rY6DCe7at9wCg8j7irAnq1mJaEBMXAvXh5GqJsZXJsTIIW2WAk29T03OJ6L61q9cumAmFN6F2n6X7WyFy1pyT3NbY-4i9V8fBMC7rrcfEqbGDtRAgDG0NbYRYbMlGx76jU8BxaEHO-0HLZPtefhNGX04QnhpxaegrZaF5SemNTNvLKwpoBPrKteK_jB7w" />
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 max-w-7xl mx-auto w-full p-6 lg:p-10">
+            <!-- Header Section -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Quản lý Danh hiệu</h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-1">Ghi nhận những nỗ lực và thành tích tuyệt vời của các
+                    con trong gia đình.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column: Award Form -->
+                <div class="lg:col-span-8 space-y-8">
+                    <!-- 1. Chọn Con -->
+                    <section
+                        class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="flex items-center gap-2 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm">1</span>
+                            <h2 class="text-lg font-bold">Chọn thiên thần nhỏ</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <!-- Mia -->
+                            <button
+                                class="flex flex-col items-center gap-3 p-4 rounded-xl border-2 border-primary bg-primary/5 min-w-[120px] transition-all">
+                                <div class="relative">
+                                    <img class="w-16 h-16 rounded-full object-cover border-2 border-white"
+                                        data-alt="Ảnh bé Mia"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQovLMLZxVy4Famp5WLI3YwVfhIeTGzAoBPf-vRlJicmrYYHw6YACcSk_ai2SzJXu23tYi1OabZgLdsU9gE1nIeOVgt2pBJphn8oapmWlB1yPHP2UIxPbiaNmUifiZpC8hohA1U0-S9AlZf7qsN6X8-NjDuktd74chqfZreO37g6p3f4OZDJqnjg-eiM_t5dcF9pcBQq7PtAGUYL9jPZUKZyExYOkmmP1xcxk64fwn65N7GwPvhoedTjF1pQVYgQeJureeDxOVN5Y" />
+                                    <span
+                                        class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-white">
+                                        <span class="material-symbols-outlined text-xs">check</span>
+                                    </span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="font-bold text-sm">Mia</p>
+                                    <p class="text-xs text-primary font-medium">12 Danh hiệu</p>
+                                </div>
+                            </button>
+                            <!-- Leo -->
+                            <button
+                                class="flex flex-col items-center gap-3 p-4 rounded-xl border-2 border-transparent hover:border-slate-200 dark:hover:border-white/20 bg-slate-50 dark:bg-white/5 min-w-[120px] transition-all">
+                                <img class="w-16 h-16 rounded-full object-cover opacity-80" data-alt="Ảnh bé Leo"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVgamC6KOFZqk4mHlgtusZs65eu536-pl-YITlF5XCIhe7ezTew11ykYXTmPDdlu5fIPeW4CjlyaHN4ob7xP2FtPmilhuqWRBx91sFUcHjhvk8R-qg8uycKiiWBhwepXBHuOkrkztuNt3RPzHt4K6ibzn6lU-pnoaI6yRlURZ4c_zCbKrthDn6sGlYst1XRX3XNOTM261KA7VoKPNEVWQYjHDn5oDLUNq9NOPHSW4YVDbk-ZvjtFo7MDSITd9r_0dNAo-6y5AERHs" />
+                                <div class="text-center">
+                                    <p class="font-bold text-sm text-slate-600 dark:text-slate-300">Leo</p>
+                                    <p class="text-xs text-slate-500">8 Danh hiệu</p>
+                                </div>
+                            </button>
+                            <!-- Add New -->
+                            <button
+                                class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 min-w-[120px] transition-all">
+                                <span class="material-symbols-outlined text-slate-400">person_add</span>
+                                <p class="text-xs font-medium text-slate-500">Thêm con</p>
+                            </button>
+                        </div>
+                    </section>
+                    <!-- 2. Chọn Danh Hiệu -->
+                    <section
+                        class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2"><button
+                                    class="flex items-center gap-1 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary/90 transition-colors shadow-sm mr-2">
+                                    <span class="material-symbols-outlined text-sm">add_circle</span>
+                                    Thêm danh hiệu mới
+                                </button>
+                                <span
+                                    class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm">2</span>
+                                <h2 class="text-lg font-bold">Chọn danh hiệu xứng đáng</h2>
+                            </div>
+                            <div class="flex gap-2"><button
+                                    class="flex items-center gap-1 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary/90 transition-colors shadow-sm mr-2">
+                                    <span class="material-symbols-outlined text-sm">add_circle</span>
+                                    Thêm danh hiệu mới
+                                </button>
+                                <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">Tất
+                                    cả</span>
+                                <span
+                                    class="px-3 py-1 bg-slate-100 dark:bg-white/10 text-slate-500 text-xs font-bold rounded-full cursor-pointer">Học
+                                    tập</span>
+                                <span
+                                    class="px-3 py-1 bg-slate-100 dark:bg-white/10 text-slate-500 text-xs font-bold rounded-full cursor-pointer">Việc
+                                    nhà</span>
+                            </div>
+                        </div>
+                        <div class="mb-6 p-5 border-2 border-dashed border-primary/30 rounded-xl bg-primary/5">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-white mb-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">info</span>
+                                Thông tin Thang Danh Hiệu
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">Danh hiệu của các bé hiện tại được tự
+                                động nâng cấp dựa trên tổng số <strong class="text-primary font-bold">Huy hiệu uy tín
+                                    (Stickers)</strong> đạt được khi làm nhiệm vụ. Bạn có thể xem tiến trình thưởng của
+                                các bé tại đây.</p>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="title-ladder-grid">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </section>
+                    <!-- 3. Ghi Chú Gia Đình -->
+                    <section
+                        class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="flex items-center gap-2 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm">3</span>
+                            <h2 class="text-lg font-bold">Lời nhắn gửi đến bé</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                                    for="reason">Lời nhắn của Bố Mẹ</label>
+                                <textarea
+                                    class="w-full rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-background-dark focus:ring-primary focus:border-primary placeholder:text-slate-400"
+                                    id="reason"
+                                    placeholder="Khen ngợi nỗ lực của con trong quá trình tích cực làm nhiệm vụ..."
+                                    rows="3"></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button
+                                    class="flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-primary/30">
+                                    <span class="material-symbols-outlined">send</span>
+                                    <span>Gửi Lời Nhắn Cổ Vũ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Right Column: History List -->
+                <div class="lg:col-span-4">
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10 shadow-sm flex flex-col h-full sticky top-8">
+                        <div class="p-6 border-b border-slate-100 dark:border-white/10">
+                            <h2 class="text-xl font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">history</span>
+                                Lịch sử trao tặng
+                            </h2>
+                            <p class="text-sm text-slate-500 mt-1">Các danh hiệu Mia đã đạt được</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-4 bg-slate-50 dark:bg-white/5 rounded-b-xl border-t border-slate-100 dark:border-white/10 text-center">
+                        <p class="text-sm font-bold text-slate-600 dark:text-slate-400">Tiếp tục động viên bé nhé!</p>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </main>
+    <!-- Footer Info -->
+    <footer class="mt-auto px-6 lg:px-20 py-8 bg-white dark:bg-background-dark/80 border-t border-primary/10">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 opacity-60">
+                <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                <p class="text-xs font-medium">Khích lệ mỗi ngày cho con thêm tự tin</p>
+            </div>
+            <div class="flex gap-6 text-xs text-slate-400 font-medium">
+                <a class="hover:text-primary transition-colors" href="#">Hướng dẫn</a>
+                <a class="hover:text-primary transition-colors" href="#">Chính sách bảo mật</a>
+                <a class="hover:text-primary transition-colors" href="#">Cài đặt gia đình</a>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <script src="../shared/js/state.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.AppState) return;
+
+            function renderLadder() {
+                const milestones = window.TITLE_MILESTONES;
+                const currentTitleIndex = window.AppState.data.title.currentTitleIndex;
+                const container = document.getElementById('title-ladder-grid');
+                container.innerHTML = '';
+
+                milestones.forEach((ms, index) => {
+                    const isUnlocked = index <= currentTitleIndex;
+                    const isCurrent = index === currentTitleIndex;
+
+                    let cardClass = "group p-4 rounded-xl border-2 transition-all ";
+                    let iconWrapperClass = "w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-sm transition-transform ";
+                    let checkMark = '';
+
+                    if (isUnlocked) {
+                        cardClass += "border-primary bg-primary/5 cursor-pointer hover:shadow-md ";
+                        iconWrapperClass += "bg-white dark:bg-background-dark border border-primary/20 text-" + ms.color + "-500 ";
+                        if (isCurrent) {
+                            checkMark = '<span class="absolute top-2 right-2 material-symbols-outlined text-primary text-lg">hotel_class</span>';
+                        } else {
+                            checkMark = '<span class="absolute top-2 right-2 material-symbols-outlined text-green-500 text-lg">check_circle</span>';
+                        }
+                    } else {
+                        cardClass += "border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5 opacity-60 grayscale ";
+                        iconWrapperClass += "bg-slate-200 dark:bg-white/10 border-transparent text-slate-400 ";
+                    }
+
+                    const cardHTML = `
+                    <div class="${cardClass} relative">
+                        <div class="flex flex-col items-center text-center gap-3">
+                            <div class="${iconWrapperClass} ${isUnlocked ? 'group-hover:scale-110' : ''}">
+                                <span class="material-symbols-outlined" style="font-size: 32px;">${ms.icon}</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm text-slate-900 dark:text-white">${ms.name}</p>
+                                <p class="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-wider">${ms.stickers} Huy Hiệu</p>
+                            </div>
+                        </div>
+                        ${checkMark}
+                    </div>
+                `;
+
+                    container.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            }
+
+            renderLadder();
+            window.AppState.subscribe(renderLadder);
+        });
+    </script>
+</body>
+
+</html>

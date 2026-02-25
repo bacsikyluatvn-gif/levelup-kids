@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bảng Xếp Hạng Gia Đình - LevelUp Kids</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Shared Scripts -->
+    <script src="../shared/js/state.js?v=333"></script>
+    <script src="../shared/js/components.js?v=333" defer></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#ee9d2b", "primary-dark": "#d48215", "text-main": "#181511", "text-muted": "#897961" }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes aura-pulse {
+            0% {
+                box-shadow: 0 0 15px 5px rgba(238, 157, 43, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 30px 15px rgba(238, 157, 43, 0.7);
+            }
+
+            100% {
+                box-shadow: 0 0 15px 5px rgba(238, 157, 43, 0.4);
+            }
+        }
+
+        .golden-aura {
+            animation: aura-pulse 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-[#221a10] font-['Montserrat'] text-text-main min-h-screen flex flex-col">
+
+    <!-- Reusable Header Component -->
+    <app-header title="Bảng Xếp Hạng" type="child"></app-header>
+
+    <main class="flex-grow w-full max-w-[1000px] mx-auto p-6 md:p-8 space-y-8 pb-32">
+        <!-- Top Section & Toggles -->
+        <div class="text-center">
+            <h2 class="text-4xl font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tighter"
+                id="lb-title">Siêu Sao Bảng Vàng 🌟</h2>
+            <p class="text-slate-500 font-medium" id="lb-desc">Những thợ săn cày cuốc kinh nghiệm khủng nhất tuần này!
+            </p>
+
+            <div
+                class="mt-8 mb-12 bg-slate-100 dark:bg-slate-800 p-1 rounded-full inline-flex relative shadow-inner overflow-x-auto no-scrollbar">
+                <button onclick="switchLeaderboard('arena_wins')" id="btn-lb-arena"
+                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 bg-white dark:bg-[#2c2215] text-primary shadow flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">swords</span>
+                    Đấu Trường
+                </button>
+                <button onclick="switchLeaderboard('weekly_xp')" id="btn-lb-weekly-xp"
+                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">local_fire_department</span>
+                    Đua Tuần
+                </button>
+                <button onclick="switchLeaderboard('stickers')" id="btn-lb-stickers"
+                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">sell</span>
+                    Huy Hiệu
+                </button>
+                <button onclick="switchLeaderboard('xp')" id="btn-lb-xp"
+                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">military_tech</span>
+                    Cấp Độ
+                </button>
+                <button onclick="switchLeaderboard('streaks')" id="btn-lb-streaks"
+                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">electric_bolt</span>
+                    Chuỗi
+                </button>
+            </div>
+        </div>
+
+        <leaderboard-podium id="main-podium" mode="arena_wins"></leaderboard-podium>
+
+        <!-- Detailed List Section (Intelligent Component) -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between px-2">
+                <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-widest">Danh sách thám
+                    hiểm</h3>
+                <span class="text-xs font-bold text-slate-400">Cập nhật tự động</span>
+            </div>
+            <leaderboard-table id="main-table" mode="arena_wins"></leaderboard-table>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-white dark:bg-[#2c2215] border-t border-slate-100 dark:border-slate-800 py-10 px-6 text-center mt-auto">
+        <p class="text-slate-400 text-sm font-bold">© 2023 LevelUp Kids - Biến việc nhà thành trò chơi</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <child-nav active="leaderboard"></child-nav>
+
+    <!-- Floating Parent Mode Button -->
+    <div class="fixed bottom-28 right-6 z-40 hidden md:block">
+        <button onclick="window.openParentPinModal()"
+            class="bg-[#2c2215] dark:bg-white text-white dark:text-[#2c2215] px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-3 border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <span class="text-sm">Chế độ Phụ huynh</span>
+            <span class="material-symbols-outlined text-xl">lock</span>
+        </button>
+    </div>
+
+    <script>
+        function switchLeaderboard(mode) {
+            const btnXp = document.getElementById('btn-lb-xp');
+            const btnWeeklyXp = document.getElementById('btn-lb-weekly-xp');
+            const btnStreaks = document.getElementById('btn-lb-streaks');
+            const btnArena = document.getElementById('btn-lb-arena');
+            const btnStickers = document.getElementById('btn-lb-stickers');
+            const title = document.getElementById('lb-title');
+            const desc = document.getElementById('lb-desc');
+            const podium = document.getElementById('main-podium');
+            const table = document.getElementById('main-table');
+
+            // Reset classes
+            const activeClasses = "bg-white dark:bg-[#2c2215] text-primary shadow".split(' ');
+            const inactiveClasses = "text-slate-500 hover:text-slate-700".split(' ');
+
+            [btnXp, btnWeeklyXp, btnStreaks, btnArena, btnStickers].forEach(btn => {
+                if (btn) {
+                    btn.classList.remove(...activeClasses);
+                    btn.classList.add(...inactiveClasses);
+                }
+            });
+
+            if (mode === 'xp') {
+                btnXp.classList.add(...activeClasses);
+                btnXp.classList.remove(...inactiveClasses);
+                title.innerText = "Bậc Thầy Ngôi Sao 🌟";
+                desc.innerText = "Những thợ săn cống hiến nhất toàn thời gian!";
+            } else if (mode === 'weekly_xp') {
+                btnWeeklyXp.classList.add(...activeClasses);
+                btnWeeklyXp.classList.remove(...inactiveClasses);
+                title.innerText = "Siêu Sao Bảng Vàng 🌟";
+                desc.innerText = "Những thợ săn cày cuốc kinh nghiệm khủng nhất tuần này!";
+            } else if (mode === 'arena_wins') {
+                btnArena.classList.add(...activeClasses);
+                btnArena.classList.remove(...inactiveClasses);
+                title.innerText = "Vua Đấu Trường ⚔️";
+                desc.innerText = "Những dũng sĩ có số trận thắng thách đấu nhiều nhất tuần này!";
+            } else if (mode === 'stickers') {
+                btnStickers.classList.add(...activeClasses);
+                btnStickers.classList.remove(...inactiveClasses);
+                title.innerText = "Vua Huy Hiệu 🏆";
+                desc.innerText = "Những nhà sưu tập sở hữu nhiều Huy hiệu Sticker nhất!";
+            } else {
+                btnStreaks.classList.add(...activeClasses);
+                btnStreaks.classList.remove(...inactiveClasses);
+                title.innerText = "Kẻ Giữ Lửa 🔥";
+                desc.innerText = "Những người kiên trì nhất gia đình toàn thời gian!";
+            }
+
+            // Update components
+            podium.setAttribute('mode', mode);
+            table.setAttribute('mode', mode);
+
+            // Force re-render
+            if (window.AppState) {
+                podium.render(window.AppState.data);
+                table.render(window.AppState.data);
+            }
+        }
+    </script>
+</body>
+
+</html>

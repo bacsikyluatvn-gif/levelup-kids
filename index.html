@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp Kids - Storyboard & App Map</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script>
+        // Tự động chuyển hướng vào màn hình Đăng nhập (Màn hình chính của App)
+        window.location.href = "màn_hình_đăng_nhập_-_phân_quyền_trực_quan/code.html";
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f7f6;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #ee9d2b 0%, #ffc163 100%);
+        }
+
+        .screen-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(238, 157, 43, 0.2);
+        }
+    </style>
+</head>
+
+<body class="text-slate-900 font-['Montserrat']">
+
+    <!-- Header -->
+    <header class="hero-gradient text-white py-12 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 p-4 rounded-2xl backdrop-blur-md">
+                    <span class="material-symbols-outlined text-5xl">castle</span>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-black tracking-tight">LevelUp Kids</h1>
+                    <p class="text-white/80 font-medium">Bản đồ giao diện & Lộ trình hoàn thiện</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm border border-white/20">
+                    <span class="font-bold">16 Màn hình</span>
+                </div>
+                <div class="bg-white text-orange-500 px-6 py-3 rounded-full font-bold shadow-lg">
+                    Project Antigravity
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-12 px-6">
+
+        <!-- Child Section -->
+        <section class="mb-16">
+            <div class="flex items-center gap-3 mb-8 border-b-4 border-blue-500/20 pb-2">
+                <span class="material-symbols-outlined text-blue-500 text-3xl">child_care</span>
+                <h2 class="text-2xl font-black uppercase tracking-wider text-slate-800">Khu vực trẻ em (Child App)</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Card -->
+                <a href="màn_hình_đăng_nhập_-_phân_quyền_trực_quan/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="màn_hình_đăng_nhập_-_phân_quyền_trực_quan/screen.png" alt="Login"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-colors"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors">Đăng nhập & Chọn
+                            nhân vật</h3>
+                        <p class="text-slate-500 text-sm">Màn hình khởi đầu với hiệu ứng lựa chọn avatar.</p>
+                    </div>
+                </a>
+
+                <a href="bảng_điều_khiển_(montserrat)/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="bảng_điều_khiển_(montserrat)/screen.png" alt="Dashboard"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500">Bảng điều khiển chính</h3>
+                        <p class="text-slate-500 text-sm">Tổng quan nhiệm vụ, XP và tiền vàng (Gold).</p>
+                    </div>
+                </a>
+
+                <a href="bảng_xếp_hạng_-_đồng_bộ_avatar_hoạt_hình/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="bảng_xếp_hạng_-_đồng_bộ_avatar_hoạt_hình/screen.png" alt="Leaderboard"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500">Bảng xếp hạng</h3>
+                        <p class="text-slate-500 text-sm">Thi đua cùng anh chị em trong gia đình.</p>
+                    </div>
+                </a>
+
+                <a href="cửa_hàng_-_xác_nhận_đổi_quà/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="cửa_hàng_-_xác_nhận_đổi_quà/screen.png" alt="Shop" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500">Cửa hàng quà tặng</h3>
+                        <p class="text-slate-500 text-sm">Dùng tiền vàng tích lũy để đổi phần thưởng.</p>
+                    </div>
+                </a>
+
+                <a href="kho_báu_của_bé_-_hành_trình_cây_trưởng_thành/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="kho_báu_của_bé_-_hành_trình_cây_trưởng_thành/screen.png" alt="Tree"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500">Hành trình Cây trưởng thành</h3>
+                        <p class="text-slate-500 text-sm">Nuôi dưỡng cây xanh qua các nhiệm vụ tốt.</p>
+                    </div>
+                </a>
+
+                <a href="chỉnh_sửa_hồ_sơ_-_cập_nhật_avatar_riêng_biệt/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden">
+                        <img src="chỉnh_sửa_hồ_sơ_-_cập_nhật_avatar_riêng_biệt/screen.png" alt="Profile"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500">Chỉnh sửa hồ sơ</h3>
+                        <p class="text-slate-500 text-sm">Cập nhật thông tin và đổi avatar vui nhộn.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Parent Section -->
+        <section class="mb-16">
+            <div class="flex items-center gap-3 mb-8 border-b-4 border-orange-500/20 pb-2">
+                <span class="material-symbols-outlined text-orange-500 text-3xl">supervisor_account</span>
+                <h2 class="text-2xl font-black uppercase tracking-wider text-slate-800">Khu vực phụ huynh (Parent Admin)
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <a href="đăng_nhập_phụ_huynh/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="đăng_nhập_phụ_huynh/screen.png" alt="Parent login" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500 transition-colors">Đăng nhập phụ
+                            huynh</h3>
+                        <p class="text-slate-500 text-sm">Bảo mật bằng mã PIN để vào khu quản trị.</p>
+                    </div>
+                </a>
+
+                <a href="bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/screen.png" alt="Admin Dashboard"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500">Bảng quản trị tổng quan</h3>
+                        <p class="text-slate-500 text-sm">Theo dõi tiến độ của tất cả các con.</p>
+                    </div>
+                </a>
+
+                <a href="quản_lý_nhiệm_vụ_(phụ_huynh)/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="quản_lý_nhiệm_vụ_(phụ_huynh)/screen.png" alt="Quest management"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500">Quản lý nhiệm vụ</h3>
+                        <p class="text-slate-500 text-sm">Giao việc mới, chỉnh sửa và xóa nhiệm vụ.</p>
+                    </div>
+                </a>
+
+                <a href="phê_duyệt_nhiệm_vụ_-_đồng_bộ_avatar_hoạt_hình/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="phê_duyệt_nhiệm_vụ_-_đồng_bộ_avatar_hoạt_hình/screen.png" alt="Approval"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500">Duyệt hoàn thành</h3>
+                        <p class="text-slate-500 text-sm">Xác nhận con đã làm xong việc để thưởng tiền.</p>
+                    </div>
+                </a>
+
+                <a href="quản_lý_cửa_hàng_(phụ_huynh)/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="quản_lý_cửa_hàng_(phụ_huynh)/screen.png" alt="Shop mgmt"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500">Quản lý cửa hàng</h3>
+                        <p class="text-slate-500 text-sm">Thiết lập kho quà và giá trị quy đổi.</p>
+                    </div>
+                </a>
+
+                <a href="bảng_điều_khiển_báo_cáo_phụ_huynh/code.html"
+                    class="screen-card bg-white rounded-3xl overflow-hidden border-2 border-slate-100 shadow-sm group">
+                    <div class="aspect-video bg-slate-100 relative overflow-hidden border-b">
+                        <img src="bảng_điều_khiển_báo_cáo_phụ_huynh/screen.png" alt="Reports"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-1 group-hover:text-orange-500">Báo cáo & Thống kê</h3>
+                        <p class="text-slate-500 text-sm">Xem biểu đồ tăng trưởng của con theo tuần/tháng.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Feedback & Effects Section -->
+        <section>
+            <div class="flex items-center gap-3 mb-8 border-b-4 border-green-500/20 pb-2">
+                <span class="material-symbols-outlined text-green-500 text-3xl">magic_button</span>
+                <h2 class="text-2xl font-black uppercase tracking-wider text-slate-800">Hiệu ứng & Thông báo (Overlays)
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="thông_báo_chúc_mừng_rung_rinh/code.html"
+                    class="p-6 bg-white rounded-3xl border-2 border-dashed border-green-200 hover:border-green-400 transition-all group flex items-center gap-4">
+                    <div class="bg-green-100 p-3 rounded-2xl text-green-600">
+                        <span class="material-symbols-outlined">celebration</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold group-hover:text-green-600">Chúc mừng Rung rinh</h3>
+                        <p class="text-xs text-slate-500">Popup chúc mừng khi xong việc.</p>
+                    </div>
+                </a>
+
+                <a href="hiệu_ứng_duyệt_nhiệm_vụ/code.html"
+                    class="p-6 bg-white rounded-3xl border-2 border-dashed border-green-200 hover:border-green-400 transition-all group flex items-center gap-4">
+                    <div class="bg-blue-100 p-3 rounded-2xl text-blue-600">
+                        <span class="material-symbols-outlined">verified</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold group-hover:text-blue-600">Hiệu ứng Duyệt</h3>
+                        <p class="text-xs text-slate-500">Visual feedback cho hành động duyệt.</p>
+                    </div>
+                </a>
+
+                <a href="thông_báo_cây_tăng_trưởng/code.html"
+                    class="p-6 bg-white rounded-3xl border-2 border-dashed border-green-200 hover:border-green-400 transition-all group flex items-center gap-4">
+                    <div class="bg-yellow-100 p-3 rounded-2xl text-yellow-600">
+                        <span class="material-symbols-outlined">nature</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold group-hover:text-yellow-600">Thông báo Cây lớn</h3>
+                        <p class="text-xs text-slate-500">Cây tăng cấp khi con làm tốt.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 py-12 px-6 text-center">
+        <p class="font-medium mb-2">Được tạo bởi Antigravity 🚀</p>
+        <p class="text-sm">Hệ thống LevelUp Kids - Tối ưu cho giáo dục & kỷ luật tích cực</p>
+    </footer>
+
+</body>
+
+</html>

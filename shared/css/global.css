@@ -1,0 +1,68 @@
+/* LevelUp Kids Global Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+:root {
+    --primary: #ee9d2b;
+    --primary-dark: #d48215;
+    --background-light: #f8f7f6;
+    --background-dark: #221a10;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #2c2215;
+    --text-main: #181511;
+    --text-muted: #897961;
+    --success: #4CAF50;
+}
+
+/* Base animations */
+@keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-subtle {
+    animation: bounce-subtle 2s infinite ease-in-out;
+}
+
+/* Gamified Elements */
+.gamified-card {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gamified-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 25px -5px rgba(238, 157, 43, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.btn-pressable {
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 0 0 var(--primary-dark);
+}
+
+.btn-pressable:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 var(--primary-dark);
+}
+
+.dark {
+    color-scheme: dark;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.dark ::-webkit-scrollbar-track {
+    background: #1a140c;
+}
+::-webkit-scrollbar-thumb {
+    background: #ee9d2b;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d48215;
+}

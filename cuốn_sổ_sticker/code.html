@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cuốn Sổ Sticker - LevelUp Kids</title>
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../shared/js/state.js?v=sticker_v25_persist_fix"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { "primary": "#ee9d2b" } } }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Sticker card animations */
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes stickerPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.35) rotate(-5deg);
+            }
+
+            70% {
+                transform: scale(0.9) rotate(3deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.6;
+            }
+
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(80px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sticker-card {
+            animation: floatIn 0.4s ease-out both;
+        }
+
+        .sticker-pop {
+            animation: stickerPop 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        /* LOCKED card */
+        .sticker-locked {
+            filter: grayscale(1) brightness(0.75);
+            cursor: pointer;
+            transition: filter 0.3s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .sticker-locked:hover {
+            filter: grayscale(0.4) brightness(0.9);
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.25);
+        }
+
+        /* UNLOCKED card */
+        .sticker-unlocked {
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            filter: grayscale(0) brightness(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sticker-unlocked img {
+            filter: none !important;
+            transform: scale(1);
+        }
+
+        .sticker-unlocked:hover {
+            transform: translateY(-6px) scale(1.1) rotate(2deg);
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.15));
+            z-index: 10;
+        }
+
+        /* Pop animation when unlocked */
+        .sticker-pop-animation {
+            animation: stickerPop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* Shimmer locked overlay */
+        .locked-overlay {
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s ease-in-out infinite;
+        }
+
+        /* Collection tabs */
+        .col-tab {
+            transition: all 0.25s;
+        }
+
+        .col-tab.active {
+            background: linear-gradient(135deg, #ee9d2b, #e8761a);
+            color: white;
+            box-shadow: 0 4px 14px -4px rgba(238, 157, 43, 0.5);
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: confettiFall 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-[#221a10] text-slate-800 dark:text-white min-h-screen flex flex-col">
+
+    <app-header title="Cuốn Sổ Sticker" type="child"></app-header>
+
+    <main class="flex-grow w-full max-w-[1100px] mx-auto px-4 pb-32 pt-6 space-y-6">
+
+        <!-- HERO -->
+        <section
+            class="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-6 md:p-8 overflow-hidden shadow-xl">
+            <div class="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/10"></div>
+            <div class="absolute -bottom-6 -left-6 w-28 h-28 rounded-full bg-white/10"></div>
+            <div class="absolute top-4 right-16 text-6xl opacity-20 rotate-12">📚</div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+                <!-- Sticker balance -->
+                <div
+                    class="flex-shrink-0 bg-white/15 backdrop-blur-md rounded-2xl px-8 py-5 text-center border border-white/20 shadow-inner">
+                    <p class="text-white/80 text-[10px] font-black uppercase tracking-widest mb-1">Huy hiệu hiện có</p>
+                    <p id="hero-balance" class="text-6xl font-black text-white drop-shadow-lg">—</p>
+                    <p class="text-white/70 text-xs mt-1 font-bold">Thẻ dán</p>
+                </div>
+
+                <div class="flex-1 text-center md:text-left">
+                    <h1
+                        class="text-2xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-2 drop-shadow-md">
+                        BỘ SƯU TẬP <span class="text-yellow-300">STICKER</span>
+                    </h1>
+                    <p class="text-white/90 text-sm md:text-base mb-5 font-medium">Bé đã mở khóa được <span
+                            id="hero-progress-count" class="font-bold text-yellow-300">0</span> trong tổng số <span
+                            class="font-bold text-yellow-300" id="hero-total-count">560+</span> sticker!</p>
+
+                    <!-- Progress bar -->
+                    <div class="max-w-md">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-white/80 text-xs font-bold uppercase tracking-wider">Tiến độ sưu
+                                tầm</span>
+                            <span id="hero-progress-text"
+                                class="text-white text-sm font-black tracking-tighter">0%</span>
+                        </div>
+                        <div class="bg-black/20 rounded-full h-4 p-1 border border-white/10">
+                            <div id="hero-progress-bar"
+                                class="h-full bg-gradient-to-r from-yellow-300 to-amber-400 rounded-full shadow-[0_0_10px_rgba(252,211,77,0.5)] transition-all duration-1000"
+                                style="width:0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT AREA: SIDEBAR + GRID -->
+        <div class="flex flex-col md:flex-row gap-8 items-start">
+
+            <!-- SIDEBAR: COLLECTION TABS -->
+            <aside class="w-full md:w-64 flex-shrink-0 sticky top-20">
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h3
+                        class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 px-2">
+                        Bộ Sưu Tập</h3>
+
+                    <div class="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none"
+                        id="col-tabs">
+                        <!-- Nổi bật: Mục Bộ Sưu Tập Cá Nhân -->
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-black whitespace-nowrap bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 border border-amber-200 dark:border-amber-800/40 mb-3 shadow-sm transition-all hover:scale-[1.02] active:scale-95"
+                            data-col="owned">
+                            <span
+                                class="w-9 h-9 flex items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl text-xl shadow-md border border-white/40">🏆</span>
+                            <div
+                                class="flex-1 text-left bg-gradient-to-r from-amber-700 to-orange-600 dark:from-amber-400 dark:to-orange-300 bg-clip-text text-transparent">
+                                Bộ Sưu Tập</div>
+                            <span id="tab-badge-owned"
+                                class="text-[11px] bg-amber-600 text-white px-2.5 py-1 rounded-full font-black shadow-sm">0</span>
+                        </button>
+
+                        <div class="hidden md:block w-full h-px bg-slate-200/60 dark:bg-slate-700/50 my-2"></div>
+
+                        <button
+                            class="col-tab active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="all">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🌟</span>
+                            <div class="flex-1 text-left">Tất cả</div>
+                            <span id="tab-badge-all"
+                                class="text-[10px] bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded-full font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="animals">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🐾</span>
+                            <div class="flex-1 text-left">Động Vật</div>
+                            <span id="tab-badge-animals" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="food">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🍓</span>
+                            <div class="flex-1 text-left">Đồ Ăn</div>
+                            <span id="tab-badge-food" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="space">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🚀</span>
+                            <div class="flex-1 text-left">Vũ Trụ</div>
+                            <span id="tab-badge-space" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="heroes">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🦸</span>
+                            <div class="flex-1 text-left">Siêu Anh Hùng</div>
+                            <span id="tab-badge-heroes" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="nature">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🌸</span>
+                            <div class="flex-1 text-left">Thiên Nhiên</div>
+                            <span id="tab-badge-nature" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="magic">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🪄</span>
+                            <div class="flex-1 text-left">Pháp Thuật</div>
+                            <span id="tab-badge-magic" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="cartoon">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">🎀</span>
+                            <div class="flex-1 text-left">Hoạt Hình</div>
+                            <span id="tab-badge-cartoon" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                        <button
+                            class="col-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold whitespace-nowrap"
+                            data-col="sports">
+                            <span
+                                class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-xl text-lg">⚽</span>
+                            <div class="flex-1 text-left">Thể Thao</div>
+                            <span id="tab-badge-sports" class="text-[10px] opacity-60 font-black">0</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- STICKER GRID -->
+            <section class="flex-1 w-full min-w-0">
+                <div id="sticker-grid" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    <!-- rendered by JS -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- UNLOCK MODAL -->
+    <div id="unlock-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modal-backdrop"></div>
+        <div id="modal-card"
+            class="relative bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-xs w-full shadow-2xl text-center transform scale-90 transition-transform duration-300">
+            <!-- Confetti container -->
+            <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl"></div>
+
+            <!-- Sticker preview -->
+            <div id="modal-sticker-preview"
+                class="w-28 h-28 mx-auto mb-4 rounded-2xl overflow-hidden shadow-lg bg-slate-100 relative"></div>
+
+            <h3 id="modal-title" class="text-lg font-black text-slate-800 dark:text-white mb-1">Dán sticker này?</h3>
+            <p id="modal-subtitle" class="text-sm text-slate-500 dark:text-slate-400 mb-2">Dán vào sổ ngay thôi!</p>
+
+            <!-- Cost -->
+            <div
+                class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-black text-sm px-4 py-2 rounded-xl mb-6 border border-rose-100 dark:border-rose-800">
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">sell</span>
+                Tốn 1 Huy hiệu · Còn lại: <span id="modal-balance">0</span>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="btn-cancel"
+                    class="flex-1 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    Thôi
+                </button>
+                <button id="btn-confirm"
+                    class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-orange-500 text-white font-black text-sm shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100">
+                    Dán ngay! 🎉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <child-nav active="stickers"></child-nav>
+
+    <script>
+        // ============================
+        // STATE
+        // ============================
+        let activeCollection = 'all';
+        let pendingStickerId = null;
+        let appData = null;
+
+        // ============================
+        // RENDER FUNCTIONS
+        // ============================
+        const EMOJI_BG = {
+            animals: 'from-green-100 to-emerald-100',
+            food: 'from-orange-100 to-amber-100',
+            space: 'from-indigo-100 to-blue-100',
+            heroes: 'from-purple-100 to-pink-100',
+            nature: 'from-teal-100 to-cyan-100',
+            magic: 'from-violet-100 to-purple-100',
+            cartoon: 'from-pink-100 to-rose-100',
+            sports: 'from-blue-100 to-cyan-100',
+        };
+
+        function getStickerContent(sticker, size = 'grid') {
+            if (sticker.img) {
+                // Ảnh AI riêng lẻ — full size
+                if (size === 'modal') {
+                    return `<img src="${sticker.img}" alt="${sticker.name}" class="w-full h-full object-contain" />`;
+                }
+                return `<img src="${sticker.img}" alt="${sticker.name}" class="w-full h-full object-contain p-0.5" />`;
+            }
+            // Emoji fallback với background màu pastel
+            const bg = EMOJI_BG[sticker.collection] || 'from-slate-100 to-slate-200';
+            const emojiSize = size === 'modal' ? 'text-6xl' : 'text-3xl';
+            return `<div class="w-full h-full bg-gradient-to-br ${bg} flex items-center justify-center">
+                        <span class="${emojiSize}">${sticker.emoji}</span>
+                    </div>`;
+        }
+
+        function renderGrid(data) {
+            if (!data || !window.STICKER_CATALOG) return;
+            appData = data;
+
+            const unlocked = data.user.unlockedStickers || [];
+            const balance = data.user.stickers || 0;
+
+            // Update hero
+            document.getElementById('hero-balance').textContent = balance;
+            const totalUnlocked = unlocked.length;
+            const total = window.STICKER_CATALOG.length;
+            const progress = total > 0 ? (totalUnlocked / total * 100) : 0;
+
+            document.getElementById('hero-progress-bar').style.width = progress + '%';
+            document.getElementById('hero-progress-text').textContent = Math.round(progress) + '%';
+            document.getElementById('hero-progress-count').textContent = totalUnlocked;
+            const totalEl = document.getElementById('hero-total-count');
+            if (totalEl) totalEl.textContent = total;
+
+            // Update tab badges
+            const collections = Object.keys(window.STICKER_COLLECTIONS || {});
+            collections.forEach(col => {
+                const colStickers = window.STICKER_CATALOG.filter(s => s.collection === col);
+                const colUnlocked = colStickers.filter(s => unlocked.includes(s.id)).length;
+                const badge = document.getElementById('tab-badge-' + col);
+                if (badge) {
+                    badge.innerHTML = `<span class="text-blue-600 dark:text-blue-400">${colUnlocked}</span><span class="opacity-30 mx-0.5">/</span>${colStickers.length}`;
+                }
+            });
+            const allBadge = document.getElementById('tab-badge-all');
+            if (allBadge) {
+                allBadge.innerHTML = `<span class="text-blue-600 dark:text-blue-400">${totalUnlocked}</span><span class="opacity-30 mx-0.5">/</span>${total}`;
+            }
+            const ownedBadge = document.getElementById('tab-badge-owned');
+            if (ownedBadge) {
+                ownedBadge.textContent = totalUnlocked;
+            }
+
+            // Filter logic
+            let stickers = [];
+            if (activeCollection === 'all') {
+                stickers = window.STICKER_CATALOG;
+            } else if (activeCollection === 'owned') {
+                stickers = window.STICKER_CATALOG.filter(s => unlocked.includes(s.id));
+            } else {
+                stickers = window.STICKER_CATALOG.filter(s => s.collection === activeCollection);
+            }
+
+            const grid = document.getElementById('sticker-grid');
+            if (stickers.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-20 text-center">
+                        <div class="text-5xl mb-4 opacity-20">📭</div>
+                        <p class="text-slate-400 font-bold">Chưa có sticker nào ở đây!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = stickers.map((s, idx) => {
+                const isUnlocked = unlocked.includes(s.id);
+                const content = getStickerContent(s, 'grid');
+                const delay = idx * 0.04;
+
+                if (isUnlocked) {
+                    const isNew = pendingStickerId === s.id;
+                    return `
+                        <div class="sticker-card sticker-unlocked group relative ${isNew ? 'sticker-pop-animation' : ''}" style="animation-delay:${delay}s" title="${s.name}">
+                            <div class="aspect-square rounded-2xl shadow-md border-2 border-white overflow-hidden bg-white ring-4 ring-yellow-400/0 group-hover:ring-yellow-400/50 transition-all">${content}</div>
+                            <div class="absolute -top-1.5 -right-1.5 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-10">
+                                <span class="material-symbols-outlined text-white text-[14px] font-black" style="font-variation-settings:'FILL' 1">check</span>
+                            </div>
+                            <p class="text-[9px] text-center font-bold text-slate-600 dark:text-slate-300 mt-1.5 leading-tight line-clamp-2">${s.name}</p>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="sticker-card sticker-locked group relative" style="animation-delay:${delay}s" data-id="${s.id}" onclick="openModal('${s.id}')" title="Click để dán: ${s.name}">
+                            <div class="aspect-square rounded-2xl shadow-sm border-2 border-slate-200 dark:border-slate-700 overflow-hidden relative bg-white">
+                                ${content}
+                                <div class="locked-overlay absolute inset-0"></div>
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div class="bg-white/90 dark:bg-slate-800/90 rounded-xl px-2 py-1 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-rose-500 text-[14px]" style="font-variation-settings:'FILL' 1">sell</span>
+                                        <span class="text-[10px] font-black text-rose-500">1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-[9px] text-center font-bold text-slate-400 mt-1.5 leading-tight line-clamp-2">${s.name}</p>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            // Check for completed collections
+            renderCompleteBanners(unlocked);
+        }
+
+        function renderCompleteBanners(unlocked) {
+            const container = document.getElementById('complete-banners');
+            const collections = Object.keys(window.STICKER_COLLECTIONS || {});
+            let html = '';
+            collections.forEach(col => {
+                const colStickers = window.STICKER_CATALOG.filter(s => s.collection === col);
+                const allDone = colStickers.every(s => unlocked.includes(s.id));
+                if (allDone) {
+                    const info = window.STICKER_COLLECTIONS[col];
+                    html += `
+                        <div class="flex items-center gap-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border border-amber-200 dark:border-amber-700 rounded-2xl px-5 py-4">
+                            <div class="text-3xl">${info.emoji}</div>
+                            <div>
+                                <p class="font-black text-amber-700 dark:text-amber-400">🎉 ${info.name} — Hoàn Chỉnh!</p>
+                                <p class="text-xs text-amber-600/70 dark:text-amber-400/70 font-medium">Bạn đã sưu tầm đủ cả bộ. Tuyệt vời!</p>
+                            </div>
+                            <span class="material-symbols-outlined text-amber-500 text-3xl ml-auto" style="font-variation-settings:'FILL' 1">workspace_premium</span>
+                        </div>
+                    `;
+                }
+            });
+            container.innerHTML = html;
+            container.classList.toggle('hidden', html === '');
+        }
+
+        // ============================
+        // MODAL
+        // ============================
+        function openModal(stickerId) {
+            if (!appData) return;
+            const balance = appData.user.stickers || 0;
+            if (balance <= 0) {
+                alert('Bé chưa có huy hiệu để dán! Hoàn thành nhiệm vụ để nhận thêm nhé 🌟');
+                return;
+            }
+
+            const sticker = window.STICKER_CATALOG.find(s => s.id === stickerId);
+            if (!sticker) return;
+
+            pendingStickerId = stickerId;
+
+            // Set modal content
+            document.getElementById('modal-title').textContent = sticker.name;
+            document.getElementById('modal-subtitle').textContent = 'Dán sticker này vào sổ nhé!';
+            document.getElementById('modal-balance').textContent = balance;
+
+            // Sticker preview in modal
+            const preview = document.getElementById('modal-sticker-preview');
+            preview.innerHTML = getStickerContent(sticker, 'modal');
+
+            // Show modal
+            const modal = document.getElementById('unlock-modal');
+            const card = document.getElementById('modal-card');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => card.classList.remove('scale-90'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('unlock-modal');
+            const card = document.getElementById('modal-card');
+            card.classList.add('scale-90');
+            setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 200);
+            pendingStickerId = null;
+        }
+
+        async function confirmUnlock() {
+            if (!pendingStickerId) return;
+            const btn = document.getElementById('btn-confirm');
+            const stickerId = pendingStickerId; // Capture local ref
+
+            btn.disabled = true;
+            btn.textContent = '🚀 Đang dán...';
+
+            // 1. Kick off the sync (AppState.unlockSticker has internal optimistic update)
+            // But we add a timeout safety for the UI layer
+            const unlockPromise = window.AppState.unlockSticker(stickerId);
+
+            // 2. Immediate UI Feedback (Confetti & Sound feeling)
+            spawnConfetti();
+
+            // Wait just a tiny bit for the AppState.notify() to trigger renderGrid (optimistically)
+            // Then close the modal fast for a snappy feel
+            setTimeout(() => {
+                if (pendingStickerId === stickerId) {
+                    btn.textContent = '🎉 Xong!';
+                    setTimeout(() => {
+                        closeModal();
+                        btn.disabled = false;
+                        btn.textContent = 'Dán ngay! 🎉';
+                    }, 400);
+                }
+            }, 300);
+
+            // 3. Background Wait - if it fails later, AppState will rollback and we might alert
+            try {
+                const result = await Promise.race([
+                    unlockPromise,
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+                ]);
+
+                if (!result) {
+                    // Rollback already happened in state.js if error was caught there
+                    // but if it returned false (e.g. no stickers), we alert
+                    if (appData && (appData.user.stickers <= 0)) {
+                        alert('Hết huy hiệu rồi bé ơi!');
+                    }
+                }
+            } catch (e) {
+                console.error("Unlock error or timeout:", e);
+                // Even on timeout, we let the optimistic UI stay for now unless state.js rolls it back
+            }
+        }
+
+        function spawnConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff922b', '#da77f2'];
+            for (let i = 0; i < 18; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${10 + Math.random() * 20}%;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    width: ${6 + Math.random() * 8}px;
+                    height: ${6 + Math.random() * 8}px;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                    animation-delay: ${Math.random() * 0.4}s;
+                    animation-duration: ${0.6 + Math.random() * 0.4}s;
+                `;
+                container.appendChild(piece);
+                setTimeout(() => piece.remove(), 1100);
+            }
+        }
+
+        // ============================
+        // EVENT LISTENERS
+        // ============================
+        document.getElementById('btn-cancel').addEventListener('click', closeModal);
+        document.getElementById('modal-backdrop').addEventListener('click', closeModal);
+        document.getElementById('btn-confirm').addEventListener('click', confirmUnlock);
+
+        appData = null;
+
+        document.querySelectorAll('.col-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.col-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeCollection = btn.dataset.col;
+                renderGrid(appData);
+            });
+        });
+        // ============================
+        // INIT
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AppState) {
+                window.AppState.subscribe(renderGrid);
+                renderGrid(window.AppState.data);
+            }
+        });
+    </script>
+</body>
+
+</html>

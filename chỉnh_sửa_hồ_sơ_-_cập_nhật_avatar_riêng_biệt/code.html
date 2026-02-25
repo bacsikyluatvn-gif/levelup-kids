@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chỉnh Sửa Hồ Sơ - LevelUp Kids</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="../shared/js/state.js"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-3d {
+            box-shadow: 0 6px 0px 0px #b5460f;
+            transition: all 0.1s ease;
+        }
+
+        .btn-3d:active {
+            box-shadow: 0 2px 0px 0px #b5460f;
+            transform: translateY(4px);
+        }
+
+        .avatar-card:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-selected {
+            border: 4px solid #ec5b13 !important;
+            box-shadow: 0 0 15px rgba(236, 91, 19, 0.4);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100 font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col items-center">
+            <!-- Header Section -->
+            <app-header title="Hồ Sơ Của Bé" type="child" class="w-full max-w-[1200px] flex-shrink-0"></app-header>
+
+            <main
+                class="layout-content-container flex flex-col max-w-[720px] w-full flex-1 p-6 pb-48 gap-8 mx-auto mt-4">
+                <!-- Current Profile Avatar -->
+                <div class="flex flex-col items-center gap-6">
+                    <div class="relative group">
+                        <div class="size-40 rounded-full bg-gradient-to-tr from-primary to-orange-300 p-1.5 shadow-xl">
+                            <div
+                                class="w-full h-full rounded-full bg-background-light dark:bg-background-dark overflow-hidden flex items-center justify-center border-4 border-white dark:border-background-dark">
+                                <img id="active-avatar" alt="Current Avatar" class="w-full h-full object-cover"
+                                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ccc' d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+                                    style="object-position: center; object-fit: cover;" />
+                            </div>
+                        </div>
+                    </div>
+                    <p
+                        class="text-sm font-semibold opacity-70 uppercase tracking-widest text-slate-800 dark:text-slate-200">
+                        Ảnh Hiện Tại</p>
+                </div>
+
+                <!-- Name Input -->
+                <div class="flex flex-col gap-3 w-full max-w-[480px] mx-auto">
+                    <label class="flex flex-col gap-2">
+                        <span class="text-lg font-bold px-1 text-slate-800 dark:text-slate-200">Tên Anh Hùng</span>
+                        <input id="hero-name-input"
+                            class="w-full h-16 rounded-xl border-4 border-primary/20 bg-white dark:bg-slate-800/50 px-6 text-xl font-bold focus:border-primary focus:outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-white"
+                            placeholder="Nhập tên anh hùng của bạn..." type="text" value="..." />
+                    </label>
+                </div>
+
+                <!-- Avatar Selection Grid -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-xl font-800 text-slate-900 dark:text-slate-100 uppercase italic">Chọn Hình Đại
+                            Diện Mới</h3>
+                        <span class="text-sm font-bold text-primary hidden sm:inline-block">Bộ Sưu Tập Có Sẵn</span>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-x-4 gap-y-6 p-2" id="avatar-grid">
+                        <!-- Loaded by JS -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-4 py-8 items-center mb-10">
+                    <button onclick="saveProfile()"
+                        class="btn-3d w-full max-w-[400px] bg-primary text-white py-5 rounded-xl text-xl font-800 uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined fill-1">save</span>
+                        Lưu Thay Đổi
+                    </button>
+                    <button onclick="window.location.reload()"
+                        class="font-bold text-slate-500 dark:text-slate-400 hover:text-primary transition-colors text-lg">
+                        Hủy Bỏ
+                    </button>
+                </div>
+            </main>
+
+            <child-nav active="profile"></child-nav>
+
+            <!-- Floating Parent Mode Button -->
+            <div class="fixed bottom-28 right-6 z-40 hidden md:block">
+                <button onclick="window.openParentPinModal()"
+                    class="bg-[#2c2215] dark:bg-white text-white dark:text-[#2c2215] px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-3 border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                    <span class="text-sm">Chế độ Phụ huynh</span>
+                    <span class="material-symbols-outlined text-xl">lock</span>
+                </button>
+            </div>
+
+            <!-- Success Toast -->
+            <div id="toast"
+                class="fixed top-24 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-3 rounded-full font-bold shadow-lg transform -translate-y-32 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+                <span class="material-symbols-outlined">check_circle</span>
+                Hồ sơ đã được lưu!
+            </div>
+
+            <script>
+                const AVATARS = Array.from({ length: 30 }, (_, i) => `../shared/assets/generated_avatars/avatar_${i + 1}.png`);
+
+                let selectedAvatar = '';
+                let hasInitialized = false;
+
+                const initProfilePage = () => {
+                    if (window.AppState) {
+                        window.AppState.subscribe(data => {
+                            if (data.user && data.user.id) {
+                                renderProfile(data.user);
+                                if (!hasInitialized) {
+                                    renderAvatarGrid();
+                                    hasInitialized = true;
+                                }
+                            }
+                        });
+                    }
+                };
+
+                const renderProfile = (user) => {
+                    const activeAvatarImg = document.getElementById('active-avatar');
+                    const nameInput = document.getElementById('hero-name-input');
+
+                    // Chỉ cập nhật ban đầu hoặc khi chưa đổi avatar local
+                    if (!selectedAvatar) {
+                        selectedAvatar = user.avatar || AVATARS[0];
+                    }
+
+                    if (activeAvatarImg) activeAvatarImg.src = selectedAvatar;
+                    if (nameInput && (!hasInitialized || nameInput.value === 'Loading...')) {
+                        nameInput.value = user.name || '';
+                    }
+
+                    highlightSelectedAvatar(selectedAvatar);
+                };
+
+                const renderAvatarGrid = () => {
+                    const grid = document.getElementById('avatar-grid');
+                    if (!grid) return;
+
+                    let html = '';
+                    AVATARS.forEach((url, i) => {
+                        html += `
+                        <div class="flex flex-col items-center gap-2">
+                            <div onclick="selectAvatar('${url}')"
+                                class="avatar-option size-20 sm:size-24 rounded-full overflow-hidden cursor-pointer transition-all hover:scale-110 border-4 border-transparent">
+                                <img alt="Avatar ${i + 1}" class="w-full h-full object-cover" src="${url}" style="object-position: center; object-fit: cover;" />
+                            </div>
+                        </div>`;
+                    });
+
+                    grid.innerHTML = html;
+                    highlightSelectedAvatar(selectedAvatar);
+                };
+
+                function selectAvatar(url) {
+                    selectedAvatar = url;
+                    const activeAvatarImg = document.getElementById('active-avatar');
+                    if (activeAvatarImg) activeAvatarImg.src = url;
+                    highlightSelectedAvatar(url);
+                }
+
+                function highlightSelectedAvatar(url) {
+                    const options = document.querySelectorAll('.avatar-option');
+                    options.forEach(opt => {
+                        const img = opt.querySelector('img');
+                        if (img && (img.src === url || img.getAttribute('src') === url || url.includes(img.getAttribute('src').replace('..', '')))) {
+                            opt.classList.add('avatar-selected');
+                            opt.classList.remove('border-transparent');
+                        } else {
+                            opt.classList.remove('avatar-selected');
+                            opt.classList.add('border-transparent');
+                        }
+                    });
+                }
+
+                async function saveProfile() {
+                    const newName = document.getElementById('hero-name-input').value.trim();
+                    if (!newName) {
+                        alert("Tên anh hùng không được bỏ trống!");
+                        return;
+                    }
+                    if (window.AppState) {
+                        try {
+                            await window.AppState.updateProfile(newName, selectedAvatar);
+
+                            // Hiển thị Toast
+                            const toast = document.getElementById('toast');
+                            toast.classList.remove('-translate-y-32', 'opacity-0');
+                            toast.classList.add('translate-y-0', 'opacity-100');
+
+                            setTimeout(() => {
+                                toast.classList.add('-translate-y-32', 'opacity-0');
+                                toast.classList.remove('translate-y-0', 'opacity-100');
+                            }, 3000);
+                        } catch (err) {
+                            console.error("Error updating profile:", err);
+                            alert("Có lỗi xảy ra khi lưu hồ sơ.");
+                        }
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', initProfilePage);
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

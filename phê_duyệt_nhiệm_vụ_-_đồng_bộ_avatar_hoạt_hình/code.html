@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LevelUp Kids - Parent Approval</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="../shared/js/state.js"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "primary-dark": "#d68b24",
+                        "background-light": "#ffffff",
+                        "background-dark": "#1a1a1a",
+                        "card-light": "#ffffff",
+                        "card-dark": "#262626",
+                        "text-main-light": "#1f2937",
+                        "text-main-dark": "#f3f4f6",
+                        "text-secondary-light": "#6b7280",
+                        "text-secondary-dark": "#9ca3af",
+                        "success": "#4ade80",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+
+        /* Coin Animation Placeholder Styles */
+        .coin-animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 50;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #ffd700;
+            border-radius: 50%;
+            border: 2px solid #e6c200;
+        }
+    </style>
+</head>
+
+<body
+    class="dark:bg-background-dark text-text-main-light dark:text-text-main-dark min-h-screen flex overflow-hidden bg-white font-['Montserrat']">
+    <!-- Parent Mode Border Indicator -->
+    <div class="fixed inset-0 border-4 border-primary pointer-events-none z-[60] rounded-none opacity-50"></div>
+    <!-- Intelligent Sidebar Component -->
+    <parent-sidebar active="approval"></parent-sidebar>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto relative dark:bg-background-dark bg-white">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-30 bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 px-8 py-5 flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-black tracking-tight">Phê Duyệt Nhiệm Vụ</h2>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mt-1">Duyệt các nhiệm vụ con
+                    đã làm xong để thưởng Vàng và XP.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <notification-bell></notification-bell>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.AppState.syncFromDatabase()"
+                        class="px-4 py-2 rounded-full bg-slate-100 dark:bg-stone-800 hover:bg-slate-200 text-slate-600 dark:text-stone-300 font-bold text-xs flex items-center gap-2 transition-all">
+                        <span class="material-symbols-outlined text-[16px]">sync</span> Làm mới
+                    </button>
+                    <div
+                        class="px-4 py-2 rounded-full bg-primary/20 text-primary font-bold text-sm flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span> Đã xác thực
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Content Area -->
+        <div class="p-8 max-w-5xl mx-auto w-full flex flex-col gap-6 pb-20">
+            <!-- Tabs -->
+            <div
+                class="flex items-center gap-2 bg-slate-100 dark:bg-stone-800 p-1.5 rounded-xl border border-stone-200 dark:border-stone-700 w-fit mb-2">
+                <button id="tab-pending" onclick="switchTab('pending')"
+                    class="px-4 py-2 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all">Nhiệm
+                    vụ chờ duyệt</button>
+                <button id="tab-history" onclick="switchTab('history')"
+                    class="px-4 py-2 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Lịch
+                    sử</button>
+            </div>
+
+            <div id="pending-list" class="flex flex-col gap-6">
+                <!-- Dynamic pending requests will be injected here -->
+            </div>
+
+            <!-- History section -->
+            <div id="history-list" class="flex flex-col gap-6" style="display: none;">
+                <!-- Dynamic history items will be injected here -->
+            </div>
+        </div>
+    </main>
+    <!-- Coin Animation Placeholder (Hidden by default, visualized for structure) -->
+    <div aria-hidden="true" class="coin-animation-container">
+        <!-- These would be generated by JS in a real app -->
+        <div class="coin" style="left: 10%; top: -30px;"></div>
+        <div class="coin" style="left: 20%; top: -50px;"></div>
+        <div class="coin" style="left: 50%; top: -20px;"></div>
+        <div class="coin" style="left: 80%; top: -60px;"></div>
+    </div>
+    <script>
+        const renderRequestCard = (req, isHistory = false) => {
+            const leaderboard = window.AppState.data.leaderboard || [];
+            const user = leaderboard.find(u => u.id === req.profileId) || { name: req.user, avatar: '../shared/assets/generated_avatars/avatar_1.png' };
+            const isPending = req.status === 'pending';
+            const isSticker = req.isSticker;
+            const hasImage = !!req.image;
+
+            return `
+                <div class="task-card bg-card-light dark:bg-card-dark rounded-2xl shadow-sm border ${isPending && !isHistory ? 'border-primary/20 border-l-4 border-l-primary' : 'border-stone-100 dark:border-stone-800'} p-4 flex flex-col sm:flex-row items-center gap-4 hover:shadow-md transition-all group relative overflow-hidden">
+                    
+                    <!-- Avatar & User Info (Compact) -->
+                    <div class="flex items-center gap-3 shrink-0 w-full sm:w-auto">
+                        <div class="relative">
+                            <img src="${user.avatar}" class="size-12 rounded-2xl object-cover ring-2 ring-stone-100 dark:ring-stone-800 shadow-sm" />
+                            <div class="absolute -bottom-1 -right-1 size-5 rounded-full ${req.type === 'task' ? 'bg-blue-500' : 'bg-amber-500'} flex items-center justify-center border-2 border-white dark:border-stone-900 shadow-sm text-white">
+                                <span class="material-symbols-outlined text-[10px] font-black">${req.type === 'task' ? 'task_alt' : 'shopping_bag'}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <h4 class="font-black text-slate-800 dark:text-white text-sm truncate">${user.name}</h4>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${req.time ? req.time.split(' ')[0] : ''}</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Content (Expanded) -->
+                    <div class="flex-1 min-w-0 flex flex-col justify-center gap-1 w-full">
+                        <div class="flex items-center gap-2">
+                             <h3 class="text-base font-bold text-slate-700 dark:text-slate-200 truncate leading-tight">${req.itemTitle}</h3>
+                             ${hasImage ? '<span class="px-2 py-0.5 bg-blue-50 text-blue-500 rounded-md text-[9px] font-black uppercase">Có ảnh 📸</span>' : ''}
+                        </div>
+                        <p class="text-[11px] font-medium text-slate-400 leading-tight">
+                            ${req.type === 'task' ? 'Nhiệm vụ hoàn thành' : 'Đổi quà cửa hàng'} ${req.type === 'atonement' ? '• <span class="text-emerald-500 font-bold">LỜI HỨA SỬA SAI ✨</span>' : ''}
+                        </p>
+                    </div>
+
+                    <!-- Rewards Detail (Compact Chips) -->
+                    <div class="flex flex-wrap items-center gap-1.5 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
+                        ${req.type === 'task' || req.type === 'atonement' ? `
+                            <span class="inline-flex items-center gap-1 bg-orange-50 dark:bg-orange-950/30 text-orange-600 px-2.5 py-1 rounded-xl text-[11px] font-black border border-orange-100 dark:border-orange-900/50">
+                                <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">monetization_on</span>+${req.reward || 0}
+                            </span>
+                            ${req.sticker ? `
+                            <span class="inline-flex items-center gap-1 bg-purple-50 dark:bg-purple-950/30 text-purple-600 px-2.5 py-1 rounded-xl text-[11px] font-black border border-purple-100 dark:border-purple-900/50">
+                                <span class="material-symbols-outlined text-[13px] rotate-12" style="font-variation-settings:'FILL' 1">sell</span>+${req.sticker}
+                            </span>
+                            ` : ''}
+                            <span class="inline-flex items-center gap-1 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 px-2.5 py-1 rounded-xl text-[11px] font-black border border-amber-100 dark:border-amber-900/50">
+                                <span class="material-symbols-outlined text-[13px]">military_tech</span>+${req.xp || 0}
+                            </span>
+                        ` : `
+                            <span class="inline-flex items-center gap-1 bg-rose-50 dark:bg-rose-950/30 text-rose-600 px-2.5 py-1 rounded-xl text-[11px] font-black border border-rose-100 dark:border-rose-900/50">
+                                <span class="material-symbols-outlined text-[13px]">${isSticker ? 'sell' : 'monetization_on'}</span>-${req.price}
+                            </span>
+                        `}
+                    </div>
+
+                    <!-- Action Area -->
+                    <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-stone-800">
+                        ${isPending && !isHistory ? `
+                            <button onclick="handleRequest('${req.id}', 'approve')" class="flex-1 sm:flex-none size-10 flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-sm transition-all group/btn">
+                                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">check</span>
+                            </button>
+                            <button onclick="handleRequest('${req.id}', 'reject')" class="flex-1 sm:flex-none size-10 flex items-center justify-center bg-stone-100 dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-stone-500 hover:text-rose-500 rounded-xl transition-all group/btn">
+                                <span class="material-symbols-outlined group-hover:rotate-90 transition-transform">close</span>
+                            </button>
+                            ${hasImage ? `
+                                <button onclick="window.showLevelUpAlert('Bằng chứng', 'Chi tiết ảnh đang được tải...', 'info')" class="flex-1 sm:flex-none size-10 flex items-center justify-center bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-all">
+                                    <span class="material-symbols-outlined">image</span>
+                                </button>
+                            ` : ''}
+                        ` : `
+                            <div class="px-3 py-1 ml-2 rounded-lg text-[10px] font-black uppercase tracking-wider ${req.status === 'delivered' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}">
+                                ${req.status === 'delivered' ? 'ĐÃ DUYỆT' : 'TỪ CHỐI'}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        const renderChallengeConfirmCard = (chall, data) => {
+            const challenger = data.leaderboard.find(u => u.id === chall.challengerId);
+            const opponent = data.leaderboard.find(u => u.id === chall.opponentId);
+
+            return `
+                <div class="bg-card-light dark:bg-card-dark rounded-2xl border border-stone-200 dark:border-stone-800 p-6 shadow-sm flex flex-col gap-6 group hover:border-arena-orange/50 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="bg-arena-orange/10 text-arena-orange p-2 rounded-xl">
+                                <span class="material-symbols-outlined">sports_kabaddi</span>
+                            </div>
+                            <h3 class="text-xl font-bold uppercase italic tracking-tighter">THỬ THÁCH: ${chall.taskType}</h3>
+                        </div>
+                        <span class="text-xs font-bold text-stone-400 capitalize">${chall.date}</span>
+                    </div>
+
+                    <div class="flex items-center justify-around py-4 relative">
+                        <!-- Challenger Side -->
+                        <div class="flex flex-col items-center gap-4 flex-1">
+                            <div class="relative">
+                                <img src="${challenger.avatar}" class="w-16 h-16 rounded-full border-4 border-arena-blue shadow-md ${chall.challengerConfirmed === null ? 'animate-pulse' : ''}">
+                                ${chall.challengerConfirmed === true ? '<div class="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-0.5"><span class="material-symbols-outlined text-xs">check</span></div>' : ''}
+                                ${chall.challengerConfirmed === false ? '<div class="absolute -bottom-1 -right-1 bg-red-500 text-white rounded-full p-0.5"><span class="material-symbols-outlined text-xs">close</span></div>' : ''}
+                            </div>
+                            <div class="text-center">
+                                <p class="font-black text-sm">${challenger.name}</p>
+                                ${chall.challengerConfirmed === null ? `
+                                    <div class="flex bg-slate-100 dark:bg-stone-800 p-1 rounded-full mt-2">
+                                        <button onclick="window.AppState.confirmChallengeResult('${chall.id}', '${challenger.id}', true)" class="w-8 h-8 flex items-center justify-center bg-white dark:bg-stone-700 text-green-500 rounded-full hover:bg-green-500 hover:text-white transition-all shadow-sm"><span class="material-symbols-outlined text-sm">check</span></button>
+                                        <button onclick="window.AppState.confirmChallengeResult('${chall.id}', '${challenger.id}', false)" class="ml-1 w-8 h-8 flex items-center justify-center bg-white dark:bg-stone-700 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all shadow-sm"><span class="material-symbols-outlined text-sm">close</span></button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        <div class="absolute left-1/2 -translate-x-1/2 font-black italic text-stone-300 dark:text-stone-700 text-4xl">VS</div>
+
+                        <!-- Opponent Side -->
+                        <div class="flex flex-col items-center gap-4 flex-1">
+                            <div class="relative">
+                                <img src="${opponent.avatar}" class="w-16 h-16 rounded-full border-4 border-arena-orange shadow-md ${opponent.role !== 'bot' && chall.opponentConfirmed === null ? 'animate-pulse' : ''}">
+                                ${chall.opponentConfirmed === true ? '<div class="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-0.5"><span class="material-symbols-outlined text-xs">check</span></div>' : ''}
+                                ${chall.opponentConfirmed === false ? '<div class="absolute -bottom-1 -right-1 bg-red-500 text-white rounded-full p-0.5"><span class="material-symbols-outlined text-xs">close</span></div>' : ''}
+                            </div>
+                            <div class="text-center">
+                                <p class="font-black text-sm">${opponent.role === 'bot' ? opponent.name.replace(' (Bot)', '') : opponent.name}</p>
+                                ${opponent.role !== 'bot' && chall.opponentConfirmed === null ? `
+                                    <div class="flex bg-slate-100 dark:bg-stone-800 p-1 rounded-full mt-2">
+                                        <button onclick="window.AppState.confirmChallengeResult('${chall.id}', '${opponent.id}', true)" class="w-8 h-8 flex items-center justify-center bg-white dark:bg-stone-700 text-green-500 rounded-full hover:bg-green-500 hover:text-white transition-all shadow-sm"><span class="material-symbols-outlined text-sm">check</span></button>
+                                        <button onclick="window.AppState.confirmChallengeResult('${chall.id}', '${opponent.id}', false)" class="ml-1 w-8 h-8 flex items-center justify-center bg-white dark:bg-stone-700 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all shadow-sm"><span class="material-symbols-outlined text-sm">close</span></button>
+                                    </div>
+                                ` : (opponent.role === 'bot' ? '<span class="text-[8px] bg-arena-blue text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-widest mt-2 block">Tự động</span>' : '')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const updateApprovalUI = () => {
+            if (!window.AppState) return;
+            const requests = window.AppState.data.requests || [];
+
+            const pendingList = document.getElementById('pending-list');
+            const historyList = document.getElementById('history-list');
+
+            const pendingReqs = requests.filter(r => r.status === 'pending' && (r.type === 'task' || r.type === 'atonement'));
+            // LỌC CHỈ HIỂN THỊ LỊCH SỬ NHIỆM VỤ (TASK) VÀ SỬA SAI (ATONEMENT) 
+            const historyReqs = requests.filter(r => r.status !== 'pending' && (r.type === 'task' || r.type === 'atonement'));
+
+            pendingList.innerHTML = pendingReqs.length > 0 ? pendingReqs.map(r => renderRequestCard(r)).join('') : `
+                <div class="text-center py-20 bg-slate-50 dark:bg-stone-900/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-stone-800">
+                    <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-stone-700 mb-4">task_alt</span>
+                    <h4 class="font-bold text-slate-500">Tất cả đã xong!</h4>
+                    <p class="text-sm text-slate-400">Không có yêu cầu nào đang chờ duyệt.</p>
+                </div>
+            `;
+
+            historyList.innerHTML = historyReqs.length > 0
+                ? historyReqs.map(r => renderRequestCard(r, true)).join('')
+                : `<div class="text-center py-20 bg-slate-50 dark:bg-stone-900/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-stone-800">
+                       <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-stone-700 mb-4">history</span>
+                       <h4 class="font-bold text-slate-500">Chưa có lịch sử.</h4>
+                   </div>`;
+        };
+
+        window.handleRequest = (reqId, action) => {
+            if (action === 'approve') {
+                window.AppState.markRequestDelivered(reqId);
+            } else {
+                window.AppState.rejectRequest(reqId);
+                updateApprovalUI();
+            }
+        };
+
+        function switchTab(tab) {
+            const pendingContainer = document.getElementById('pending-list');
+            const historyContainer = document.getElementById('history-list');
+
+            document.getElementById('tab-pending').className = "px-4 py-2 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all";
+            document.getElementById('tab-history').className = "px-4 py-2 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all";
+
+            if (tab === 'pending') {
+                document.getElementById('tab-pending').className = "px-4 py-2 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all";
+                pendingContainer.style.display = 'flex';
+                historyContainer.style.display = 'none';
+            } else {
+                document.getElementById('tab-history').className = "px-4 py-2 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all";
+                pendingContainer.style.display = 'none';
+                historyContainer.style.display = 'flex';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AppState) {
+                window.AppState.subscribe(() => updateApprovalUI());
+                updateApprovalUI();
+            }
+        });
+    </script>
+</body>
+
+</html>

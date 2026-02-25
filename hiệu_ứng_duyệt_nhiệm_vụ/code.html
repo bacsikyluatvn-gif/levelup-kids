@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LevelUp Kids - Parent Approval</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "primary-dark": "#d68b24",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221a10",
+                        "card-light": "#ffffff",
+                        "card-dark": "#2c241b",
+                        "text-main-light": "#181511",
+                        "text-main-dark": "#f3f0eb",
+                        "text-secondary-light": "#897961",
+                        "text-secondary-dark": "#a89b88",
+                        "success": "#4ade80",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'confetti-fall': 'confettiFall 4s ease-in-out infinite',
+                        'coin-fall': 'coinFall 3s linear infinite',
+                        'coin-rotate': 'coinRotate 1s linear infinite',
+                    },
+                    keyframes: {
+                        confettiFall: {
+                            '0%': { transform: 'translateY(-10px) rotate(0deg)', opacity: '1' },
+                            '100%': { transform: 'translateY(100px) rotate(360deg)', opacity: '0' },
+                        },
+                        coinFall: {
+                            '0%': { transform: 'translateY(-100px)', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { transform: 'translateY(100vh)', opacity: '0' },
+                        },
+                        coinRotate: {
+                            '0%': { transform: 'rotateY(0deg)' },
+                            '100%': { transform: 'rotateY(360deg)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .coin-animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .coin-wrapper {
+            position: absolute;
+            top: -50px;
+            animation: coinFall 3s linear infinite;
+        }
+        .coin {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #e6ac00);
+            border-radius: 50%;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 0 10px rgba(255,255,255,0.5);
+            animation: coinRotate 1.5s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #b8860b;
+            font-size: 20px;
+        }
+        .coin:before {
+            content: "$";
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffd700;
+            animation: confettiFall 2.5s ease-out infinite;
+        }.coin-wrapper:nth-child(1) { left: 5%; animation-duration: 2.5s; animation-delay: 0s; }
+        .coin-wrapper:nth-child(2) { left: 15%; animation-duration: 3.2s; animation-delay: 0.5s; }
+        .coin-wrapper:nth-child(3) { left: 25%; animation-duration: 2.8s; animation-delay: 1.2s; }
+        .coin-wrapper:nth-child(4) { left: 35%; animation-duration: 3.5s; animation-delay: 0.2s; }
+        .coin-wrapper:nth-child(5) { left: 45%; animation-duration: 2.2s; animation-delay: 0.8s; }
+        .coin-wrapper:nth-child(6) { left: 55%; animation-duration: 3.0s; animation-delay: 1.5s; }
+        .coin-wrapper:nth-child(7) { left: 65%; animation-duration: 2.6s; animation-delay: 0.4s; }
+        .coin-wrapper:nth-child(8) { left: 75%; animation-duration: 3.3s; animation-delay: 1.0s; }
+        .coin-wrapper:nth-child(9) { left: 85%; animation-duration: 2.9s; animation-delay: 0.1s; }
+        .coin-wrapper:nth-child(10) { left: 95%; animation-duration: 3.1s; animation-delay: 0.7s; }
+        .coin-wrapper:nth-child(11) { left: 10%; animation-duration: 2.4s; animation-delay: 1.8s; }
+        .coin-wrapper:nth-child(12) { left: 30%; animation-duration: 3.4s; animation-delay: 2.2s; }
+        .coin-wrapper:nth-child(13) { left: 50%; animation-duration: 2.7s; animation-delay: 1.9s; }
+        .coin-wrapper:nth-child(14) { left: 70%; animation-duration: 3.6s; animation-delay: 2.5s; }
+        .coin-wrapper:nth-child(15) { left: 90%; animation-duration: 2.3s; animation-delay: 1.6s; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark min-h-screen flex overflow-hidden font-['Montserrat']">
+<div class="fixed inset-0 border-4 border-primary pointer-events-none z-[60] rounded-none opacity-50"></div>
+<aside class="w-64 flex-shrink-0 border-r border-stone-200 dark:border-stone-800 bg-card-light dark:bg-card-dark flex flex-col justify-between h-screen sticky top-0 z-40">
+<div class="p-6 flex flex-col gap-8 h-full">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 border-2 border-primary" data-alt="Portrait of a smiling father" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARmjtjms1YL55zRmeipEECD-KT7oQlQD_4Np9tSW9ixgDY15FZ4617rwq43jHCaTzvwHYWOyorVDC6bWXnO9FtvWa3ZoxZkymtZ5imScWHqLCkmyQnhGvII3fAC-Wq9Fp0PGLDs05ol9NqBkaOTylNHr9bUOzqWA3osH2ylUbguVjJ1n0yC8xOgbhIPOfepgVnoGuAsk2TyrL6yfSkuVQHCx2w4kBXygFVF4jQejhwkkvGRyd1W-iRIxKcPJdAG0tx0v4A48RHXbE");'></div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">LevelUp Kids</h1>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[14px]">lock</span>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-xs font-medium uppercase tracking-wide">Parent Mode</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Phê duyệt</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary-light dark:text-text-secondary-dark hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-medium">Quản lý nhiệm vụ</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary-light dark:text-text-secondary-dark hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-medium">Cửa hàng phần thưởng</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary-light dark:text-text-secondary-dark hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-medium">Thành viên gia đình</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary-light dark:text-text-secondary-dark hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Cài đặt</span>
+</a>
+</nav>
+<button class="flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-stone-200 dark:bg-stone-800 text-text-main-light dark:text-text-main-dark hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors font-bold text-sm"><span class="material-symbols-outlined text-[20px]">logout</span> Thoát chế độ Cha mẹ</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-screen overflow-y-auto relative bg-background-light dark:bg-background-dark">
+<header class="sticky top-0 z-30 bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 px-8 py-5 flex items-center justify-between">
+<div>
+<h2 class="text-2xl font-black tracking-tight">Đang chờ Phê duyệt</h2>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mt-1">Xem xét các nhiệm vụ đã hoàn thành của con bạn để tặng vàng và XP.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-4 py-2 rounded-full bg-primary/20 text-primary font-bold text-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">admin_panel_settings</span> Đã xác minh mã PIN</div>
+</div>
+</header>
+<div class="p-8 max-w-5xl mx-auto w-full flex flex-col gap-6 pb-20 relative">
+<div class="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] animate-bounce-slow pointer-events-none">
+<div class="bg-green-500 text-white px-8 py-6 rounded-2xl shadow-2xl flex flex-col items-center gap-2 transform scale-110 border-4 border-green-300">
+<div class="bg-white text-green-500 rounded-full p-2 mb-1">
+<span class="material-symbols-outlined text-4xl">check</span>
+</div>
+<h2 class="text-2xl font-black uppercase tracking-wide">NHIỆM VỤ ĐÃ DUYỆT!</h2>
+<p class="font-medium opacity-90">+50 Vàng đã gửi cho Leo</p>
+</div>
+</div>
+<div class="flex items-center gap-4 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark mb-2">
+<span class="text-text-main-light dark:text-text-main-dark">Hàng chờ: 3 Nhiệm vụ</span>
+<span class="h-1 w-1 bg-current rounded-full"></span>
+<span>Cần chú ý</span>
+</div>
+<div class="bg-green-50 dark:bg-green-900/10 rounded-xl shadow-xl border-2 border-green-500 ring-4 ring-green-100 dark:ring-green-900/30 p-6 flex flex-col md:flex-row gap-6 relative group transform scale-[1.01] transition-transform z-10">
+<div class="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
+<div class="confetti-piece" style="left: 10%; top: -10%; background: #4ade80; animation-delay: 0.1s;"></div>
+<div class="confetti-piece" style="left: 20%; top: -20%; background: #fbbf24; animation-delay: 0.5s;"></div>
+<div class="confetti-piece" style="left: 50%; top: -15%; background: #60a5fa; animation-delay: 0.2s;"></div>
+<div class="confetti-piece" style="left: 80%; top: -10%; background: #f87171; animation-delay: 0.4s;"></div>
+<div class="confetti-piece" style="left: 90%; top: -25%; background: #4ade80; animation-delay: 0.7s;"></div>
+</div>
+<div class="absolute top-4 right-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 z-20"><span class="material-symbols-outlined text-[14px]">check_circle</span> Đã duyệt</div>
+<div class="w-full md:w-64 h-48 flex-shrink-0 rounded-lg overflow-hidden relative bg-stone-100 dark:bg-stone-800 ring-2 ring-green-200 dark:ring-green-900/20">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Tidy bedroom with made bed and organized toys" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCEspyazCidI0Ai6aJ18bgPLEUZVNGB93HEwwtBYCDWM3_cusXLWHP13SaxBgvKScVx8uMtLSBRfKbZuZO4zEOq-kFBqhOVKLaMIxmRZPJr5VAOx0OzQI7Fl08xO6CFDxAF5oSdFRlMmvZSA5NqljV81tLbAGvY2ylWZiI7ZxmhaLGnlR_PnHc-Xj63qv57gYKPMEqj1NR_j4BnaiE4J36NvYdmvCzy-JRl_2mY95gzJz9yj3MtEp1lEm1690LlDGOfZD56cE3kSsg");'></div>
+<div class="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm p-2 text-white text-xs flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-[14px]">image</span> Đã đính kèm ảnh bằng chứng</div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="h-6 w-6 rounded-full bg-blue-500 bg-cover bg-center ring-2 ring-white" data-alt="Young boy avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAl3f8QBEn_XiAo7DYjKKaQ60wcBu77BrQghTnOLEbq4es_i5kG17B2-ydaQ6XlCh_FKSPoY_1xttM3_tm5JRWuEv7eiYXtck9hY92a-85T-YTg6FXA_jGtw-QJnPJDJccmf1vHOG9eQfutOTVw_0NodAhFxcW2WRdz88Y65-lcRqMstIDwDSfvJAiV4_YjBjD0GlhF-sSDQgjH-uU1C_VjcrqcgbhL7u4fQDPPbmS17ET1mRvadqga2cRbgVU6RBhFmydYEN6SnJ4");'></div>
+<span class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">Leo</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">• Hôm nay, 4:30 CH</span>
+</div>
+<h3 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mb-1">Dọn dẹp phòng ngủ</h3>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Leo nói: "Con đã cất tất cả lego vào thùng và dọn giường!"</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5 ring-1 ring-yellow-400/50"><span class="material-symbols-outlined text-yellow-500 animate-spin-slow">monetization_on</span> 50 Vàng</div>
+<div class="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5"><span class="material-symbols-outlined text-blue-500">bolt</span> 200 XP</div>
+</div>
+<div class="flex gap-3 pt-2 mt-auto">
+<button class="flex-1 bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_20px_rgba(74,222,128,0.6)] scale-95 transition-all flex items-center justify-center gap-2 text-base ring-4 ring-green-300 dark:ring-green-800"><span class="material-symbols-outlined fill-current">check_circle</span> Đã duyệt!</button>
+<button class="flex-1 bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-600 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 text-base border border-stone-200 dark:border-stone-700 opacity-50 cursor-not-allowed"><span class="material-symbols-outlined text-[18px]">cancel</span> Từ chối</button>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-stone-200 dark:border-stone-800 p-6 flex flex-col md:flex-row gap-6 opacity-40 blur-[1px] grayscale transition-opacity">
+<div class="w-full md:w-64 h-48 flex-shrink-0 rounded-lg overflow-hidden relative bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-stone-300 dark:text-stone-700">functions</span>
+<div class="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm p-2 text-white text-xs flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-[14px]">image</span> Đã đính kèm ảnh bằng chứng</div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="h-6 w-6 rounded-full bg-purple-500 bg-cover bg-center" data-alt="Young girl avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD2YHvMv8Qha6GqedFKaMQgwrU-n51uKbS_GmyIKj5P_Lc-_ukZQxTL18BOqn1eimeKYTCb_UkoC2VAY4OSZXierihf2uA06QDd7gP09Xa5qZumkUIlRgxIhxSpmru2lV_yc8IfHnWbVFH5shFUrpE48u2CG2vCd11eYLPLSbpqod22GUoTNgz2HHOkFk_jmhjfWmR7KkoLYbGLODllqUefrfK7bC_feUwMwP1rltTaINqpbpYmZv7oDqtyv0JYWXM9DBga4jwOHwE");'></div>
+<span class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">Mia</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">• Hôm nay, 4:30 CH</span>
+</div>
+<h3 class="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-1">Bài tập Toán (Chương 4)</h3>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Mia đã đánh dấu hoàn thành thủ công.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5"><span class="material-symbols-outlined text-yellow-500 animate-spin-slow">monetization_on</span> 50 Vàng</div>
+<div class="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5"><span class="material-symbols-outlined text-blue-500">bolt</span> 200 XP</div>
+</div>
+<div class="flex gap-3 pt-2 mt-auto">
+<button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span> Phê duyệt</button>
+<button class="bg-stone-100 dark:bg-stone-800 hover:bg-red-50 dark:hover:bg-red-900/20 text-stone-600 dark:text-stone-300 hover:text-red-600 dark:hover:text-red-400 font-bold py-2 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm border border-stone-200 dark:border-stone-700 hover:border-red-200 dark:hover:border-red-800"><span class="material-symbols-outlined text-[18px]">cancel</span> Từ chối</button>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-stone-200 dark:border-stone-800 p-6 flex flex-col md:flex-row gap-6 opacity-40 blur-[1px] grayscale transition-opacity">
+<div class="w-full md:w-64 h-48 flex-shrink-0 rounded-lg overflow-hidden relative bg-stone-100 dark:bg-stone-800">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Dishwasher loaded with clean dishes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVeTIvkNLTQaMJUltvigVjI61TqgTj1bjDUn_TBPpM9INbCZutrE_hssOqu5SEmU4cBIANXO7bMqHeseVdGLCQ8Qe93UlNJNl_qfseR1NRN4j3zUQ93A-mx1ixkrnMDRIPC8Srown1_u8kWzmR6QAW7L6DaNJ4ajDFr9ALp45c7wbgwnPxVm6X-DWlD0fuqFSddzAoFF4TPAfjXppKYN1uKk_Qm6X32PHiXYm-4-3Kzgc8_ncBCNT8zR53k3Kup4PR7MqSaYqk4EY");'></div>
+<div class="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm p-2 text-white text-xs flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-[14px]">image</span> Đã đính kèm ảnh bằng chứng</div>
+</div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="h-6 w-6 rounded-full bg-blue-500 bg-cover bg-center" data-alt="Young boy avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAciEDIuRK8jeWvezi_CaJxdTI962Zf1c7FCAf-SfjK2mTSfSPV1JuGk9D-YSj6ucvC2DXNJ5tbFHZQUfnN8oxVATNNouBFhcKjxoSaebXD29lYcOfMbPnHjzEfuFheBt95by9IQciYjdwmd8upD1axH1qYNm7UvRP0ow1y_PkVE4mIkBdLGpJTrISncW2TmI43snoHaWsuP7HIjVgbUZ74hspjsrs3xkkoi3vSc7C4ZXEgZ1OmEz07zo0p4bRuFa9IEEUqBgA4EWo");'></div>
+<span class="text-sm font-semibold text-text-secondary-light dark:text-text-secondary-dark">Leo</span>
+<span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">• Hôm qua, 7:00 CH</span>
+</div>
+<h3 class="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-1">Dọn máy rửa bát</h3>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">"Tất cả đã sạch sẽ!"</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5"><span class="material-symbols-outlined text-yellow-500 animate-spin-slow">monetization_on</span> 50 Vàng</div>
+<div class="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5"><span class="material-symbols-outlined text-blue-500">bolt</span> 200 XP</div>
+</div>
+<div class="flex gap-3 pt-2 mt-auto">
+<button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span> Phê duyệt</button>
+<button class="bg-stone-100 dark:bg-stone-800 hover:bg-red-50 dark:hover:bg-red-900/20 text-stone-600 dark:text-stone-300 hover:text-red-600 dark:hover:text-red-400 font-bold py-2 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm border border-stone-200 dark:border-stone-700 hover:border-red-200 dark:hover:border-red-800"><span class="material-symbols-outlined text-[18px]">cancel</span> Từ chối</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div aria-hidden="true" class="coin-animation-container">
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+<div class="coin-wrapper"><div class="coin"></div></div>
+</div>
+</body></html>

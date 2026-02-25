@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LevelUp Kids - Quản lý Cửa hàng Phần thưởng</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="../shared/js/state.js"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221a10",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .sidebar-item-active {
+            background-color: #ee9d2b15;
+            color: #ee9d2b;
+            border-left: 4px solid #ee9d2b;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-['Montserrat']">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Intelligent Sidebar Component -->
+        <parent-sidebar active="shop"></parent-sidebar>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+            <div class="max-w-6xl mx-auto">
+                <!-- Header Section -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div>
+                        <h2 class="text-3xl font-black tracking-tight">Quản lý Cửa hàng Phần thưởng</h2>
+                        <p class="text-slate-500 mt-1">Tạo động lực cho các con bằng những phần thưởng hấp dẫn.</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <notification-bell></notification-bell>
+                        <button onclick="window.AppState.syncFromDatabase()"
+                            class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-stone-300 font-bold text-xs flex items-center gap-2 transition-all">
+                            <span class="material-symbols-outlined text-[18px]">sync</span> Làm mới
+                        </button>
+                        <button onclick="toggleModal(true)"
+                            class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            Thêm vật phẩm mới
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div
+                    class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 w-fit mb-6">
+                    <button id="tab-btn-shop" onclick="switchTab('shop')"
+                        class="px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all">Các
+                        vật phẩm</button>
+                    <button id="tab-btn-perks" onclick="switchTab('perks')"
+                        class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Quà
+                        Tặng Ngay (Sticker)</button>
+                    <button id="tab-btn-requests" onclick="switchTab('requests')"
+                        class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all relative">
+                        Yêu cầu
+                        <span class="absolute top-1 right-1 size-2.5 bg-red-500 rounded-full animate-pulse"></span>
+                    </button>
+                </div>
+
+                <!-- TAB 1: Rewards Table -->
+                <div id="tab-shop">
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-primary/5 border-b border-primary/10">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Hình ảnh</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Tên vật phẩm</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Danh mục</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Giá trị (Vàng)</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                                            Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-primary/5">
+                                    <!-- Rendered from AppState via script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 1.5: Perks Table -->
+                <div id="tab-perks" style="display: none;">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-500 text-sm">Quà Tặng Ngay (Instant Perks) được các bé đổi trực tiếp bằng
+                            Huy hiệu (Stickers) làm nhiệm vụ.</p>
+                        <button onclick="togglePerkModal(true)"
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            Thêm Quà Tặng Ngay
+                        </button>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-teal-500/20 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-teal-50 dark:bg-teal-900/10 border-b border-teal-500/20">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Icon</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Tên Đặc Quyền</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Giá trị (Sticker)</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                                            Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="perks-tbody" class="divide-y divide-teal-500/10">
+                                    <!-- Rendered from AppState via script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Requests Table -->
+                <div id="tab-requests" style="display: none;"
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden mb-8">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-primary/5 border-b border-primary/10">
+                                <tr>
+                                    <th
+                                        class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                        Hình ảnh</th>
+                                    <th
+                                        class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                        Người đổi / Quà</th>
+                                    <th
+                                        class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                        Thời gian</th>
+                                    <th
+                                        class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                        Trạng thái</th>
+                                    <th
+                                        class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                                        Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-primary/5">
+                                <!-- Rendered from AppState via script -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Footer / Statistics -->
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 flex items-center gap-4">
+                        <div class="bg-primary/10 p-3 rounded-lg text-primary">
+                            <span class="material-symbols-outlined">inventory_2</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Tổng vật phẩm</p>
+                            <p class="text-2xl font-black" id="total-items">4</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 flex items-center gap-4">
+                        <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg text-green-600">
+                            <span class="material-symbols-outlined">shopping_cart_checkout</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Đã đổi tuần này</p>
+                            <p class="text-2xl font-black">8</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 flex items-center gap-4">
+                        <div class="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg text-amber-600">
+                            <span class="material-symbols-outlined">trending_up</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Phổ biến nhất</p>
+                            <p class="text-2xl font-black">Tiệc Kem</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="add-item-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div
+                class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-xl font-black">Thêm Vật phẩm mới</h3>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-slate-800 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="add-item-form" class="p-6 space-y-6">
+                <!-- Image Upload (Very Important Feature) -->
+                <div>
+                    <label class="block text-sm font-bold mb-2">Hình ảnh vật phẩm <span
+                            class="text-xs text-slate-400 font-normal">(Chọn từ máy tính)</span></label>
+                    <div class="w-full relative border-2 border-dashed border-primary/30 rounded-xl p-6 flex flex-col items-center justify-center gap-2 hover:bg-primary/5 transition-colors cursor-pointer group min-h-[160px]"
+                        onclick="document.getElementById('item-image').click()">
+                        <div id="upload-placeholder" class="flex flex-col items-center justify-center gap-2">
+                            <span
+                                class="material-symbols-outlined text-4xl text-primary group-hover:scale-110 transition-transform">cloud_upload</span>
+                            <p class="font-bold text-sm text-slate-600">Bấm để tải ảnh lên</p>
+                            <p class="text-xs text-slate-400">Hỗ trợ JPG, PNG, WEBP</p>
+                        </div>
+                        <img id="preview-image" class="absolute inset-0 w-full h-full object-cover rounded-xl hidden"
+                            src="" alt="Preview" />
+                        <input type="file" id="item-image" class="hidden" accept="image/*" />
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div>
+                    <label class="block text-sm font-bold mb-2">Tên vật phẩm</label>
+                    <input id="item-name"
+                        class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3"
+                        placeholder="Ví dụ: Chuyến đi Thảo Cầm Viên..." type="text" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2">Mô tả ngắn</label>
+                    <input id="item-desc"
+                        class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm"
+                        placeholder="Mô tả sự hấp dẫn của quà..." type="text" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Giá (Vàng)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
+                            <input id="item-price"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-10 pr-4 py-3 font-bold text-primary"
+                                type="number" value="100" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Danh mục</label>
+                        <select id="item-category"
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-bold">
+                            <option value="Vật phẩm">🎁 Vật phẩm</option>
+                            <option value="Đặc quyền">⭐ Đặc quyền</option>
+                            <option value="Chuyến đi">🎢 Chuyến đi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-4 flex gap-3">
+                    <button onclick="toggleModal(false)"
+                        class="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-3 rounded-xl transition-all"
+                        type="button">
+                        Hủy
+                    </button>
+                    <button onclick="event.preventDefault(); saveItem()"
+                        class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 transition-all"
+                        type="submit">
+                        Tạo vật phẩm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Perk Modal -->
+    <div id="add-perk-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div
+                class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-teal-50/50 dark:bg-teal-900/10">
+                <h3 class="text-xl font-black text-teal-700 dark:text-teal-400" id="perk-modal-title">Thêm Quà Tặng Ngay
+                </h3>
+                <button onclick="togglePerkModal(false)" class="text-slate-400 hover:text-slate-800 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="add-perk-form" class="p-6 space-y-6">
+                <input type="hidden" id="perk-id" value="">
+                <!-- Info -->
+                <div>
+                    <label class="block text-sm font-bold mb-2">Tên Đặc Quyền</label>
+                    <input id="perk-name"
+                        class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-teal-500 rounded-xl px-4 py-3"
+                        placeholder="Ví dụ: 10 Phút Điện Thoại..." type="text" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2">Mô tả chi tiết</label>
+                    <input id="perk-desc"
+                        class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-teal-500 rounded-xl px-4 py-3 text-sm"
+                        placeholder="Thêm giải thích cho bé..." type="text" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Giá (Sticker)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-teal-500">sell</span>
+                            <input id="perk-price"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-teal-500 rounded-xl pl-10 pr-4 py-3 font-bold text-teal-600"
+                                type="number" value="5" required />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Icon (Tên Material)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                                id="perk-icon-preview">smartphone</span>
+                            <input id="perk-icon"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-teal-500 rounded-xl pl-10 pr-4 py-3 font-medium text-slate-700 dark:text-slate-200"
+                                type="text" value="smartphone"
+                                onkeyup="document.getElementById('perk-icon-preview').innerText = this.value"
+                                required />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-4 flex gap-3">
+                    <button onclick="togglePerkModal(false)"
+                        class="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-3 rounded-xl transition-all"
+                        type="button">
+                        Hủy
+                    </button>
+                    <button onclick="event.preventDefault(); savePerk()"
+                        class="flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all"
+                        type="submit">
+                        Lưu Đặc Quyền
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentEditItemId = null;
+
+        function switchTab(tab) {
+            const btnShop = document.getElementById('tab-btn-shop');
+            const btnPerks = document.getElementById('tab-btn-perks');
+            const btnReq = document.getElementById('tab-btn-requests');
+            const divShop = document.getElementById('tab-shop');
+            const divPerks = document.getElementById('tab-perks');
+            const divReq = document.getElementById('tab-requests');
+
+            const activeClass = "px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all";
+            const inactiveClass = "px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all";
+
+            btnShop.className = inactiveClass;
+            btnPerks.className = inactiveClass;
+            btnReq.className = inactiveClass + " relative";
+
+            divShop.style.display = 'none';
+            divPerks.style.display = 'none';
+            divReq.style.display = 'none';
+
+            if (tab === 'shop') {
+                btnShop.className = activeClass;
+                divShop.style.display = 'block';
+            } else if (tab === 'perks') {
+                btnPerks.className = activeClass.replace('bg-primary', 'bg-teal-500');
+                divPerks.style.display = 'block';
+            } else {
+                btnReq.className = activeClass + " relative";
+                divReq.style.display = 'block';
+            }
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('add-item-modal');
+            if (show) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                document.getElementById('add-item-form').reset();
+                currentEditItemId = null;
+                document.querySelector('#add-item-modal h3').innerText = "Thêm Vật phẩm mới";
+                document.querySelector('button[onclick*="saveItem"]').innerText = "Tạo vật phẩm";
+
+                // Reset image preview
+                const previewImg = document.getElementById('preview-image');
+                const placeholder = document.getElementById('upload-placeholder');
+                previewImg.src = "";
+                previewImg.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+        }
+
+        function togglePerkModal(show) {
+            const modal = document.getElementById('add-perk-modal');
+            if (show) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                document.getElementById('add-perk-form').reset();
+                document.getElementById('perk-id').value = "";
+                document.getElementById('perk-modal-title').innerText = "Thêm Quà Tặng Ngay";
+                document.getElementById('perk-icon-preview').innerText = "smartphone";
+            }
+        }
+
+        function renderShopItems() {
+            const tbody = document.querySelector('#tab-shop tbody');
+            tbody.innerHTML = '';
+
+            window.AppState.data.shopItems.forEach(item => {
+                let catColor = item.category === "Vật phẩm" ? "green" : (item.category === "Đặc quyền" ? "purple" : "blue");
+
+                let imageHTML = `<span class="material-symbols-outlined text-teal-600 text-3xl">image</span>`;
+                if (item.image && item.image !== 'null' && item.image !== 'undefined') {
+                    imageHTML = `<img src="${item.image}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'material-symbols-outlined text-teal-600 text-3xl\\'>image</span>'" />`;
+                }
+
+                const newRow = `<tr class="hover:bg-primary/5 transition-colors group" data-id="${item.id}">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="size-16 rounded-lg flex items-center justify-center overflow-hidden border border-primary/10">
+                            ${imageHTML}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-lg">${item.title}</p>
+                        <p class="text-xs text-slate-500">${item.desc}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 bg-${catColor}-100 text-${catColor}-600 text-xs font-bold rounded-full">${item.category || 'Vật phẩm'}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-1.5 font-black text-primary">
+                            <span class="material-symbols-outlined fill-1 text-xl">monetization_on</span>
+                            ${item.price} Vàng
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button onclick="editItem(this)" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Chỉnh sửa"><span class="material-symbols-outlined text-xl">edit</span></button>
+                            <button onclick="deleteItem(this, '${item.id}')" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 hover:dark:bg-red-900/20 rounded-lg transition-all" title="Xóa"><span class="material-symbols-outlined text-xl">delete</span></button>
+                        </div>
+                    </td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', newRow);
+            });
+
+            document.getElementById('total-items').innerText = window.AppState.data.shopItems.length;
+        }
+
+        function renderPerks() {
+            const tbody = document.getElementById('perks-tbody');
+            tbody.innerHTML = '';
+
+            window.AppState.data.instantPerks.forEach(perk => {
+                const newRow = `<tr class="hover:bg-teal-500/5 transition-colors group">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="size-12 rounded-full bg-${perk.color || 'teal'}-100 text-${perk.color || 'teal'}-500 flex items-center justify-center border border-${perk.color || 'teal'}-200">
+                            <span class="material-symbols-outlined">${perk.emoji || perk.icon || 'star'}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-lg">${perk.title}</p>
+                        <p class="text-xs text-slate-500">${perk.desc}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-1.5 font-black text-teal-600">
+                            <span class="material-symbols-outlined fill-1 text-xl">sell</span>
+                            ${perk.stickerPrice} Sticker
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button onclick="editPerk('${perk.id}')" class="p-2 text-slate-400 hover:text-teal-600 hover:bg-teal-500/10 rounded-lg transition-all" title="Chỉnh sửa"><span class="material-symbols-outlined text-xl">edit</span></button>
+                            <button onclick="deletePerk('${perk.id}')" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Xóa"><span class="material-symbols-outlined text-xl">delete</span></button>
+                        </div>
+                    </td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', newRow);
+            });
+        }
+
+        function renderRequests() {
+            const tbody = document.querySelector('#tab-requests tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const requests = window.AppState.data.requests || [];
+            console.log("[ShopMgmt] Total requests count:", requests.length);
+
+            // CHỈ lọc các yêu cầu đổi quà (Shop hoặc Sticker), loại bỏ các log hệ thống như tưới cây
+            const shopRequests = requests.filter(r => r.type === 'shop' || r.type === 'perk');
+            console.log("[ShopMgmt] Shop/Perk requests count:", shopRequests.length);
+
+            shopRequests.forEach(req => {
+                let imageHTML = `<span class="material-symbols-outlined text-teal-600 text-3xl">image</span>`;
+                if (req.image && req.image !== 'null' && req.image !== 'undefined') {
+                    if (req.image.startsWith('http') || req.image.startsWith('data:')) {
+                        imageHTML = `<img src="${req.image}" class="w-full h-full object-cover" />`;
+                    } else {
+                        // It's a Material Icon name
+                        imageHTML = `<span class="material-symbols-outlined text-teal-600 text-3xl">${req.image}</span>`;
+                    }
+                }
+
+                const delivered = req.status === 'delivered';
+
+                const newRow = `<tr class="hover:bg-primary/5 transition-colors group">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="size-16 rounded-lg flex items-center justify-center overflow-hidden border border-primary/10">
+                            ${imageHTML}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-lg">${req.user} <span class="text-sm font-normal text-slate-500">đã đổi</span> ${req.itemTitle}</p>
+                        <p class="text-xs text-slate-500 mt-1">
+                            ${req.type === 'perk' ?
+                        `<span class="font-bold text-teal-600">-${req.stickerPrice || 0} Sticker</span>` :
+                        `<span class="font-bold text-primary">-${req.price || 0} Vàng</span>`
+                    }
+                        </p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">${req.time}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${delivered ?
+                        '<span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full text-center inline-block w-[110px]">Đã trao</span>' :
+                        '<span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Chưa trao quà</span>'
+                    }
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        ${delivered ?
+                        '<button disabled class="text-slate-400 cursor-not-allowed px-4 py-2 font-bold text-sm flex items-center gap-1 inline-flex bg-slate-100 rounded-lg">Hoàn tất</button>' :
+                        `<button onclick="markDelivered(this, '${req.id}')" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-all flex items-center gap-1 inline-flex"><span class="material-symbols-outlined text-[18px]">check_circle</span> Đã trao</button>`
+                    }
+                    </td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', newRow);
+            });
+
+            if (shopRequests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-20 text-center">
+                            <div class="flex flex-col items-center gap-3 text-slate-400">
+                                <span class="material-symbols-outlined text-5xl opacity-20">history_edu</span>
+                                <p class="text-sm font-bold">Chưa có yêu cầu đổi quà nào</p>
+                                <p class="text-xs">Khi con dùng Vàng hoặc Sticker đổi quà, yêu cầu sẽ hiện ở đây.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            // Highlight notification dot if pending requests exist
+            // Chỉ đếm các yêu cầu thực sự cần xử lý (Shop Item), Sticker thường tự động nhưng vẫn đếm nếu muốn thông báo
+            const pendingCount = window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length;
+            const notifDot = document.querySelector('#tab-btn-requests span');
+            if (notifDot) {
+                notifDot.style.display = pendingCount > 0 ? 'block' : 'none';
+                // Cập nhật số lượng vào badge nếu cần
+            }
+        }
+
+        // Initialize display
+        document.addEventListener('DOMContentLoaded', () => {
+            renderShopItems();
+            renderRequests();
+            renderPerks();
+
+            // Subscribe to state changes if the parent is active at same time
+            if (window.AppState) {
+                window.AppState.subscribe(() => {
+                    renderShopItems();
+                    renderRequests();
+                    renderPerks();
+                });
+            }
+        });
+
+        function saveItem() {
+            const name = document.getElementById('item-name').value;
+            const desc = document.getElementById('item-desc').value;
+            const price = document.getElementById('item-price').value;
+            const category = document.getElementById('item-category').value;
+
+            if (!name) {
+                alert("Vui lòng điền tên vật phẩm!");
+                return;
+            }
+
+            // --- Image logic ---
+            const previewImg = document.getElementById('preview-image');
+            let finalImage = "";
+
+            // Check if preview image is visible and has a valid src
+            if (previewImg && !previewImg.classList.contains('hidden') && previewImg.src) {
+                const src = previewImg.src;
+                // Accept data: URIs (newly uploaded) or any http/https URL (existing image)
+                if (src.startsWith('data:') || src.startsWith('http')) {
+                    finalImage = src;
+                }
+            }
+
+            // When editing, keep old image if no new image was provided
+            if (currentEditItemId && !finalImage) {
+                const existingItem = window.AppState.data.shopItems.find(i => i.id == currentEditItemId);
+                if (existingItem && existingItem.image) {
+                    finalImage = existingItem.image;
+                }
+            }
+
+            const newItem = {
+                id: 'item_' + Date.now(),
+                title: name,
+                desc: desc || 'Vừa mới thêm',
+                price: parseInt(price),
+                category: category,
+                image: finalImage,
+                color: category === "Vật phẩm" ? "green" : (category === "Đặc quyền" ? "purple" : "blue")
+            };
+
+            if (currentEditItemId) {
+                window.AppState.updateShopItem(currentEditItemId, newItem);
+                alert("Cập nhật vật phẩm '" + name + "' thành công!");
+            } else {
+                window.AppState.addShopItem(newItem);
+                alert("Tạo vật phẩm '" + name + "' thành công với giá " + price + " Vàng!");
+            }
+
+            toggleModal(false);
+        }
+
+        function markDelivered(btn, reqId) {
+            window.AppState.markRequestDelivered(reqId);
+            alert('Đã cập nhật trạng thái "Đã trao". Bạn đã xác nhận mua món quà này cho con!');
+        }
+
+        function editItem(btn) {
+            const tr = btn.closest('tr');
+            const id = tr.getAttribute('data-id');
+            const item = window.AppState.data.shopItems.find(i => i.id == id);
+
+            if (!item) return;
+
+            currentEditItemId = id;
+
+            // Set values to form
+            document.getElementById('item-name').value = item.title;
+            document.getElementById('item-desc').value = item.desc;
+            document.getElementById('item-price').value = item.price;
+            document.getElementById('item-category').value = item.category || "Vật phẩm";
+
+            if (item.image) {
+                const previewImg = document.getElementById('preview-image');
+                const placeholder = document.getElementById('upload-placeholder');
+                previewImg.src = item.image;
+                previewImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+
+            document.querySelector('#add-item-modal h3').innerText = "Sửa Vật phẩm";
+            document.querySelector('button[onclick*="saveItem"]').innerText = "Lưu thay đổi";
+
+            // Open Modal
+            toggleModal(true);
+        }
+
+        function deleteItem(btn, reqId) {
+            if (confirm("Bạn có chắc chắn muốn xóa vật phẩm này khỏi Cửa hàng không?")) {
+                if (reqId) {
+                    window.AppState.deleteShopItem(reqId);
+                } else {
+                    const tr = btn.closest('tr');
+                    tr.style.opacity = '0';
+                    setTimeout(() => tr.remove(), 300);
+                }
+            }
+        }
+
+        // Perk Management Functions
+        function savePerk() {
+            const id = document.getElementById('perk-id').value;
+            const name = document.getElementById('perk-name').value;
+            const desc = document.getElementById('perk-desc').value;
+            const price = parseInt(document.getElementById('perk-price').value) || 0;
+            const icon = document.getElementById('perk-icon').value || 'stars';
+
+            if (!name) {
+                alert("Vui lòng nhập tên Đặc quyền!");
+                return;
+            }
+
+            if (id) {
+                // Update
+                window.AppState.updateInstantPerk(id, {
+                    title: name,
+                    desc: desc,
+                    stickerPrice: price,
+                    emoji: icon
+                });
+            } else {
+                // Create
+                const colors = ['blue', 'indigo', 'purple', 'teal', 'green', 'orange', 'pink'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                window.AppState.addInstantPerk({
+                    id: 'perk_' + Date.now(),
+                    title: name,
+                    desc: desc || 'Phần thưởng dành cho bé',
+                    stickerPrice: price,
+                    emoji: icon,
+                    color: randomColor
+                });
+            }
+
+            togglePerkModal(false);
+        }
+
+        function editPerk(id) {
+            const perk = window.AppState.data.instantPerks.find(p => p.id === id);
+            if (!perk) return;
+
+            document.getElementById('perk-id').value = perk.id;
+            document.getElementById('perk-name').value = perk.title;
+            document.getElementById('perk-desc').value = perk.desc || '';
+            document.getElementById('perk-price').value = perk.stickerPrice;
+            document.getElementById('perk-icon').value = perk.emoji || perk.icon || 'star';
+            document.getElementById('perk-icon-preview').innerText = perk.emoji || perk.icon || 'star';
+            document.getElementById('perk-modal-title').innerText = "Sửa Quà Tặng Ngay";
+
+            togglePerkModal(true);
+        }
+
+        function deletePerk(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa Đặc quyền (Quà Tặng Ngay) này không?")) {
+                window.AppState.deleteInstantPerk(id);
+            }
+        }
+
+        // Image upload preview listener with compression
+        document.getElementById('item-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.onload = function () {
+                        // Create canvas for compression
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Limit dimensions (max 800px)
+                        const maxDim = 800;
+                        if (width > maxDim || height > maxDim) {
+                            if (width > height) {
+                                height = (height / width) * maxDim;
+                                width = maxDim;
+                            } else {
+                                width = (width / height) * maxDim;
+                                height = maxDim;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Compress to 0.7 quality
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+                        const previewImg = document.getElementById('preview-image');
+                        const placeholder = document.getElementById('upload-placeholder');
+
+                        previewImg.src = compressedDataUrl;
+                        previewImg.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>

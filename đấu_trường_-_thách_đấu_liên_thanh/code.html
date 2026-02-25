@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LevelUp Kids - Đấu Trường Anh Hùng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../shared/js/state.js"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "primary-dark": "#d48215",
+                        "arena-blue": "#3b82f6",
+                        "arena-orange": "#f97316"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gladiator-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark .gladiator-card {
+            background: rgba(44, 34, 21, 0.95);
+        }
+
+        .gladiator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.15);
+        }
+
+        .vs-badge {
+            background: linear-gradient(135deg, #f97316 0%, #ee9d2b 100%);
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 12px rgba(249, 115, 22, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+            }
+        }
+
+        .btn-done-pulse {
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-enter {
+            animation: slideInUp 0.4s ease-out forwards;
+        }
+
+        /* Drama Reveal Styles */
+        .reveal-overlay-active {
+            background: radial-gradient(circle, #2a2a2a 0%, #000 100%);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake-intense {
+
+            0%,
+            100% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            10% {
+                transform: rotate(-8deg) scale(1.1);
+            }
+
+            20% {
+                transform: rotate(8deg) scale(1.2);
+            }
+
+            30% {
+                transform: rotate(-12deg) scale(1.3);
+            }
+
+            40% {
+                transform: rotate(12deg) scale(1.4);
+            }
+
+            50% {
+                transform: rotate(0deg) scale(1.5);
+            }
+        }
+
+        .chest-drama {
+            animation: shake-intense 0.5s infinite;
+            filter: drop-shadow(0 0 30px rgba(234, 179, 8, 0.6));
+        }
+
+        /* Result pop */
+        .result-pop {
+            animation: resultPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes resultPop {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        /* Infinite Progress Bar */
+        @keyframes progress-infinite {
+            0% {
+                left: -40%;
+                width: 40%;
+            }
+
+            50% {
+                left: 40%;
+                width: 60%;
+            }
+
+            100% {
+                left: 100%;
+                width: 40%;
+            }
+        }
+
+        .progress-line {
+            position: relative;
+            height: 6px;
+            width: 100%;
+            background: #f1f5f9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-line:after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            background: #ee9d2b;
+            animation: progress-infinite 2s infinite linear;
+        }
+
+        .opponent-list-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #ee9d2b transparent;
+        }
+
+        .opponent-list-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .opponent-list-scroll::-webkit-scrollbar-thumb {
+            background-color: #ee9d2b;
+            border-radius: 10px;
+        }
+
+        /* Power Flow Animation */
+        @keyframes power-flow {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .power-bar-fill {
+            background-size: 200% 100% !important;
+            animation: power-flow 3s linear infinite;
+        }
+
+        /* Dominant Aura Effects */
+        .dominant-blue {
+            filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.8)) !important;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6) !important;
+            animation: dominant-pulse-blue 1.5s infinite alternate !important;
+        }
+
+        .dominant-red {
+            filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.8)) !important;
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.6) !important;
+            animation: dominant-pulse-red 1.5s infinite alternate !important;
+        }
+
+        @keyframes dominant-pulse-blue {
+            from {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            to {
+                transform: scale(1.05);
+                filter: brightness(1.3);
+            }
+        }
+
+        @keyframes dominant-pulse-red {
+            from {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            to {
+                transform: scale(1.05);
+                filter: brightness(1.3);
+            }
+        }
+
+        /* Dominant Bar Section */
+        .bar-dominant {
+            height: 150% !important;
+            top: -25% !important;
+            z-index: 10;
+            filter: brightness(1.2) drop-shadow(0 0 15px currentColor);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4) inset;
+        }
+
+        /* Enhanced Commentary Slide for Grade 1 */
+        .commentary-slide {
+            animation: commentary-slide 40s linear infinite;
+            /* Slower for kids */
+            text-shadow: none !important;
+            /* Remove blurry shadow */
+            color: #475569;
+            /* Clear slate color */
+        }
+
+        .dark .commentary-slide {
+            color: #cbd5e1;
+        }
+
+        @keyframes commentary-slide {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Lightning Bolt Float */
+        @keyframes lightning-float {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) translateY(0) scale(1.2);
+                filter: drop-shadow(0 0 8px yellow);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) translateY(-3px) scale(1.5);
+                filter: drop-shadow(0 0 15px white);
+            }
+        }
+
+        .lightning-bolt-vfx {
+            animation: lightning-float 0.3s infinite;
+        }
+
+        .struggle-container {
+            position: relative;
+        }
+
+        /* Dominant Energy Surge */
+        .bar-dominant {
+            height: 180% !important;
+            top: -40% !important;
+            z-index: 20;
+            filter: brightness(1.3) drop-shadow(0 0 20px currentColor);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6) inset;
+            border-radius: 999px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Static & Moving Bolt */
+        /* Central Bolt Struggle (Internal Movement Only) */
+        @keyframes bolt-struggle {
+            0% {
+                transform: translate(-50%, -50%) translateX(-15px) scale(1.2);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) translateX(15px) scale(1.4);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) translateX(-15px) scale(1.2);
+            }
+        }
+
+        .bolt-moving {
+            animation: bolt-struggle 3s ease-in-out infinite, lightning-float 0.3s infinite;
+        }
+
+        /* Grade 1 Friendly Ticker */
+        .commentary-slide {
+            animation: commentary-slide 45s linear infinite;
+            text-shadow: none !important;
+            font-weight: 900 !important;
+            letter-spacing: 0.05em;
+            color: #1e293b;
+        }
+
+        .dark .commentary-slide {
+            color: #f1f5f9;
+        }
+
+        /* Screen Shake for Intensity */
+        @keyframes battlefield-shake {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(1px, 1px);
+            }
+
+            50% {
+                transform: translate(-1px, 1px);
+            }
+
+            75% {
+                transform: translate(1px, -1px);
+            }
+        }
+
+        .intense-battle {
+            animation: battlefield-shake 0.2s infinite;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-[#1a140c] font-['Montserrat'] text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+
+    <!-- Sound Effects -->
+    <audio id="snd-chest" src="https://assets.mixkit.co/active_storage/sfx/2042/2042-preview.mp3"
+        preload="auto"></audio>
+    <audio id="snd-win" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
+    <audio id="snd-click" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"
+        preload="auto"></audio>
+
+    <app-header title="Đấu Trường" type="child"></app-header>
+
+    <main class="flex-grow w-full max-w-[1200px] mx-auto p-4 md:p-8">
+
+        <!-- Title Row (Scientifically Balanced) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12">
+            <!-- Left: Title & Persona -->
+            <div class="lg:col-span-8">
+                <div class="flex items-center gap-4 mb-2">
+                    <div
+                        class="w-12 h-12 bg-arena-orange/20 rounded-2xl flex items-center justify-center text-arena-orange">
+                        <span class="material-symbols-outlined text-3xl"
+                            style="font-variation-settings:'FILL' 1">swords</span>
+                    </div>
+                    <h2
+                        class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter whitespace-nowrap">
+                        ĐẤU TRƯỜNG <span class="text-arena-orange">ANH HÙNG</span>
+                    </h2>
+                </div>
+                <p id="welcome-text" class="text-slate-500 font-bold ml-16 text-sm md:text-base">Đang tải thông tin
+                    chiến thần...</p>
+            </div>
+
+            <!-- Right: Warrior Dashboard -->
+            <div class="lg:col-span-4 flex flex-col gap-4">
+                <div
+                    class="bg-white dark:bg-[#2c2215] rounded-[2.5rem] border-2 border-slate-100 dark:border-slate-800 p-2 shadow-sm">
+                    <div class="grid grid-cols-2 divide-x divide-slate-100 dark:divide-slate-800">
+                        <!-- Attack (Active) -->
+                        <div class="px-4 py-3 flex flex-col items-center justify-center">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="material-symbols-outlined text-sm text-arena-orange">sword_rose</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Tấn
+                                    công</span>
+                            </div>
+                            <span id="active-counter"
+                                class="text-2xl font-black text-arena-orange leading-none">3/3</span>
+                            <p class="text-[8px] font-bold text-slate-300 mt-1 uppercase">Lượt bé đi thách</p>
+                        </div>
+                        <!-- Defense (Passive) -->
+                        <div class="px-4 py-3 flex flex-col items-center justify-center">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="material-symbols-outlined text-sm text-blue-500">shield</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Phòng
+                                    thủ</span>
+                            </div>
+                            <span id="passive-counter" class="text-2xl font-black text-blue-500 leading-none">3/3</span>
+                            <p class="text-[8px] font-bold text-slate-300 mt-1 uppercase">Lượt được thách</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-open-modal" onclick="openChallengeModal()"
+                    class="group w-full bg-gradient-to-r from-arena-orange to-primary text-white px-8 py-5 rounded-[2rem] font-black shadow-lg hover:shadow-arena-orange/30 transition-all flex items-center justify-center gap-3 active:scale-95 text-lg">
+                    <span
+                        class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform">swords</span>
+                    TẠO KÈO MỚI
+                </button>
+            </div>
+        </div>
+
+        <!-- ======= YOUR ACTIVE CHALLENGES ======= -->
+        <section class="mb-14">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-arena-blue/10 dark:bg-arena-blue/20 p-2 rounded-xl text-arena-blue">
+                    <span class="material-symbols-outlined text-xl"
+                        style="font-variation-settings:'FILL' 1">swords</span>
+                </div>
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Kèo Đang Đấu</h3>
+                <span id="active-count"
+                    class="bg-arena-orange text-white text-xs font-black px-2.5 py-1 rounded-full hidden">0</span>
+            </div>
+            <div id="active-challenges-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Loader or empty state -->
+            </div>
+        </section>
+
+        <!-- ======= YOUR HISTORY ======= -->
+        <section id="completed-section" class="hidden mb-14">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-green-500/10 dark:bg-green-500/20 p-2 rounded-xl text-green-500">
+                    <span class="material-symbols-outlined text-xl"
+                        style="font-variation-settings:'FILL' 1">history</span>
+                </div>
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Chiến Tích Của
+                    Bạn</h3>
+            </div>
+            <div id="completed-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+        <!-- ======= ARENA WORLD NEWS ======= -->
+        <section class="border-t border-slate-200 dark:border-slate-800 pt-10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-purple-500/10 dark:bg-purple-500/20 p-2 rounded-xl text-purple-500">
+                    <span class="material-symbols-outlined text-xl">language</span>
+                </div>
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Tin Tức Đấu
+                    Trường</h3>
+            </div>
+            <div id="arena-news-list" class="space-y-3 opacity-60">
+                <!-- News from other players -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ================ REPORT MODAL (NEW) ================ -->
+    <div id="report-modal"
+        class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="report-modal-content"
+            class="bg-white dark:bg-[#2c2215] w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl transform scale-90 transition-all duration-300 text-center">
+
+            <div id="report-task-emoji" class="text-6xl mb-4">🌅</div>
+            <h3 class="text-2xl font-black mb-1">KẾT QUẢ THẾ NÀO?</h3>
+            <p class="text-slate-500 mb-8 font-medium">Bé hãy trung thực chọn kết quả thực tế của mình nhé!</p>
+
+            <div class="space-y-3">
+                <button onclick="confirmReport(true)"
+                    class="w-full py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black rounded-3xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    MÌNH ĐÃ HOÀN THÀNH!
+                </button>
+                <button onclick="confirmReport(false)"
+                    class="w-full py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold rounded-3xl hover:bg-rose-50 hover:text-rose-500 active:scale-95 transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">cancel</span>
+                    MÌNH CHƯA XONG...
+                </button>
+            </div>
+
+            <button onclick="closeReportModal()"
+                class="mt-6 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600">Để
+                sau</button>
+        </div>
+    </div>
+
+    <!-- ================ CREATE CHALLENGE MODAL (Unchanged but with sound) ================ -->
+    <div id="challenge-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="challenge-modal-content"
+            class="bg-white dark:bg-[#2c2215] w-full max-w-xl rounded-[2.5rem] p-7 shadow-2xl transform scale-90 transition-all duration-300 max-h-[90vh] overflow-y-auto relative text-slate-800 dark:text-white">
+            <div id="limit-error"
+                class="absolute inset-0 bg-white/95 dark:bg-[#2c2215]/95 z-20 flex flex-col items-center justify-center p-10 text-center rounded-[2.5rem] hidden">
+                <span class="material-symbols-outlined text-6xl text-arena-orange mb-4">block</span>
+                <h4 class="text-2xl font-black mb-2">Hết lượt rồi!</h4>
+                <p class="text-slate-500 mb-8 font-medium">Bạn đã tham gia đủ 3 kèo đấu hôm nay. Hãy nghỉ ngơi và quay
+                    lại vào ngày mai nhé!</p>
+                <button onclick="closeChallengeModal()"
+                    class="px-8 py-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold">Đã hiểu</button>
+            </div>
+            <div class="flex items-center justify-between mb-7">
+                <h3 class="text-2xl font-black">⚔️ Chọn Thách Đấu</h3>
+                <button onclick="closeChallengeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            <div class="mb-7">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">1 · CHỌN ĐỐI THỦ</p>
+                    <span
+                        class="text-[9px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Vuốt
+                        ngang để xem thêm</span>
+                </div>
+                <div id="opponent-list" class="flex gap-4 overflow-x-auto pb-4 pt-1 px-1 opponent-list-scroll snap-x">
+                </div>
+            </div>
+            <div class="mb-8">
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">2 · CHỌN THỬ THÁCH</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <button onclick="selectTask(this, 'Dậy sớm')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">🌅</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Dậy sớm</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Hoàn thành trước 6:30 sáng</span>
+                        </div>
+                    </button>
+                    <button onclick="selectTask(this, 'Ăn xong suất')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">🍽️</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Ăn suất</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Không bỏ thừa, dọn khay sạch</span>
+                        </div>
+                    </button>
+                    <button onclick="selectTask(this, 'Tự học bài')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">📚</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Học bài</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Tự giác làm hết bài tập về nhà</span>
+                        </div>
+                    </button>
+                    <button onclick="selectTask(this, 'Làm việc nhà')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">🏠</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Việc nhà</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Quét nhà hoặc dọn phòng gọn
+                                gàng</span>
+                        </div>
+                    </button>
+                    <button onclick="selectTask(this, 'Tập thể dục')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">🏃</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Tập thể dục</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Vận động 15-30p cho cơ thể
+                                khỏe</span>
+                        </div>
+                    </button>
+                    <button onclick="selectTask(this, 'Đánh răng')"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
+                        <span class="text-2xl">🪥</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block">Vệ sinh</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Rửa mặt, đánh răng thật sạch</span>
+                        </div>
+                    </button>
+
+                    <!-- New Custom Challenge Button -->
+                    <button onclick="showCustomTaskInput(this)"
+                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left bg-primary/5 border-dashed border-primary/40">
+                        <span class="text-2xl">✨</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-sm block text-primary">Tự tạo thử thách</span>
+                            <span class="text-[10px] text-slate-400 leading-tight">Sáng tạo kèo riêng của bé</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Task Setup Input Container (Always visible once task is selected) -->
+                <div id="task-setup-container"
+                    class="hidden mb-4 space-y-3 bg-slate-50 dark:bg-black/20 p-5 rounded-[2rem] border-2 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5 px-2">
+                            <label class="text-[9px] font-black text-primary uppercase tracking-widest">Tên thử
+                                thách:</label>
+                            <span id="task-source-tag"
+                                class="text-[8px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full uppercase">Tùy
+                                chỉnh</span>
+                        </div>
+                        <input type="text" id="task-title-input" placeholder="Ví dụ: Làm 3 việc tốt..."
+                            oninput="updateSubmitBtn()"
+                            class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-sm font-bold focus:border-primary outline-none transition-all">
+                    </div>
+                    <div>
+                        <label
+                            class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-2 mb-1.5 block">Mô
+                            tả điều kiện thắng (Bé có thể sửa):</label>
+                        <textarea id="task-desc-input" placeholder="Ghi rõ thế nào là thắng để trọng tài dễ xử nhé!"
+                            class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs font-medium focus:border-primary outline-none transition-all resize-none h-20"></textarea>
+                    </div>
+
+                    <!-- New Betting Section -->
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center justify-between mb-2 px-2">
+                            <label class="text-[9px] font-black text-arena-orange uppercase tracking-widest">💰 Mức cược
+                                (Cược với hệ thống):</label>
+                            <span class="text-[9px] font-bold text-slate-400">Số dư: <span id="user-gold-balance"
+                                    class="text-primary">0</span> Vàng</span>
+                        </div>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
+                            <input type="number" id="bet-input" value="0" min="0" step="10" oninput="updateSubmitBtn()"
+                                class="w-full bg-white dark:bg-slate-800 border-2 border-primary/30 rounded-2xl pl-12 pr-4 py-3 text-lg font-black text-primary hover:border-primary focus:border-primary outline-none transition-all">
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+                                <button onclick="addToBet(10)"
+                                    class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+10</button>
+                                <button onclick="addToBet(50)"
+                                    class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+50</button>
+                                <button onclick="betAll()"
+                                    class="px-2 py-1 bg-rose-500/10 text-rose-500 text-[10px] font-black rounded-lg hover:bg-rose-500/20 transition-all">Tất
+                                    tay</button>
+                            </div>
+                        </div>
+                        <p id="bet-disclaimer" class="text-[8px] text-slate-400 mt-2 ml-2 leading-relaxed">
+                            💡 Nếu thắng nhận <span class="text-emerald-500 font-bold">x2</span> tiền cược. Nếu Hòa nhận
+                            lại vốn. Nếu thua mất trắng.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeChallengeModal()"
+                    class="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold rounded-2xl">Bỏ
+                    qua</button>
+                <button id="btn-submit-challenge" onclick="submitChallenge()" disabled
+                    class="flex-[2] py-4 bg-arena-orange opacity-40 cursor-not-allowed text-white font-black rounded-2xl shadow-lg">THÁCH
+                    ĐẤU!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================ REVEAL DRAMA MODAL (IMPROVED) ================ -->
+    <div id="reveal-modal"
+        class="fixed inset-0 z-[200] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-500">
+        <div id="reveal-overlay" class="absolute inset-0 reveal-overlay-active"></div>
+        <div id="reveal-content" class="w-full max-w-lg text-center text-white relative z-10">
+            <div class="text-9xl mb-12 chest-drama" id="drama-chest">🎁</div>
+            <h3 class="text-4xl font-black italic tracking-tighter mb-4">ĐANG PHÁN QUYẾT...</h3>
+            <div class="w-full bg-white/10 h-4 rounded-full overflow-hidden max-w-sm mx-auto p-1 border border-white/5">
+                <div id="reveal-progress"
+                    class="bg-gradient-to-r from-yellow-400 to-orange-500 h-full w-0 transition-all duration-[2500ms] ease-linear shadow-[0_0_20px_rgba(249,115,22,0.6)]">
+                </div>
+            </div>
+            <p id="drama-text" class="text-yellow-400 font-black mt-6 uppercase tracking-widest text-sm animate-pulse">
+                Trọng tài đang xem băng ghi hình!</p>
+        </div>
+    </div>
+
+    <!-- ================ RESULT MODAL ================ -->
+    <div id="result-modal"
+        class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="result-content"
+            class="result-overlay w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-75 transition-all duration-300 text-white overflow-hidden relative">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2">
+                </div>
+                <div class="absolute bottom-0 right-0 w-60 h-60 bg-white rounded-full translate-x-1/2 translate-y-1/2">
+                </div>
+            </div>
+            <div class="relative z-10">
+                <div id="result-emoji" class="text-8xl mb-6 result-pop">🏆</div>
+                <h3 id="result-title" class="text-4xl font-black mb-3 uppercase tracking-tighter italic">THẮNG RỒI!</h3>
+                <p id="result-desc" class="text-blue-100 font-bold mb-8">Đang tính toán kết quả...</p>
+
+                <div class="grid grid-cols-3 gap-3 mb-10">
+                    <div class="bg-white/10 rounded-2xl p-4 border border-white/10">
+                        <p id="res-stickers" class="text-3xl font-black text-yellow-300">+3</p>
+                        <p class="text-[8px] font-black uppercase tracking-widest text-white/60">Stickers</p>
+                    </div>
+                    <div class="bg-white/10 rounded-2xl p-4 border border-white/10">
+                        <p id="res-gold" class="text-3xl font-black text-white">+50</p>
+                        <p class="text-[8px] font-black uppercase tracking-widest text-white/60">Gold</p>
+                    </div>
+                    <div class="bg-white/10 rounded-2xl p-4 border border-white/10">
+                        <p id="res-xp" class="text-3xl font-black text-white">+25</p>
+                        <p class="text-[8px] font-black uppercase tracking-widest text-white/60">EXP</p>
+                    </div>
+                </div>
+
+                <button onclick="closeResultModal()"
+                    class="w-full py-5 bg-white text-slate-800 font-black rounded-3xl text-xl hover:bg-yellow-50 transition-all active:scale-95 shadow-xl">
+                    ĐÃ HIỂU! 🎉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================ WAITING MODAL ================ -->
+    <div id="waiting-modal"
+        class="fixed inset-0 z-[160] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300">
+        <div id="waiting-modal-content" class="text-center text-white max-w-sm">
+            <div class="relative w-32 h-32 mx-auto mb-8">
+                <img id="waiting-opponent-avatar" src=""
+                    class="w-full h-full rounded-full border-4 border-arena-orange shadow-2xl relative z-10">
+                <div class="absolute -inset-4 border-2 border-white/20 rounded-full animate-ping"></div>
+                <div class="absolute -inset-8 border-2 border-white/10 rounded-full animate-ping"
+                    style="animation-delay: 0.5s"></div>
+            </div>
+            <h3 class="text-3xl font-black mb-4 uppercase italic">ĐANG GỬI LỜI MỜI...</h3>
+            <p class="text-slate-300 font-medium mb-8">Đang liên lạc với <span id="waiting-opponent-name"
+                    class="text-arena-orange font-black">đối thủ</span> qua chiến hạm, vui lòng chờ trong giây lát!</p>
+
+            <div class="progress-line mb-6"></div>
+            <div id="countdown-timer" class="text-5xl font-black text-arena-orange italic">10</div>
+            <p class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mt-2">Giây</p>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <child-nav active="arena"></child-nav>
+
+    <script>
+        let selectedOpponentId = null;
+        let selectedTaskType = null;
+        let reportingChallengeId = null;
+        const TASK_EMOJI = { 'Dậy sớm': '🌅', 'Ăn xong suất': '🍽️', 'Tự học bài': '📚', 'Làm việc nhà': '🏠', 'Tập thể dục': '🏃', 'Đánh răng': '🪥', 'Vệ sinh': '🪥' };
+        const TASK_CONDITIONS = {
+            'Dậy sớm': 'Bé phải thức dậy trước 6:30 và đã sẵn sàng vệ sinh cá nhân xong để được tính là hoàn thành!',
+            'Ăn xong suất': 'Bé cần ăn hết sạch các món trong bát, không để rơi vãi và tự mang bát đi cất đúng nơi quy định.',
+            'Tự học bài': 'Bé hoàn thành toàn bộ bài tập giáo viên giao và cả bài tập chuẩn bị cho hôm sau mà không cần nhắc nhở.',
+            'Làm việc nhà': 'Khu vực bé được giao (phòng ngủ hoặc phòng khách) phải sạch sẽ, đồ chơi được xếp lại ngay ngắn vào thùng.',
+            'Tập thể dục': 'Bé vỗ tay theo nhạc hoặc chạy bộ cầu thang, thực hiện vận động liên tục trong ít nhất 15 phút.',
+            'Đánh răng': 'Bé đánh răng cả hàm trên và dưới trong đủ 2 phút, đảm bảo hơi thở thơm tho sau khi xong.'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AppState) {
+                window.AppState.subscribe(data => renderArena(data));
+                renderArena(window.AppState.data);
+            }
+        });
+
+        function playSound(id) {
+            const audio = document.getElementById(id);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("Audio play blocked"));
+            }
+        }
+
+        function renderArena(data) {
+            if (!data || !data.user) return;
+            const currentUserId = String(data.user.id);
+
+            const activeGrid = document.getElementById('active-challenges-grid');
+            const completedGrid = document.getElementById('completed-challenges-grid');
+            const newsGrid = document.getElementById('arena-news-list');
+            const completedSection = document.getElementById('completed-section');
+            const activeCount = document.getElementById('active-count');
+
+            const challenges = data.challenges || [];
+
+            // --- FILTERING ---
+            const myActive = challenges.filter(c => c.status !== 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
+            // Limit history to LAST 6 for cleanliness
+            const myCompleted = challenges.filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId)).reverse().slice(0, 6);
+            const othersChallenges = challenges.filter(c => c.challengerId !== currentUserId && c.opponentId !== currentUserId).slice(0, 5);
+
+            // Daily counter
+            const activeToday = window.AppState.getDailyChallengeCount(currentUserId, 'active');
+            const passiveToday = window.AppState.getDailyChallengeCount(currentUserId, 'passive');
+
+            const activeRem = Math.max(0, 3 - activeToday);
+            const passiveRem = Math.max(0, 3 - passiveToday);
+
+            const activeEl = document.getElementById('active-counter');
+            const passiveEl = document.getElementById('passive-counter');
+
+            activeEl.textContent = `${activeRem}/3`;
+            activeEl.className = activeRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-arena-orange";
+
+            passiveEl.textContent = `${passiveRem}/3`;
+            passiveEl.className = passiveRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-blue-500";
+
+            // Active Grid
+            if (myActive.length > 0) {
+                activeCount.textContent = myActive.length;
+                activeCount.classList.remove('hidden');
+                activeGrid.innerHTML = myActive.map((c, i) => renderActiveCard(c, data, i)).join('');
+            } else {
+                activeCount.classList.add('hidden');
+                activeGrid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-white/40 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-5xl text-slate-300 mb-3 block">sports_kabaddi</span>
+                        <p class="text-slate-400 font-bold">Bạn không có kèo nào đang đấu.</p>
+                        <p class="text-slate-400 text-sm mt-1">Hãy thách đấu ai đó để bắt đầu!</p>
+                    </div>`;
+            }
+
+            // Completed History
+            if (myCompleted.length > 0) {
+                completedSection.classList.remove('hidden');
+                completedGrid.innerHTML = myCompleted.map(c => renderCompletedCard(c, data)).join('');
+            } else {
+                completedSection.classList.add('hidden');
+            }
+
+            // Welcome Text Fix
+            document.getElementById('welcome-text').textContent = `Sẵn sàng để trở thành chiến thần, ${data.user.name}?`;
+
+            // World news
+            newsGrid.innerHTML = othersChallenges.length > 0 ? othersChallenges.map(c => renderNewsCard(c, data)).join('') : `<p class="text-xs text-slate-400 text-center py-4">Đang cập nhật tin tức từ vương quốc...</p>`;
+
+            // Update user stats
+            const now = new Date();
+            const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
+            startOfWeek.setHours(0, 0, 0, 0);
+
+            const myMatches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId) && new Date(c.date) >= startOfWeek);
+            document.getElementById('user-wins').textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
+            document.getElementById('user-draws').textContent = myMatches.filter(c => c.winnerId === null).length;
+            document.getElementById('user-losses').textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
+
+            renderOpponentList(data);
+        }
+
+        function renderActiveCard(c, data, index) {
+            const challenger = data.leaderboard.find(p => p.id === c.challengerId);
+            const opponent = data.leaderboard.find(p => p.id === c.opponentId);
+            const currentUserId = data.user.id;
+            const isMyConfirmed = c.challengerId === currentUserId ? c.challengerConfirmed : c.opponentConfirmed;
+
+            const cleanTaskName = c.taskType.split('||BET:')[0].split(' | ')[0];
+            const taskEmoji = TASK_EMOJI[cleanTaskName] || '⚔️';
+
+            const isChallengerConfirmed = c.challengerConfirmed === true;
+            const isOpponentConfirmed = c.opponentConfirmed === true;
+
+            // Power Percentage calculation for Tug-of-war
+            let powerPercentage = 50;
+            let powerComment = "BẤT PHÂN THẮNG BẠI";
+
+            if (isChallengerConfirmed && !isOpponentConfirmed) {
+                powerPercentage = 75;
+                powerComment = `${challenger.name.toUpperCase()} ĐANG DÀN QUÂN ÁP ĐẢO!`;
+            } else if (!isChallengerConfirmed && isOpponentConfirmed) {
+                powerPercentage = 25;
+                powerComment = `${opponent.name.split(' ')[0].toUpperCase()} ĐANG CHỐNG TRẢ QUYẾT LIỆT!`;
+            } else if (isChallengerConfirmed && isOpponentConfirmed) {
+                // Internal momentum drift using simple natural waves
+                const now = new Date();
+                const time = now.getSeconds() + now.getMilliseconds() / 1000;
+                // Subtle width fluctuation +/- 8% for internal realism
+                const drift = (Math.sin(time / 2.5) * 6) + (Math.sin(time / 0.8) * 2);
+                powerPercentage = 50 + drift;
+                powerComment = "PHÁN QUYẾT ĐANG ĐƯỢC PHONG ẤN!";
+            }
+
+            const dominantSide = (isChallengerConfirmed && isOpponentConfirmed) ? 'none' : (powerPercentage > 60 ? 'challenger' : (powerPercentage < 40 ? 'opponent' : 'none'));
+
+            // Reveal logic
+            const now = new Date();
+            const revealTime = new Date();
+            revealTime.setHours(19, 0, 0, 0);
+            const isDebug = window.location.search.includes('debug=true');
+            const isLateEnough = (now >= revealTime) || isDebug;
+
+            let actionArea = '';
+            if (isMyConfirmed === null || isMyConfirmed === undefined) {
+                actionArea = `
+                    <button onclick="openReportModal('${c.id}', '${cleanTaskName}')"
+                        class="group relative overflow-hidden btn-done-pulse px-10 py-5 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-black rounded-3xl text-xl shadow-2xl active:scale-95 transition-all">
+                        <span class="relative z-10 flex items-center gap-3">XÁC NHẬN HOÀN THÀNH! <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">emoji_events</span></span>
+                    </button>`;
+            } else if (!isLateEnough) {
+                const statusColor = isMyConfirmed === true ? 'text-emerald-500 bg-emerald-500/10' : 'text-rose-500 bg-rose-500/10';
+                const statusIcon = isMyConfirmed === true ? 'verified' : 'error';
+                const statusText = isMyConfirmed === true ? 'ĐÃ BÁO CÁO XONG' : 'BÁO CÁO: CHƯA XONG';
+
+                actionArea = `
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="flex items-center gap-2 px-6 py-3 rounded-full ${statusColor} border border-current shadow-sm pulse-ring">
+                            <span class="material-symbols-outlined">${statusIcon}</span>
+                            <span class="font-black tracking-widest text-sm uppercase">${statusText}</span>
+                        </div>
+                        <p class="font-black text-rose-500 text-base animate-pulse tracking-tight italic">🔥 19:00 CÔNG BỐ KẾT QUẢ</p>
+                    </div>`;
+            } else {
+                actionArea = `
+                    <button onclick="dramaReveal('${c.id}')"
+                        class="btn-done-pulse px-12 py-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-rose-500 text-white font-black rounded-3xl text-2xl shadow-[0_15px_40px_-10px_rgba(249,115,22,0.6)] flex items-center justify-center gap-4 active:scale-95 transition-all hover:rotate-1">
+                        🎁 MỞ RƯƠNG KẾT QUẢ!
+                    </button>`;
+            }
+
+            return `
+                <div class="gladiator-card card-enter rounded-[3.5rem] bg-white dark:bg-[#1a140c] shadow-2xl overflow-hidden relative group border-4 border-white dark:border-slate-800 flex flex-col">
+                    <!-- Background Split -->
+                    <div class="absolute inset-0 flex pointer-events-none">
+                        <div class="w-1/2 bg-blue-50/50 dark:bg-blue-900/5 transform -skew-x-12 -translate-x-12"></div>
+                        <div class="w-1/2 bg-rose-50/50 dark:bg-rose-900/5 transform -skew-x-12 -translate-x-4"></div>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="relative z-10 py-4 px-6 sm:px-8 flex items-center justify-between border-b border-slate-100 dark:border-white/5 bg-white/60 dark:bg-black/40 backdrop-blur-md">
+                        <div class="flex items-center gap-2">
+                           <div class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></div>
+                           <span class="text-[9px] sm:text-[11px] font-black text-slate-800 dark:text-white tracking-[0.2em] uppercase">Kèo đấu của bạn</span>
+                        </div>
+                        <span class="text-[8px] sm:text-[10px] text-slate-400 font-black uppercase tracking-widest">${c.date}</span>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="relative z-10 p-6 sm:p-8 flex-grow">
+                        <!-- VS Section -->
+                        <div class="flex items-center justify-between gap-4 mb-4">
+                            <!-- Challenger (You) -->
+                            <div class="flex flex-col items-center gap-4 flex-1">
+                                <div class="relative">
+                                    <div class="absolute -inset-4 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+                                    <img src="${challenger.avatar}" class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl relative z-20 ${isChallengerConfirmed ? 'aura-active-blue' : ''} ${dominantSide === 'challenger' ? 'dominant-blue' : ''} transition-all duration-500">
+                                    <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-500 rounded-full border-4 border-white dark:border-[#1a140c] flex items-center justify-center z-30">
+                                        <span class="material-symbols-outlined text-white text-[10px] font-bold">face</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] sm:text-base font-black text-blue-600 dark:text-blue-400 uppercase tracking-tighter">${challenger.name}</span>
+                            </div>
+
+                            <!-- VS Badge -->
+                            <div class="flex flex-col items-center gap-2 px-2 shrink-0">
+                                <div class="bg-gradient-to-br from-slate-800 to-black text-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center font-black text-lg italic shadow-2xl transform rotate-12 -translate-y-4 group-hover:rotate-[-12deg] transition-transform duration-500 border-4 border-white dark:border-slate-800">VS</div>
+                            </div>
+
+                            <!-- Opponent -->
+                            <div class="flex flex-col items-center gap-4 flex-1">
+                                <div class="relative">
+                                    <div class="absolute -inset-4 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
+                                    <img src="${opponent.avatar}" class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl relative z-20 ${isOpponentConfirmed ? 'aura-active-red' : ''} ${dominantSide === 'opponent' ? 'dominant-red' : ''} transition-all duration-500">
+                                    <div class="absolute -bottom-1 -left-1 w-8 h-8 bg-rose-500 rounded-full border-4 border-white dark:border-[#1a140c] flex items-center justify-center z-30">
+                                        <span class="material-symbols-outlined text-white text-[10px] font-bold">face</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] sm:text-base font-black text-rose-600 dark:text-rose-400 uppercase tracking-tighter">${opponent.name.replace(' (Bot)', '')}</span>
+                            </div>
+                        </div>
+
+                        <!-- Task Banner -->
+                        <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-4 sm:p-6 shadow-xl border border-slate-100 dark:border-white/5 mb-6 transform scale-100 group-hover:scale-[1.03] transition-transform flex items-center gap-4 sm:gap-6 justify-center overflow-hidden relative">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.05)_100%)]"></div>
+                            <span class="text-3xl sm:text-5xl drop-shadow-lg relative z-10">${taskEmoji}</span>
+                            <div class="text-left relative z-10">
+                                <p class="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Mục tiêu thử thách</p>
+                                <p class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">${cleanTaskName}</p>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Dynamic Tug-of-War Logic -->
+                        <div class="mb-10 px-4 relative">
+                            <div class="flex items-center justify-between mb-3 px-2">
+                                <span class="text-[10px] font-black ${isChallengerConfirmed ? 'text-blue-600' : 'text-slate-400'} uppercase tracking-widest flex items-center gap-1">
+                                    ${isChallengerConfirmed ? '<span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span> ĐÃ RA QUÂN' : 'ĐANG CHUẨN BỊ...'}
+                                </span>
+                                <span class="text-[10px] font-black ${isOpponentConfirmed ? 'text-rose-600' : 'text-slate-400'} uppercase tracking-widest flex items-center gap-1">
+                                    ${isOpponentConfirmed ? 'ĐÃ RA QUÂN <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>' : '...ĐANG CHUẨN BỊ'}
+                                </span>
+                            </div>
+                            
+                            <div class="h-5 bg-slate-300 dark:bg-black/60 rounded-full relative overflow-visible border-2 border-white dark:border-slate-800 shadow-inner struggle-container">
+                                <!-- Mystery Overlay for both done -->
+                                ${isChallengerConfirmed && isOpponentConfirmed ? `
+                                    <div class="absolute -inset-1 bg-yellow-400/10 rounded-full animate-pulse z-40 border-2 border-yellow-400/30"></div>
+                                ` : ''}
+
+                                <!-- Power Fill (Blue) -->
+                                <div class="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-500 power-bar-fill shadow-[0_0_20px_rgba(59,130,246,0.6)] transition-all duration-1000 rounded-l-full ${dominantSide === 'challenger' ? 'bar-dominant' : ''}" 
+                                     style="width: ${powerPercentage}%">
+                                     ${dominantSide === 'challenger' ? '<div class="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>' : ''}
+                                </div>
+                                <!-- Power Fill (Red) -->
+                                <div class="absolute inset-y-0 right-0 bg-gradient-to-l from-rose-600 via-rose-400 to-rose-500 power-bar-fill shadow-[0_0_20px_rgba(244,63,94,0.6)] transition-all duration-1000 rounded-r-full ${dominantSide === 'opponent' ? 'bar-dominant' : ''}" 
+                                     style="width: ${100 - powerPercentage}%">
+                                     ${dominantSide === 'opponent' ? '<div class="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>' : ''}
+                                </div>
+                                
+                                <!-- Central Bolt with Struggle -->
+                                <div class="absolute top-1/2 left-[${powerPercentage}%] -translate-x-1/2 -translate-y-1/2 z-30 transition-all duration-1000 ${isChallengerConfirmed && isOpponentConfirmed ? 'bolt-moving' : 'lightning-bolt-vfx'}">
+                                    <span class="material-symbols-outlined text-yellow-400 text-2xl filter drop-shadow-[0_0_8px_white]">bolt</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-5 text-center">
+                                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-white/5 rounded-full border border-slate-200 dark:border-white/10">
+                                    <span class="w-2 h-2 rounded-full bg-arena-orange animate-ping"></span>
+                                    <p class="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em]">
+                                        THẾ TRẬN: <span class="text-arena-orange dark:text-yellow-400 italic">${powerComment}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Area -->
+                        <div class="flex justify-center min-h-[80px] items-center">
+                            ${actionArea}
+                        </div>
+                    </div>
+
+                    <!-- Bottom Commentary Ticker -->
+                    <div class="relative z-10 bg-slate-900/5 dark:bg-black/40 py-2 overflow-hidden whitespace-nowrap border-t border-slate-100 dark:border-white/5">
+                        <div class="inline-block commentary-slide text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">
+                            🚀 TRẬN ĐẤU ĐANG CỰC KỲ CĂNG THẲNG... ${challenger.name} ĐANG GÂY ÁP LỰC LỚN! ... ĐẾN 19:00 SẼ BIẾT AI LÀ CHIẾN THẦN ... HÀNH ĐỘNG NGAY ĐỂ GIÀNH LỢI THẾ! ... ⚔️
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renderCompletedCard(c, data) {
+            const currentUserId = data.user.id;
+            const challenger = data.leaderboard.find(p => p.id === c.challengerId);
+            const opponent = data.leaderboard.find(p => p.id === c.opponentId);
+
+            const iWon = c.winnerId === currentUserId;
+            const cleanTaskName = c.taskType.split('||BET:')[0];
+            const taskEmoji = TASK_EMOJI[cleanTaskName.split(' | ')[0]] || '⚔️';
+
+            let resultClass = "border-white bg-white dark:bg-white/5 shadow-md";
+            if (iWon) resultClass = "border-green-200 bg-green-50 shadow-[0_8px_20px_-6px_rgba(34,197,94,0.15)]";
+            else if (c.winnerId) resultClass = "border-rose-200 bg-rose-50 shadow-[0_8px_20px_-6px_rgba(244,63,94,0.15)]";
+
+            return `
+                <div class="relative rounded-3xl border-2 ${resultClass} p-4 flex flex-col gap-3 overflow-visible hover:scale-[1.03] transition-all">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-xl">${taskEmoji}</span>
+                            <p class="font-black text-[11px] text-slate-700 dark:text-white uppercase truncate">${cleanTaskName}</p>
+                        </div>
+                        <span class="text-[9px] font-bold text-slate-400 shrink-0 bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded-full">${c.date}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-1 py-1.5">
+                        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+                            <div class="relative">
+                                <img src="${challenger.avatar}" class="w-10 h-10 rounded-full border-2 ${c.winnerId === c.challengerId ? 'border-yellow-400 shadow-md scale-110' : 'border-slate-200'}">
+                                ${c.winnerId === c.challengerId ? '<span class="absolute -top-1.5 -right-1.5 text-xs animate-bounce">👑</span>' : ''}
+                            </div>
+                            <span class="text-[11px] font-black truncate ${c.winnerId === c.challengerId ? 'text-slate-900 dark:text-white' : 'text-slate-400'}">${challenger.name}</span>
+                        </div>
+
+                        <div class="text-[9px] font-black text-slate-300 italic px-2">VS</div>
+
+                        <div class="flex items-center flex-row-reverse gap-2.5 flex-1 min-w-0">
+                            <div class="relative">
+                                <img src="${opponent.avatar}" class="w-10 h-10 rounded-full border-2 ${c.winnerId === c.opponentId ? 'border-yellow-400 shadow-md scale-110' : 'border-slate-200'}">
+                                ${c.winnerId === c.opponentId ? '<span class="absolute -top-1.5 -right-1.5 text-xs animate-bounce">👑</span>' : ''}
+                            </div>
+                            <span class="text-[11px] font-black truncate ${c.winnerId === c.opponentId ? 'text-slate-900 dark:text-white text-right' : 'text-slate-400 text-right'}">${opponent.name.replace(' (Bot)', '')}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center pt-2 border-t border-slate-100 dark:border-white/5">
+                        ${iWon ? '<span class="text-[10px] font-black text-green-600 bg-green-500/15 px-3 py-1 rounded-full border border-green-200">🏆 CHIẾN THẮNG (+3 🎟️)</span>' : (c.winnerId ? '<span class="text-[10px] font-black text-rose-600 bg-rose-500/15 px-3 py-1 rounded-full border border-rose-200">TIẾC QUÁ (-20 🪙)</span>' : '<span class="text-[10px] font-black text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">BẤT PHÂN THẮNG BẠI</span>')}
+                    </div>
+                </div>`;
+        }
+
+        function renderNewsCard(c, data) {
+            const challenger = data.leaderboard.find(p => p.id === c.challengerId);
+            const opponent = data.leaderboard.find(p => p.id === c.opponentId);
+            const cleanTaskName = c.taskType.split('||BET:')[0];
+            const taskEmoji = TASK_EMOJI[cleanTaskName.split(' | ')[0]] || '⚔️';
+            const statusText = c.status === 'completed' ? 'KẾT THÚC' : 'LIVE';
+            const statusClass = c.status === 'completed' ? 'bg-slate-100 text-slate-600' : 'bg-rose-500 text-white animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.4)]';
+
+            return `
+                <div class="bg-white dark:bg-[#2c2215] border-2 border-white dark:border-slate-800 rounded-[1.5rem] p-4 flex items-center justify-between hover:border-arena-orange hover:shadow-lg transition-all shadow-md group">
+                    <div class="flex items-center gap-4">
+                        <div class="flex -space-x-4 group-hover:-space-x-2 transition-all">
+                            <img src="${challenger.avatar}" class="w-10 h-10 rounded-full border-2 border-white dark:border-slate-800 shadow-md z-10">
+                            <img src="${opponent.avatar}" class="w-10 h-10 rounded-full border-2 border-white dark:border-slate-800 shadow-md">
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-black text-slate-800 dark:text-white">
+                                ${challenger.name} <span class="text-slate-400 font-medium italic mx-0.5">đấu với</span> ${opponent.name.replace(' (Bot)', '')}
+                            </p>
+                            <p class="text-[10px] text-slate-500 font-bold flex items-center gap-1.5 mt-0.5">
+                                <span class="bg-slate-100 dark:bg-black/20 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                    <span class="text-xs">${taskEmoji}</span> ${cleanTaskName}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-xl text-[9px] font-black tracking-widest flex items-center gap-1 ${statusClass}">
+                        ${c.status !== 'completed' ? '<span class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>' : ''}
+                        ${statusText}
+                    </span>
+                </div>`;
+        }
+
+        // --- NEW MODAL CONTROLS ---
+        function openReportModal(challengeId, taskType) {
+            playSound('snd-click');
+            reportingChallengeId = challengeId;
+            document.getElementById('report-task-emoji').textContent = TASK_EMOJI[taskType] || '⚔️';
+
+            const modal = document.getElementById('report-modal');
+            const content = document.getElementById('report-modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => content.classList.remove('scale-90'), 10);
+        }
+
+        function closeReportModal() {
+            const modal = document.getElementById('report-modal');
+            const content = document.getElementById('report-modal-content');
+            content.classList.add('scale-90');
+            setTimeout(() => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                reportingChallengeId = null;
+            }, 200);
+        }
+
+        async function confirmReport(isSuccess) {
+            if (!reportingChallengeId) return;
+            playSound('snd-click');
+
+            // Thử lấy nút bấm đang được nhấn
+            const buttons = document.querySelectorAll('#report-modal-content button');
+            const submitBtn = isSuccess ? buttons[0] : buttons[1];
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                const originalContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">sync</span> ĐANG LƯU...';
+
+                try {
+                    await window.AppState.selfCompleteChallenge(reportingChallengeId, isSuccess);
+                    // Đóng modal sau khi hoàn thành công việc
+                    closeReportModal();
+                } catch (err) {
+                    console.error("Lỗi khi báo cáo:", err);
+                    if (window.showLevelUpAlert) {
+                        window.showLevelUpAlert("Lỗi hệ thống", "Không thể gửi báo cáo lúc này. Bé hãy thử lại sau nhé!", "error");
+                    }
+                    // Khôi phục nút nếu lỗi
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalContent;
+                }
+            }
+        }
+
+        async function dramaReveal(challengeId) {
+            playSound('snd-click');
+            const modal = document.getElementById('reveal-modal');
+            const progress = document.getElementById('reveal-progress');
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                progress.style.width = '100%';
+                playSound('snd-chest');
+            }, 100);
+
+            // Fetch the challenge to know our role BEFORE showing results
+            const chall = window.AppState.data.challenges.find(c => c.id === challengeId);
+            const myId = window.AppState.data.user.id;
+            const amIChallenger = chall.challengerId === myId;
+
+            setTimeout(async () => {
+                const result = await window.AppState.revealChallenge(challengeId);
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                progress.style.width = '0%';
+                if (result) showResultModal(result, amIChallenger);
+            }, 2700);
+        }
+
+        function showResultModal(result, amIChallenger) {
+            const modal = document.getElementById('result-modal');
+            const content = document.getElementById('result-content');
+            const emoji = document.getElementById('result-emoji');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+            const gText = document.getElementById('res-gold');
+            const xText = document.getElementById('res-xp');
+            const sText = document.getElementById('res-stickers');
+
+            const myId = window.AppState.data.user.id;
+            const iWon = result.winnerId === myId;
+            const isDraw = result.draw;
+
+            // Lấy điểm tương ứng với vai trò của mình
+            const myG = amIChallenger ? result.pointsG_C : result.pointsG_O;
+            const myXP = amIChallenger ? result.pointsXP_C : result.pointsXP_O;
+            const myS = amIChallenger ? result.spins_C : result.spins_O;
+
+            sText.textContent = (myS >= 0 ? '+' : '') + myS;
+            gText.textContent = (myG >= 0 ? '+' : '') + myG;
+            xText.textContent = (myXP >= 0 ? '+' : '') + myXP;
+
+            // Reset lints
+            gText.className = "text-3xl font-black text-white";
+            xText.className = "text-3xl font-black text-white";
+
+            if (iWon) {
+                playSound('snd-win');
+                emoji.textContent = '🏆';
+                title.textContent = 'THẮNG RỒI!';
+                desc.textContent = `Chúc mừng ${window.AppState.data.user.name}! Bạn đã chiến thắng kèo đấu này!`;
+                content.className = "result-overlay w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-2xl text-white relative bg-gradient-to-br from-green-600 to-emerald-900";
+            } else if (isDraw) {
+                emoji.textContent = '🤝';
+                title.textContent = 'HÒA CUỘC!';
+                desc.textContent = 'Bất phân thắng bại! Cả hai đều rất xuất sắc.';
+                content.className = "result-overlay w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-2xl text-white relative bg-gradient-to-br from-blue-600 to-indigo-900";
+            } else {
+                emoji.textContent = '🦾';
+                title.textContent = 'TỐT LẮM!';
+                desc.textContent = `Dù kết quả thế nào, nỗ lực của ${window.AppState.data.user.name} vẫn rất đáng khen!`;
+                content.className = "result-overlay w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-2xl text-white relative bg-gradient-to-br from-slate-700 to-slate-900";
+                gText.className = "text-3xl font-black text-rose-300";
+                xText.className = "text-3xl font-black text-rose-300";
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => content.classList.remove('scale-75'), 10);
+        }
+
+        function closeResultModal() {
+            const modal = document.getElementById('result-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('result-content').classList.add('scale-75');
+        }
+
+        function openChallengeModal() {
+            playSound('snd-click');
+            const data = window.AppState.data;
+            if (!data || !data.user) return;
+
+            const activeUsed = window.AppState.getDailyChallengeCount(data.user.id, 'active');
+
+            const modal = document.getElementById('challenge-modal');
+            const content = document.getElementById('challenge-modal-content');
+
+            if (activeUsed >= 3) document.getElementById('limit-error').classList.remove('hidden');
+            else document.getElementById('limit-error').classList.add('hidden');
+
+            renderOpponentList(data); // Đảm bảo nạp danh sách mỗi khi mở
+
+            // Reset bet input
+            const betInput = document.getElementById('bet-input');
+            if (betInput) {
+                betInput.value = 0;
+            }
+            const goldBal = document.getElementById('user-gold-balance');
+            if (goldBal) {
+                goldBal.textContent = data.user.gold || 0;
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => content.classList.remove('scale-90'), 10);
+        }
+
+        function closeChallengeModal() {
+            const modal = document.getElementById('challenge-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('challenge-modal-content').classList.add('scale-90');
+        }
+
+        function selectOpponent(id, btn) {
+            playSound('snd-click');
+            selectedOpponentId = id;
+            document.querySelectorAll('.opponent-btn').forEach(b => b.classList.remove('border-arena-blue', 'bg-arena-blue/5', 'scale-105', 'z-10'));
+            btn.classList.add('border-arena-blue', 'bg-arena-blue/5', 'scale-105', 'z-10');
+            updateSubmitBtn();
+        }
+
+        function selectTask(btn, type) {
+            playSound('snd-click');
+            selectedTaskType = type;
+            document.querySelectorAll('.task-btn').forEach(b => b.classList.remove('border-arena-orange', 'bg-arena-orange/5'));
+            btn.classList.add('border-arena-orange', 'bg-arena-orange/5');
+
+            const setupContainer = document.getElementById('task-setup-container');
+            const titleInput = document.getElementById('task-title-input');
+            const descInput = document.getElementById('task-desc-input');
+            const sourceTag = document.getElementById('task-source-tag');
+
+            setupContainer.classList.remove('hidden');
+            sourceTag.textContent = "Có sẵn";
+            sourceTag.className = "text-[8px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full uppercase";
+
+            titleInput.value = type;
+            descInput.value = TASK_CONDITIONS[type] || 'Hãy hoàn thành thử thách này thật tốt nhé!';
+
+            updateSubmitBtn();
+        }
+
+        function showCustomTaskInput(btn) {
+            playSound('snd-click');
+            selectedTaskType = 'CUSTOM';
+            document.querySelectorAll('.task-btn').forEach(b => b.classList.remove('border-arena-orange', 'bg-arena-orange/5'));
+            btn.classList.add('border-arena-orange', 'bg-arena-orange/5');
+
+            const setupContainer = document.getElementById('task-setup-container');
+            const titleInput = document.getElementById('task-title-input');
+            const descInput = document.getElementById('task-desc-input');
+            const sourceTag = document.getElementById('task-source-tag');
+
+            setupContainer.classList.remove('hidden');
+            sourceTag.textContent = "Bé tự tạo";
+            sourceTag.className = "text-[8px] font-bold text-primary bg-primary/5 dark:bg-primary/900/20 px-2 py-0.5 rounded-full uppercase";
+
+            titleInput.value = '';
+            descInput.value = '';
+            titleInput.focus();
+
+            updateSubmitBtn();
+        }
+
+        function updateSubmitBtn() {
+            const btn = document.getElementById('btn-submit-challenge');
+            const titleInput = document.getElementById('task-title-input');
+            const isTitleFilled = titleInput.value.trim().length > 0;
+            const ready = selectedOpponentId && selectedTaskType && isTitleFilled;
+
+            btn.disabled = !ready;
+            btn.classList.toggle('opacity-40', !ready);
+            btn.classList.toggle('cursor-not-allowed', !ready);
+        }
+
+        function addToBet(amount) {
+            playSound('snd-click');
+            const input = document.getElementById('bet-input');
+            const gold = window.AppState.data.user.gold || 0;
+            let current = parseInt(input.value) || 0;
+            let newVal = current + amount;
+            if (newVal > gold) newVal = gold;
+            input.value = newVal;
+            updateSubmitBtn();
+        }
+
+        function betAll() {
+            playSound('snd-click');
+            const input = document.getElementById('bet-input');
+            const gold = window.AppState.data.user.gold || 0;
+            input.value = gold;
+            updateSubmitBtn();
+        }
+
+        async function submitChallenge() {
+            if (!selectedOpponentId || !selectedTaskType) return;
+
+            const betInput = document.getElementById('bet-input');
+            const betAmount = parseInt(betInput.value) || 0;
+            const gold = window.AppState.data.user.gold || 0;
+
+            if (betAmount > gold) {
+                window.showFamilyQuestAlert("Hết vàng rồi!", "Bé không đủ vàng để đặt cược mức này. Hãy tích lũy thêm nhé!", "error");
+                return;
+            }
+
+            const titleInput = document.getElementById('task-title-input');
+            const descInput = document.getElementById('task-desc-input');
+            const titleValue = titleInput.value.trim();
+            const descValue = descInput.value.trim();
+            const finalTaskType = descValue ? `${titleValue} | Mô tả: ${descValue}` : titleValue;
+
+            const opponent = window.AppState.data.leaderboard.find(p => p.id === selectedOpponentId);
+            const waitModal = document.getElementById('waiting-modal');
+            const countdownEl = document.getElementById('countdown-timer');
+            const avatarEl = document.getElementById('waiting-opponent-avatar');
+            const nameEl = document.getElementById('waiting-opponent-name');
+
+            avatarEl.src = opponent.avatar;
+            nameEl.textContent = opponent.name.replace(' (Bot)', '');
+
+            // 1. Close input modal
+            closeChallengeModal();
+
+            // 2. Show waiting modal
+            waitModal.classList.remove('opacity-0', 'pointer-events-none');
+
+            // 3. Start Visual Countdown (6-10s)
+            const dramaticWaitTime = 6000 + Math.floor(Math.random() * 4000);
+            let displayCount = Math.ceil(dramaticWaitTime / 1000);
+            countdownEl.textContent = displayCount;
+
+            const countdownPromise = new Promise(resolve => {
+                const interval = setInterval(() => {
+                    displayCount--;
+                    countdownEl.textContent = Math.max(0, displayCount);
+                    if (displayCount <= 0) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 1000);
+            });
+
+            // Wait for the countdown to finish FIRST
+            await countdownPromise;
+
+            // 4. Decide REJECTION (20% chance as requested)
+            const isDeclined = Math.random() < 0.20;
+
+            try {
+                if (isDeclined) {
+                    window.showFamilyQuestAlert("Lời từ chối!", `${opponent.name.replace(' (Bot)', '')} hiện đang bận tập luyện và hẹn bé thách đấu dịp khác nhé!`, "info");
+                } else {
+                    // 5. Only now we call the API to "officially" start
+                    const result = await window.AppState.createChallenge(selectedOpponentId, finalTaskType, betAmount);
+
+                    if (result && result.error) {
+                        if (result.error === 'LIMIT_REACHED') {
+                            window.showFamilyQuestAlert("Hết lượt rồi!", "Con đã hết 3 lượt chủ động thách đấu hôm nay rồi.", "warning");
+                        } else if (result.error === 'OPPONENT_LIMIT_REACHED') {
+                            window.showFamilyQuestAlert("Chiến binh bận!", "Bạn này hôm nay đã nhận đủ lời thách đấu rồi, hãy chọn bạn khác nhé!", "info");
+                        }
+                    } else {
+                        // Success!
+                        playSound('snd-click');
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi kịch bản thách đấu:", err);
+            } finally {
+                waitModal.classList.add('opacity-0', 'pointer-events-none');
+
+                // Clear state
+                titleInput.value = '';
+                descInput.value = '';
+                document.getElementById('task-setup-container').classList.add('hidden');
+                selectedOpponentId = null;
+                selectedTaskType = null;
+            }
+        }
+
+        async function selfComplete(challengeId) {
+            playSound('snd-click');
+            await window.AppState.selfCompleteChallenge(challengeId);
+        }
+
+        async function renderOpponentList(inputData) {
+            const list = document.getElementById('opponent-list');
+            if (!list) return;
+
+            // Ưu tiên AppState.data nếu inputData có vẻ đang bị thiếu (sync chưa xong)
+            const data = (inputData && inputData.leaderboard && inputData.leaderboard.length > 1) ? inputData : window.AppState.data;
+
+            try {
+                const currentUserId = data.user && String(data.user.id);
+                const leaderboard = data.leaderboard || [];
+
+                // Lấy tất cả trừ ba mẹ và chính mình
+                const others = leaderboard.filter(p => {
+                    if (!p || !p.id) return false;
+                    const pid = String(p.id);
+                    // Lọc: Không phải chính mình và không phải phụ huynh
+                    return pid !== currentUserId && p.role !== 'parent';
+                });
+
+                if (others.length === 0) {
+                    // Nếu vẫn trống, thử yêu cầu sync một lần nữa (silent sync)
+                    if (!this._lastSyncAttempt || Date.now() - this._lastSyncAttempt > 5000) {
+                        this._lastSyncAttempt = Date.now();
+                        window.AppState.syncFromDatabase().then(() => {
+                            if (window.AppState.data.leaderboard && window.AppState.data.leaderboard.length > 1) {
+                                renderOpponentList(window.AppState.data);
+                            }
+                        });
+                    }
+
+                    list.innerHTML = `
+                        <div class="flex flex-col items-center justify-center w-full py-6 opacity-40 animate-pulse">
+                            <span class="material-symbols-outlined text-4xl mb-2 text-primary">search</span>
+                            <p class="text-[9px] font-black uppercase tracking-widest text-center">Đang nạp danh sách võ sĩ...</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const now = new Date();
+                const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
+                startOfWeek.setHours(0, 0, 0, 0);
+
+                const challenges = data.challenges || [];
+
+                list.innerHTML = others.map(p => {
+                    const pid = String(p.id);
+                    const matches = challenges.filter(c =>
+                        c.status === 'completed' &&
+                        (String(c.challengerId) === pid || String(c.opponentId) === pid) &&
+                        c.date && new Date(c.date) >= startOfWeek
+                    );
+                    const wins = matches.filter(c => c.winnerId && String(c.winnerId) === pid).length;
+                    const draws = matches.filter(c => c.winnerId === null).length;
+                    const losses = matches.length - wins - draws;
+
+                    const name = (p.name || "Võ sĩ").replace(' (Bot)', '');
+                    const avatar = p.avatar || "../shared/assets/generated_avatars/avatar_1.png";
+
+                    return `
+                    <button onclick="selectOpponent('${p.id}', this)" class="opponent-btn flex flex-col items-center gap-2 p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 transition-all hover:border-arena-blue relative overflow-hidden group shrink-0 w-24 snap-center min-h-[100px] bg-white dark:bg-slate-900/50">
+                        <img src="${avatar}" class="w-12 h-12 rounded-full border border-slate-200 shadow-sm transition-transform group-hover:scale-110">
+                        <div class="flex flex-col items-center min-w-0 w-full">
+                            <span class="text-[9px] font-black text-center truncate w-full text-slate-800 dark:text-white uppercase">${name}</span>
+                            <div class="flex gap-1 mt-1">
+                                <span class="text-[7px] font-black text-emerald-500">${wins}T</span>
+                                <span class="text-[7px] font-black text-blue-500">${draws}H</span>
+                                <span class="text-[7px] font-black text-rose-500">${losses}B</span>
+                            </div>
+                        </div>
+                    </button>`;
+                }).join('');
+
+            } catch (err) {
+                console.error("Render error:", err);
+                list.innerHTML = `<div class="p-4 text-rose-500 text-[10px] font-bold">Lỗi nạp dữ liệu: ${err.message}</div>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

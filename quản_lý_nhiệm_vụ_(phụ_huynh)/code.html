@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>LevelUp Kids - Quản lý Nhiệm vụ</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script src="../shared/js/state.js"></script>
+  <script src="../shared/js/components.js" defer></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#ee9d2b",
+            "background-light": "#f8f7f6",
+            "background-dark": "#221a10",
+            "neutral-soft": "#f4f3f0",
+            "text-main": "#181511",
+            "text-sub": "#897961",
+          },
+          fontFamily: {
+            "display": ["Montserrat", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .sidebar-item-active {
+      background-color: #f4f3f0;
+      border-radius: 0.75rem;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e6e1db;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Intelligent Sidebar Component -->
+    <parent-sidebar active="tasks"></parent-sidebar>
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <header
+        class="h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-neutral-soft flex items-center justify-between px-8 shrink-0">
+        <div>
+          <h2 class="text-2xl font-black tracking-tight">Quản lý Nhiệm vụ</h2>
+          <p class="text-text-sub text-sm">Thiết lập thử thách và phần thưởng cho con</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <notification-bell></notification-bell>
+          <button onclick="toggleModal(true)"
+            class="bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all shadow-sm shadow-primary/20">
+            <span class="material-symbols-outlined text-[20px]">add_circle</span>
+            <span>Thêm nhiệm vụ mới</span>
+          </button>
+        </div>
+      </header>
+      <!-- Content Scrollable Area -->
+      <section class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+        <!-- Filters/Stats Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div class="bg-white p-4 rounded-xl border border-neutral-soft flex items-center gap-4">
+            <div class="size-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+              <span class="material-symbols-outlined">assignment</span>
+            </div>
+            <div>
+              <p class="text-text-sub text-xs uppercase font-bold tracking-wider">Tổng nhiệm vụ</p>
+              <p class="text-xl font-black">4</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-neutral-soft flex items-center gap-4">
+            <div class="size-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div>
+              <p class="text-text-sub text-xs uppercase font-bold tracking-wider">Quỹ Vàng thưởng</p>
+              <p class="text-xl font-black" id="stat-total-gold">2.500</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-neutral-soft flex items-center gap-4">
+            <div class="size-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+              <span class="material-symbols-outlined">star</span>
+            </div>
+            <div>
+              <p class="text-text-sub text-xs uppercase font-bold tracking-wider">Nhiệm vụ tuần này</p>
+              <p class="text-xl font-black" id="stat-total-tasks">12</p>
+            </div>
+          </div>
+        </div>
+        <!-- Mission List Table -->
+        <div class="bg-white dark:bg-zinc-900 rounded-xl border border-neutral-soft overflow-hidden shadow-sm">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-neutral-soft/50 text-text-sub text-xs uppercase font-bold tracking-wider">
+                <th class="px-6 py-4">Nhiệm vụ</th>
+                <th class="px-6 py-4">Thể loại</th>
+                <th class="px-6 py-4">Vàng (Gold)</th>
+                <th class="px-6 py-4">Nước (Giọt)</th>
+                <th class="px-6 py-4">Sticker (Uy tín)</th>
+                <th class="px-6 py-4">Kinh nghiệm (EXP)</th>
+                <th class="px-6 py-4 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="task-table-body" class="divide-y divide-neutral-soft">
+              <!-- Dynamic tasks inserted here via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-6 flex justify-center">
+          <button class="text-text-sub hover:text-primary text-sm font-bold flex items-center gap-2">
+            <span>Xem tất cả nhiệm vụ</span>
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <!-- Add Task Modal -->
+  <div id="add-task-modal"
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div
+      class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+      <div class="p-6 border-b border-neutral-soft flex justify-between items-center">
+        <h3 class="text-xl font-black">Thêm Nhiệm vụ mới</h3>
+        <button onclick="toggleModal(false)" class="text-text-sub hover:text-text-main transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="add-task-form" class="p-6 space-y-6">
+        <!-- Task Name -->
+        <div>
+          <label class="block text-sm font-bold mb-2">Tên việc cần làm</label>
+          <input id="task-name"
+            class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 placeholder:text-text-sub/50"
+            placeholder="Ví dụ: Đổ rác, Tưới cây..." type="text" required />
+        </div>
+        <!-- Icon Selection -->
+        <div>
+          <label class="block text-sm font-bold mb-3">Chọn Icon minh họa</label>
+          <div id="icon-selector" class="grid grid-cols-6 gap-3 max-h-40 overflow-y-auto p-1 custom-scrollbar">
+            <!-- Active Icon Button (Defaults to brush) -->
+            <button onclick="selectIcon(this, 'brush')"
+              class="icon-btn size-12 rounded-xl bg-primary text-white flex items-center justify-center border-2 border-primary shrink-0"
+              type="button"><span class="material-symbols-outlined">brush</span></button>
+            <button onclick="selectIcon(this, 'menu_book')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">menu_book</span></button>
+            <button onclick="selectIcon(this, 'school')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">school</span></button>
+            <button onclick="selectIcon(this, 'assignment')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">assignment</span></button>
+            <button onclick="selectIcon(this, 'bed')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">bed</span></button>
+            <button onclick="selectIcon(this, 'skillet')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">skillet</span></button>
+            <button onclick="selectIcon(this, 'local_dining')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">local_dining</span></button>
+            <button onclick="selectIcon(this, 'local_laundry_service')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">local_laundry_service</span></button>
+            <button onclick="selectIcon(this, 'iron')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">iron</span></button>
+            <button onclick="selectIcon(this, 'vacuum')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">vacuum</span></button>
+            <button onclick="selectIcon(this, 'checkroom')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">checkroom</span></button>
+            <button onclick="selectIcon(this, 'chair')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">chair</span></button>
+            <button onclick="selectIcon(this, 'recycling')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">recycling</span></button>
+            <button onclick="selectIcon(this, 'water_drop')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">water_drop</span></button>
+            <button onclick="selectIcon(this, 'sanitizer')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">sanitizer</span></button>
+            <button onclick="selectIcon(this, 'park')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">park</span></button>
+            <button onclick="selectIcon(this, 'local_florist')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">local_florist</span></button>
+            <button onclick="selectIcon(this, 'pets')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">pets</span></button>
+            <button onclick="selectIcon(this, 'sports_basketball')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">sports_basketball</span></button>
+            <button onclick="selectIcon(this, 'fitness_center')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">fitness_center</span></button>
+            <button onclick="selectIcon(this, 'directions_car')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">directions_car</span></button>
+            <button onclick="selectIcon(this, 'self_improvement')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">self_improvement</span></button>
+            <button onclick="selectIcon(this, 'music_note')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">music_note</span></button>
+            <button onclick="selectIcon(this, 'emoji_events')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">emoji_events</span></button>
+            <button onclick="selectIcon(this, 'volunteer_activism')"
+              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button"><span class="material-symbols-outlined">volunteer_activism</span></button>
+            <button onclick="promptNewIcon()"
+              class="size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
+              type="button" title="Tìm icon khác">
+              <span class="material-symbols-outlined">add</span>
+            </button>
+          </div>
+          <!-- Hidden input to store selected icon -->
+          <input type="hidden" id="task-icon" value="brush" />
+        </div>
+        <!-- Rewards Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-[11px] font-bold mb-2">Vàng (Gold)</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-amber-500 text-lg">monetization_on</span>
+              <input id="task-gold"
+                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-amber-600 text-sm"
+                type="number" value="50" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold mb-2">Nước (Giọt)</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-teal-500 text-lg">water_drop</span>
+              <input id="task-water"
+                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-teal-600 text-sm"
+                type="number" value="10" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold mb-2">Sticker</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-purple-500 text-lg">sell</span>
+              <input id="task-sticker"
+                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-purple-600 text-sm"
+                type="number" value="2" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold mb-2">Điểm EXP</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 text-lg">military_tech</span>
+              <input id="task-exp"
+                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-blue-600 text-sm"
+                type="number" value="100" required />
+            </div>
+          </div>
+        </div>
+        <!-- Classification -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Category -->
+          <div>
+            <label class="block text-sm font-bold mb-2">Nhóm nhiệm vụ</label>
+            <select id="task-category" onchange="handleCategoryChange(this)"
+              class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium">
+              <option value="Việc nhà">Việc nhà</option>
+              <option value="Học tập">Học tập</option>
+              <option value="Kỹ năng">Kỹ năng</option>
+              <option value="Sức khỏe">Sức khỏe</option>
+              <option value="add_new_category" class="font-bold text-primary">+ Thêm mới...</option>
+            </select>
+          </div>
+          <!-- Type (Mandatory vs Optional) -->
+          <div>
+            <label class="block text-sm font-bold mb-2">Loại hình</label>
+            <select id="task-type"
+              class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium">
+              <option value="mandatory">🟢 Bắt buộc</option>
+              <option value="optional">🟣 Tùy chọn</option>
+            </select>
+          </div>
+        </div>
+        <!-- Cancel -->
+        <div class="pt-4 flex gap-3">
+          <button onclick="toggleModal(false)"
+            class="flex-1 bg-neutral-soft hover:bg-neutral-soft/80 text-text-main font-bold py-3 rounded-xl transition-all"
+            type="button">
+            Hủy
+          </button>
+          <button onclick="event.preventDefault(); saveTask()"
+            class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 transition-all"
+            type="submit">
+            Lưu nhiệm vụ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentEditTaskId = null;
+
+    function toggleModal(show) {
+      const modal = document.getElementById('add-task-modal');
+      const title = modal.querySelector('h3');
+
+      if (show) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        if (!currentEditTaskId) {
+          title.textContent = 'Thêm Nhiệm vụ mới';
+        } else {
+          title.textContent = 'Sửa Nhiệm vụ';
+        }
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        document.getElementById('add-task-form').reset(); // reset form
+        currentEditTaskId = null;
+
+        // Reset icon
+        const iconBtn = document.querySelector('.icon-btn'); // first one usually the brush
+        if (iconBtn) selectIcon(iconBtn, 'brush');
+      }
+    }
+
+    function selectIcon(btnElement, iconName) {
+      // Revert all icon buttons to gray
+      const buttons = document.querySelectorAll('.icon-btn');
+      buttons.forEach(btn => {
+        btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
+      });
+
+      // Make clicked one primary
+      btnElement.className = "icon-btn size-12 rounded-xl bg-primary text-white flex items-center justify-center border-2 border-primary";
+
+      // Update hidden input
+      document.getElementById('task-icon').value = iconName;
+    }
+
+    function promptNewIcon() {
+      const iconName = prompt("Nhập tên icon bạn muốn (tra cứu trên https://fonts.google.com/icons):\nVí dụ: star, diamond, lightbulb, fitness_center");
+      if (iconName && iconName.trim() !== "") {
+        // Set hidden input
+        document.getElementById('task-icon').value = iconName.trim();
+        // Unselect other buttons
+        const buttons = document.querySelectorAll('.icon-btn');
+        buttons.forEach(btn => {
+          btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
+        });
+
+        // Replace the '+' button temporarily with a selected state block (or you can just assume hidden input does the job internally)
+        alert("Đã gán Icon mới: " + iconName.trim() + " thành công!");
+      }
+    }
+
+    function handleCategoryChange(selectElement) {
+      if (selectElement.value === "add_new_category") {
+        const newCat = prompt("Nhập tên phân loại mới:");
+        if (newCat && newCat.trim() !== "") {
+          // Create a new option
+          const opts = selectElement.options;
+          const opt = document.createElement("option");
+          opt.text = newCat.trim();
+          opt.value = newCat.trim();
+          // Insert right before the "add_new_category" option
+          selectElement.add(opt, opts[opts.length - 1]);
+          // Select the new option
+          selectElement.value = newCat.trim();
+        } else {
+          // Revert back to index 0 if cancelled
+          selectElement.selectedIndex = 0;
+        }
+      }
+    }
+
+    function editTask(taskId) {
+      if (!window.AppState) return;
+      const task = window.AppState.data.quests.find(q => q.id === taskId);
+      if (!task) return;
+
+      currentEditTaskId = taskId;
+
+      document.getElementById('task-name').value = task.title;
+      document.getElementById('task-gold').value = task.reward || 0;
+      document.getElementById('task-water').value = task.water || 0;
+      document.getElementById('task-sticker').value = task.sticker || 0;
+      document.getElementById('task-exp').value = task.xp || 0;
+
+      // Handle Category
+      const catSelect = document.getElementById('task-category');
+      let catExists = false;
+      for (let i = 0; i < catSelect.options.length; i++) {
+        if (catSelect.options[i].value === task.category) {
+          catExists = true; break;
+        }
+      }
+      if (!catExists && task.category) {
+        const opt = document.createElement("option");
+        opt.text = task.category;
+        opt.value = task.category;
+        catSelect.add(opt, catSelect.options[catSelect.options.length - 1]);
+      }
+      catSelect.value = task.category || "Việc nhà";
+
+      // Handle Type
+      document.getElementById('task-type').value = task.type || 'mandatory';
+
+      // Attempt to find icon button visually, or prompt just sets hidden field
+      const allIconBtns = document.querySelectorAll('.icon-btn');
+      let iconFound = false;
+      allIconBtns.forEach(btn => {
+        const spanText = btn.querySelector('span').textContent.trim();
+        if (spanText === task.icon) {
+          selectIcon(btn, task.icon);
+          iconFound = true;
+        }
+      });
+      if (!iconFound) {
+        document.getElementById('task-icon').value = task.icon;
+        allIconBtns.forEach(btn => {
+          btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
+        });
+      }
+
+      toggleModal(true);
+    }
+
+    function saveTask() {
+      // Validate
+      const name = document.getElementById('task-name').value;
+      const gold = document.getElementById('task-gold').value;
+      const water = document.getElementById('task-water').value;
+      const sticker = document.getElementById('task-sticker').value;
+      const exp = document.getElementById('task-exp').value;
+      let category = document.getElementById('task-category').value;
+      const type = document.getElementById('task-type').value;
+      const icon = document.getElementById('task-icon').value;
+
+      if (!name) {
+        alert("Vui lòng nhập tên công việc!");
+        return;
+      }
+      if (category === "add_new_category") category = "Mặc định";
+
+      if (currentEditTaskId) {
+        // UPDATE
+        const updatedTask = {
+          title: name,
+          reward: parseInt(gold) || 0,
+          water: parseInt(water) || 0,
+          sticker: parseInt(sticker) || 0,
+          xp: parseInt(exp) || 0,
+          icon: icon,
+          category: category,
+          type: type
+        };
+        window.AppState.updateTask(currentEditTaskId, updatedTask);
+      } else {
+        // CREATE
+        const newTask = {
+          id: 'task_' + Date.now(),
+          title: name,
+          desc: 'Vừa mới thêm',
+          reward: parseInt(gold) || 0,
+          water: parseInt(water) || 0,
+          sticker: parseInt(sticker) || 0,
+          xp: parseInt(exp) || 0,
+          icon: icon,
+          color: 'blue',
+          category: category,
+          type: type,
+          completedBy: []
+        };
+        window.AppState.addTask(newTask);
+      }
+
+      // Close Modal
+      toggleModal(false);
+    }
+
+    function renderTasks() {
+      const tbody = document.getElementById('task-table-body');
+      tbody.innerHTML = '';
+
+      if (!window.AppState) return;
+
+      let totalGold = 0;
+
+      window.AppState.data.quests.forEach(task => {
+        totalGold += task.reward;
+
+        // Define color scheme based on some category or random if missing
+        let iconBgColor = 'bg-teal-100 text-teal-600';
+        let badgeColor = 'bg-stone-100 text-stone-600';
+
+        if (task.category === "Việc nhà") { iconBgColor = 'bg-indigo-100 text-indigo-600'; badgeColor = 'bg-indigo-50 text-indigo-600'; }
+        else if (task.category === "Học tập") { iconBgColor = 'bg-green-100 text-green-600'; badgeColor = 'bg-green-50 text-green-600'; }
+        else if (task.category === "Kỹ năng") { iconBgColor = 'bg-orange-100 text-orange-600'; badgeColor = 'bg-orange-50 text-orange-600'; }
+
+        // Determine Type UI
+        const isOptional = task.type === 'optional';
+        const typeBadge = isOptional ?
+          `<span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 border border-purple-200 rounded text-[9px] uppercase tracking-wider font-bold">Tùy chọn</span>` :
+          `<span class="ml-2 px-2 py-0.5 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded text-[9px] uppercase tracking-wider font-bold">Bắt buộc</span>`;
+
+        const newRowHTML = `
+           <tr class="hover:bg-neutral-soft/30 transition-colors">
+               <td class="px-6 py-4">
+                 <div class="flex items-center gap-3">
+                   <div class="size-10 ${iconBgColor} rounded-full flex items-center justify-center">
+                     <span class="material-symbols-outlined">${task.icon}</span>
+                   </div>
+                   <div>
+                     <p class="font-bold text-sm flex items-center">${task.title} ${typeBadge}</p>
+                     <p class="text-xs text-text-sub">${task.desc}</p>
+                   </div>
+                 </div>
+               </td>
+               <td class="px-6 py-4">
+                 <span class="px-3 py-1 ${badgeColor} rounded-full text-[10px] font-bold uppercase">${task.category || 'Chung'}</span>
+               </td>
+               <td class="px-6 py-4">
+                 <div class="flex items-center gap-1.5 font-bold text-amber-600">
+                   <span class="material-symbols-outlined text-[18px]">monetization_on</span>
+                   <span>+${task.reward}</span>
+                 </div>
+               </td>
+               <td class="px-6 py-4">
+                 <div class="flex items-center gap-1.5 font-bold text-teal-500">
+                   <span class="material-symbols-outlined text-[18px]">water_drop</span>
+                   <span>+${task.water || 0}</span>
+                 </div>
+               </td>
+               <td class="px-6 py-4">
+                 <div class="flex items-center gap-1.5 font-bold text-purple-500">
+                   <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
+                   <span>+${task.sticker || 0}</span>
+                 </div>
+               </td>
+               <td class="px-6 py-4">
+                 <div class="flex items-center gap-1.5 font-bold text-blue-600">
+                   <span class="material-symbols-outlined text-[18px]">military_tech</span>
+                   <span>+${task.xp}</span>
+                 </div>
+               </td>
+               <td class="px-6 py-4 text-right">
+                 <div class="flex justify-end gap-2">
+                   <button onclick="editTask('${task.id}')" class="p-2 text-text-sub hover:text-primary transition-colors">
+                     <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                   </button>
+                   <button onclick="deleteTask(this, '${task.id}')" class="p-2 text-text-sub hover:text-red-500 transition-colors">
+                     <span class="material-symbols-outlined text-[20px]">delete</span>
+                   </button>
+                 </div>
+               </td>
+           </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', newRowHTML);
+      });
+
+      // Update stats
+      document.getElementById('stat-total-tasks').innerText = window.AppState.data.quests.length;
+      document.getElementById('stat-total-gold').innerText = totalGold.toLocaleString('vi-VN');
+    }
+
+    function deleteTask(btn, taskId) {
+      if (confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này?")) {
+        window.AppState.deleteTask(taskId);
+      }
+    }
+
+    // Initialize list when loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.AppState) {
+        renderTasks();
+        window.AppState.subscribe(() => {
+          renderTasks();
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

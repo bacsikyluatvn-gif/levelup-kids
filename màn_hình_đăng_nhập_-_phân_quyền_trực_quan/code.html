@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Đăng nhập - LevelUp Kids</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#ee9d2b", "primary-dark": "#d48215", "text-main": "#181511", "text-muted": "#897961" }
+                }
+            }
+        }
+    </script>
+    <style>
+        .numpad-btn {
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 0 #e5e7eb;
+        }
+
+        .dark .numpad-btn {
+            box-shadow: 0 4px 0 #374151;
+        }
+
+        .numpad-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 transparent;
+        }
+
+        .avatar-selection:checked+label {
+            border-color: #ee9d2b;
+            background-color: rgba(238, 157, 43, 0.1);
+            transform: scale(1.1);
+        }
+    </style>
+    <script src="../shared/js/state.js"></script>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-[#221a10] font-['Montserrat'] text-text-main min-h-screen flex flex-col relative overflow-hidden">
+    <!-- Background Decor (Circles) -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+    <!-- Header -->
+    <header class="relative z-10 p-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div
+                class="size-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/30 rotate-3">
+                <span class="material-symbols-outlined text-3xl">castle</span>
+            </div>
+            <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">LevelUp Kids</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="manage-btn" onclick="toggleManageMode()"
+                class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-red-500 hover:text-red-500 transition-all shadow-sm group">
+                <span
+                    class="material-symbols-outlined group-hover:rotate-12 transition-transform">edit_attributes</span>
+                Quản lý
+            </button>
+            <button
+                onclick="document.getElementById('parent-modal').classList.remove('hidden', 'opacity-0'); setTimeout(()=> {document.getElementById('parent-modal').children[0].classList.remove('translate-y-10', 'opacity-0')}, 10);"
+                class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all shadow-sm group">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">shield_person</span>
+                Bố Mẹ
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow flex flex-col items-center justify-center p-6 w-full max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-5xl font-black text-slate-800 dark:text-white tracking-tighter mb-4">Xin chào nhà thám hiểm!
+                👋</h2>
+            <p class="text-xl text-slate-500 font-medium">Bé hãy chọn đúng nhân vật của mình để bắt đầu nhé</p>
+        </div>
+
+        <!-- Avatars Grid -->
+        <div id="avatars-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl text-center">
+            <!-- Dynamically Populated -->
+        </div>
+    </main>
+
+    <!-- Modal Thêm Bé Mới -->
+    <div id="add-child-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-[#1a140d] p-8 rounded-[2rem] shadow-2xl border-4 border-white/10 max-w-lg w-full mx-4 transform translate-y-10 opacity-0 transition-all duration-300 relative">
+            <button onclick="closeAddChildModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white mb-2">Thêm Hiệp Sĩ Mới</h3>
+                <p class="text-slate-500 text-sm font-medium">Nhập tên và chọn một hình đại diện thật ngầu nhé!</p>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 px-1">Tên của
+                        bé</label>
+                    <input type="text" id="new-child-name"
+                        class="w-full px-5 py-4 bg-slate-100 dark:bg-slate-800 border-2 border-transparent focus:border-primary rounded-2xl outline-none font-bold text-lg dark:text-white transition-all"
+                        placeholder="Ví dụ: Sóc Nhỏ, Su Su...">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4 px-1">Chọn nhân
+                        vật</label>
+                    <div class="grid grid-cols-4 gap-4 max-h-48 overflow-y-auto p-2" id="avatar-picker">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <button onclick="submitAddChild()"
+                    class="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-2xl font-black text-xl shadow-lg shadow-primary/30 transition-all active:scale-95">
+                    Tạo Nhân Vật Ngay!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent PIN Modal -->
+    <div id="parent-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-[#1a140d] p-8 rounded-[2rem] shadow-2xl border-4 border-white/10 max-w-sm w-full mx-4 transform translate-y-10 opacity-0 transition-all duration-300 relative">
+            <button onclick="closeParentModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="text-center mb-8 pt-4">
+                <div
+                    class="size-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-slate-200 dark:border-slate-700">
+                    <span class="material-symbols-outlined text-3xl text-slate-500">lock</span>
+                </div>
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white mb-2">Mã PIN Phụ Huynh</h3>
+                <p class="text-slate-500 text-sm font-medium">Nhập mã bí mật gồm 4 số <br><span id="pin-hint-text"
+                        class="text-[11px]">(Mặc định ban đầu: <b class="text-primary font-bold">1234</b>)</span></p>
+            </div>
+
+            <!-- PIN Display -->
+            <div class="flex justify-center gap-3 mb-8 h-4">
+                <div id="pin-1" class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+                <div id="pin-2" class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+                <div id="pin-3" class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+                <div id="pin-4" class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+            </div>
+
+            <!-- Numpad -->
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="addPin(1)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">1</button>
+                <button onclick="addPin(2)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">2</button>
+                <button onclick="addPin(3)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">3</button>
+                <button onclick="addPin(4)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">4</button>
+                <button onclick="addPin(5)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">5</button>
+                <button onclick="addPin(6)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">6</button>
+                <button onclick="addPin(7)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">7</button>
+                <button onclick="addPin(8)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">8</button>
+                <button onclick="addPin(9)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">9</button>
+                <button onclick="removePin()"
+                    class="numpad-btn h-14 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-500 font-bold flex items-center justify-center">
+                    <span class="material-symbols-outlined">backspace</span>
+                </button>
+                <button onclick="addPin(0)"
+                    class="numpad-btn h-14 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white text-2xl font-black">0</button>
+                <button class="numpad-btn h-14 rounded-xl bg-transparent"></button>
+            </div>
+
+            <p id="pin-error" class="text-red-500 text-sm font-bold text-center mt-4 h-5 opacity-0 transition-opacity">
+                Mã PIN không đúng, thử lại!</p>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-center">
+                <a href="../đăng_nhập_phụ_huynh/code.html"
+                    class="text-xs font-bold text-primary hover:underline flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-sm">mail</span>
+                    Đăng nhập bằng Email
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPin = "";
+        let isManageMode = false;
+
+        const AVAILABLE_AVATARS = [
+            "../shared/assets/generated_avatars/avatar_1.png",
+            "../shared/assets/generated_avatars/avatar_2.png",
+            "../shared/assets/generated_avatars/avatar_3.png",
+            "../shared/assets/generated_avatars/avatar_4.png",
+            "../shared/assets/generated_avatars/avatar_5.png",
+            "../shared/assets/generated_avatars/avatar_6.png",
+            "../shared/assets/generated_avatars/avatar_7.png",
+            "../shared/assets/generated_avatars/avatar_8.png",
+            "../shared/assets/generated_avatars/avatar_9.png",
+            "../shared/assets/generated_avatars/avatar_10.png",
+            "../shared/assets/generated_avatars/avatar_11.png",
+            "../shared/assets/generated_avatars/avatar_12.png",
+            "../shared/assets/generated_avatars/avatar_13.png",
+            "../shared/assets/generated_avatars/avatar_14.png",
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAvatarPicker();
+            // Lắng nghe dữ liệu tải từ Supabase thông qua StateManager
+            if (window.AppState) {
+                window.AppState.subscribe((data) => {
+                    renderAvatars();
+                });
+            }
+        });
+
+        function toggleManageMode() {
+            isManageMode = !isManageMode;
+            const btn = document.getElementById('manage-btn');
+            if (isManageMode) {
+                btn.innerHTML = '<span class="material-symbols-outlined">check</span>Xong';
+                btn.classList.replace('hover:border-red-500', 'border-red-500');
+                btn.classList.add('text-red-500');
+            } else {
+                btn.innerHTML = '<span class="material-symbols-outlined">edit_attributes</span>Quản lý';
+                btn.classList.replace('border-red-500', 'hover:border-red-500');
+                btn.classList.remove('text-red-500');
+            }
+            renderAvatars();
+        }
+
+        function initAvatarPicker() {
+            const picker = document.getElementById('avatar-picker');
+            let html = '';
+            AVAILABLE_AVATARS.forEach((url, i) => {
+                html += `
+                    <div class="relative">
+                        <input type="radio" name="avatar-choice" id="av-${i}" value="${url}" class="hidden avatar-selection" ${i === 0 ? 'checked' : ''}>
+                        <label for="av-${i}" class="block size-16 rounded-2xl overflow-hidden border-4 border-transparent cursor-pointer transition-all hover:border-slate-300">
+                            <img src="${url}" class="w-full h-full object-cover">
+                        </label>
+                    </div>
+                `;
+            });
+            picker.innerHTML = html;
+        }
+
+        function renderAvatars() {
+            const grid = document.getElementById('avatars-grid');
+            if (window.AppState) {
+                const users = window.AppState.data.leaderboard;
+
+                let html = '';
+                // Chỉ hiển thị các thành viên có vai trò 'child'
+                const familyMembers = users.filter(user => user.role === 'child');
+
+                familyMembers.forEach(user => {
+                    html += `
+                        <div class="relative group">
+                            <div onclick="${isManageMode ? '' : `loginAsUser('${user.id}')`}"
+                                class="bg-white dark:bg-[#2c2215] p-6 rounded-3xl border-4 border-transparent ${isManageMode ? '' : 'hover:border-primary hover:shadow-xl hover:-translate-y-2'} transition-all cursor-pointer text-center">
+                                <div
+                                    class="size-32 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 overflow-hidden mb-4 ${isManageMode ? '' : 'group-hover:border-primary'} transition-colors">
+                                    <img class="w-full h-full object-cover ${isManageMode ? '' : 'group-hover:scale-110'} transition-transform duration-500"
+                                        src="${user.avatar}"
+                                        alt="${user.name}">
+                                </div>
+                                <h3 class="text-2xl font-black text-slate-800 dark:text-white">${user.name}</h3>
+                                <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">${getUserSubLabel(user)}</p>
+                            </div>
+                            
+                            ${isManageMode ? `
+                                <button onclick="confirmDeleteUser('${user.id}', '${user.name}')" 
+                                    class="absolute -top-2 -right-2 size-10 bg-red-500 text-white rounded-full flex items-center justify-center border-4 border-white dark:border-[#221a10] shadow-lg hover:scale-110 active:scale-95 transition-all z-20">
+                                    <span class="material-symbols-outlined text-xl">delete</span>
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                // Add "Add New Child" placeholder
+                html += `
+                    <div onclick="openAddChildModal()"
+                        class="group bg-slate-100/50 dark:bg-slate-800/50 p-6 rounded-3xl border-4 border-dashed border-slate-300 dark:border-slate-700 hover:border-primary hover:text-primary transition-all cursor-pointer flex flex-col items-center justify-center opacity-70 hover:opacity-100 min-h-[220px]">
+                        <span class="material-symbols-outlined text-6xl text-slate-400 mb-2 group-hover:text-primary transition-colors">add_circle</span>
+                        <span class="font-black text-slate-500 group-hover:text-primary">Thêm bé mới</span>
+                    </div>
+                `;
+
+                grid.innerHTML = html;
+            }
+        }
+
+        function getUserSubLabel(user) {
+            const labels = {
+                'Alex': 'Hiệp Sĩ Na',
+                'Bé Bo': 'Pháp sư',
+                'Tí Nị': 'Cung thủ',
+                'Nhím Xù': 'Chiến binh'
+            };
+            return labels[user.name] || 'Nhà thám hiểm';
+        }
+
+        function loginAsUser(userId) {
+            if (window.AppState) {
+                window.AppState.setCurrentUser(userId);
+
+                document.body.style.opacity = 0;
+                document.body.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    window.location.href = '../bảng_điều_khiển_(montserrat)/code.html';
+                }, 300);
+            }
+        }
+
+        function openAddChildModal() {
+            const modal = document.getElementById('add-child-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('translate-y-10', 'opacity-0');
+            }, 10);
+        }
+
+        function closeAddChildModal() {
+            const modal = document.getElementById('add-child-modal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.add('translate-y-10', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+            document.getElementById('new-child-name').value = '';
+        }
+
+        function submitAddChild() {
+            const nameInput = document.getElementById('new-child-name');
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert("Vui lòng nhập tên của bé nha!");
+                return;
+            }
+
+            const selectedAvatar = document.querySelector('input[name="avatar-choice"]:checked');
+            if (!selectedAvatar) {
+                alert("Bé hãy chọn một hình đại diện thật ngầu nhé!");
+                return;
+            }
+
+            const avatar = selectedAvatar.value;
+
+            if (window.AppState) {
+                // Lệnh thêm gửi lên mây, UI tự động kết xuất lại qua subscribe
+                window.AppState.addUser({ name, avatar });
+                closeAddChildModal();
+                nameInput.value = ''; // Reset input
+            }
+        }
+
+        function confirmDeleteUser(userId, name) {
+            // Dùng custom modal thay vì confirm() để tránh bị Chrome chặn
+            const modal = document.getElementById('delete-confirm-modal');
+            document.getElementById('delete-confirm-name').textContent = name;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('scale-90', 'opacity-0');
+            }, 10);
+
+            document.getElementById('delete-confirm-yes').onclick = async () => {
+                closeDeleteModal();
+                const btn = document.getElementById('delete-confirm-yes');
+                // Chỉ xử lý 1 lần
+                document.getElementById('delete-confirm-yes').onclick = null;
+                await window.AppState.deleteUser(userId);
+            };
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.add('scale-90', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 250);
+        }
+
+        function closeParentModal() {
+            const modal = document.getElementById('parent-modal');
+            const box = modal.children[0];
+            box.classList.add('translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('opacity-0');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }, 100);
+
+            // Reset PIN
+            currentPin = "";
+            updatePinDisplay();
+            document.getElementById('pin-error').classList.add('opacity-0');
+        }
+
+        function addPin(num) {
+            if (currentPin.length < 4) {
+                currentPin += num;
+                updatePinDisplay();
+
+                if (currentPin.length === 4) {
+                    setTimeout(() => checkPin(), 200);
+                }
+            }
+        }
+
+        function removePin() {
+            if (currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updatePinDisplay();
+                document.getElementById('pin-error').classList.add('opacity-0');
+            }
+        }
+
+        function updatePinDisplay() {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`pin-${i}`);
+                if (i <= currentPin.length) {
+                    dot.classList.remove('bg-slate-200', 'dark:bg-slate-700');
+                    dot.classList.add('bg-primary');
+                } else {
+                    dot.classList.add('bg-slate-200', 'dark:bg-slate-700');
+                    dot.classList.remove('bg-primary');
+                }
+            }
+        }
+
+        function checkPin() {
+            const errorText = document.getElementById('pin-error');
+
+            // Lấy mã PIN thực tế từ CSDL Supabase (Tài khoản Phụ Huynh)
+            let actualPin = '1234'; // Giá trị dự phòng (mặc định)
+            if (window.AppState && window.AppState.data.leaderboard) {
+                const parent = window.AppState.data.leaderboard.find(u => u.role === 'parent');
+                if (parent && parent.pinCode) {
+                    actualPin = parent.pinCode;
+                }
+            }
+
+            if (currentPin === actualPin) {
+                errorText.classList.remove('text-red-500', 'opacity-0');
+                errorText.classList.add('text-green-500');
+                errorText.innerText = "Chính xác! Đang mở khóa...";
+
+                setTimeout(() => {
+                    window.location.href = '../bảng_điều_khiển_báo_cáo_phụ_huynh/code.html';
+                }, 500);
+            } else {
+                errorText.classList.remove('opacity-0');
+                errorText.classList.add('text-red-500');
+                errorText.innerText = "Mã PIN không đúng, thử lại!";
+
+                const box = document.getElementById('parent-modal').children[0];
+                box.animate([
+                    { transform: 'translateX(0px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0px)' }
+                ], { duration: 400, easing: 'ease-in-out' });
+
+                currentPin = "";
+                setTimeout(() => updatePinDisplay(), 400);
+            }
+        }
+    </script>
+
+    <!-- Delete Confirm Modal -->
+    <div id="delete-confirm-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-250">
+        <div
+            class="bg-white dark:bg-[#1a140d] p-8 rounded-[2rem] shadow-2xl max-w-sm w-full mx-4 transform scale-90 opacity-0 transition-all duration-250 text-center border-4 border-white/10">
+            <div
+                class="size-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-red-500 text-3xl"
+                    style="font-variation-settings:'FILL' 1">delete_forever</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">Xóa nhân vật?</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Bạn sắp xóa hồ sơ của <strong
+                    id="delete-confirm-name" class="text-slate-800 dark:text-white"></strong>.<br>Dữ liệu sẽ không thể
+                khôi phục!</p>
+            <div class="flex gap-3">
+                <button onclick="closeDeleteModal()"
+                    class="flex-1 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    Thôi, không
+                </button>
+                <button id="delete-confirm-yes"
+                    class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-black text-sm shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all">
+                    Xóa ngay!
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật Ký Trưởng Thành - LevelUp Kids</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#ee9d2b", "primary-dark": "#d48215", "text-main": "#181511", "text-muted": "#897961" }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-[#fcfaf8] min-h-screen pb-24">
+    <!-- Reusable Header Component -->
+    <app-header title="Nhật Ký Trưởng Thành" type="child"></app-header>
+
+    <main class="max-w-[1000px] mx-auto px-6 py-12">
+        <div class="text-center mb-16">
+            <div
+                class="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-2xl text-emerald-600 font-black text-xs uppercase tracking-widest mb-4 shadow-sm border border-emerald-200">
+                <span class="material-symbols-outlined text-sm font-bold">auto_awesome</span>
+                HÀNH TRÌNH KHÔN LỚN
+            </div>
+            <h2 class="text-4xl sm:text-5xl font-black text-slate-800 mb-4">Nhật Ký Trưởng Thành</h2>
+            <p class="text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">Nơi lưu giữ những khoảnh khắc con
+                tỏa sáng và những bài học rèn luyện ý nghĩa mỗi ngày.</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+            <growth-diary-view></growth-diary-view>
+        </div>
+    </main>
+
+    <child-nav active="diary"></child-nav>
+
+    <!-- Supabase & App State -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../shared/js/state.js"></script>
+    <script src="../shared/js/components.js" defer></script>
+    <script>
+        // Force light mode for this page specifically
+        document.documentElement.classList.remove('dark');
+    </script>
+</body>
+
+</html>

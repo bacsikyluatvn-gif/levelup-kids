@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LevelUp Kids - Chúc Mừng Cây Lớn Lên!</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221a10",
+                        "success-green": "#4ade80",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<!-- Main App Background (Simulated) -->
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden opacity-50 grayscale-[0.5] pointer-events-none">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-10 py-4 bg-white dark:bg-slate-900">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">forest</span>
+</div>
+<h2 class="text-lg font-bold leading-tight">LevelUp Kids</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="rounded-full bg-slate-200 dark:bg-slate-700 size-10"></div>
+</div>
+</header>
+<main class="flex-1 p-8">
+<div class="max-w-4xl mx-auto">
+<div class="h-64 w-full bg-slate-200 dark:bg-slate-800 rounded-xl mb-6"></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="h-32 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+<div class="h-32 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Celebration Popup Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+<!-- Decorative Sparkles/Fireworks (Absolute position relative to modal) -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<span class="material-symbols-outlined absolute text-primary text-4xl top-[15%] left-[20%] animate-pulse">auto_awesome</span>
+<span class="material-symbols-outlined absolute text-yellow-400 text-5xl top-[10%] right-[25%]">flare</span>
+<span class="material-symbols-outlined absolute text-success-green text-3xl bottom-[20%] left-[15%]">colors_spark</span>
+<span class="material-symbols-outlined absolute text-primary text-4xl bottom-[15%] right-[20%]">celebration</span>
+</div>
+<!-- Main Modal Card -->
+<div class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col items-center p-8 border-4 border-primary/20">
+<!-- Confetti/Burst Background Pattern -->
+<div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent"></div>
+<!-- Visual Stage: Growth Illustration -->
+<div class="relative w-full aspect-square max-w-[280px] mb-6 flex items-center justify-center">
+<!-- Glowing Aura -->
+<div class="absolute inset-0 bg-success-green/20 rounded-full blur-3xl animate-pulse"></div>
+<!-- The Tree Illustration (Using Placeholder logic) -->
+<div class="relative z-10 w-full h-full rounded-full border-8 border-white dark:border-slate-800 shadow-xl overflow-hidden bg-gradient-to-b from-blue-50 to-green-50">
+<img class="w-full h-full object-cover transform scale-110 hover:scale-125 transition-transform duration-700" data-alt="A vibrant green sapling growing from fertile soil with sunrays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIA9Az_S8UcOP2zKXmaRYLuU8_XJjKRSZXKEH_pLg_EmyKs_EDHlfEG2iihOD827po5zeg7sVIzs0ZsEXxS08V9P81YZTDb7T5Kegp1n6C1L_39DVSIfJZd3oVapVRXrHJBe4IpPrr9kGxFlAh9B9weJJEhF6iHVjiLNUWwKa-BPklCX5drFNjyOGEeeZJ0Q-4czvkgcck-ZtDWV0SvP0fOT32uu8zz14kQmDud41lSLFHUpL0PIuy6EunjY-o0QlCESdmYO-UQL4"/>
+</div>
+<!-- Level Up Badge -->
+<div class="absolute -bottom-2 -right-2 bg-primary text-white font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transform rotate-3">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>Cấp 2</span>
+</div>
+</div>
+<!-- Text Content -->
+<div class="text-center space-y-3 z-10">
+<h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 leading-tight">
+                    Chúc Mừng!<br/>
+<span class="text-primary">Cây Của Bạn Đã Lớn Lên!</span>
+</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">
+                    Bé đã làm rất tốt khi chăm sóc khu vườn! <br/> Hãy tiếp tục để nhận thêm nhiều phần quà nhé.
+                </p>
+</div>
+<!-- Stats Card -->
+<div class="w-full mt-8 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex justify-around items-center border border-slate-100 dark:border-slate-700 z-10">
+<div class="text-center">
+<p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-1">Giai đoạn</p>
+<p class="text-success-green font-bold text-xl flex items-center gap-1 justify-center">
+<span class="material-symbols-outlined">eco</span>
+                        Cây Non
+                    </p>
+</div>
+<div class="h-10 w-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-center">
+<p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-1">Phần thưởng</p>
+<p class="text-primary font-bold text-xl flex items-center gap-1 justify-center">
+<span class="material-symbols-outlined">database</span>
+                        +50 Xu
+                    </p>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full mt-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold text-xl rounded-lg shadow-lg shadow-primary/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 z-10 group">
+                Tuyệt vời!
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">auto_awesome</span>
+</button>
+<!-- Secondary/Dismiss Link (Optional) -->
+<button class="mt-4 text-slate-400 dark:text-slate-500 text-sm font-medium hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                Xem chi tiết kỹ năng
+            </button>
+</div>
+<!-- Floating Particles Effect (Background elements) -->
+<div class="absolute inset-0 pointer-events-none opacity-40">
+<div class="absolute top-1/4 left-1/4 size-2 bg-yellow-400 rounded-full animate-bounce"></div>
+<div class="absolute top-1/3 right-1/4 size-3 bg-primary rounded-full animate-pulse delay-75"></div>
+<div class="absolute bottom-1/4 right-1/3 size-2 bg-success-green rounded-full animate-bounce delay-150"></div>
+</div>
+</div>
+</body></html>

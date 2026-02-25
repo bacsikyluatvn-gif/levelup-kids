@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gia nhập Vương quốc Kỷ luật - LevelUp Kids</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <!-- Google Fonts: Montserrat & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-25..0" />
+
+    <script src="../shared/js/supabaseClient.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee9d2b",
+                        "primary-dark": "#d48215",
+                        "primary-light": "#ffb347",
+                        "accent": "#4f46e5",
+                    },
+                    fontFamily: {
+                        sans: ["Montserrat", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "4xl": "2rem",
+                        "5xl": "2.5rem",
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style type="text/css">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass-panel {
+            background: rgba(30, 25, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ee9d2b 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-focus-effect:focus-within {
+            box-shadow: 0 0 0 4px rgba(238, 157, 43, 0.15);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ee9d2b44;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#fdf9f3] dark:bg-[#15110c] min-h-screen flex items-center justify-center p-4 md:p-8 overflow-x-hidden">
+
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/10 rounded-full blur-[120px] animate-pulse-slow"
+            style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03] dark:opacity-[0.05]"
+            style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+    </div>
+
+    <div
+        class="w-full max-w-6xl z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden border border-white/50 dark:border-white/10">
+
+        <!-- Left Side: Hero Area (5 columns) -->
+        <div
+            class="hidden lg:flex lg:col-span-5 flex-col justify-between p-16 bg-gradient-to-br from-primary via-orange-500 to-rose-500 relative overflow-hidden">
+            <!-- Decorative shapes -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-black/10 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-12">
+                    <div
+                        class="size-12 bg-white rounded-2xl flex items-center justify-center shadow-lg rotate-3 group hover:rotate-6 transition-transform">
+                        <span class="material-symbols-outlined text-primary text-3xl font-bold">castle</span>
+                    </div>
+                    <span class="text-white font-black text-2xl tracking-tighter">LevelUp Kids</span>
+                </div>
+
+                <h2 class="text-5xl font-black text-white leading-[1.1] mb-8 animate-float">
+                    Biến kỷ luật <br><span class="text-primary-light">thành niềm vui</span> mỗi ngày.
+                </h2>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 group">
+                        <div
+                            class="size-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition-all shadow-sm">
+                            <span class="material-symbols-outlined font-bold">celebration</span>
+                        </div>
+                        <p class="text-white/90 font-semibold text-lg">Hệ thống nhiệm vụ hấp dẫn</p>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div
+                            class="size-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition-all shadow-sm">
+                            <span class="material-symbols-outlined font-bold">military_tech</span>
+                        </div>
+                        <p class="text-white/90 font-semibold text-lg">Bảng xếp hạng vinh danh</p>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div
+                            class="size-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition-all shadow-sm">
+                            <span class="material-symbols-outlined font-bold">local_activity</span>
+                        </div>
+                        <p class="text-white/90 font-semibold text-lg">Kho sticker & quà tặng độc đáo</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative z-10">
+                <div class="p-6 bg-black/10 backdrop-blur-lg rounded-3xl border border-white/10">
+                    <p class="text-white/80 text-sm font-medium italic">"Gia đình là nơi bắt đầu của mọi cuộc phiêu lưu
+                        vĩ đại nhất."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Interaction Area (7 columns) -->
+        <div class="lg:col-span-7 p-8 md:p-16 lg:p-20 bg-white dark:bg-[#1a1612] relative">
+            <div class="max-w-md mx-auto">
+
+                <!-- Mobile Logo -->
+                <div class="lg:hidden flex justify-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="size-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg rotate-3">
+                            <span class="material-symbols-outlined text-3xl font-bold">castle</span>
+                        </div>
+                        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">LevelUp Kids
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="mb-10 text-center lg:text-left">
+                    <h3 class="text-4xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">Chào hiệp sĩ mới!
+                        🛡️</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Hãy cùng tạo không gian riêng cho
+                        gia đình mình nhé.</p>
+                </div>
+
+                <form class="space-y-6" onsubmit="handleRegistration(event)">
+                    <!-- Name Input -->
+                    <div class="space-y-2">
+                        <label
+                            class="block text-sm font-extrabold text-slate-700 dark:text-slate-300 ml-1 uppercase tracking-wider">Tên
+                            Bố/Mẹ</label>
+                        <div class="relative group input-focus-effect rounded-2xl overflow-hidden transition-all">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span
+                                    class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">person</span>
+                            </div>
+                            <input id="name-input" type="text" required
+                                class="block w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-0 text-slate-900 dark:text-white font-bold text-lg placeholder-slate-400 transition-all"
+                                placeholder="Ví dụ: Ba Hùng, Mẹ Mai...">
+                            <div
+                                class="absolute bottom-0 left-0 h-1 bg-primary scale-x-0 group-focus-within:scale-x-100 transition-transform w-full origin-left">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="space-y-2">
+                        <label
+                            class="block text-sm font-extrabold text-slate-700 dark:text-slate-300 ml-1 uppercase tracking-wider">Email
+                            Liên Hệ</label>
+                        <div class="relative group input-focus-effect rounded-2xl overflow-hidden transition-all">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span
+                                    class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">alternate_email</span>
+                            </div>
+                            <input id="email-input" type="email" required
+                                class="block w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-0 text-slate-900 dark:text-white font-bold text-lg placeholder-slate-400 transition-all"
+                                placeholder="email@giadinh.com">
+                            <div
+                                class="absolute bottom-0 left-0 h-1 bg-primary scale-x-0 group-focus-within:scale-x-100 transition-transform w-full origin-left">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="space-y-2">
+                        <label
+                            class="block text-sm font-extrabold text-slate-700 dark:text-slate-300 ml-1 uppercase tracking-wider">Mật
+                            khẩu bí mật</label>
+                        <div class="relative group input-focus-effect rounded-2xl overflow-hidden transition-all">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span
+                                    class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">lock</span>
+                            </div>
+                            <input id="password-input" type="password" required minlength="6"
+                                class="block w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-0 text-slate-900 dark:text-white font-bold text-lg placeholder-slate-400 transition-all"
+                                placeholder="Tối thiểu 6 ký hiệu">
+                            <div
+                                class="absolute bottom-0 left-0 h-1 bg-primary scale-x-0 group-focus-within:scale-x-100 transition-transform w-full origin-left">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert Box -->
+                    <div id="alert-message"
+                        class="hidden animate-bounce-in p-4 rounded-2xl text-sm font-bold text-center"></div>
+
+                    <!-- Submit Button -->
+                    <button id="submit-btn" type="submit"
+                        class="w-full bg-gradient-to-r from-primary to-orange-500 hover:from-primary-dark hover:to-orange-600 text-white font-black py-5 rounded-2xl shadow-[0_12px_24px_-8px_rgba(238,157,43,0.5)] transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 text-xl">
+                        <span>BẮT ĐẦU NGAY</span>
+                        <span class="material-symbols-outlined text-2xl font-bold">bolt</span>
+                    </button>
+                </form>
+
+                <div class="mt-12 text-center space-y-6">
+                    <p class="text-slate-500 dark:text-slate-400 font-bold">
+                        Đã từng tham gia?
+                        <a href="../đăng_nhập_phụ_huynh/code.html"
+                            class="text-primary hover:text-primary-dark ml-1 underline decoration-2 underline-offset-4">Đăng
+                            nhập tại đây</a>
+                    </p>
+
+                    <div class="flex items-center justify-center gap-4 text-slate-300 dark:text-slate-700">
+                        <div class="h-px w-12 bg-current"></div>
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <div class="h-px w-12 bg-current"></div>
+                    </div>
+
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] font-black">
+                        LevelUp Kids &copy; 2026 - Kết nối yêu thương
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.loadSupabaseAndInit(() => {
+                console.log("Supabase Client initialized gracefully.");
+            });
+        });
+
+        async function handleRegistration(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name-input').value;
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const btn = document.getElementById('submit-btn');
+            const alertBox = document.getElementById('alert-message');
+
+            // Set loading
+            btn.disabled = true;
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">progress_activity</span> <span>ĐANG KHỞI TẠO...</span>`;
+            alertBox.className = 'hidden';
+
+            try {
+                const { data, error } = await window.supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: name,
+                            display_name: name,
+                            role: 'parent'
+                        },
+                        emailRedirectTo: window.location.origin + '/đăng_nhập_phụ_huynh/code.html'
+                    }
+                });
+
+                if (error) throw error;
+
+                if (data.user) {
+                    alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 mb-6';
+                    alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">check_circle</span> Thàng công! Ba/Mẹ hãy kiểm tra email để xác nhận tài khoản nhé.`;
+
+                    btn.innerHTML = `<span>HOÀN TẤT!</span> <span class="material-symbols-outlined">sentiment_very_satisfied</span>`;
+
+                    setTimeout(() => {
+                        window.location.href = '../đăng_nhập_phụ_huynh/code.html';
+                    }, 4000);
+                }
+
+            } catch (err) {
+                alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400 mb-6';
+                alertBox.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">error</span> Lỗi: ${err.message}`;
+
+                btn.disabled = false;
+                btn.innerHTML = originalBtnHtml;
+            }
+        }
+    </script>
+</body>
+
+</html>
