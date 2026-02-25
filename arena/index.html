@@ -907,9 +907,20 @@
             const dominantSide = (isChallengerConfirmed && isOpponentConfirmed) ? 'none' : (powerPercentage > 60 ? 'challenger' : (powerPercentage < 40 ? 'opponent' : 'none'));
 
             // Reveal logic
+            // Reveal logic: If challenge was created after 19:00, reveal time is tomorrow at 19:00.
+            // Otherwise, it's today at 19:00.
             const now = new Date();
-            const revealTime = new Date();
+            const created = c.createdAt ? new Date(c.createdAt) : new Date();
+
+            const revealTime = new Date(created);
             revealTime.setHours(19, 0, 0, 0);
+
+            // If the challenge was created AFTER that day's 19:00, 
+            // the reveal is the NEXT day's 19:00.
+            if (created >= revealTime) {
+                revealTime.setDate(revealTime.getDate() + 1);
+            }
+
             const isDebug = window.location.search.includes('debug=true');
             const isLateEnough = (now >= revealTime) || isDebug;
 

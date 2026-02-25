@@ -4169,7 +4169,8 @@ class StateManager {
                         opponentConfirmed: c.opponent_confirmed,
                         winnerId: c.winner_id,
                         date: c.date,
-                        time: new Date(c.created_at).toLocaleString('vi-VN')
+                        time: new Date(c.created_at).toLocaleString('vi-VN'),
+                        createdAt: c.created_at
                 }));
 
                 // --- REFINE TREE POINTS FOR HUMANS FROM REQUESTS ---

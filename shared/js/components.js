@@ -113,7 +113,7 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300" 
                          style="background-image: url('${user.avatar}')">
                     </div>
-                    <button onclick="window.location.href='../login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
