@@ -1280,7 +1280,7 @@ class ParentSidebar extends HTMLElement {
 
 
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
-                    <button onclick="navigateWithTransition('../login/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
+                    <button onclick="navigateWithTransition('../portal/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
                         <span class="material-symbols-outlined text-xl text-primary">logout</span>
                         <span>Trở về app Của Bé</span>
                     </button>
