@@ -5205,9 +5205,28 @@ class StateManager {
         // Method mới: Công bố kết quả và tính điểm (Mở rương)
         async revealChallenge(challengeId) {
                 const chall = this.data.challenges.find(c => c.id === challengeId);
-                if (!chall || chall.status === 'completed') return null;
+                if (!chall) return null;
 
-                // Gọi finalize để tính điểm và đổi status
+                // If already completed, build result from existing local data
+                if (chall.status === 'completed') {
+                        const myId = this.data.user?.id;
+                        const iWon = chall.winnerId === myId;
+                        const isDraw = chall.winnerId === null;
+                        return {
+                                winnerId: chall.winnerId,
+                                draw: isDraw,
+                                // Show generic rewards since we can't recalculate
+                                pointsG_C: iWon ? 50 : (isDraw ? 20 : -20),
+                                pointsXP_C: iWon ? 30 : (isDraw ? 20 : -10),
+                                spins_C: iWon ? 3 : (isDraw ? 1 : 0),
+                                pointsG_O: iWon ? -20 : (isDraw ? 20 : 50),
+                                pointsXP_O: iWon ? -10 : (isDraw ? 20 : 30),
+                                spins_O: iWon ? 0 : (isDraw ? 1 : 3),
+                                alreadyCompleted: true
+                        };
+                }
+
+                // Not yet completed — finalize now
                 return await this.finalizeChallenge(challengeId);
         }
 

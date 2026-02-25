@@ -1208,10 +1208,23 @@
             const amIChallenger = chall.challengerId === myId;
 
             setTimeout(async () => {
-                const result = await window.AppState.revealChallenge(challengeId);
-                modal.classList.add('opacity-0', 'pointer-events-none');
-                progress.style.width = '0%';
-                if (result) showResultModal(result, amIChallenger);
+                try {
+                    const result = await window.AppState.revealChallenge(challengeId);
+                    modal.classList.add('opacity-0', 'pointer-events-none');
+                    progress.style.width = '0%';
+                    if (result) {
+                        showResultModal(result, amIChallenger);
+                    } else {
+                        // Fallback: sync and refresh the page UI
+                        await window.AppState.syncFromDatabase();
+                        window.showLevelUpAlert('Kết quả không tải được', 'Hãy tải lại trang để xem kết quả nhé!', 'warning');
+                    }
+                } catch (err) {
+                    console.error('[Arena] dramaReveal error:', err);
+                    modal.classList.add('opacity-0', 'pointer-events-none');
+                    progress.style.width = '0%';
+                    window.showLevelUpAlert('Lỗi tải kết quả', 'Đã có lỗi xảy ra. Hãy tải lại trang!', 'error');
+                }
             }, 2700);
         }
 
