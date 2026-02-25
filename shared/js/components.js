@@ -2737,6 +2737,7 @@ class GrowthDiaryView extends HTMLElement {
                         <div class="w-full space-y-6">
                             <div class="relative group">
                                 <textarea id="reflection-text" 
+                                    oninput="localStorage.setItem('daily_reflection_${data.user.id}', this.value)"
                                     class="w-full bg-white dark:bg-[#1a140c] border-2 border-emerald-100 dark:border-[#3a2e22] rounded-[2.5rem] p-8 sm:p-10 text-lg sm:text-2xl font-medium text-slate-700 dark:text-slate-200 focus:ring-8 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[220px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none lg:pr-24"
                                     placeholder="Hôm nay có điều gì làm con vui hay buồn không? Hãy tâm sự với ba mẹ nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
                                 
@@ -2866,20 +2867,19 @@ class GrowthDiaryView extends HTMLElement {
 
         window.saveDailyReflection = async () => {
             const textarea = document.getElementById('reflection-text');
-            const text = textarea ? textarea.value.trim() : '';
-            const rating = localStorage.getItem('daily_rating_' + data.user.id);
+            const currentText = textarea ? textarea.value.trim() : '';
+            const currentRating = localStorage.getItem('daily_rating_' + data.user.id);
 
-            if (!rating) {
+            if (!currentRating) {
                 window.showFamilyQuestAlert("Nhắc nhở", "Con hãy chọn số trái tim để đánh giá ngày hôm nay nhé!", "warning");
                 return;
             }
 
-            // Pre-save UI state for potential rollback
-            const backupText = text;
-            const backupRating = rating;
+            // Pre-save backup for rollback
+            const backupText = currentText;
+            const backupRating = currentRating;
 
-            // CRITICAL: Clear storage and UI BEFORE the async call to prevent race conditions
-            // with subscription-based re-renders during the await period.
+            // 1. CLEAR IMMEDIATELY (LocalStorage & UI)
             localStorage.removeItem('daily_rating_' + data.user.id);
             localStorage.removeItem('daily_reflection_' + data.user.id);
             if (textarea) textarea.value = '';
@@ -2888,8 +2888,8 @@ class GrowthDiaryView extends HTMLElement {
             if (window.AppState) {
                 try {
                     const result = await window.AppState.resolveBehavior(null, {
-                        title: `Tự đánh giá: ${rating}/10 điểm`,
-                        description: text || "Con cảm thấy hài lòng với hôm nay!"
+                        title: `Tự đánh giá: ${currentRating}/10 điểm`,
+                        description: currentText || "Con cảm thấy hài lòng với hôm nay!"
                     });
 
                     if (result) {
@@ -2898,20 +2898,20 @@ class GrowthDiaryView extends HTMLElement {
                         }
                         window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
 
-                        // Scroll to top and force final render
+                        // Scroll to top and final render
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         this.render(window.AppState.data);
                     } else {
-                        throw new Error("Save returned null/false");
+                        throw new Error("Save error");
                     }
                 } catch (err) {
                     console.error("Diary save error:", err);
-                    // Rollback on failure
+                    // ROLLBACK: Restore state if save failed
                     localStorage.setItem('daily_rating_' + data.user.id, backupRating);
                     localStorage.setItem('daily_reflection_' + data.user.id, backupText);
                     if (textarea) textarea.value = backupText;
                     window.setDailyRating(backupRating);
-                    window.showFamilyQuestAlert("Lỗi hệ thống", "Rất tiếc, đã có lỗi khi lưu nhật ký. Con hãy thử lại sau nhé! 🛠️", "error");
+                    window.showFamilyQuestAlert("Lỗi kết nối", "Hệ thống chưa lưu được nhật ký, con hãy nhấn nút gửi lại nhé! 🛠️", "error");
                 }
             }
         };
