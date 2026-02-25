@@ -1163,10 +1163,32 @@
         }
 
         async function confirmReport(isSuccess) {
-            if (!reportingChallengeId) return;
+            if (!reportingChallengeId) {
+                console.warn('[Arena] No reportingChallengeId set');
+                return;
+            }
             playSound('snd-click');
 
-            // Thử lấy nút bấm đang được nhấn
+            // Validate state
+            if (!window.AppState || !window.AppState.data.user) {
+                window.showLevelUpAlert && window.showLevelUpAlert("Chưa sẵn sàng", "Dữ liệu đang tải, hãy chờ chút rồi thử lại nhé!", "warning");
+                return;
+            }
+
+            const chall = window.AppState.data.challenges.find(c => c.id === reportingChallengeId);
+            if (!chall) {
+                console.warn('[Arena] Challenge not found:', reportingChallengeId);
+                closeReportModal();
+                window.showLevelUpAlert && window.showLevelUpAlert("Kèo đấu không tìm thấy", "Kèo đấu này có thể đã kết thúc. Hãy tải lại trang!", "warning");
+                return;
+            }
+
+            if (chall.status === 'completed') {
+                closeReportModal();
+                window.showLevelUpAlert && window.showLevelUpAlert("Kèo đã kết thúc", "Kèo đấu này đã có kết quả rồi!", "info");
+                return;
+            }
+
             const buttons = document.querySelectorAll('#report-modal-content button');
             const submitBtn = isSuccess ? buttons[0] : buttons[1];
 
@@ -1176,15 +1198,38 @@
                 submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">sync</span> ĐANG LƯU...';
 
                 try {
-                    await window.AppState.selfCompleteChallenge(reportingChallengeId, isSuccess);
-                    // Đóng modal sau khi hoàn thành công việc
+                    const myId = String(window.AppState.data.user.id);
+                    const isChallenger = String(chall.challengerId) === myId;
+                    const updateField = isChallenger ? 'challenger_confirmed' : 'opponent_confirmed';
+
+                    console.log(`[Arena] Confirming report: challenge=${reportingChallengeId}, field=${updateField}, value=${isSuccess}`);
+
+                    // Update directly to avoid potential issues in selfCompleteChallenge
+                    const { error } = await window.AppState.client.from('challenges')
+                        .update({ [updateField]: isSuccess })
+                        .eq('id', reportingChallengeId);
+
+                    if (error) {
+                        console.error("[Arena] DB update error:", error);
+                        throw error;
+                    }
+
+                    console.log('[Arena] Report saved successfully');
                     closeReportModal();
+
+                    // Sync to refresh UI
+                    await window.AppState.syncFromDatabase();
+
+                    window.showLevelUpAlert && window.showLevelUpAlert(
+                        isSuccess ? "Đã ghi nhận! 🎉" : "Đã ghi nhận",
+                        isSuccess ? "Bạn đã báo cáo hoàn thành. Hãy chờ kết quả tối nay nhé!" : "Kết quả đã được ghi nhận. Cố gắng hơn lần sau nhé!",
+                        isSuccess ? "success" : "info"
+                    );
                 } catch (err) {
-                    console.error("Lỗi khi báo cáo:", err);
+                    console.error("[Arena] confirmReport error:", err);
                     if (window.showLevelUpAlert) {
                         window.showLevelUpAlert("Lỗi hệ thống", "Không thể gửi báo cáo lúc này. Bé hãy thử lại sau nhé!", "error");
                     }
-                    // Khôi phục nút nếu lỗi
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalContent;
                 }

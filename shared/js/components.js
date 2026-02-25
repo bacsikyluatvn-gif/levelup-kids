@@ -912,10 +912,8 @@ class LeaderboardPodium extends HTMLElement {
             if (mode === 'xp') return `Lv.${user.level}`;
             if (mode === 'weekly_xp') return `${user.weeklyXp || 0}`;
             if (mode === 'arena_wins') {
-                const now = new Date();
-                const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-                startOfWeek.setHours(0, 0, 0, 0);
-                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id) && new Date(c.date) >= startOfWeek);
+                // ALL-TIME stats to match sorting order
+                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id));
                 const wins = matches.filter(c => c.winnerId === user.id).length;
                 const draws = matches.filter(c => c.winnerId === null).length;
                 const losses = matches.length - wins - draws;
@@ -948,7 +946,7 @@ class LeaderboardPodium extends HTMLElement {
         const getSubLabel = (user) => {
             if (mode === 'xp') return `${user.xp} XP`;
             if (mode === 'weekly_xp') return `Lv.${user.level}`;
-            if (mode === 'arena_wins') return `Kèo đấu tuần này`;
+            if (mode === 'arena_wins') return `Toàn thời gian`;
             if (mode === 'stickers') return `Bộ sưu tập`;
             return `Chuỗi Hành động`;
         };
