@@ -2316,21 +2316,59 @@ class BehaviorLogModal extends HTMLElement {
                                         <div class="space-y-3 pt-2">
                                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Thông số quà tặng</label>
                                             <div class="grid grid-cols-2 gap-3">
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                                                    <span class="material-symbols-outlined text-orange-400 text-xl" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                                                    <input id="bh-gold" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.gold}">
+                                                <!-- Gold -->
+                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="material-symbols-outlined text-orange-400 text-xl" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                                        <input id="bh-gold" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.gold}">
+                                                    </div>
+                                                    <select onchange="document.getElementById('bh-gold').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
+                                                        <option value="">Nhanh...</option>
+                                                        <option value="10">10 Gold</option>
+                                                        <option value="20">20 Gold</option>
+                                                        <option value="30">30 Gold</option>
+                                                    </select>
                                                 </div>
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                                                    <span class="material-symbols-outlined text-amber-500 text-xl">military_tech</span>
-                                                    <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.xp}">
+                                                <!-- EXP -->
+                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="material-symbols-outlined text-amber-500 text-xl">military_tech</span>
+                                                        <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.xp}">
+                                                    </div>
+                                                    <select onchange="document.getElementById('bh-xp').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
+                                                        <option value="">Nhanh...</option>
+                                                        <option value="10">10 EXP</option>
+                                                        <option value="15">15 EXP</option>
+                                                        <option value="20">20 EXP</option>
+                                                        <option value="25">25 EXP</option>
+                                                        <option value="30">30 EXP</option>
+                                                    </select>
                                                 </div>
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                                                    <span class="material-symbols-outlined text-blue-400 text-xl" style="font-variation-settings:'FILL' 1">water_drop</span>
-                                                    <input id="bh-water" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.water}">
+                                                <!-- Water -->
+                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="material-symbols-outlined text-blue-400 text-xl" style="font-variation-settings:'FILL' 1">water_drop</span>
+                                                        <input id="bh-water" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.water}">
+                                                    </div>
+                                                    <select onchange="document.getElementById('bh-water').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
+                                                        <option value="">Nhanh...</option>
+                                                        <option value="10">10 Drops</option>
+                                                        <option value="20">20 Drops</option>
+                                                        <option value="30">30 Drops</option>
+                                                    </select>
                                                 </div>
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                                                    <span class="material-symbols-outlined text-purple-400 text-xl" style="font-variation-settings:'FILL' 1">sell</span>
-                                                    <input id="bh-sticker" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.sticker}">
+                                                <!-- Sticker -->
+                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="material-symbols-outlined text-purple-400 text-xl" style="font-variation-settings:'FILL' 1">sell</span>
+                                                        <input id="bh-sticker" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.sticker}">
+                                                    </div>
+                                                    <select onchange="document.getElementById('bh-sticker').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
+                                                        <option value="">Nhanh...</option>
+                                                        <option value="1">1 Sticker</option>
+                                                        <option value="2">2 Stickers</option>
+                                                        <option value="3">3 Stickers</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

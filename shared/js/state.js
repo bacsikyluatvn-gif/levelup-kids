@@ -57,8 +57,7 @@ const GROWTH_BEHAVIORS = {
                 { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 20, xp: 15, water: 2, sticker: 1 },
                 { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 15, xp: 10, water: 1, sticker: 0 },
                 { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 10, xp: 5, water: 0, sticker: 0 },
-                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 10, xp: 10, water: 1, sticker: 0 },
-                { id: 'creative', text: 'Sáng tạo đồ chơi/vẽ tranh', emoji: '🎨', gold: 15, xp: 20, water: 0, sticker: 1 }
+                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 10, xp: 10, water: 1, sticker: 0 }
         ],
         BAD: [
                 { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: -10, xp: -5, water: 0, sticker: 0 },
