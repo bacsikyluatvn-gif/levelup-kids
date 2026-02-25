@@ -113,7 +113,7 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300" 
                          style="background-image: url('${user.avatar}')">
                     </div>
-                    <button onclick="window.location.href='../Login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
@@ -138,7 +138,7 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white">
                         <span class="material-symbols-outlined">person</span>
                     </div>
-                    <button onclick="window.location.href='../Login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
@@ -1291,7 +1291,7 @@ class ParentSidebar extends HTMLElement {
             </nav>
 
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
-                    <button onclick="navigateWithTransition('../Login/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
+                    <button onclick="navigateWithTransition('../login/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
                         <span class="material-symbols-outlined text-xl text-primary">logout</span>
                         <span>Trở về app Của Bé</span>
                     </button>
@@ -1732,15 +1732,15 @@ class ChildNav extends HTMLElement {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
-                    ${this.navItem('dashboard', 'Nhiệm vụ', 'Dashboard/index.html', active === 'dashboard' || active === '')}
+                    ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard' || active === '')}
                     ${this.navItem('book_5', 'Nhật ký', 'diary/index.html', active === 'diary')}
-                    ${this.navItem('sports_kabaddi', 'Đấu trường', 'Arena/index.html', active === 'arena')}
+                    ${this.navItem('sports_kabaddi', 'Đấu trường', 'arena/index.html', active === 'arena')}
                     ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
                     ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
                     ${this.navStickerItem(active === 'stickers')}
                     ${this.navItem('park', 'Kho báu', 'tree-growth/index.html', active === 'tree')}
-                    ${this.navItem('storefront', 'Cửa hàng', 'Shop/index.html', active === 'shop')}
-                    ${this.navItem('person', 'Hồ sơ', 'Profile/index.html', active === 'profile')}
+                    ${this.navItem('storefront', 'Cửa hàng', 'shop/index.html', active === 'shop')}
+                    ${this.navItem('person', 'Hồ sơ', 'profile/index.html', active === 'profile')}
                 </nav>
             </div>
             <!--Spacer to prevent content from being hidden by fixed nav-->

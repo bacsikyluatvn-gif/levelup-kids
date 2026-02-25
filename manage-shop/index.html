@@ -551,7 +551,7 @@
 
             // CHỈ lọc các yêu cầu đổi quà (Shop hoặc Sticker), loại bỏ các log hệ thống như tưới cây
             const shopRequests = requests.filter(r => r.type === 'shop' || r.type === 'perk');
-            console.log("[ShopMgmt] Shop/Perk requests count:", shopRequests.length);
+            console.log("[ShopMgmt] shop/Perk requests count:", shopRequests.length);
 
             shopRequests.forEach(req => {
                 let imageHTML = `<span class="material-symbols-outlined text-teal-600 text-3xl">image</span>`;
