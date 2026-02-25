@@ -862,9 +862,12 @@
             startOfWeek.setHours(0, 0, 0, 0);
 
             const myMatches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId) && new Date(c.date) >= startOfWeek);
-            document.getElementById('user-wins').textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
-            document.getElementById('user-draws').textContent = myMatches.filter(c => c.winnerId === null).length;
-            document.getElementById('user-losses').textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
+            const winsEl = document.getElementById('user-wins');
+            const drawsEl = document.getElementById('user-draws');
+            const lossesEl = document.getElementById('user-losses');
+            if (winsEl) winsEl.textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
+            if (drawsEl) drawsEl.textContent = myMatches.filter(c => c.winnerId === null).length;
+            if (lossesEl) lossesEl.textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
 
             renderOpponentList(data);
         }
