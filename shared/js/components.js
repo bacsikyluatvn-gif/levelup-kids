@@ -2720,7 +2720,7 @@ class GrowthDiaryView extends HTMLElement {
             const currentRating = parseInt(localStorage.getItem('daily_rating_' + data.user.id)) || 0;
             const isActive = rating <= currentRating;
             return `
-                                    <button onclick="window.setDailyRating(${rating})" 
+                                    <button onclick="const current = parseInt(localStorage.getItem('daily_rating_${data.user.id}')) || 0; window.setDailyRating(current === ${rating} ? 0 : ${rating})" 
                                         class="heart-btn group relative transition-all active:scale-75 ${isActive ? 'scale-115' : 'opacity-40 hover:opacity-100'}">
                                         <div class="absolute inset-0 bg-red-500/10 blur-xl opacity-0 ${isActive ? 'opacity-100' : ''} group-hover:opacity-40 transition-opacity"></div>
                                         <span class="material-symbols-outlined text-4xl sm:text-5xl ${isActive ? 'text-red-500 fill-1' : 'text-slate-300'} transition-all drop-shadow-sm" 
@@ -2846,18 +2846,25 @@ class GrowthDiaryView extends HTMLElement {
                     icon.classList.add('text-red-500');
                     icon.classList.remove('text-slate-300');
                     icon.style.fontVariationSettings = "'FILL' 1";
-                    label.classList.add('text-red-500');
-                    label.classList.remove('text-slate-400');
+                    if (label) {
+                        label.classList.add('text-red-500');
+                        label.classList.remove('text-slate-400');
+                    }
                     if (glow) glow.classList.add('opacity-100');
                 } else {
                     btn.classList.add('opacity-40');
                     btn.classList.remove('scale-115');
-                    icon.classList.add('text-slate-200');
                     icon.classList.remove('text-red-500');
+                    icon.classList.add('text-slate-300');
                     icon.style.fontVariationSettings = "'FILL' 0";
-                    label.classList.remove('text-red-500');
-                    label.classList.add('text-slate-400');
-                    if (glow) glow.classList.remove('opacity-100');
+                    if (label) {
+                        label.classList.remove('text-red-500');
+                        label.classList.add('text-slate-400');
+                    }
+                    if (glow) {
+                        glow.classList.remove('opacity-100');
+                        glow.classList.add('opacity-0');
+                    }
                 }
             });
             if (window.confetti && rating > 0) {
@@ -2909,8 +2916,10 @@ class GrowthDiaryView extends HTMLElement {
 
                         setTimeout(() => {
                             this.render(window.AppState.data);
-                            const finalCleanup = document.getElementById('reflection-text');
-                            if (finalCleanup) finalCleanup.value = '';
+                            // Force final DOM cleanup one more time
+                            const finalCleanupText = document.getElementById('reflection-text');
+                            if (finalCleanupText) finalCleanupText.value = '';
+                            window.setDailyRating(0);
                         }, 300);
                     } else {
                         throw new Error("Save failure");
