@@ -185,9 +185,9 @@
                 <!-- Sticker balance -->
                 <div
                     class="flex-shrink-0 bg-white/15 backdrop-blur-md rounded-2xl px-8 py-5 text-center border border-white/20 shadow-inner">
-                    <p class="text-white/80 text-[10px] font-black uppercase tracking-widest mb-1">Huy hiệu hiện có</p>
-                    <p id="hero-balance" class="text-6xl font-black text-white drop-shadow-lg">—</p>
-                    <p class="text-white/70 text-xs mt-1 font-bold">Thẻ dán</p>
+                    <p class="text-white/80 text-[10px] font-black uppercase tracking-widest mb-1">Sticker Đã Có</p>
+                    <p id="hero-stickers-count-big" class="text-6xl font-black text-white drop-shadow-lg">—</p>
+                    <p class="text-white/70 text-xs mt-1 font-bold">Mảnh Ghép</p>
                 </div>
 
                 <div class="flex-1 text-center md:text-left">
@@ -195,9 +195,10 @@
                         class="text-2xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-2 drop-shadow-md">
                         BỘ SƯU TẬP <span class="text-yellow-300">STICKER</span>
                     </h1>
-                    <p class="text-white/90 text-sm md:text-base mb-5 font-medium">Bé đã mở khóa được <span
-                            id="hero-progress-count" class="font-bold text-yellow-300">0</span> trong tổng số <span
-                            class="font-bold text-yellow-300" id="hero-total-count">560+</span> sticker!</p>
+                    <p class="text-white/90 text-sm md:text-base mb-5 font-medium">Bé còn <span id="hero-balance-small"
+                            class="font-black text-yellow-300">0</span> Huy hiệu chưa dùng. Đã mở <span
+                            class="font-bold text-white" id="hero-progress-count-text">4</span> trong <span
+                            id="hero-total-count" class="font-bold">609</span>!</p>
 
                     <!-- Progress bar -->
                     <div class="max-w-md">
@@ -417,14 +418,17 @@
             const balance = data.user.stickers || 0;
 
             // Update hero
-            document.getElementById('hero-balance').textContent = balance;
             const totalUnlocked = unlocked.length;
             const total = window.STICKER_CATALOG.length;
+
+            document.getElementById('hero-stickers-count-big').textContent = totalUnlocked;
+            document.getElementById('hero-balance-small').textContent = balance;
+            document.getElementById('hero-progress-count-text').textContent = totalUnlocked;
+
             const progress = total > 0 ? (totalUnlocked / total * 100) : 0;
 
             document.getElementById('hero-progress-bar').style.width = progress + '%';
             document.getElementById('hero-progress-text').textContent = Math.round(progress) + '%';
-            document.getElementById('hero-progress-count').textContent = totalUnlocked;
             const totalEl = document.getElementById('hero-total-count');
             if (totalEl) totalEl.textContent = total;
 

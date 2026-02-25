@@ -2107,6 +2107,66 @@ class BehaviorLogModal extends HTMLElement {
             this.render();
         };
 
+        window.deleteBehaviorPreset = (bid) => {
+            if (confirm('Bạn có chắc muốn xóa hành động này khỏi danh sách?')) {
+                let overrides = JSON.parse(localStorage.getItem('behavior_overrides') || '{"GOOD": [], "BAD": []}');
+                if (!overrides[this.activeType]) overrides[this.activeType] = [];
+                overrides[this.activeType] = overrides[this.activeType].filter(b => b.id !== bid);
+
+                // If it's a default behavior, we mark it as deleted
+                const defaults = window.GROWTH_BEHAVIORS ? (window.GROWTH_BEHAVIORS[this.activeType] || []) : [];
+                const isDefault = defaults.some(b => b.id === bid);
+
+                if (isDefault) {
+                    if (!overrides[this.activeType + '_DELETED']) overrides[this.activeType + '_DELETED'] = [];
+                    overrides[this.activeType + '_DELETED'].push(bid);
+                }
+
+                localStorage.setItem('behavior_overrides', JSON.stringify(overrides));
+                if (this.selectedBehavior?.id === bid) this.resetForm();
+                this.render();
+            }
+        };
+
+        window.saveBehaviorAsPreset = () => {
+            const titleInput = this.querySelector('#bh-title');
+            if (!titleInput || !titleInput.value.trim()) {
+                if (window.showToast) window.showToast('Vui lòng nhập tiêu đề!', 'warning');
+                return;
+            }
+
+            const goldInput = this.querySelector('#bh-gold');
+            const xpInput = this.querySelector('#bh-xp');
+            const waterInput = this.querySelector('#bh-water');
+            const stickerInput = this.querySelector('#bh-sticker');
+
+            let overrides = JSON.parse(localStorage.getItem('behavior_overrides') || '{"GOOD": [], "BAD": []}');
+            if (!overrides[this.activeType]) overrides[this.activeType] = [];
+
+            const newPreset = {
+                id: this.selectedBehavior?.id && this.selectedBehavior.id !== 'custom' ? this.selectedBehavior.id : 'custom_' + Date.now(),
+                text: titleInput.value.trim(),
+                emoji: this.activeType === 'GOOD' ? '⭐' : '⚠️',
+                gold: parseInt(goldInput?.value || 0),
+                xp: parseInt(xpInput?.value || 0),
+                water: parseInt(waterInput?.value || 0),
+                sticker: parseInt(stickerInput?.value || 0)
+            };
+
+            // Update or Add
+            const index = overrides[this.activeType].findIndex(b => b.id === newPreset.id);
+            if (index >= 0) {
+                overrides[this.activeType][index] = newPreset;
+            } else {
+                overrides[this.activeType].push(newPreset);
+            }
+
+            localStorage.setItem('behavior_overrides', JSON.stringify(overrides));
+            this.selectedBehavior = newPreset;
+            this.render();
+            if (window.showToast) window.showToast('Đã lưu vào danh sách!', 'success');
+        };
+
         window.selectBehaviorChild = (id) => {
             this.selectedChildId = id;
             this.render();
@@ -2206,15 +2266,31 @@ class BehaviorLogModal extends HTMLElement {
     render() {
         if (!this.data) return;
         const children = this.data.leaderboard ? this.data.leaderboard.filter(p => p.role === 'child') : [];
-        const behaviors = window.GROWTH_BEHAVIORS ? (window.GROWTH_BEHAVIORS[this.activeType] || []) : [];
+
+        let behaviors = [];
+        if (window.GROWTH_BEHAVIORS) {
+            const defaults = window.GROWTH_BEHAVIORS[this.activeType] || [];
+            const overrides = JSON.parse(localStorage.getItem('behavior_overrides') || '{"GOOD": [], "BAD": []}');
+            const deleted = overrides[this.activeType + '_DELETED'] || [];
+
+            // Filter out deleted defaults
+            behaviors = defaults.filter(b => !deleted.includes(b.id));
+
+            // Apply/Append overrides
+            (overrides[this.activeType] || []).forEach(ov => {
+                const idx = behaviors.findIndex(b => b.id === ov.id);
+                if (idx >= 0) behaviors[idx] = ov;
+                else behaviors.push(ov);
+            });
+        }
 
         const modalClasses = this.isOpen
             ? "fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md opacity-100 transition-all duration-300"
             : "fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300";
 
         const contentClasses = this.isOpen
-            ? "bg-white dark:bg-[#1a140c] w-full max-w-2xl max-h-[90vh] rounded-[3rem] shadow-2xl transform scale-100 transition-all duration-300 flex flex-col overflow-hidden border border-white/20"
-            : "bg-white dark:bg-[#1a140c] w-full max-w-2xl max-h-[90vh] rounded-[3rem] shadow-2xl transform scale-95 transition-all duration-300 flex flex-col overflow-hidden border border-white/20";
+            ? "bg-white dark:bg-[#1a140c] w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl transform scale-100 transition-all duration-300 flex flex-col overflow-hidden border border-white/20"
+            : "bg-white dark:bg-[#1a140c] w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl transform scale-95 transition-all duration-300 flex flex-col overflow-hidden border border-white/20";
 
         this.innerHTML = `
             <div id="behavior-log-modal" class="${modalClasses}">
@@ -2273,10 +2349,15 @@ class BehaviorLogModal extends HTMLElement {
                                     <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">2. Chọn hành động</label>
                                     <div class="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto scrollbar-hide pr-1">
                                         ${behaviors.map(b => `
-                                            <button onclick="window.onSelectBehavior('${b.id}')" class="flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all ${this.selectedBehavior?.id === b.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-50 dark:border-slate-800/50 bg-slate-50 dark:bg-white/5 hover:border-slate-200'}">
-                                                <span class="text-2xl">${b.emoji}</span>
-                                                <span class="font-bold text-sm text-slate-700 dark:text-slate-200">${b.text}</span>
-                                            </button>
+                                            <div class="group relative">
+                                                <button onclick="window.onSelectBehavior('${b.id}')" class="w-full flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-all ${this.selectedBehavior?.id === b.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-50 dark:border-slate-800/50 bg-slate-50 dark:bg-white/5 hover:border-slate-200'}">
+                                                    <span class="text-2xl">${b.emoji}</span>
+                                                    <span class="font-bold text-sm text-slate-700 dark:text-slate-200">${b.text}</span>
+                                                </button>
+                                                <button onclick="window.deleteBehaviorPreset('${b.id}')" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all">
+                                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                                </button>
+                                            </div>
                                         `).join('')}
                                         <button onclick="window.onSelectBehavior('custom')" class="flex items-center gap-3 p-3 rounded-2xl border-2 border-dashed text-left transition-all ${this.selectedBehavior?.id === 'custom' ? 'border-primary bg-primary/5' : 'border-slate-200 dark:border-slate-700 text-slate-400 hover:border-primary/50'}">
                                             <span class="material-symbols-outlined text-2xl">edit_note</span>
@@ -2299,10 +2380,15 @@ class BehaviorLogModal extends HTMLElement {
                                     <div class="space-y-4">
                                         <!-- Title (Only for custom) -->
                                         <div class="space-y-2">
-                                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Tiêu đề</label>
+                                            <div class="flex justify-between items-center">
+                                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Tiêu đề</label>
+                                                <button onclick="window.saveBehaviorAsPreset()" class="text-[9px] font-black text-primary hover:underline uppercase tracking-widest">
+                                                    Lưu mẫu này
+                                                </button>
+                                            </div>
                                             <input id="bh-title" type="text" placeholder="Ví dụ: Lễ phép, Tự lập..." 
                                                 class="w-full bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold focus:border-primary outline-none transition-all dark:text-white" 
-                                                value="${this.form.title}" ${this.selectedBehavior.id !== 'custom' ? 'readonly' : ''}>
+                                                value="${this.form.title}">
                                         </div>
 
                                         <!-- Description -->
