@@ -27,19 +27,20 @@
     </style>
 </head>
 
-<body class="bg-[#fcfaf8] min-h-screen pb-24">
+<body class="bg-[#fcfaf8] dark:bg-[#221a10] min-h-screen pb-24 transition-colors duration-500">
     <!-- Reusable Header Component -->
     <app-header title="Nhật Ký Trưởng Thành" type="child"></app-header>
 
     <main class="max-w-[1000px] mx-auto px-6 py-12">
         <div class="text-center mb-16">
             <div
-                class="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-2xl text-emerald-600 font-black text-xs uppercase tracking-widest mb-4 shadow-sm border border-emerald-200">
+                class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-2xl text-emerald-600 dark:text-emerald-400 font-black text-xs uppercase tracking-widest mb-4 shadow-sm border border-emerald-200 dark:border-emerald-800">
                 <span class="material-symbols-outlined text-sm font-bold">auto_awesome</span>
                 HÀNH TRÌNH KHÔN LỚN
             </div>
-            <h2 class="text-4xl sm:text-5xl font-black text-slate-800 mb-4">Nhật Ký Trưởng Thành</h2>
-            <p class="text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">Nơi lưu giữ những khoảnh khắc con
+            <h2 class="text-4xl sm:text-5xl font-black text-slate-800 dark:text-white mb-4">Nhật Ký Trưởng Thành</h2>
+            <p class="text-slate-500 dark:text-slate-400 font-medium max-w-xl mx-auto leading-relaxed">Nơi lưu giữ những
+                khoảnh khắc con
                 tỏa sáng và những bài học rèn luyện ý nghĩa mỗi ngày.</p>
         </div>
 
@@ -54,10 +55,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../shared/js/state.js"></script>
     <script src="../shared/js/components.js" defer></script>
-    <script>
-        // Force light mode for this page specifically
-        document.documentElement.classList.remove('dark');
-    </script>
 </body>
 
 </html>

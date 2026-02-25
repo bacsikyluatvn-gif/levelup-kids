@@ -3877,7 +3877,7 @@ class StateManager {
         async seedDemoData(fId) {
                 // Tạo hồ sơ mẫu
                 await this.client.from('profiles').insert([
-                        { family_id: fId, name: 'Bố/Mẹ', role: 'parent', avatar: '../shared/assets/generated_avatars/avatar_1.png', gold: 9999 },
+                        { family_id: fId, name: 'Bố/Mẹ', role: 'parent', avatar: '../shared/assets/generated_avatars/avatar_1.png', gold: 0 },
                         { family_id: fId, name: 'Bé Sóc', role: 'child', avatar: '../shared/assets/generated_avatars/avatar_6.png' }
                 ]);
 
@@ -5529,3 +5529,14 @@ if (window.AppState) {
         window.AppState.testResetDailyTasks = window.AppState.testResetDailyTasks.bind(window.AppState);
         console.log(">>> [State Management] Đã sẵn sàng. testResetDailyTasks() đã được đăng ký.");
 }
+
+// Theme Initialization
+(function () {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+        } else {
+                document.documentElement.classList.remove('dark');
+        }
+})();

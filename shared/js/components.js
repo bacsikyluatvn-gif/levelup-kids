@@ -3,6 +3,12 @@
  * Sử dụng Web Components để tạo giao diện tái sử dụng
  */
 
+// Global theme management
+window.toggleDarkMode = () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+};
+
 // Global Utility for beautiful popups
 window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) => {
     const existing = document.getElementById('lu-alert-modal');
@@ -105,7 +111,11 @@ class AppHeader extends HTMLElement {
                     <span class="material-symbols-outlined text-[18px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
                     <span class="font-bold text-blue-700 dark:text-blue-400 tabular-nums">${user.water || 0}</span>
                 </div>
-                <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-700">
+                    <button onclick="window.toggleDarkMode()" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all">
+                        <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                        <span class="material-symbols-outlined hidden dark:block text-yellow-500">light_mode</span>
+                    </button>
                     <div class="text-right flex flex-col justify-center">
                         <p class="text-sm font-bold dark:text-white text-slate-800">${user.name || 'Nhà thám hiểm'}</p>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${data.title.currentTitleName || 'Tân Binh'}</p>
@@ -131,6 +141,10 @@ class AppHeader extends HTMLElement {
                 </button>
                 <notification-bell></notification-bell>
                 <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-700">
+                    <button onclick="window.toggleDarkMode()" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all">
+                        <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                        <span class="material-symbols-outlined hidden dark:block text-yellow-500">light_mode</span>
+                    </button>
                     <div class="text-right hidden sm:block">
                         <p class="text-sm font-bold dark:text-white">Admin Bố</p>
                         <p class="text-xs text-slate-500">Người quản trị</p>
@@ -1139,7 +1153,7 @@ class LeaderboardTable extends HTMLElement {
             return 'text-blue-500';
         };
         const getSubLabel = (user) => {
-            if (mode === 'xp') return `${user.xp} XP`;
+            if (mode === 'xp') return `Lv.${user.level}`;
             if (mode === 'weekly_xp') return `Lv.${user.level}`;
             if (mode === 'arena_wins') return `Tuần này`;
             if (mode === 'stickers') return `Bộ sưu tập`;
@@ -1858,7 +1872,7 @@ class TitlesModal extends HTMLElement {
             }
 
             html += `
-            <div class="${bgClass} rounded-2xl p-5 relative transition-all ${isUnlocked ? 'shadow-sm' : ''} ${isNext ? 'ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-[#2c2215]' : ''}">
+            <div class="bg-slate-50 dark:bg-[#1a140c] border border-slate-100 dark:border-slate-800 opacity-60 rounded-2xl p-5 relative transition-all ${isUnlocked ? 'shadow-sm' : ''} ${isNext ? 'ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-[#2c2215]' : ''}">
                 ${statusBadge}
         <div class="flex items-center gap-4">
             <div class="flex-shrink-0 w-14 h-14 rounded-full ${isUnlocked ? `bg-${m.color}-100 dark:bg-${m.color}-900/30` : 'bg-slate-200 dark:bg-slate-700'} flex items-center justify-center text-3xl shadow-inner border border-white dark:border-slate-800">
@@ -2541,26 +2555,26 @@ class GrowthDiaryView extends HTMLElement {
 
         this.innerHTML = `
             <div class="relative space-y-12 pb-20 px-4 sm:px-8">
-                <!-- Force Solid Light Background to override global dark themes -->
-                <div class="absolute inset-0 bg-[#fdfcfb] -mx-4 sm:-mx-8 rounded-[4rem] -z-10 shadow-2xl border border-slate-100"></div>
+                <!-- Dynamic Background that supports dark mode -->
+                <div class="absolute inset-0 bg-[#fdfcfb] dark:bg-[#1a140c] -mx-4 sm:-mx-8 rounded-[4rem] -z-10 shadow-2xl border border-slate-100 dark:border-[#3a2e22]"></div>
 
                 <!-- Summary Header -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-10 rounded-[3.5rem] shadow-xl relative overflow-hidden mt-8 border border-orange-100/50">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white dark:bg-[#2c2215]/50 p-10 rounded-[3.5rem] shadow-xl relative overflow-hidden mt-8 border border-orange-100/50 dark:border-[#3a2e22]">
                     <div class="absolute top-0 right-0 w-80 h-80 bg-${auraColor}-500/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                     
                     <div class="flex flex-col justify-center text-center md:text-left">
                         <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Trạng thái hiện tại</p>
                         <h3 class="text-4xl font-black text-${auraColor}-600 mb-1 leading-tight">${auraTitle}</h3>
-                        <p class="text-sm font-bold text-slate-500">Bé đã tích lũy <span class="text-emerald-500 px-2 py-0.5 bg-emerald-50 rounded-lg">${goodCount} điều hay</span></p>
+                        <p class="text-sm font-bold text-slate-500">Bé đã tích lũy <span class="text-emerald-500 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg">${goodCount} điều hay</span></p>
                     </div>
 
-                    <div class="flex flex-col items-center justify-center p-8 bg-slate-50/50 rounded-[3rem] border border-slate-100 shadow-inner">
+                    <div class="flex flex-col items-center justify-center p-8 bg-slate-50/50 dark:bg-[#1a140c]/30 rounded-[3rem] border border-slate-100 dark:border-[#3a2e22] shadow-inner">
                         <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Điểm Nhân Cách</span>
                         <div class="flex items-center gap-4">
                             <div class="size-14 rounded-2xl bg-primary/20 flex items-center justify-center shadow-sm">
                                 <span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings:'FILL' 1">favorite</span>
                             </div>
-                            <span class="text-6xl font-black text-slate-800 tabular-nums">${personalityScore}</span>
+                            <span class="text-6xl font-black text-slate-800 dark:text-white tabular-nums">${personalityScore}</span>
                         </div>
                     </div>
 
@@ -2569,7 +2583,7 @@ class GrowthDiaryView extends HTMLElement {
                             <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Chỉ số rèn luyện</span>
                             <span class="text-[10px] font-black text-emerald-500">${Math.round(goodCount + badCount > 0 ? (goodCount / (goodCount + badCount) * 100) : 100)}% Bé ngoan</span>
                         </div>
-                        <div class="w-full h-5 bg-slate-200 rounded-full overflow-hidden p-1 shadow-inner">
+                        <div class="w-full h-5 bg-slate-200 dark:bg-[#1a140c]/50 rounded-full overflow-hidden p-1 shadow-inner">
                             <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all duration-1000 shadow-sm" style="width: ${goodCount + badCount > 0 ? (goodCount / (goodCount + badCount) * 100) : 100}%"></div>
                         </div>
                         <div class="flex justify-between items-center text-[10px] font-bold text-slate-500">
@@ -2582,7 +2596,7 @@ class GrowthDiaryView extends HTMLElement {
                 <!-- Daily History Section -->
                 <div class="space-y-10">
                     <div class="flex items-center justify-between px-4">
-                        <h4 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                        <h4 class="text-3xl font-black text-slate-800 dark:text-white flex items-center gap-4">
                             <span class="material-symbols-outlined text-primary text-4xl">Auto_Stories</span>
                             Hành Trình Trưởng Thành
                         </h4>
@@ -2597,15 +2611,15 @@ class GrowthDiaryView extends HTMLElement {
                             <p class="text-slate-400 max-w-sm mx-auto text-base font-medium leading-relaxed">Ba mẹ hãy ghi lại những hành động đầu tiên của con ngay hôm nay nhé!</p>
                         </div>
                     ` : dateKeys.map((date, idx) => `
-                        <div class="bg-white rounded-[4rem] border border-slate-100 overflow-hidden shadow-lg border-b-4 border-b-slate-200/50">
+                        <div class="bg-white dark:bg-[#2c2215] rounded-[4rem] border border-slate-100 dark:border-[#3a2e22] overflow-hidden shadow-lg border-b-4 border-b-slate-200/50 dark:border-b-[#1a140c]">
                             <details ${idx === 0 ? 'open' : ''} class="group">
-                                <summary class="flex items-center justify-between p-8 sm:p-10 cursor-pointer list-none select-none hover:bg-slate-50 transition-colors">
+                                <summary class="flex items-center justify-between p-8 sm:p-10 cursor-pointer list-none select-none hover:bg-slate-50 dark:hover:bg-[#362a1a] transition-colors">
                                     <div class="flex items-center gap-5">
-                                        <div class="size-16 rounded-[2rem] bg-indigo-50 text-indigo-500 flex items-center justify-center shadow-sm">
+                                        <div class="size-16 rounded-[2rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shadow-sm">
                                             <span class="material-symbols-outlined text-2xl">calendar_today</span>
                                         </div>
                                         <div>
-                                            <h5 class="text-2xl font-black text-slate-800">${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}</h5>
+                                            <h5 class="text-2xl font-black text-slate-800 dark:text-white">${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}</h5>
                                             <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">
                                                 ${groupedLogs[date].GOOD.length} VIỆC TỐT • 
                                                 ${groupedLogs[date].BAD.length} CẦN RÈN LUYỆN 
@@ -2613,30 +2627,30 @@ class GrowthDiaryView extends HTMLElement {
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="size-12 rounded-full bg-slate-100 flex items-center justify-center group-open:rotate-180 transition-transform duration-500 shadow-sm">
-                                        <span class="material-symbols-outlined text-slate-400 text-3xl">expand_more</span>
+                                    <div class="size-12 rounded-full bg-slate-100 dark:bg-[#1a140c] flex items-center justify-center group-open:rotate-180 transition-transform duration-500 shadow-sm">
+                                        <span class="material-symbols-outlined text-slate-400 dark:text-slate-300 text-3xl">expand_more</span>
                                     </div>
                                 </summary>
                                                                 <div class="px-4 sm:px-8 pb-10 pt-2 space-y-8">
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                         <!-- GOOD COLUMN -->
-                                        <div class="bg-emerald-50/50 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-emerald-100 shadow-inner">
+                                        <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-emerald-100 dark:border-emerald-800/30 shadow-inner">
                                             <div class="flex items-center gap-4 mb-3 px-2">
-                                                <div class="size-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-emerald-100">
+                                                <div class="size-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-emerald-100 dark:shadow-none">
                                                     <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">sunny</span>
                                                 </div>
-                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-emerald-600">Những mầm tốt</span>
+                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400">Những mầm tốt</span>
                                             </div>
                                             ${groupedLogs[date].GOOD.length === 0 ? `<div class="p-10 rounded-3xl border-2 border-dashed border-emerald-100 text-center italic text-xs text-emerald-400 font-bold bg-white/50">Ngày hôm nay con chưa có ghi nhận tốt</div>` : groupedLogs[date].GOOD.map(log => this.renderLogItem(log, true)).join('')}
                                         </div>
 
                                         <!-- BAD COLUMN -->
-                                        <div class="bg-rose-50/50 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-rose-100 shadow-inner">
+                                        <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-rose-100 dark:border-rose-800/35 shadow-inner">
                                             <div class="flex items-center gap-4 mb-3 px-2">
-                                                <div class="size-10 bg-rose-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-100">
+                                                <div class="size-10 bg-rose-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-100 dark:shadow-none">
                                                     <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">history_edu</span>
                                                 </div>
-                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-rose-600">Bài học rèn luyện</span>
+                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-rose-600 dark:text-rose-400">Bài học rèn luyện</span>
                                             </div>
                                             ${groupedLogs[date].BAD.length === 0 ? `<div class="p-10 rounded-3xl border-2 border-dashed border-rose-100 text-center italic text-xs text-rose-400 font-bold bg-white/50">Con đã rèn luyện rất tốt hôm nay!</div>` : groupedLogs[date].BAD.map(log => this.renderLogItem(log, false)).join('')}
                                         </div>
@@ -2644,12 +2658,12 @@ class GrowthDiaryView extends HTMLElement {
 
                                     <!-- REFLECTION SECTION AT BOTTOM -->
                                     ${groupedLogs[date].REFLECTION.length > 0 ? `
-                                        <div class="bg-gradient-to-br from-indigo-50/50 to-blue-50/50 rounded-[3.5rem] p-8 sm:p-10 border border-indigo-100 shadow-inner">
+                                        <div class="bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-[#1a140c] dark:to-[#2c2215]/50 rounded-[3.5rem] p-8 sm:p-10 border border-indigo-100 dark:border-[#3a2e22] shadow-inner">
                                             <div class="flex items-center gap-4 mb-6 px-2">
-                                                <div class="size-12 bg-indigo-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200">
+                                                <div class="size-12 bg-indigo-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 dark:shadow-none">
                                                     <span class="material-symbols-outlined text-2xl">auto_awesome</span>
                                                 </div>
-                                                <span class="text-lg font-black uppercase tracking-widest text-indigo-600">Lời Tự Sự Của Con</span>
+                                                <span class="text-lg font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Lời Tự Sự Của Con</span>
                                             </div>
                                             
                                             <div class="space-y-6">
@@ -2658,18 +2672,18 @@ class GrowthDiaryView extends HTMLElement {
             const rating = ratingMatch ? ratingMatch[1] : '?';
             const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
             return `
-                                                        <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-indigo-50 relative overflow-hidden group hover:shadow-md transition-all">
+                                                        <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2.5rem] p-8 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative overflow-hidden group hover:shadow-md transition-all">
                                                             <div class="absolute top-0 right-0 p-6">
-                                                                <div class="flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full border border-red-100">
+                                                                <div class="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-rose-900/20 rounded-full border border-red-100 dark:border-rose-900/30">
                                                                     <span class="material-symbols-outlined text-red-500 text-sm fill-1">favorite</span>
-                                                                    <span class="text-sm font-black text-red-600">${rating}/10</span>
+                                                                    <span class="text-sm font-black text-red-600 dark:text-rose-400">${rating}/10</span>
                                                                 </div>
                                                             </div>
                                                             <div class="flex gap-6 items-start">
-                                                                <span class="text-5xl opacity-20 text-indigo-300 font-serif italic">"</span>
+                                                                <span class="text-5xl opacity-20 text-indigo-300 dark:text-[#3a2e22] font-serif italic">"</span>
                                                                 <div class="flex-1">
-                                                                    <p class="text-xl sm:text-2xl font-medium text-slate-700 leading-relaxed italic mb-4 pt-4 pr-20">${desc}</p>
-                                                                    <div class="flex items-center gap-2 text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                                                                    <p class="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-4 pt-4 pr-20">${desc}</p>
+                                                                    <div class="flex items-center gap-2 text-[10px] font-black text-slate-300 dark:text-slate-500 uppercase tracking-widest">
                                                                         <span class="material-symbols-outlined text-xs">schedule</span>
                                                                         Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
                                                                     </div>
@@ -2688,15 +2702,15 @@ class GrowthDiaryView extends HTMLElement {
                 </div>
 
                 <!-- Daily Reflection Corner -->
-                <div class="bg-gradient-to-br from-white via-emerald-50 to-green-100 rounded-[3rem] p-8 sm:p-16 text-slate-800 relative overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] border border-emerald-100 mt-12 mx-auto max-w-5xl">
+                <div class="bg-gradient-to-br from-white via-emerald-50 to-green-100 dark:from-[#2c2215] dark:via-[#2c2215] dark:to-[#1a140c] rounded-[3rem] p-8 sm:p-16 text-slate-800 dark:text-white relative overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] border border-emerald-100 dark:border-[#3a2e22] mt-12 mx-auto max-w-5xl">
                      <!-- Soft Natural Glows -->
                      <div class="absolute -top-32 -right-32 size-64 bg-emerald-500/10 rounded-full blur-[100px]"></div>
                      <div class="absolute -bottom-32 -left-32 size-64 bg-green-500/10 rounded-full blur-[100px]"></div>
                      
                      <div class="relative z-10 flex flex-col items-center gap-10">
                         <div class="text-center space-y-3">
-                            <h3 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900">Góc Nhìn Lại Hôm Nay</h3>
-                            <p class="text-slate-500 font-medium text-base sm:text-lg">Con hãy tự chấm điểm cho ngày hôm nay của mình thật trung thực nhé!</p>
+                            <h3 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">Góc Nhìn Lại Hôm Nay</h3>
+                            <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg">Con hãy tự chấm điểm cho ngày hôm nay của mình thật trung thực nhé!</p>
                         </div>
 
                         <!-- 10 Red Hearts -->
@@ -2723,7 +2737,7 @@ class GrowthDiaryView extends HTMLElement {
                         <div class="w-full space-y-6">
                             <div class="relative group">
                                 <textarea id="reflection-text" 
-                                    class="w-full bg-white border-2 border-emerald-100 rounded-[2.5rem] p-8 sm:p-10 text-lg sm:text-2xl font-medium text-slate-700 focus:ring-8 focus:ring-emerald-500/10 focus:border-emerald-300 transition-all outline-none min-h-[220px] placeholder:text-slate-300 shadow-inner resize-none lg:pr-24"
+                                    class="w-full bg-white dark:bg-[#1a140c] border-2 border-emerald-100 dark:border-[#3a2e22] rounded-[2.5rem] p-8 sm:p-10 text-lg sm:text-2xl font-medium text-slate-700 dark:text-slate-200 focus:ring-8 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[220px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none lg:pr-24"
                                     placeholder="Hôm nay có điều gì làm con vui hay buồn không? Hãy tâm sự với ba mẹ nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
                                 
                                 <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="mt-4 lg:mt-0 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:right-8 size-16 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-2xl flex items-center justify-center shadow-md transition-all group/mic active:scale-95">
@@ -2869,11 +2883,17 @@ class GrowthDiaryView extends HTMLElement {
                     // Reset UI for next time
                     localStorage.removeItem('daily_rating_' + data.user.id);
                     localStorage.removeItem('daily_reflection_' + data.user.id);
-                    document.getElementById('reflection-text').value = '';
+
+                    // Force UI update
+                    const textarea = document.getElementById('reflection-text');
+                    if (textarea) textarea.value = '';
                     window.setDailyRating(0);
 
                     // Scroll to top to see the result
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    // Call render again to ensure state consistency
+                    this.render(window.AppState.data);
                 } else {
                     window.showFamilyQuestAlert("Lỗi hệ thống", "Rất tiếc, đã có lỗi khi lưu nhật ký. Con hãy thử lại sau nhé! 🛠️", "error");
                 }
@@ -2898,18 +2918,18 @@ class GrowthDiaryView extends HTMLElement {
         if (behavior && !isRepairing && !isResolved) emoji = behavior.emoji;
 
         return `
-            <div onclick="window.showGrowthDetail('${log.id}')" class="group p-5 rounded-2xl bg-white border ${isResolved ? 'border-emerald-200 opacity-90' : (isRepairing ? 'border-orange-200' : 'border-slate-100')} hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all cursor-pointer relative overflow-hidden">
-                ${isResolved ? '<div class="absolute top-0 right-0 px-3 py-1 bg-emerald-100 text-emerald-600 text-[8px] font-black uppercase tracking-widest rounded-bl-xl shadow-sm">ĐÃ SỬA SAI HOÀN HẢO ✨</div>' : ''}
-                ${isRepairing ? '<div class="absolute top-0 right-0 px-3 py-1 bg-orange-100 text-orange-600 text-[8px] font-black uppercase tracking-widest rounded-bl-xl shadow-sm">BA MẸ ĐANG KIỂM TRA ⏳</div>' : ''}
+            <div onclick="window.showGrowthDetail('${log.id}')" class="group p-5 rounded-2xl bg-white dark:bg-[#1a140c]/50 border ${isResolved ? 'border-emerald-200 dark:border-emerald-900/30 opacity-90' : (isRepairing ? 'border-orange-200 dark:border-orange-900/30' : 'border-slate-100 dark:border-[#3a2e22]')} hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all cursor-pointer relative overflow-hidden">
+                ${isResolved ? '<div class="absolute top-0 right-0 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 text-[8px] font-black uppercase tracking-widest rounded-bl-xl shadow-sm">ĐÃ SỬA SAI HOÀN HẢO ✨</div>' : ''}
+                ${isRepairing ? '<div class="absolute top-0 right-0 px-3 py-1 bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 text-[8px] font-black uppercase tracking-widest rounded-bl-xl shadow-sm">BA MẸ ĐANG KIỂM TRA ⏳</div>' : ''}
                 <div class="flex items-start gap-4">
                     <span class="text-3xl group-hover:scale-110 transition-transform duration-300 select-none">${emoji}</span>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start mb-0.5">
-                            <h6 class="font-black ${isResolved ? 'text-emerald-700' : (isRepairing ? 'text-orange-700' : 'text-slate-800')} text-sm sm:text-base leading-tight truncate">${title}</h6>
-                            <span class="text-[9px] font-bold text-slate-300 uppercase shrink-0 ml-2">${log.time ? log.time.split(' ')[0] : ''}</span>
+                            <h6 class="font-black ${isResolved ? 'text-emerald-700 dark:text-emerald-400' : (isRepairing ? 'text-orange-700 dark:text-orange-400' : 'text-slate-800 dark:text-white')} text-sm sm:text-base leading-tight truncate">${title}</h6>
+                            <span class="text-[9px] font-bold text-slate-300 dark:text-slate-500 uppercase shrink-0 ml-2">${log.time ? log.time.split(' ')[0] : ''}</span>
                         </div>
                         
-                        ${description ? `<p class="text-[11px] font-medium text-slate-500 line-clamp-1 mb-2">${description}</p>` : ''}
+                        ${description ? `<p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 line-clamp-1 mb-2">${description}</p>` : ''}
                         
                         <div class="flex flex-wrap gap-1.5">
                             ${log.reward !== 0 ? `<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black ${log.reward > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-50 text-rose-600'}"><span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1">monetization_on</span>${log.reward > 0 ? '+' : ''}${log.reward}</div>` : ''}
