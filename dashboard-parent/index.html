@@ -194,16 +194,16 @@
                         class="bg-primary text-white p-8 rounded-[2.5rem] shadow-xl shadow-primary/20 relative overflow-hidden group">
                         <div
                             class="absolute -right-8 -bottom-8 opacity-20 group-hover:scale-110 transition-transform duration-700">
-                            <span class="material-symbols-outlined text-[150px]">rocket_launch</span>
+                            <span id="insight-icon" class="material-symbols-outlined text-[150px]">rocket_launch</span>
                         </div>
                         <div class="relative z-10">
                             <h5 class="text-xs font-black uppercase tracking-widest opacity-80 mb-2">Lời khuyên hệ thống
                             </h5>
-                            <h4 class="text-2xl font-black leading-tight mb-4">Tuệ An đang có chuỗi 5 ngày xuất sắc!
+                            <h4 id="insight-title" class="text-2xl font-black leading-tight mb-4">Đang tải phân tích...
                             </h4>
-                            <p class="text-sm font-medium opacity-90 leading-relaxed mb-6">Hãy khích lệ con bằng một
-                                phần quà nhỏ trong cửa hàng để duy trì động lực này nhé.</p>
-                            <button onclick="navigateWithTransition('../manage-shop/index.html')"
+                            <p id="insight-desc" class="text-sm font-medium opacity-90 leading-relaxed mb-6">Hệ thống
+                                đang phân tích dữ liệu rèn luyện của các con.</p>
+                            <button id="insight-btn" onclick="navigateWithTransition('../manage-shop/index.html')"
                                 class="bg-white text-primary font-black px-6 py-3 rounded-xl text-xs hover:bg-slate-50 transition-all shadow-lg active:scale-95">
                                 XEM CỬA HÀNG QUÀ
                             </button>
@@ -325,7 +325,60 @@
             // 5. Update Categories
             document.querySelector('.stats-container').innerHTML = displayData.bars.map(b => renderBar(b.label, b.value, b.color)).join('');
 
-            // 6. Update Charts and Legends
+            // 6. Update Dynamic Insights
+            const insightTitle = document.getElementById('insight-title');
+            const insightDesc = document.getElementById('insight-desc');
+            const insightIcon = document.getElementById('insight-icon');
+            const insightBtn = document.getElementById('insight-btn');
+            const allQuests = window.AppState.data.quests || [];
+
+            if (currentView === 'all') {
+                const topChild = [...familyMembers].sort((a, b) => (b.weeklyStreak || 0) - (a.weeklyStreak || 0))[0];
+                if (topChild && (topChild.weeklyStreak || 0) > 0) {
+                    insightTitle.innerText = `${topChild.name} đang dẫn đầu gia đình!`;
+                    insightDesc.innerText = `Với chuỗi ${topChild.weeklyStreak} ngày rèn luyện liên tục, ${topChild.name} đang là tấm gương sáng nhất tuần này.`;
+                    insightIcon.innerText = "workspace_premium";
+                } else {
+                    insightTitle.innerText = "Khởi động tuần mới đầy năng lượng!";
+                    insightDesc.innerText = "Hãy giao thêm các nhiệm vụ nhẹ nhàng để tạo đà hưng phấn cho các con vào đầu tuần nhé.";
+                    insightIcon.innerText = "rocket_launch";
+                }
+                insightBtn.innerText = "XEM CỬA HÀNG QUÀ";
+                insightBtn.onclick = () => navigateWithTransition('../manage-shop/index.html');
+            } else {
+                const member = familyMembers.find(m => m.id === currentView);
+                if (member) {
+                    const pendingQuests = allQuests.filter(q => q.status === 'pending_approval' && q.completedBy && q.completedBy.includes(member.id)).length;
+
+                    if (pendingQuests > 0) {
+                        insightTitle.innerText = `${member.name} đang đợi ba mẹ duyệt!`;
+                        insightDesc.innerText = `Con đã hoàn thành ${pendingQuests} nhiệm vụ mới. Hãy kiểm tra và khích lệ con ngay nhé!`;
+                        insightIcon.innerText = "fact_check";
+                        insightBtn.innerText = "DUYỆT NHIỆM VỤ NGAY";
+                        insightBtn.onclick = () => navigateWithTransition('../approve-tasks/index.html');
+                    } else if ((member.weeklyStreak || 0) >= 5) {
+                        insightTitle.innerText = `Chuỗi phong độ của ${member.name} rất tốt!`;
+                        insightDesc.innerText = `${member.weeklyStreak} ngày liên tiếp rèn luyện nếp sống tốt. Một phần quà nhỏ sẽ giúp con ghi nhớ thói quen này.`;
+                        insightIcon.innerText = "local_fire_department";
+                        insightBtn.innerText = "TẶNG QUÀ KHÍCH LỆ";
+                        insightBtn.onclick = () => navigateWithTransition('../manage-shop/index.html');
+                    } else if ((member.gold || 0) > 500) {
+                        insightTitle.innerText = `${member.name} đã tích được khá nhiều vàng!`;
+                        insightDesc.innerText = `Con đang có ${member.gold} vàng. Ba mẹ hãy nhắc con ghé thăm cửa hàng để đổi lấy những phần thưởng xứng đáng nhé.`;
+                        insightIcon.innerText = "savings";
+                        insightBtn.innerText = "MỞ CỬA HÀNG";
+                        insightBtn.onclick = () => navigateWithTransition('../manage-shop/index.html');
+                    } else {
+                        insightTitle.innerText = `Hãy đồng hành cùng ${member.name}`;
+                        insightDesc.innerText = `Một lời khen ngợi trực tiếp hôm nay về sự nỗ lực sẽ giá trị hơn mọi phần thưởng vật chất nào khác.`;
+                        insightIcon.innerText = "volunteer_activism";
+                        insightBtn.innerText = "GIAO THÊM NHIỆM VỤ";
+                        insightBtn.onclick = () => navigateWithTransition('../manage-tasks/index.html');
+                    }
+                }
+            }
+
+            // 7. Update Charts and Legends
             document.getElementById('chart-title').innerText = displayData.chartTitle;
 
             const legendContainer = document.getElementById('chart-legend');
