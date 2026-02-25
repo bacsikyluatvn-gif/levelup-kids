@@ -78,12 +78,19 @@
         </div>
         <div class="flex items-center gap-4">
           <notification-bell></notification-bell>
+          <button onclick="window.openBehaviorLogModal()"
+            class="bg-white dark:bg-zinc-800 border-2 border-primary/20 text-slate-700 dark:text-slate-200 font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all hover:bg-primary/5 group">
+            <span
+              class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform">auto_awesome</span>
+            <span>Ghi nhận hành động</span>
+          </button>
           <button onclick="toggleModal(true)"
             class="bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all shadow-sm shadow-primary/20">
             <span class="material-symbols-outlined text-[20px]">add_circle</span>
             <span>Thêm nhiệm vụ mới</span>
           </button>
         </div>
+
       </header>
       <!-- Content Scrollable Area -->
       <section class="flex-1 overflow-y-auto p-8 custom-scrollbar">

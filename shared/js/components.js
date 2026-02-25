@@ -875,18 +875,25 @@ class LeaderboardPodium extends HTMLElement {
                 return b.level - a.level;
             });
         } else if (mode === 'arena_wins') {
-            // Monday of current week
-            const now = new Date();
-            const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-            startOfWeek.setHours(0, 0, 0, 0);
+            // Sort by ALL-TIME stats (no week filter) so ranking is always meaningful
+            const getAllStats = (uid) => {
+                const matches = (data.challenges || []).filter(c =>
+                    c.status === 'completed' &&
+                    (c.challengerId === uid || c.opponentId === uid)
+                );
+                const wins = matches.filter(c => c.winnerId === uid).length;
+                const draws = matches.filter(c => c.winnerId === null).length;
+                const losses = matches.length - wins - draws;
+                return { wins, draws, losses };
+            };
 
-            const getWins = (uid) => (data.challenges || []).filter(c =>
-                c.status === 'completed' &&
-                c.winnerId === uid &&
-                new Date(c.date) >= startOfWeek
-            ).length;
-
-            sorted.sort((a, b) => getWins(b.id) - getWins(a.id));
+            sorted.sort((a, b) => {
+                const sA = getAllStats(a.id);
+                const sB = getAllStats(b.id);
+                if (sB.wins !== sA.wins) return sB.wins - sA.wins;
+                if (sB.draws !== sA.draws) return sB.draws - sA.draws;
+                return sA.losses - sB.losses;
+            });
         } else if (mode === 'stickers') {
             sorted.sort((a, b) => (b.totalStickers || 0) - (a.totalStickers || 0));
         } else {
@@ -1065,11 +1072,25 @@ class LeaderboardTable extends HTMLElement {
                 return b.level - a.level;
             });
         } else if (mode === 'arena_wins') {
-            const now = new Date();
-            const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-            startOfWeek.setHours(0, 0, 0, 0);
-            const getWins = (uid) => (data.challenges || []).filter(c => c.status === 'completed' && c.winnerId === uid && new Date(c.date) >= startOfWeek).length;
-            sorted.sort((a, b) => getWins(b.id) - getWins(a.id));
+            // Sort by ALL-TIME stats (no week filter) so ranking is always meaningful
+            const getAllStats = (uid) => {
+                const matches = (data.challenges || []).filter(c =>
+                    c.status === 'completed' &&
+                    (c.challengerId === uid || c.opponentId === uid)
+                );
+                const wins = matches.filter(c => c.winnerId === uid).length;
+                const draws = matches.filter(c => c.winnerId === null).length;
+                const losses = matches.length - wins - draws;
+                return { wins, draws, losses };
+            };
+
+            sorted.sort((a, b) => {
+                const sA = getAllStats(a.id);
+                const sB = getAllStats(b.id);
+                if (sB.wins !== sA.wins) return sB.wins - sA.wins;
+                if (sB.draws !== sA.draws) return sB.draws - sA.draws;
+                return sA.losses - sB.losses;
+            });
         } else if (mode === 'stickers') {
             sorted.sort((a, b) => (b.totalStickers || 0) - (a.totalStickers || 0));
         } else {
@@ -1088,10 +1109,8 @@ class LeaderboardTable extends HTMLElement {
             if (mode === 'xp') return `Lv.${user.level}`;
             if (mode === 'weekly_xp') return `${user.weeklyXp || 0}`;
             if (mode === 'arena_wins') {
-                const now = new Date();
-                const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-                startOfWeek.setHours(0, 0, 0, 0);
-                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id) && new Date(c.date) >= startOfWeek);
+                // Display ALL-TIME record to match ranking order
+                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id));
                 const wins = matches.filter(c => c.winnerId === user.id).length;
                 const draws = matches.filter(c => c.winnerId === null).length;
                 const losses = matches.length - wins - draws;
@@ -1246,28 +1265,20 @@ class ParentSidebar extends HTMLElement {
                     </div>
                 </div>
 
-                <div class="p-6">
-                    <button onclick="window.openBehaviorLogModal()" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary text-white rounded-[1.5rem] text-sm font-black shadow-lg shadow-primary/25 hover:scale-[1.03] transition-all group overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                        <span class="material-symbols-outlined text-2xl font-black">auto_awesome</span>
-                        <span>GHI NHẬN HÀNH ĐỘNG</span>
-                    </button>
-                </div>
-                
-                <nav class="flex-1 p-6 pt-2 space-y-2 overflow-y-auto">
+                <nav class="flex-1 p-6 pt-4 space-y-2 overflow-y-auto">
                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-3">Bảng điều khiển</div>
                     
-                    ${this.navLink('dashboard', 'Tổng quan', '../admin/index.html', active === 'dashboard')}
-                    ${this.navLink('insights', 'Báo cáo', '../dashboard-parent/index.html', active === 'insights')}
+                    ${this.navLink('dashboard', 'Bảng điều khiển', '../admin/index.html', active === 'dashboard' || active === 'insights')}
                     ${this.navLink('leaderboard', 'Xếp hạng', '../leaderboard/index.html', active === 'leaderboard')}
                     ${this.navLink('verified', 'Duyệt nhiệm vụ', '../approve-tasks/index.html', active === 'approval', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && r.type === 'task').length : 0) || '')}
-                    ${this.navLink('assignment', 'Quản lý bài tập', '../manage-tasks/index.html', active === 'tasks')}
+                    ${this.navLink('assignment', 'Quản lý nhiệm vụ', '../manage-tasks/index.html', active === 'tasks')}
                     ${this.navLink('redeem', 'Cửa hàng quà', '../manage-shop/index.html', active === 'shop', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length : 0) || '')}
                     
                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-3 mt-6">Cài đặt</div>
                     ${this.navLink('group', 'Thành viên cá nhân', '../portal/index.html', active === 'members')}
                     ${this.navLink('settings', 'Cấu hình hệ thống', '../settings/index.html', active === 'settings')}
                 </nav>
+
 
 
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
