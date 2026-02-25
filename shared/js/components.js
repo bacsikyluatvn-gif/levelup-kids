@@ -2737,7 +2737,7 @@ class GrowthDiaryView extends HTMLElement {
                         <div class="w-full space-y-6">
                             <div class="relative group">
                                 <textarea id="reflection-text" 
-                                    oninput="localStorage.setItem('daily_reflection_${data.user.id}', this.value)"
+                                    oninput="localStorage.setItem('daily_reflection_' + '${data.user.id}', this.value)"
                                     class="w-full bg-white dark:bg-[#1a140c] border-2 border-emerald-100 dark:border-[#3a2e22] rounded-[2.5rem] p-8 sm:p-10 text-lg sm:text-2xl font-medium text-slate-700 dark:text-slate-200 focus:ring-8 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[220px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none lg:pr-24"
                                     placeholder="Hôm nay có điều gì làm con vui hay buồn không? Hãy tâm sự với ba mẹ nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
                                 
@@ -2869,19 +2869,22 @@ class GrowthDiaryView extends HTMLElement {
             const textarea = document.getElementById('reflection-text');
             const currentText = textarea ? textarea.value.trim() : '';
             const currentRating = localStorage.getItem('daily_rating_' + data.user.id);
+            const userId = data.user.id;
 
             if (!currentRating) {
                 window.showFamilyQuestAlert("Nhắc nhở", "Con hãy chọn số trái tim để đánh giá ngày hôm nay nhé!", "warning");
                 return;
             }
 
-            // Pre-save backup for rollback
             const backupText = currentText;
             const backupRating = currentRating;
 
-            // 1. CLEAR IMMEDIATELY (LocalStorage & UI)
-            localStorage.removeItem('daily_rating_' + data.user.id);
-            localStorage.removeItem('daily_reflection_' + data.user.id);
+            // 1. CLEAR IMMEDIATELY (More aggressive)
+            localStorage.setItem('daily_rating_' + userId, '');
+            localStorage.setItem('daily_reflection_' + userId, '');
+            localStorage.removeItem('daily_rating_' + userId);
+            localStorage.removeItem('daily_reflection_' + userId);
+
             if (textarea) textarea.value = '';
             window.setDailyRating(0);
 
@@ -2898,17 +2901,24 @@ class GrowthDiaryView extends HTMLElement {
                         }
                         window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
 
-                        // Scroll to top and final render
                         window.scrollTo({ top: 0, behavior: 'smooth' });
-                        this.render(window.AppState.data);
+
+                        // Final cleanup just in case sync put it back
+                        localStorage.removeItem('daily_rating_' + userId);
+                        localStorage.removeItem('daily_reflection_' + userId);
+
+                        setTimeout(() => {
+                            this.render(window.AppState.data);
+                            const finalCleanup = document.getElementById('reflection-text');
+                            if (finalCleanup) finalCleanup.value = '';
+                        }, 300);
                     } else {
-                        throw new Error("Save error");
+                        throw new Error("Save failure");
                     }
                 } catch (err) {
                     console.error("Diary save error:", err);
-                    // ROLLBACK: Restore state if save failed
-                    localStorage.setItem('daily_rating_' + data.user.id, backupRating);
-                    localStorage.setItem('daily_reflection_' + data.user.id, backupText);
+                    localStorage.setItem('daily_rating_' + userId, backupRating);
+                    localStorage.setItem('daily_reflection_' + userId, backupText);
                     if (textarea) textarea.value = backupText;
                     window.setDailyRating(backupRating);
                     window.showFamilyQuestAlert("Lỗi kết nối", "Hệ thống chưa lưu được nhật ký, con hãy nhấn nút gửi lại nhé! 🛠️", "error");
