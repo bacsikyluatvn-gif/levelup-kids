@@ -2865,42 +2865,52 @@ class GrowthDiaryView extends HTMLElement {
         };
 
         window.saveDailyReflection = async () => {
-            const text = document.getElementById('reflection-text').value.trim();
+            const textarea = document.getElementById('reflection-text');
+            const text = textarea ? textarea.value.trim() : '';
             const rating = localStorage.getItem('daily_rating_' + data.user.id);
+
             if (!rating) {
                 window.showFamilyQuestAlert("Nhắc nhở", "Con hãy chọn số trái tim để đánh giá ngày hôm nay nhé!", "warning");
                 return;
             }
-            localStorage.setItem('daily_reflection_' + data.user.id, text);
+
+            // Pre-save UI state for potential rollback
+            const backupText = text;
+            const backupRating = rating;
+
+            // CRITICAL: Clear storage and UI BEFORE the async call to prevent race conditions
+            // with subscription-based re-renders during the await period.
+            localStorage.removeItem('daily_rating_' + data.user.id);
+            localStorage.removeItem('daily_reflection_' + data.user.id);
+            if (textarea) textarea.value = '';
+            window.setDailyRating(0);
+
             if (window.AppState) {
-                const result = await window.AppState.resolveBehavior(null, {
-                    title: `Tự đánh giá: ${rating}/10 điểm`,
-                    description: text || "Con cảm thấy hài lòng với hôm nay!"
-                });
+                try {
+                    const result = await window.AppState.resolveBehavior(null, {
+                        title: `Tự đánh giá: ${rating}/10 điểm`,
+                        description: text || "Con cảm thấy hài lòng với hôm nay!"
+                    });
 
-                if (result) {
-                    if (window.confetti) {
-                        window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
-                    }
-                    window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
+                    if (result) {
+                        if (window.confetti) {
+                            window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
+                        }
+                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
 
-                    // CRITICAL: Reset UI and storage for next time
-                    localStorage.removeItem('daily_rating_' + data.user.id);
-                    localStorage.removeItem('daily_reflection_' + data.user.id);
-
-                    // Force UI cleanup on current elements
-                    const textarea = document.getElementById('reflection-text');
-                    if (textarea) textarea.value = '';
-                    window.setDailyRating(0);
-
-                    // Scroll to top to see the result
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                    // Re-render to ensure consistency
-                    if (window.AppState) {
+                        // Scroll to top and force final render
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                         this.render(window.AppState.data);
+                    } else {
+                        throw new Error("Save returned null/false");
                     }
-                } else {
+                } catch (err) {
+                    console.error("Diary save error:", err);
+                    // Rollback on failure
+                    localStorage.setItem('daily_rating_' + data.user.id, backupRating);
+                    localStorage.setItem('daily_reflection_' + data.user.id, backupText);
+                    if (textarea) textarea.value = backupText;
+                    window.setDailyRating(backupRating);
                     window.showFamilyQuestAlert("Lỗi hệ thống", "Rất tiếc, đã có lỗi khi lưu nhật ký. Con hãy thử lại sau nhé! 🛠️", "error");
                 }
             }
