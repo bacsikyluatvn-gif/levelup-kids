@@ -1265,30 +1265,10 @@ class ParentSidebar extends HTMLElement {
                     ${this.navLink('redeem', 'Cửa hàng quà', '../manage-shop/index.html', active === 'shop', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length : 0) || '')}
                     
                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-3 mt-6">Cài đặt</div>
-                    ${this.navLink('group', 'Thành viên cá nhân', '#', active === 'members')}
-                ${this.navLink('settings', 'Cấu hình hệ thống', '#', active === 'settings')}
+                    ${this.navLink('group', 'Thành viên cá nhân', '../portal/index.html', active === 'members')}
+                    ${this.navLink('settings', 'Cấu hình hệ thống', '../settings/index.html', active === 'settings')}
+                </nav>
 
-                <!-- Debug/Testing -->
-                <div class="mt-6 px-4 py-3 bg-rose-50 dark:bg-rose-900/10 rounded-2xl border border-rose-100 dark:border-rose-900/30">
-                    <div class="text-[9px] font-black text-rose-500 uppercase tracking-widest mb-2 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[12px]">bug_report</span>
-                        Công cụ kiểm soát
-                    </div>
-                <button onclick="
-                    const resetFn = window.testResetDailyTasks || (window.AppState && window.AppState.testResetDailyTasks);
-                    if(resetFn) { 
-                        if(window.AppState) resetFn.call(window.AppState); 
-                        else resetFn();
-                    } else { 
-                        alert('Hệ thống đang tải mã nguồn mới, vui lòng nhấn Ctrl+F5 hoặc Cmd+Shift+R để cập nhật.'); 
-                    }
-                " class="w-full text-left px-4 py-2 text-[10px] font-black text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-900/20 rounded-xl transition-all flex items-center gap-2 cursor-pointer" style="cursor: pointer;">
-                    <span class="material-symbols-outlined text-sm text-rose-500">restart_alt</span>
-                    RESET NHIỆM VỤ (TEST)
-                </button>
-                    <p class="text-[8px] text-rose-400 mt-1 px-1 leading-tight">Dùng để test việc khôi phục nhiệm vụ hàng ngày ngay lập tức.</p>
-                </div>
-            </nav>
 
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
                     <button onclick="navigateWithTransition('../login/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
