@@ -178,7 +178,7 @@
             <div class="mt-12 text-center pt-8 border-t border-slate-50 dark:border-slate-800">
                 <p class="text-slate-500 dark:text-slate-400 font-bold">
                     Thành viên mới?
-                    <a href="../đăng_ký_tài_khoản/code.html" class="text-primary hover:underline font-black ml-1">Tạo
+                    <a href="../Register/index.html" class="text-primary hover:underline font-black ml-1">Tạo
                         tài khoản ngay</a>
                 </p>
             </div>
@@ -203,7 +203,7 @@
 
                 window.supabaseClient.auth.getSession().then(({ data: { session } }) => {
                     if (session && !isRecovery) {
-                        window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+                        window.location.href = '../admin/index.html';
                     }
                 });
             });
@@ -279,7 +279,7 @@
 
                 // Đợi một chút để người dùng thấy thông báo thành công
                 setTimeout(() => {
-                    window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+                    window.location.href = '../admin/index.html';
                 }, 2000);
 
             } catch (err) {
@@ -310,7 +310,7 @@
                 });
 
                 if (error) throw error;
-                window.location.href = '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html';
+                window.location.href = '../admin/index.html';
 
             } catch (err) {
                 alertBox.className = 'block p-4 rounded-2xl text-sm font-bold text-center bg-red-50 text-red-600 mb-4';
@@ -370,7 +370,7 @@
 
             try {
                 const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/đăng_nhập_phụ_huynh/code.html',
+                    redirectTo: window.location.origin + '/login/index.html',
                 });
 
                 if (error) throw error;

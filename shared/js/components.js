@@ -101,7 +101,7 @@ class AppHeader extends HTMLElement {
                     <span class="material-symbols-outlined text-[18px] text-purple-500 transform rotate-12">sell</span>
                     <span class="font-bold text-purple-700 dark:text-purple-400 tabular-nums">${user.stickers || 0}</span>
                 </div>
-                <div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-4 py-1.5 rounded-full border border-blue-200 dark:border-blue-800/30 transition-all hover:scale-110" onclick="window.navigateWithTransition('../kho_báu_của_bé_-_hành_trình_cây_trưởng_thành/code.html')" title="Giọt nước (để tưới cây)">
+                <div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-4 py-1.5 rounded-full border border-blue-200 dark:border-blue-800/30 transition-all hover:scale-110" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (để tưới cây)">
                     <span class="material-symbols-outlined text-[18px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
                     <span class="font-bold text-blue-700 dark:text-blue-400 tabular-nums">${user.water || 0}</span>
                 </div>
@@ -113,7 +113,7 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300" 
                          style="background-image: url('${user.avatar}')">
                     </div>
-                    <button onclick="window.location.href='../màn_hình_đăng_nhập_-_phân_quyền_trực_quan/code.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../Login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
@@ -138,7 +138,7 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white">
                         <span class="material-symbols-outlined">person</span>
                     </div>
-                    <button onclick="window.location.href='../màn_hình_đăng_nhập_-_phân_quyền_trực_quan/code.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../Login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
@@ -1257,12 +1257,12 @@ class ParentSidebar extends HTMLElement {
                 <nav class="flex-1 p-6 pt-2 space-y-2 overflow-y-auto">
                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-3">Bảng điều khiển</div>
                     
-                    ${this.navLink('dashboard', 'Tổng quan', '../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html', active === 'dashboard')}
-                    ${this.navLink('insights', 'Báo cáo', '../bảng_điều_khiển_báo_cáo_phụ_huynh/code.html', active === 'insights')}
-                    ${this.navLink('leaderboard', 'Xếp hạng', '../bảng_xếp_hạng_-_đồng_bộ_avatar_hoạt_hình/code.html', active === 'leaderboard')}
-                    ${this.navLink('verified', 'Duyệt nhiệm vụ', '../phê_duyệt_nhiệm_vụ_-_đồng_bộ_avatar_hoạt_hình/code.html', active === 'approval', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && r.type === 'task').length : 0) || '')}
-                    ${this.navLink('assignment', 'Quản lý bài tập', '../quản_lý_nhiệm_vụ_(phụ_huynh)/code.html', active === 'tasks')}
-                    ${this.navLink('redeem', 'Cửa hàng quà', '../quản_lý_cửa_hàng_(phụ_huynh)/code.html', active === 'shop', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length : 0) || '')}
+                    ${this.navLink('dashboard', 'Tổng quan', '../admin/index.html', active === 'dashboard')}
+                    ${this.navLink('insights', 'Báo cáo', '../dashboard-parent/index.html', active === 'insights')}
+                    ${this.navLink('leaderboard', 'Xếp hạng', '../leaderboard/index.html', active === 'leaderboard')}
+                    ${this.navLink('verified', 'Duyệt nhiệm vụ', '../approve-tasks/index.html', active === 'approval', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && r.type === 'task').length : 0) || '')}
+                    ${this.navLink('assignment', 'Quản lý bài tập', '../manage-tasks/index.html', active === 'tasks')}
+                    ${this.navLink('redeem', 'Cửa hàng quà', '../manage-shop/index.html', active === 'shop', (window.AppState && window.AppState.data.requests ? window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length : 0) || '')}
                     
                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-3 mt-6">Cài đặt</div>
                     ${this.navLink('group', 'Thành viên cá nhân', '#', active === 'members')}
@@ -1291,7 +1291,7 @@ class ParentSidebar extends HTMLElement {
             </nav>
 
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
-                    <button onclick="navigateWithTransition('../màn_hình_đăng_nhập_-_phân_quyền_trực_quan/code.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
+                    <button onclick="navigateWithTransition('../Login/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
                         <span class="material-symbols-outlined text-xl text-primary">logout</span>
                         <span>Trở về app Của Bé</span>
                     </button>
@@ -1400,7 +1400,7 @@ class ActivityFeed extends HTMLElement {
                         </div>
                     `}
                 </div>
-                <button onclick="window.location.href='../phê_duyệt_nhiệm_vụ_-_đồng_bộ_avatar_hoạt_hình/code.html'" class="w-full mt-10 py-4 text-slate-400 text-xs font-black border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all uppercase tracking-widest">
+                <button onclick="window.location.href='../approve-tasks/index.html'" class="w-full mt-10 py-4 text-slate-400 text-xs font-black border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all uppercase tracking-widest">
                     Xem tất cả lịch sử
                 </button>
             </div>
@@ -1732,15 +1732,15 @@ class ChildNav extends HTMLElement {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
-                    ${this.navItem('dashboard', 'Nhiệm vụ', 'bảng_điều_khiển_(montserrat)/code.html', active === 'dashboard' || active === '')}
-                    ${this.navItem('book_5', 'Nhật ký', 'nhật_ký_trưởng_thành/code.html', active === 'diary')}
-                    ${this.navItem('sports_kabaddi', 'Đấu trường', 'đấu_trường_-_thách_đấu_liên_thanh/code.html', active === 'arena')}
-                    ${this.navItem('leaderboard', 'Xếp hạng', 'bảng_xếp_hạng_-_đồng_bộ_avatar_hoạt_hình/code.html', active === 'leaderboard')}
-                    ${this.navItem('workspace_premium', 'Danh hiệu', 'sưu_tập_danh_hiệu/code.html', active === 'titles')}
+                    ${this.navItem('dashboard', 'Nhiệm vụ', 'Dashboard/index.html', active === 'dashboard' || active === '')}
+                    ${this.navItem('book_5', 'Nhật ký', 'diary/index.html', active === 'diary')}
+                    ${this.navItem('sports_kabaddi', 'Đấu trường', 'Arena/index.html', active === 'arena')}
+                    ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
+                    ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
                     ${this.navStickerItem(active === 'stickers')}
-                    ${this.navItem('park', 'Kho báu', 'kho_báu_của_bé_-_hành_trình_cây_trưởng_thành/code.html', active === 'tree')}
-                    ${this.navItem('storefront', 'Cửa hàng', 'cửa_hàng_-_xác_nhận_đổi_quà/code.html', active === 'shop')}
-                    ${this.navItem('person', 'Hồ sơ', 'chỉnh_sửa_hồ_sơ_-_cập_nhật_avatar_riêng_biệt/code.html', active === 'profile')}
+                    ${this.navItem('park', 'Kho báu', 'tree-growth/index.html', active === 'tree')}
+                    ${this.navItem('storefront', 'Cửa hàng', 'Shop/index.html', active === 'shop')}
+                    ${this.navItem('person', 'Hồ sơ', 'Profile/index.html', active === 'profile')}
                 </nav>
             </div>
             <!--Spacer to prevent content from being hidden by fixed nav-->
@@ -1762,7 +1762,7 @@ class ChildNav extends HTMLElement {
             ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center"> ${balance > 9 ? '9+' : balance}</span> `
             : '';
         return `
-            <a href="../cuốn_sổ_sticker/code.html" class="relative flex flex-col items-center gap-1 transition-all duration-300 ${activeClass} flex-1 min-w-[56px] text-center">
+            <a href="../sticker-book/index.html" class="relative flex flex-col items-center gap-1 transition-all duration-300 ${activeClass} flex-1 min-w-[56px] text-center">
                 <div class="${isActive ? 'bg-primary/10 p-2 rounded-2xl' : 'p-2'} transition-all duration-300 relative">
                     <span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>
                     ${badge}
@@ -3002,7 +3002,7 @@ class ParentPinModal extends HTMLElement {
 
         if (!parent) {
             this.showError('Không thấy tài khoản Phụ huynh. Hãy đăng nhập lại.');
-            setTimeout(() => window.location.href = '../đăng_nhập_phụ_huynh/code.html', 1500);
+            setTimeout(() => window.location.href = '../login/index.html', 1500);
             return;
         }
 
@@ -3010,7 +3010,7 @@ class ParentPinModal extends HTMLElement {
 
         if (this.pin === correctPin) {
             localStorage.setItem('family_quest_active_profile', parent.id);
-            window.navigateWithTransition('../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html');
+            window.navigateWithTransition('../admin/index.html');
         } else {
             this.showError('Mã PIN không chính xác!');
             this.pin = '';
@@ -3080,7 +3080,7 @@ class ParentPinModal extends HTMLElement {
                                     ${num}
                                 </button>
                             `).join('')}
-                            <button onclick="window.location.href='../đăng_nhập_phụ_huynh/code.html'" class="h-16 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-slate-400 hover:text-primary transition-all shadow-sm"
+                            <button onclick="window.location.href='../login/index.html'" class="h-16 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-slate-400 hover:text-primary transition-all shadow-sm"
                                     title="Dùng Email">
                                 <span class="material-symbols-outlined">mail</span>
                             </button>
@@ -3094,7 +3094,7 @@ class ParentPinModal extends HTMLElement {
 
                         <div class="mt-8 text-center">
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Cần hỗ trợ?</p>
-                            <a href="../đăng_nhập_phụ_huynh/code.html" class="text-xs font-bold text-primary hover:underline">Quên mã PIN? Đăng nhập qua Email</a>
+                            <a href="../login/index.html" class="text-xs font-bold text-primary hover:underline">Quên mã PIN? Đăng nhập qua Email</a>
                         </div>
                     </div>
                 </div>
@@ -3161,7 +3161,7 @@ class NotificationBell extends HTMLElement {
             const icon = isTask ? 'task_alt' : (req.type === 'perk' ? 'bolt' : 'redeem');
             const iconColor = isTask ? 'text-blue-500' : 'text-orange-500';
             const bgColor = isTask ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-orange-50 dark:bg-orange-900/20';
-            const link = isTask ? '../phê_duyệt_nhiệm_vụ_-_đồng_bộ_avatar_hoạt_hình/code.html' : '../quản_lý_cửa_hàng_(phụ_huynh)/code.html';
+            const link = isTask ? '../approve-tasks/index.html' : '../manage-shop/index.html';
 
             return `
                                 <a href="${link}" class="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-b border-slate-50 dark:border-stone-800/50 group">
@@ -3179,7 +3179,7 @@ class NotificationBell extends HTMLElement {
                     </div>
                     ${count > 0 ? `
                         <div class="p-4 bg-slate-50 dark:bg-stone-900/50 text-center">
-                            <button onclick="window.location.href='../bảng_quản_trị_tổng_quan_-_đồng_bộ_avatar_hoạt_hình/code.html'" class="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">Xem tất cả hoạt động</button>
+                            <button onclick="window.location.href='../admin/index.html'" class="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">Xem tất cả hoạt động</button>
                         </div>
                     ` : ''}
                 </div>
