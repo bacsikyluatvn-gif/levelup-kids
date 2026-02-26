@@ -77,7 +77,7 @@ class AppHeader extends HTMLElement {
                         <div class="bg-primary/20 p-2 rounded-xl text-primary">
                             <span class="material-symbols-outlined text-3xl">castle</span>
                         </div>
-                        <h1 class="text-2xl font-bold tracking-tight text-text-main dark:text-white">${title}</h1>
+                        <h1 class="text-2xl font-bold tracking-tight text-text-main dark:text-white">LevelUp Kids</h1>
                     </div>
                     ${type === 'child' ? this.getChildStats(data) : this.getParentStats(data)}
                 </div>
