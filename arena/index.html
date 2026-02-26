@@ -408,20 +408,22 @@
         @keyframes lightning-strike {
 
             0%,
-            95%,
-            98% {
+            50%,
+            100% {
                 opacity: 0;
             }
 
-            96%,
-            99% {
-                opacity: 1;
-                filter: brightness(2);
+            52% {
+                opacity: 0.1;
+            }
+
+            53% {
+                opacity: 0;
             }
         }
 
         .lightning-overlay {
-            animation: lightning-strike 5s infinite;
+            animation: lightning-strike 15s infinite;
         }
 
         @keyframes aura-active-blue {
@@ -879,7 +881,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- ================ REVEAL DRAMA MODAL (IMPROVED) ================ -->
@@ -1442,13 +1443,27 @@
         function playSound(id) {
             const audio = document.getElementById(id);
             if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => console.log("Audio play blocked"));
+                // Thêm try-catch để tránh lỗi nếu user chưa tương tác với trang
+                try {
+                    audio.currentTime = 0;
+                    audio.play().catch(e => { });
+                } catch (e) { }
             }
         }
 
+        let lastDataHash = "";
         function renderArena(data) {
             if (!data || !data.user) return;
+
+            // Generate a simple hash of data that affects Arena UI to prevent unnecessary re-renders
+            const currentHash = JSON.stringify({
+                userIds: (data.leaderboard || []).map(p => p.id + p.xp),
+                challenges: (data.challenges || []).map(c => c.id + c.status + c.challengerConfirmed + c.opponentConfirmed),
+                gold: data.user.gold
+            });
+
+            if (currentHash === lastDataHash) return;
+            lastDataHash = currentHash;
             const currentUserId = String(data.user.id);
 
             const activeGrid = document.getElementById('active-challenges-grid');

@@ -3940,8 +3940,13 @@ class StateManager {
                                 });
                         }
                         this.client.from('profiles').insert(botsToInsert).then(() => {
+                                // Clear generating flag after a delay to ensure sync returns new data
+                                setTimeout(() => {
+                                        this._isGeneratingBots = false;
+                                        this.syncFromDatabase();
+                                }, 2000);
+                        }).catch(() => {
                                 this._isGeneratingBots = false;
-                                this.syncFromDatabase();
                         });
                 }
 
@@ -5399,6 +5404,12 @@ class StateManager {
         async generateBotMatches() {
                 if (this._botMatchesGenerated) return;
                 this._botMatchesGenerated = true;
+                // Nếu bots chưa load xong, dời việc generate sang lần sync sau
+                const lbBots = (this.data.leaderboard || []).filter(p => p.role === 'bot');
+                if (lbBots.length < 5) {
+                        this._botMatchesGenerated = false;
+                        return;
+                }
 
                 const today = new Date().toISOString().split('T')[0];
                 const bots = this.data.leaderboard.filter(p => p.role === 'bot');
