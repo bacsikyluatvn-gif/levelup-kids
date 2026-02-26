@@ -4006,7 +4006,7 @@ class StateManager {
                                 actionStreak: p.action_streak || 0,
                                 weeklyStreak: p.weekly_streak || 0,
                                 completionStreak: p.completion_streak || 0,
-                                treePoints: p.role === 'bot' ? (p.action_streak || 0) : 0,
+                                treePoints: p.role === 'bot' ? (p.action_streak || 0) : (reqRes.data || []).filter(r => r.profile_id === p.id && r.type === 'tree_watering').length,
                                 isCurrentUser: p.id === this.currentProfileId,
                                 unlockedStickers: p.unlocked_stickers || []
                         };
@@ -4148,7 +4148,7 @@ class StateManager {
 
                 this.notify();
                 this.checkRankChange();
-                this.checkDailyBonus();
+                // this.checkDailyBonus(); // Loại bỏ quà tặng đăng nhập
                 this._initialSyncDone = true;
         }
 
