@@ -99,6 +99,10 @@ class AppHeader extends HTMLElement {
                         <div class="h-full bg-gradient-to-r from-yellow-300 to-primary transition-all duration-500" style="width: ${xpPercent}%"></div>
                     </div>
                 </div>
+                <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-900/20 px-4 py-1.5 rounded-full border border-rose-200 dark:border-rose-800/30 transition-all hover:scale-110" title="Nhân Cách (để đổi đặc quyền tinh thần)">
+                    <span class="material-symbols-outlined text-[18px] text-rose-500" style="font-variation-settings:'FILL' 1">favorite</span>
+                    <span class="font-bold text-rose-700 dark:text-rose-400 tabular-nums">${user.personalityPoints || 0}</span>
+                </div>
                 <div class="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 px-4 py-1.5 rounded-full border border-orange-200 dark:border-orange-800/30 transition-all hover:scale-110" title="Vàng (để đổi phần thưởng lớn)">
                     <span class="material-symbols-outlined text-[18px] text-orange-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
                     <span class="font-bold text-orange-700 dark:text-orange-400 tabular-nums">${user.gold}</span>
