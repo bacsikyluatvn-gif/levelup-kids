@@ -89,7 +89,7 @@ class AppHeader extends HTMLElement {
         const user = data.user;
         const xpPercent = Math.floor((user.xp / user.maxXp) * 100);
         return `
-            <div class="flex flex-1 w-full md:w-auto items-center justify-center md:justify-end gap-4 md:gap-8">
+            <div class="flex flex-1 w-full md:w-auto items-center justify-center md:justify-end gap-2 md:gap-3">
                 <div class="flex flex-col w-full max-w-[200px] gap-1">
                     <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
                         <span>CẤP ${user.level}</span>
@@ -99,19 +99,19 @@ class AppHeader extends HTMLElement {
                         <div class="h-full bg-gradient-to-r from-yellow-300 to-primary transition-all duration-500" style="width: ${xpPercent}%"></div>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-900/20 px-4 py-1.5 rounded-full border border-rose-200 dark:border-rose-800/30 transition-all hover:scale-110" title="Nhân Cách (để đổi đặc quyền tinh thần)">
+                <div class="flex items-center gap-1.5 bg-rose-50 dark:bg-rose-900/20 px-3 py-1.5 rounded-full border border-rose-200 dark:border-rose-800/30 transition-all hover:scale-110" title="Nhân Cách (để đổi đặc quyền tinh thần)">
                     <span class="material-symbols-outlined text-[18px] text-rose-500" style="font-variation-settings:'FILL' 1">favorite</span>
                     <span class="font-bold text-rose-700 dark:text-rose-400 tabular-nums">${user.personalityPoints || 0}</span>
                 </div>
-                <div class="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 px-4 py-1.5 rounded-full border border-orange-200 dark:border-orange-800/30 transition-all hover:scale-110" title="Vàng (để đổi phần thưởng lớn)">
+                <div class="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-900/20 px-3 py-1.5 rounded-full border border-orange-200 dark:border-orange-800/30 transition-all hover:scale-110" title="Vàng (để đổi phần thưởng lớn)">
                     <span class="material-symbols-outlined text-[18px] text-orange-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
                     <span class="font-bold text-orange-700 dark:text-orange-400 tabular-nums">${user.gold}</span>
                 </div>
-                <div class="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/20 px-4 py-1.5 rounded-full border border-purple-200 dark:border-purple-800/30 transition-all hover:scale-110" title="Huy hiệu (để đổi đặc quyền nhanh)">
+                <div class="flex items-center gap-1.5 bg-purple-50 dark:bg-purple-900/20 px-3 py-1.5 rounded-full border border-purple-200 dark:border-purple-800/30 transition-all hover:scale-110" title="Huy hiệu (để đổi đặc quyền nhanh)">
                     <span class="material-symbols-outlined text-[18px] text-purple-500 transform rotate-12">sell</span>
                     <span class="font-bold text-purple-700 dark:text-purple-400 tabular-nums">${user.stickers || 0}</span>
                 </div>
-                <div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-4 py-1.5 rounded-full border border-blue-200 dark:border-blue-800/30 transition-all hover:scale-110" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (để tưới cây)">
+                <div class="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-800/30 transition-all hover:scale-110" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (để tưới cây)">
                     <span class="material-symbols-outlined text-[18px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
                     <span class="font-bold text-blue-700 dark:text-blue-400 tabular-nums">${user.water || 0}</span>
                 </div>
