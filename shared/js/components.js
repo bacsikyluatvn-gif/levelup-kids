@@ -2774,6 +2774,10 @@ class GrowthDiaryView extends HTMLElement {
             document.body.appendChild(modal);
         };
 
+        const todayStr = new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const todayGroup = groupedLogs[todayStr];
+        const pastDates = dateKeys.filter(d => d !== todayStr);
+
         this.innerHTML = `
             <div class="relative space-y-12 pb-20 px-4 sm:px-8">
                 <!-- Dynamic Background that supports dark mode -->
@@ -2814,107 +2818,163 @@ class GrowthDiaryView extends HTMLElement {
                     </div>
                 </div>
 
-                <!-- Daily History Section -->
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between px-4">
-                        <h4 class="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-3xl">Auto_Stories</span>
-                            Hành Trình Trưởng Thành
-                        </h4>
-                    </div>
-
-                    ${dateKeys.length === 0 ? `
-                        <div class="py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-200 shadow-sm mx-4">
-                            <div class="size-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-4xl text-slate-200">import_contacts</span>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- MAIN CONTENT: TODAY'S JOURNEY -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between px-4">
+                                <h4 class="text-2xl font-black text-slate-800 dark:text-white flex flex-col items-start leading-tight">
+                                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">Hành Trình Hôm Nay</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary">today</span>
+                                        ${todayStr}
+                                    </span>
+                                </h4>
                             </div>
-                            <h3 class="text-xl font-black text-slate-800">Bắt đầu những trang nhật ký</h3>
-                            <p class="text-slate-400 max-w-sm mx-auto text-sm font-medium leading-relaxed">Ba mẹ hãy ghi lại những hành động đầu tiên của con ngay hôm nay nhé!</p>
-                        </div>
-                    ` : `
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                            ${dateKeys.map((date, idx) => `
-                                <div onclick="window.showDiaryDetail('${date}')" class="group bg-white dark:bg-[#2c2215] rounded-[2.5rem] p-6 border border-slate-100 dark:border-[#3a2e22] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between min-h-[140px]">
-                                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
-                                    <div class="flex items-center gap-4 relative z-10 mb-4">
-                                        <div class="size-14 rounded-[1.5rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                                            <span class="material-symbols-outlined text-2xl">calendar_today</span>
-                                        </div>
-                                        <div class="flex-1 min-w-0 text-left">
-                                            <h5 class="text-lg font-black text-slate-800 dark:text-white truncate">
-                                                ${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}
-                                            </h5>
-                                        </div>
-                                        <div class="size-8 rounded-full bg-slate-50 dark:bg-[#1a140c] text-slate-300 dark:text-slate-500 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
-                                            <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
-                                        </div>
+
+                            ${!todayGroup ? `
+                                <div class="py-12 text-center bg-white dark:bg-[#2c2215]/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-[#3a2e22] shadow-sm">
+                                    <div class="size-16 bg-slate-50 dark:bg-[#1a140c]/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <span class="material-symbols-outlined text-3xl text-slate-200 dark:text-slate-700">edit_note</span>
                                     </div>
-                                    <div class="mt-auto relative z-10">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            ${groupedLogs[date].GOOD.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl border border-emerald-100 dark:border-emerald-800/30 text-[10px] font-black text-emerald-600 dark:text-emerald-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">sunny</span> ${groupedLogs[date].GOOD.length} TỐT</div>` : ''}
-                                            ${groupedLogs[date].BAD.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/30 rounded-xl border border-rose-100 dark:border-rose-800/30 text-[10px] font-black text-rose-600 dark:text-rose-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">history_edu</span> ${groupedLogs[date].BAD.length} CẦN RÈN LUYỆN</div>` : ''}
-                                            ${groupedLogs[date].REFLECTION.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border border-indigo-100 dark:border-indigo-800/30 text-[10px] font-black text-indigo-600 dark:text-indigo-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">auto_awesome</span> ${groupedLogs[date].REFLECTION.length} NHẬT KÝ</div>` : ''}
-                                            ${groupedLogs[date].GOOD.length === 0 && groupedLogs[date].BAD.length === 0 && groupedLogs[date].REFLECTION.length === 0 ? `<div class="text-[10px] font-bold text-slate-400">Không có ghi nhận</div>` : ''}
-                                        </div>
-                                    </div>
+                                    <p class="text-slate-400 font-medium text-sm">Hôm nay con chưa có ghi nhận nào.</p>
                                 </div>
-                            `).join('')}
-                        </div>
-                    `}
-                </div>
+                            ` : `
+                                <div class="space-y-6">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <!-- Today's Good -->
+                                        <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-3xl p-5 border border-emerald-100/50 dark:border-emerald-800/20">
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <div class="size-7 bg-emerald-500 rounded-lg flex items-center justify-center text-white text-[10px] font-black">
+                                                    <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">sunny</span>
+                                                </div>
+                                                <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Điều con làm tốt</span>
+                                            </div>
+                                            <div class="space-y-3">
+                                                ${todayGroup.GOOD.length === 0 ? `<p class="text-[11px] text-slate-400 italic py-4 text-center">Chờ đón điều hay từ con...</p>` : todayGroup.GOOD.map(log => this.renderLogItem(log, true)).join('')}
+                                            </div>
+                                        </div>
 
-                <!-- Daily Reflection Corner -->
-                <div class="bg-gradient-to-br from-white via-emerald-50 to-green-100 dark:from-[#2c2215] dark:via-[#2c2215] dark:to-[#1a140c] rounded-[2.5rem] p-6 sm:p-10 text-slate-800 dark:text-white relative overflow-hidden shadow-xl border border-emerald-100 dark:border-[#3a2e22] mt-12 mx-auto max-w-3xl">
-                     <!-- Soft Natural Glows -->
-                     <div class="absolute -top-32 -right-32 size-64 bg-emerald-500/10 rounded-full blur-[100px]"></div>
-                     <div class="absolute -bottom-32 -left-32 size-64 bg-green-500/10 rounded-full blur-[100px]"></div>
-                     
-                     <div class="relative z-10 flex flex-col items-center gap-6 text-center">
-                        <div class="space-y-2">
-                            <h3 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">Góc Nhìn Lại Hôm Nay</h3>
-                            <p class="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base">Con hãy tự chấm điểm cho ngày hôm nay của mình thật trung thực nhé!</p>
+                                        <!-- Today's Bad -->
+                                        <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-3xl p-5 border border-rose-100/50 dark:border-rose-800/20">
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <div class="size-7 bg-rose-500 rounded-lg flex items-center justify-center text-white text-[10px] font-black">
+                                                    <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">history_edu</span>
+                                                </div>
+                                                <span class="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400">Bài học rèn luyện</span>
+                                            </div>
+                                            <div class="space-y-3">
+                                                ${todayGroup.BAD.length === 0 ? `<p class="text-[11px] text-slate-400 italic py-4 text-center">Hôm nay con thật tuyệt vời!</p>` : todayGroup.BAD.map(log => this.renderLogItem(log, false)).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    ${todayGroup.REFLECTION.length > 0 ? `
+                                        <div class="bg-indigo-50/30 dark:bg-indigo-900/5 rounded-3xl p-5 border border-indigo-100/50 dark:border-indigo-800/20">
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <div class="size-7 bg-indigo-500 rounded-lg flex items-center justify-center text-white text-[10px] font-black">
+                                                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                                                </div>
+                                                <span class="text-[10px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Nhật ký của con</span>
+                                            </div>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                ${todayGroup.REFLECTION.map(log => {
+            const ratingMatch = log.itemTitle.match(/(\d+)\/10/);
+            const rating = ratingMatch ? ratingMatch[1] : '?';
+            const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
+            return `
+                                                        <div class="bg-white dark:bg-[#1a140c]/80 rounded-2xl p-4 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative">
+                                                            <div class="absolute top-3 right-3">
+                                                                <span class="text-[10px] font-black text-rose-500 px-2 py-1 bg-red-50 dark:bg-rose-900/20 rounded-lg">${rating}/10 ❤️</span>
+                                                            </div>
+                                                            <p class="text-sm font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic pr-12">"${desc}"</p>
+                                                            <p class="text-[8px] font-black text-slate-300 dark:text-slate-500 uppercase tracking-widest mt-2">Lúc ${log.time ? log.time.split(' ')[1] : ''}</p>
+                                                        </div>
+                                                    `;
+        }).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `}
                         </div>
 
-                        <!-- 10 Red Hearts -->
-                        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 py-2">
-                            ${Array.from({ length: 10 }).map((_, i) => {
+                        <!-- Daily Reflection Corner -->
+                        <div class="bg-gradient-to-br from-white via-emerald-50/50 to-green-100/30 dark:from-[#2c2215] dark:via-[#2c2215] dark:to-[#1a140c] rounded-[2.5rem] p-6 sm:p-10 text-slate-800 dark:text-white relative overflow-hidden shadow-xl border border-emerald-100 dark:border-[#3a2e22]">
+                            <div class="relative z-10 flex flex-col items-center gap-6 text-center">
+                                <div class="space-y-1">
+                                    <h3 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Viết Nhật Ký Hôm Nay</h3>
+                                    <p class="text-slate-500 dark:text-slate-400 font-medium text-xs">Hãy tự chấm điểm và ghi lại những cảm xúc của con nhé!</p>
+                                </div>
+
+                                <div class="flex flex-wrap justify-center gap-2 py-2">
+                                    ${Array.from({ length: 10 }).map((_, i) => {
             const rating = i + 1;
             const currentRating = parseInt(localStorage.getItem('daily_rating_' + data.user.id)) || 0;
             const isActive = rating <= currentRating;
             return `
-                                    <button onclick="const current = parseInt(localStorage.getItem('daily_rating_${data.user.id}')) || 0; window.setDailyRating(current === ${rating} ? 0 : ${rating})" 
-                                        class="heart-btn group relative transition-all active:scale-75 ${isActive ? 'scale-110' : 'opacity-50 hover:opacity-100'}">
-                                        <div class="absolute inset-0 bg-red-500/10 blur-md opacity-0 ${isActive ? 'opacity-100' : ''} transition-opacity"></div>
-                                        <span class="material-symbols-outlined text-3xl sm:text-4xl ${isActive ? 'text-red-500 fill-1' : 'text-slate-300'} transition-all drop-shadow-sm" 
-                                              style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'}">
-                                            favorite
-                                        </span>
-                                        <span class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] font-black ${isActive ? 'text-red-500' : 'text-slate-400'} uppercase transition-colors">${rating}</span>
-                                    </button>
-                                `;
+                                            <button onclick="const current = parseInt(localStorage.getItem('daily_rating_${data.user.id}')) || 0; window.setDailyRating(current === ${rating} ? 0 : ${rating})" 
+                                                class="heart-btn group relative transition-all active:scale-75 ${isActive ? 'scale-110' : 'opacity-40 hover:opacity-100'}">
+                                                <span class="material-symbols-outlined text-3xl ${isActive ? 'text-red-500 fill-1' : 'text-slate-300'} transition-all drop-shadow-sm" 
+                                                      style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'}">
+                                                    favorite
+                                                </span>
+                                                <span class="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[8px] font-black ${isActive ? 'text-red-500' : 'text-slate-400'} uppercase transition-colors">${rating}</span>
+                                            </button>
+                                        `;
         }).join('')}
-                        </div>
+                                </div>
 
-                        <!-- Reflection Input Area -->
-                        <div class="w-full space-y-4 mt-2">
-                            <div class="relative group">
-                                <textarea id="reflection-text" 
-                                    oninput="localStorage.setItem('daily_reflection_' + '${data.user.id}', this.value)"
-                                    class="w-full bg-white dark:bg-[#1a140c] border border-emerald-100 dark:border-[#3a2e22] rounded-[1.5rem] p-5 sm:p-6 text-base sm:text-lg font-medium text-slate-700 dark:text-slate-200 focus:ring-4 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[120px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none pr-16 lg:pr-20"
-                                    placeholder="Có điều gì làm con vui hay buồn không? Hãy tâm sự nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
-                                
-                                <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="absolute bottom-4 right-4 size-12 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-xl flex items-center justify-center shadow-sm transition-all group/mic active:scale-95">
-                                    <span id="voice-mic-icon" class="material-symbols-outlined text-emerald-600 text-xl group-hover/mic:scale-110">mic</span>
-                                </button>
+                                <div class="w-full space-y-4">
+                                    <div class="relative group">
+                                        <textarea id="reflection-text" 
+                                            oninput="localStorage.setItem('daily_reflection_' + '${data.user.id}', this.value)"
+                                            class="w-full bg-white dark:bg-[#1a140c] border border-emerald-100 dark:border-[#3a2e22] rounded-[1.5rem] p-5 text-sm font-medium text-slate-700 dark:text-slate-200 focus:ring-4 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[100px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none pr-16"
+                                            placeholder="Điều gì làm con nhớ nhất hôm nay?">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
+                                        
+                                        <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="absolute bottom-3 right-3 size-10 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-xl flex items-center justify-center shadow-sm transition-all active:scale-95">
+                                            <span id="voice-mic-icon" class="material-symbols-outlined text-emerald-600 text-lg">mic</span>
+                                        </button>
+                                    </div>
+
+                                    <button onclick="window.saveDailyReflection()" 
+                                        class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white font-black text-sm py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98] uppercase tracking-widest">
+                                        <span class="material-symbols-outlined text-lg">menu_book</span>
+                                        Ghi Vào Nhật Ký
+                                    </button>
+                                </div>
                             </div>
-
-                            <button onclick="window.saveDailyReflection()" 
-                                class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white font-black text-sm py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98] uppercase tracking-widest">
-                                <span class="material-symbols-outlined text-lg">menu_book</span>
-                                Ghi Vào Nhật Ký
-                            </button>
                         </div>
-                     </div>
+                    </div>
+
+                    <!-- SIDEBAR: HISTORY LIST -->
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between px-2">
+                            <h4 class="text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Lịch sử hành trình</h4>
+                        </div>
+                        
+                        <div class="space-y-3 max-h-[1000px] overflow-y-auto pr-2 custom-scrollbar">
+                            ${pastDates.length === 0 ? `
+                                <div class="p-8 text-center bg-slate-50/50 dark:bg-[#1a140c]/30 rounded-3xl border border-dashed border-slate-200 dark:border-[#3a2e22]">
+                                    <p class="text-[10px] font-bold text-slate-400">Chưa có lịch sử</p>
+                                </div>
+                            ` : pastDates.map(date => `
+                                <div onclick="window.showDiaryDetail('${date}')" class="group bg-white dark:bg-[#2c2215] p-4 rounded-2xl border border-slate-100 dark:border-[#3a2e22] shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer flex items-center gap-3">
+                                    <div class="size-10 rounded-xl bg-slate-50 dark:bg-[#1a140c] text-indigo-400 flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-lg">calendar_month</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-[13px] font-black text-slate-700 dark:text-slate-200 truncate">${date}</p>
+                                        <div class="flex gap-2 mt-1">
+                                            <span class="text-[8px] font-bold text-emerald-500 uppercase">${groupedLogs[date].GOOD.length} Tốt</span>
+                                            <span class="text-[8px] font-bold text-rose-500 uppercase">${groupedLogs[date].BAD.length} Nhắc nhở</span>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-slate-200 group-hover:text-primary transition-colors">chevron_right</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
