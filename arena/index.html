@@ -579,132 +579,120 @@
             </div>
             <div class="mb-8">
                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">2 · CHỌN THỬ THÁCH</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                    <button onclick="selectTask(this, 'Dậy sớm')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">🌅</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Dậy sớm</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Hoàn thành trước 6:30 sáng</span>
-                        </div>
-                    </button>
-                    <button onclick="selectTask(this, 'Ăn xong suất')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">🍽️</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Ăn suất</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Không bỏ thừa, dọn khay sạch</span>
-                        </div>
-                    </button>
-                    <button onclick="selectTask(this, 'Tự học bài')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">📚</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Học bài</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Tự giác làm hết bài tập về nhà</span>
-                        </div>
-                    </button>
-                    <button onclick="selectTask(this, 'Làm việc nhà')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">🏠</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Việc nhà</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Quét nhà hoặc dọn phòng gọn
-                                gàng</span>
-                        </div>
-                    </button>
-                    <button onclick="selectTask(this, 'Tập thể dục')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">🏃</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Tập thể dục</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Vận động 15-30p cho cơ thể
-                                khỏe</span>
-                        </div>
-                    </button>
-                    <button onclick="selectTask(this, 'Đánh răng')"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left">
-                        <span class="text-2xl">🪥</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block">Vệ sinh</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Rửa mặt, đánh răng thật sạch</span>
-                        </div>
-                    </button>
+                <!-- Heroic Challenges (NEW) -->
+                <button onclick="selectTask(this, 'Viết thư yêu thương')"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary transition-all flex items-center gap-3 text-left">
+                    <span class="text-2xl">✉️</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block">Thư yêu thương</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Clip cảm ơn ba mẹ/ông bà</span>
+                    </div>
+                </button>
+                <button onclick="selectTask(this, 'Ba việc tốt')"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary transition-all flex items-center gap-3 text-left">
+                    <span class="text-2xl">🤝</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block">Ba việc tốt</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Giúp bạn tại trường/hàng xóm</span>
+                    </div>
+                </button>
+                <button onclick="selectTask(this, 'Sứ giả môi trường')"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary transition-all flex items-center gap-3 text-left">
+                    <span class="text-2xl">🌱</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block">Môi trường</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Nhặt rác, tưới cây, bảo vệ thiên
+                            nhiên</span>
+                    </div>
+                </button>
+                <button onclick="selectTask(this, 'Reviewer tài năng')"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary transition-all flex items-center gap-3 text-left">
+                    <span class="text-2xl">🎬</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block">Reviewer nhí</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Thuyết trình về món đồ yêu thích</span>
+                    </div>
+                </button>
+                <button onclick="selectTask(this, 'Họa sĩ tặng quà')"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary transition-all flex items-center gap-3 text-left">
+                    <span class="text-2xl">🎨</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block">Họa sĩ nhí</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Vẽ tranh và chia sẻ ý nghĩa</span>
+                    </div>
+                </button>
+                <button onclick="showCustomTaskInput(this)"
+                    class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left bg-primary/5 border-dashed border-primary/40">
+                    <span class="text-2xl">✨</span>
+                    <div class="min-w-0">
+                        <span class="font-bold text-sm block text-primary">Tự tạo thử thách</span>
+                        <span class="text-[10px] text-slate-400 leading-tight">Sáng tạo kèo riêng của bé</span>
+                    </div>
+                </button>
+            </div>
 
-                    <!-- New Custom Challenge Button -->
-                    <button onclick="showCustomTaskInput(this)"
-                        class="task-btn p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-arena-orange transition-all flex items-center gap-3 text-left bg-primary/5 border-dashed border-primary/40">
-                        <span class="text-2xl">✨</span>
-                        <div class="min-w-0">
-                            <span class="font-bold text-sm block text-primary">Tự tạo thử thách</span>
-                            <span class="text-[10px] text-slate-400 leading-tight">Sáng tạo kèo riêng của bé</span>
-                        </div>
-                    </button>
+            <!-- Task Setup Input Container (Always visible once task is selected) -->
+            <div id="task-setup-container"
+                class="hidden mb-4 space-y-3 bg-slate-50 dark:bg-black/20 p-5 rounded-[2rem] border-2 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-300">
+                <div>
+                    <div class="flex items-center justify-between mb-1.5 px-2">
+                        <label class="text-[9px] font-black text-primary uppercase tracking-widest">Tên thử
+                            thách:</label>
+                        <span id="task-source-tag"
+                            class="text-[8px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full uppercase">Tùy
+                            chỉnh</span>
+                    </div>
+                    <input type="text" id="task-title-input" placeholder="Ví dụ: Làm 3 việc tốt..."
+                        oninput="updateSubmitBtn()"
+                        class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-sm font-bold focus:border-primary outline-none transition-all">
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-2 mb-1.5 block">Mô
+                        tả điều kiện thắng (Bé có thể sửa):</label>
+                    <textarea id="task-desc-input" placeholder="Ghi rõ thế nào là thắng để trọng tài dễ xử nhé!"
+                        class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs font-medium focus:border-primary outline-none transition-all resize-none h-20"></textarea>
                 </div>
 
-                <!-- Task Setup Input Container (Always visible once task is selected) -->
-                <div id="task-setup-container"
-                    class="hidden mb-4 space-y-3 bg-slate-50 dark:bg-black/20 p-5 rounded-[2rem] border-2 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-300">
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5 px-2">
-                            <label class="text-[9px] font-black text-primary uppercase tracking-widest">Tên thử
-                                thách:</label>
-                            <span id="task-source-tag"
-                                class="text-[8px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full uppercase">Tùy
-                                chỉnh</span>
-                        </div>
-                        <input type="text" id="task-title-input" placeholder="Ví dụ: Làm 3 việc tốt..."
-                            oninput="updateSubmitBtn()"
-                            class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-sm font-bold focus:border-primary outline-none transition-all">
+                <!-- New Betting Section -->
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <label class="text-[9px] font-black text-arena-orange uppercase tracking-widest">💰 Mức cược
+                            (Cược với hệ thống):</label>
+                        <span class="text-[9px] font-bold text-slate-400">Số dư: <span id="user-gold-balance"
+                                class="text-primary">0</span> Vàng</span>
                     </div>
-                    <div>
-                        <label
-                            class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-2 mb-1.5 block">Mô
-                            tả điều kiện thắng (Bé có thể sửa):</label>
-                        <textarea id="task-desc-input" placeholder="Ghi rõ thế nào là thắng để trọng tài dễ xử nhé!"
-                            class="w-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs font-medium focus:border-primary outline-none transition-all resize-none h-20"></textarea>
-                    </div>
-
-                    <!-- New Betting Section -->
-                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
-                        <div class="flex items-center justify-between mb-2 px-2">
-                            <label class="text-[9px] font-black text-arena-orange uppercase tracking-widest">💰 Mức cược
-                                (Cược với hệ thống):</label>
-                            <span class="text-[9px] font-bold text-slate-400">Số dư: <span id="user-gold-balance"
-                                    class="text-primary">0</span> Vàng</span>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
+                        <input type="number" id="bet-input" value="0" min="0" step="10" oninput="updateSubmitBtn()"
+                            class="w-full bg-white dark:bg-slate-800 border-2 border-primary/30 rounded-2xl pl-12 pr-4 py-3 text-lg font-black text-primary hover:border-primary focus:border-primary outline-none transition-all">
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+                            <button onclick="addToBet(10)"
+                                class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+10</button>
+                            <button onclick="addToBet(50)"
+                                class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+50</button>
+                            <button onclick="betAll()"
+                                class="px-2 py-1 bg-rose-500/10 text-rose-500 text-[10px] font-black rounded-lg hover:bg-rose-500/20 transition-all">Tất
+                                tay</button>
                         </div>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
-                            <input type="number" id="bet-input" value="0" min="0" step="10" oninput="updateSubmitBtn()"
-                                class="w-full bg-white dark:bg-slate-800 border-2 border-primary/30 rounded-2xl pl-12 pr-4 py-3 text-lg font-black text-primary hover:border-primary focus:border-primary outline-none transition-all">
-                            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                                <button onclick="addToBet(10)"
-                                    class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+10</button>
-                                <button onclick="addToBet(50)"
-                                    class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg hover:bg-primary/20 transition-all">+50</button>
-                                <button onclick="betAll()"
-                                    class="px-2 py-1 bg-rose-500/10 text-rose-500 text-[10px] font-black rounded-lg hover:bg-rose-500/20 transition-all">Tất
-                                    tay</button>
-                            </div>
-                        </div>
-                        <p id="bet-disclaimer" class="text-[8px] text-slate-400 mt-2 ml-2 leading-relaxed">
-                            💡 Nếu thắng nhận <span class="text-emerald-500 font-bold">x2</span> tiền cược. Nếu Hòa nhận
-                            lại vốn. Nếu thua mất trắng.
-                        </p>
                     </div>
+                    <p id="bet-disclaimer" class="text-[8px] text-slate-400 mt-2 ml-2 leading-relaxed">
+                        💡 Nếu thắng nhận <span class="text-emerald-500 font-bold">x2</span> tiền cược. Nếu Hòa nhận
+                        lại vốn. Nếu thua mất trắng.
+                    </p>
                 </div>
+            </div>
 
-            </div>
-            <div class="flex gap-3">
-                <button onclick="closeChallengeModal()"
-                    class="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold rounded-2xl">Bỏ
-                    qua</button>
-                <button id="btn-submit-challenge" onclick="submitChallenge()" disabled
-                    class="flex-[2] py-4 bg-arena-orange opacity-40 cursor-not-allowed text-white font-black rounded-2xl shadow-lg">THÁCH
-                    ĐẤU!</button>
-            </div>
         </div>
+        <div class="flex gap-3">
+            <button onclick="closeChallengeModal()"
+                class="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold rounded-2xl">Bỏ
+                qua</button>
+            <button id="btn-submit-challenge" onclick="submitChallenge()" disabled
+                class="flex-[2] py-4 bg-arena-orange opacity-40 cursor-not-allowed text-white font-black rounded-2xl shadow-lg">THÁCH
+                ĐẤU!</button>
+        </div>
+    </div>
     </div>
 
     <!-- ================ REVEAL DRAMA MODAL (IMPROVED) ================ -->
@@ -865,7 +853,8 @@
         let reportingChallengeId = null;
         const TASK_EMOJI = {
             'Dậy sớm': '🌅', 'Ăn xong suất': '🍽️', 'Tự học bài': '📚', 'Làm việc nhà': '🏠', 'Tập thể dục': '🏃', 'Đánh răng': '🪥',
-            'Viết thư yêu thương': '✉️', 'Ba việc tốt': '🤝', 'Kể chuyện anh hùng': '📖', 'Vũ điệu chiến thắng': '💃', 'Bữa sáng đầu tay': '🥪', 'Reviewer tài năng': '🎬'
+            'Viết thư yêu thương': '✉️', 'Ba việc tốt': '🤝', 'Kể chuyện anh hùng': '📖', 'Vũ điệu chiến thắng': '💃', 'Bữa sáng đầu tay': '🥪', 'Reviewer tài năng': '🎬',
+            'Sứ giả môi trường': '🌱', 'Quản trò vui vẻ': '🎲', 'Dũng sĩ tiết kiệm': '⚡', 'Bản tin cảm ơn': '🎙️', 'Họa sĩ tặng quà': '🎨'
         };
         const TASK_CONDITIONS = {
             'Dậy sớm': 'Bé phải thức dậy trước 6:30 và đã sẵn sàng vệ sinh cá nhân xong để được tính là hoàn thành!',
@@ -874,16 +863,22 @@
             'Làm việc nhà': 'Khu vực bé được giao (phòng ngủ hoặc phòng khách) phải sạch sẽ, đồ chơi được xếp lại ngay ngắn vào thùng.',
             'Tập thể dục': 'Bé vận động liên tục trong ít nhất 15 phút theo nhạc hoặc chạy bộ cầu thang.',
             'Đánh răng': 'Bé đánh răng cả hàm trên và dưới trong đủ 2 phút, đảm bảo hơi thở thơm tho.',
-            // New Heroic Challenges
+
+            // Heroic Challenges
             'Viết thư yêu thương': 'Bé hãy viết một bức thư ngắn, ghi âm hoặc quay video nói "Con yêu ba mẹ" và chia sẻ một điều con thấy biết ơn hôm nay.',
-            'Ba việc tốt': 'Bé hãy tìm và giúp đỡ ít nhất 3 người bạn ở trường hoặc hàng xóm (chia sẻ đồ chơi, giúp bạn nhặt đồ, hướng dẫn bài...).',
+            'Ba việc tốt': 'Bé tìm và giúp đỡ ít nhất 3 người bạn ở trường hoặc hàng xóm (chia sẻ đồ chơi, giúp bạn nhặt đồ, hướng dẫn bài...).',
             'Kể chuyện anh hùng': 'Bé chọn 1 cuốn sách hay, đọc xong và kể lại bài học ý nghĩa nhất cho cả nhà nghe trong bữa tối.',
             'Vũ điệu chiến thắng': 'Bé tự học một điệu nhảy ngắn hoặc 3 động tác thể dục mới trên mạng và biểu diễn lại cho ba mẹ xem.',
             'Bữa sáng đầu tay': 'Bé tự tay chuẩn bị một bữa sáng đơn giản (bánh mì kẹp, ngũ cốc...) và mời người thân cùng thưởng thức.',
-            'Reviewer tài năng': 'Bé hãy quay một đoạn clip ngắn giới thiệu về món đồ chơi hoặc cuốn sách yêu thích nhất của mình.'
+            'Reviewer tài năng': 'Bé quay một đoạn clip ngắn giới thiệu chân thực về món đồ chơi hoặc cuốn sách yêu thích nhất của mình.',
+            'Sứ giả môi trường': 'Bé nhặt 10 món rác quanh khu vực mình sống hoặc tưới nước, lau lá chăm sóc cho cây xanh trong nhà.',
+            'Quản trò vui vẻ': 'Bé hãy tổ chức một trò chơi nhỏ (đố vui, chơi cờ, trốn tìm...) để cả nhà cùng tham gia và cười vui bên nhau.',
+            'Dũng sĩ tiết kiệm': 'Bé kiểm tra và tắt hết các thiết bị điện/nước không dùng đến, sau đó giải thích cho ba mẹ tại sao cần tiết kiệm.',
+            'Bản tin cảm ơn': 'Bé ghi âm hoặc quay video gửi lời cảm ơn đến ông bà/người thân về một kỷ niệm đẹp mà bé nhớ nhất.',
+            'Họa sĩ tặng quà': 'Bé vẽ một bức tranh thật đẹp dành tặng cho một người mà con yêu quý và giải thích ý nghĩa của bức tranh đó.'
         };
 
-        const HERO_TASKS = ['Viết thư yêu thương', 'Ba việc tốt', 'Kể chuyện anh hùng', 'Vũ điệu chiến thắng', 'Bữa sáng đầu tay', 'Reviewer tài năng'];
+        const HERO_TASKS = ['Viết thư yêu thương', 'Ba việc tốt', 'Kể chuyện anh hùng', 'Vũ điệu chiến thắng', 'Bữa sáng đầu tay', 'Reviewer tài năng', 'Sứ giả môi trường', 'Quản trò vui vẻ', 'Dũng sĩ tiết kiệm', 'Bản tin cảm ơn', 'Họa sĩ tặng quà'];
 
         const TASK_SCHEDULE = {
             'Dậy sớm': { start: 5, end: 9 },
@@ -892,12 +887,17 @@
             'Làm việc nhà': { start: 8, end: 19 },
             'Tập thể dục': { start: 6, end: 19 },
             'Đánh răng': { start: 6, end: 22 },
-            'Viết thư yêu thương': { start: 8, end: 21 },
-            'Ba việc tốt': { start: 7, end: 18 },
-            'Kể chuyện anh hùng': { start: 15, end: 20 },
-            'Vũ điệu chiến thắng': { start: 9, end: 19 },
+            'Viết thư yêu thương': { start: 8, end: 22 },
+            'Ba việc tốt': { start: 7, end: 19 },
+            'Kể chuyện anh hùng': { start: 10, end: 21 },
+            'Vũ điệu chiến thắng': { start: 9, end: 20 },
             'Bữa sáng đầu tay': { start: 6, end: 10 },
-            'Reviewer tài năng': { start: 9, end: 20 }
+            'Reviewer tài năng': { start: 9, end: 21 },
+            'Sứ giả môi trường': { start: 6, end: 18 },
+            'Quản trò vui vẻ': { start: 10, end: 21 },
+            'Dũng sĩ tiết kiệm': { start: 6, end: 22 },
+            'Bản tin cảm ơn': { start: 8, end: 21 },
+            'Họa sĩ tặng quà': { start: 8, end: 21 }
         };
 
         let currentInvitingBot = null;
