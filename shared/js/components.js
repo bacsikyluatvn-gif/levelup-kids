@@ -876,6 +876,20 @@ class LeaderboardPodium extends HTMLElement {
         const mode = this.getAttribute('mode') || 'xp';
 
         let sorted = data.leaderboard.filter(u => u.role !== 'parent' && !u.name.toLowerCase().includes('bố') && !u.name.toLowerCase().includes('mẹ'));
+
+        // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
+        const userStatsMap = new Map();
+        sorted.forEach(user => {
+            const matches = (data.challenges || []).filter(c =>
+                c.status === 'completed' &&
+                (c.challengerId === user.id || c.opponentId === user.id)
+            );
+            const wins = matches.filter(c => c.winnerId === user.id).length;
+            const draws = matches.filter(c => c.winnerId === null).length;
+            const losses = matches.length - wins - draws;
+            userStatsMap.set(user.id, { wins, draws, losses });
+        });
+
         if (mode === 'xp') {
             sorted.sort((a, b) => {
                 if (b.level !== a.level) return b.level - a.level;
@@ -889,21 +903,9 @@ class LeaderboardPodium extends HTMLElement {
                 return b.level - a.level;
             });
         } else if (mode === 'arena_wins') {
-            // Sort by ALL-TIME stats (no week filter) so ranking is always meaningful
-            const getAllStats = (uid) => {
-                const matches = (data.challenges || []).filter(c =>
-                    c.status === 'completed' &&
-                    (c.challengerId === uid || c.opponentId === uid)
-                );
-                const wins = matches.filter(c => c.winnerId === uid).length;
-                const draws = matches.filter(c => c.winnerId === null).length;
-                const losses = matches.length - wins - draws;
-                return { wins, draws, losses };
-            };
-
             sorted.sort((a, b) => {
-                const sA = getAllStats(a.id);
-                const sB = getAllStats(b.id);
+                const sA = userStatsMap.get(a.id);
+                const sB = userStatsMap.get(b.id);
                 if (sB.wins !== sA.wins) return sB.wins - sA.wins;
                 if (sB.draws !== sA.draws) return sB.draws - sA.draws;
                 return sA.losses - sB.losses;
@@ -926,12 +928,8 @@ class LeaderboardPodium extends HTMLElement {
             if (mode === 'xp') return `Lv.${user.level}`;
             if (mode === 'weekly_xp') return `${user.weeklyXp || 0}`;
             if (mode === 'arena_wins') {
-                // ALL-TIME stats to match sorting order
-                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id));
-                const wins = matches.filter(c => c.winnerId === user.id).length;
-                const draws = matches.filter(c => c.winnerId === null).length;
-                const losses = matches.length - wins - draws;
-                return `${wins}T - ${draws}H - ${losses}B`;
+                const stats = userStatsMap.get(user.id);
+                return `${stats.wins}T - ${stats.draws}H - ${stats.losses}B`;
             }
             if (mode === 'stickers') return user.totalStickers || 0;
             return user.actionStreak || 0;
@@ -1071,6 +1069,20 @@ class LeaderboardTable extends HTMLElement {
         const mode = this.getAttribute('mode') || 'xp';
 
         let sorted = data.leaderboard.filter(u => u.role !== 'parent' && !u.name.toLowerCase().includes('bố') && !u.name.toLowerCase().includes('mẹ'));
+
+        // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
+        const userStatsMap = new Map();
+        sorted.forEach(user => {
+            const matches = (data.challenges || []).filter(c =>
+                c.status === 'completed' &&
+                (c.challengerId === user.id || c.opponentId === user.id)
+            );
+            const wins = matches.filter(c => c.winnerId === user.id).length;
+            const draws = matches.filter(c => c.winnerId === null).length;
+            const losses = matches.length - wins - draws;
+            userStatsMap.set(user.id, { wins, draws, losses });
+        });
+
         if (mode === 'xp') {
             sorted.sort((a, b) => {
                 if (b.level !== a.level) return b.level - a.level;
@@ -1084,21 +1096,9 @@ class LeaderboardTable extends HTMLElement {
                 return b.level - a.level;
             });
         } else if (mode === 'arena_wins') {
-            // Sort by ALL-TIME stats (no week filter) so ranking is always meaningful
-            const getAllStats = (uid) => {
-                const matches = (data.challenges || []).filter(c =>
-                    c.status === 'completed' &&
-                    (c.challengerId === uid || c.opponentId === uid)
-                );
-                const wins = matches.filter(c => c.winnerId === uid).length;
-                const draws = matches.filter(c => c.winnerId === null).length;
-                const losses = matches.length - wins - draws;
-                return { wins, draws, losses };
-            };
-
             sorted.sort((a, b) => {
-                const sA = getAllStats(a.id);
-                const sB = getAllStats(b.id);
+                const sA = userStatsMap.get(a.id);
+                const sB = userStatsMap.get(b.id);
                 if (sB.wins !== sA.wins) return sB.wins - sA.wins;
                 if (sB.draws !== sA.draws) return sB.draws - sA.draws;
                 return sA.losses - sB.losses;
@@ -1121,12 +1121,8 @@ class LeaderboardTable extends HTMLElement {
             if (mode === 'xp') return `Lv.${user.level}`;
             if (mode === 'weekly_xp') return `${user.weeklyXp || 0}`;
             if (mode === 'arena_wins') {
-                // Display ALL-TIME record to match ranking order
-                const matches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === user.id || c.opponentId === user.id));
-                const wins = matches.filter(c => c.winnerId === user.id).length;
-                const draws = matches.filter(c => c.winnerId === null).length;
-                const losses = matches.length - wins - draws;
-                return `${wins}T - ${draws}H - ${losses}B`;
+                const stats = userStatsMap.get(user.id);
+                return `${stats.wins}T - ${stats.draws}H - ${stats.losses}B`;
             }
             if (mode === 'stickers') return user.totalStickers || 0;
             return user.actionStreak || 0;
@@ -2677,6 +2673,107 @@ class GrowthDiaryView extends HTMLElement {
             document.body.appendChild(modal);
         };
 
+        window.showDiaryDetail = (date) => {
+            const group = groupedLogs[date];
+            if (!group) return;
+
+            const modal = document.createElement('div');
+            modal.id = 'diary-detail-modal-full';
+            modal.className = 'fixed inset-0 z-[4000] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300';
+
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-[#2c2215] w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-100 dark:border-[#3a2e22] flex flex-col">
+                    <div class="p-6 sm:p-8 border-b border-slate-100 dark:border-[#3a2e22] flex items-center justify-between bg-slate-50 dark:bg-[#1a140c]">
+                        <div class="flex items-center gap-4">
+                            <div class="size-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shadow-sm">
+                                <span class="material-symbols-outlined text-2xl">calendar_today</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-slate-800 dark:text-white">${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}</h3>
+                                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                                    ${group.GOOD.length} VIỆC TỐT • ${group.BAD.length} CẦN RÈN LUYỆN
+                                    ${group.REFLECTION.length > 0 ? ` • ${group.REFLECTION.length} NHẬT KÝ` : ''}
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('diary-detail-modal-full').remove()" class="size-12 rounded-full bg-slate-200/50 hover:bg-slate-200 dark:bg-[#2c2215] dark:hover:bg-[#3a2e22] text-slate-500 flex items-center justify-center transition-all">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <div class="p-6 sm:p-8 overflow-y-auto flex-1 space-y-8 custom-scrollbar">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- GOOD COLUMN -->
+                            <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-[2.5rem] p-6 space-y-5 border border-emerald-100 dark:border-emerald-800/30 shadow-inner">
+                                <div class="flex items-center gap-3 mb-2 px-2">
+                                    <div class="size-8 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-md">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">sunny</span>
+                                    </div>
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">Những mầm tốt</span>
+                                </div>
+                                ${group.GOOD.length === 0 ? `<div class="p-8 rounded-3xl border-2 border-dashed border-emerald-100 text-center italic text-xs text-emerald-400 font-bold bg-white/50">Ngày hôm nay con chưa có ghi nhận tốt</div>` : group.GOOD.map(log => this.renderLogItem(log, true)).join('')}
+                            </div>
+
+                            <!-- BAD COLUMN -->
+                            <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-[2.5rem] p-6 space-y-5 border border-rose-100 dark:border-rose-800/35 shadow-inner">
+                                <div class="flex items-center gap-3 mb-2 px-2">
+                                    <div class="size-8 bg-rose-500 rounded-xl flex items-center justify-center text-white shadow-md">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">history_edu</span>
+                                    </div>
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-rose-600 dark:text-rose-400">Bài học rèn luyện</span>
+                                </div>
+                                ${group.BAD.length === 0 ? `<div class="p-8 rounded-3xl border-2 border-dashed border-rose-100 text-center italic text-xs text-rose-400 font-bold bg-white/50">Con đã rèn luyện rất tốt hôm nay!</div>` : group.BAD.map(log => this.renderLogItem(log, false)).join('')}
+                            </div>
+                        </div>
+
+                        ${group.REFLECTION.length > 0 ? `
+                            <div class="bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-[#1a140c] dark:to-[#2c2215]/50 rounded-[2.5rem] p-6 sm:p-8 border border-indigo-100 dark:border-[#3a2e22] shadow-inner">
+                                <div class="flex items-center gap-3 mb-5 px-2">
+                                    <div class="size-10 bg-indigo-500 rounded-xl flex items-center justify-center text-white shadow-md">
+                                        <span class="material-symbols-outlined text-xl">auto_awesome</span>
+                                    </div>
+                                    <span class="text-sm font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Lời Tự Sự Của Con</span>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    ${group.REFLECTION.map(log => {
+                const ratingMatch = log.itemTitle.match(/(\d+)\/10/);
+                const rating = ratingMatch ? ratingMatch[1] : '?';
+                const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
+                return `
+                                            <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2rem] p-6 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative group hover:shadow-md transition-all">
+                                                <div class="absolute top-4 right-4">
+                                                    <div class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 dark:bg-rose-900/20 rounded-full border border-red-100 dark:border-rose-900/30">
+                                                        <span class="material-symbols-outlined text-red-500 text-xs fill-1">favorite</span>
+                                                        <span class="text-xs font-black text-red-600 dark:text-rose-400">${rating}/10</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex gap-4 items-start pr-16 text-left">
+                                                    <span class="text-4xl opacity-20 text-indigo-300 dark:text-[#3a2e22] font-serif leading-none mt-1">"</span>
+                                                    <div class="flex-1">
+                                                        <p class="text-lg font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-3 pt-2">${desc}</p>
+                                                        <div class="flex items-center gap-1.5 text-[10px] font-black text-slate-300 dark:text-slate-500 uppercase tracking-widest">
+                                                            <span class="material-symbols-outlined text-[10px]">schedule</span>
+                                                            Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+            }).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+            document.body.appendChild(modal);
+        };
+
         this.innerHTML = `
             <div class="relative space-y-12 pb-20 px-4 sm:px-8">
                 <!-- Dynamic Background that supports dark mode -->
@@ -2718,162 +2815,103 @@ class GrowthDiaryView extends HTMLElement {
                 </div>
 
                 <!-- Daily History Section -->
-                <div class="space-y-10">
+                <div class="space-y-6">
                     <div class="flex items-center justify-between px-4">
-                        <h4 class="text-3xl font-black text-slate-800 dark:text-white flex items-center gap-4">
-                            <span class="material-symbols-outlined text-primary text-4xl">Auto_Stories</span>
+                        <h4 class="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-3xl">Auto_Stories</span>
                             Hành Trình Trưởng Thành
                         </h4>
                     </div>
 
                     ${dateKeys.length === 0 ? `
-                        <div class="py-24 text-center bg-white rounded-[4rem] border-2 border-dashed border-slate-200 shadow-sm mx-4">
-                            <div class="size-28 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span class="material-symbols-outlined text-6xl text-slate-200">import_contacts</span>
+                        <div class="py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-200 shadow-sm mx-4">
+                            <div class="size-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-4xl text-slate-200">import_contacts</span>
                             </div>
-                            <h3 class="text-2xl font-black text-slate-800">Bắt đầu những trang nhật ký</h3>
-                            <p class="text-slate-400 max-w-sm mx-auto text-base font-medium leading-relaxed">Ba mẹ hãy ghi lại những hành động đầu tiên của con ngay hôm nay nhé!</p>
+                            <h3 class="text-xl font-black text-slate-800">Bắt đầu những trang nhật ký</h3>
+                            <p class="text-slate-400 max-w-sm mx-auto text-sm font-medium leading-relaxed">Ba mẹ hãy ghi lại những hành động đầu tiên của con ngay hôm nay nhé!</p>
                         </div>
-                    ` : dateKeys.map((date, idx) => `
-                        <div class="bg-white dark:bg-[#2c2215] rounded-[4rem] border border-slate-100 dark:border-[#3a2e22] overflow-hidden shadow-lg border-b-4 border-b-slate-200/50 dark:border-b-[#1a140c]">
-                            <details ${idx === 0 ? 'open' : ''} class="group">
-                                <summary class="flex items-center justify-between p-8 sm:p-10 cursor-pointer list-none select-none hover:bg-slate-50 dark:hover:bg-[#362a1a] transition-colors">
-                                    <div class="flex items-center gap-5">
-                                        <div class="size-16 rounded-[2rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shadow-sm">
+                    ` : `
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+                            ${dateKeys.map((date, idx) => `
+                                <div onclick="window.showDiaryDetail('${date}')" class="group bg-white dark:bg-[#2c2215] rounded-[2.5rem] p-6 border border-slate-100 dark:border-[#3a2e22] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between min-h-[140px]">
+                                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
+                                    <div class="flex items-center gap-4 relative z-10 mb-4">
+                                        <div class="size-14 rounded-[1.5rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform">
                                             <span class="material-symbols-outlined text-2xl">calendar_today</span>
                                         </div>
-                                        <div>
-                                            <h5 class="text-2xl font-black text-slate-800 dark:text-white">${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}</h5>
-                                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">
-                                                ${groupedLogs[date].GOOD.length} VIỆC TỐT • 
-                                                ${groupedLogs[date].BAD.length} CẦN RÈN LUYỆN 
-                                                ${groupedLogs[date].REFLECTION.length > 0 ? `• ${groupedLogs[date].REFLECTION.length} NHẬT KÝ` : ''}
-                                            </p>
+                                        <div class="flex-1 min-w-0 text-left">
+                                            <h5 class="text-lg font-black text-slate-800 dark:text-white truncate">
+                                                ${date === new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? 'Hôm nay' : date}
+                                            </h5>
+                                        </div>
+                                        <div class="size-8 rounded-full bg-slate-50 dark:bg-[#1a140c] text-slate-300 dark:text-slate-500 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                            <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
                                         </div>
                                     </div>
-                                    <div class="size-12 rounded-full bg-slate-100 dark:bg-[#1a140c] flex items-center justify-center group-open:rotate-180 transition-transform duration-500 shadow-sm">
-                                        <span class="material-symbols-outlined text-slate-400 dark:text-slate-300 text-3xl">expand_more</span>
-                                    </div>
-                                </summary>
-                                                                <div class="px-4 sm:px-8 pb-10 pt-2 space-y-8">
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <!-- GOOD COLUMN -->
-                                        <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-emerald-100 dark:border-emerald-800/30 shadow-inner">
-                                            <div class="flex items-center gap-4 mb-3 px-2">
-                                                <div class="size-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-emerald-100 dark:shadow-none">
-                                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">sunny</span>
-                                                </div>
-                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400">Những mầm tốt</span>
-                                            </div>
-                                            ${groupedLogs[date].GOOD.length === 0 ? `<div class="p-10 rounded-3xl border-2 border-dashed border-emerald-100 text-center italic text-xs text-emerald-400 font-bold bg-white/50">Ngày hôm nay con chưa có ghi nhận tốt</div>` : groupedLogs[date].GOOD.map(log => this.renderLogItem(log, true)).join('')}
-                                        </div>
-
-                                        <!-- BAD COLUMN -->
-                                        <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-[3rem] p-6 sm:p-8 space-y-5 border border-rose-100 dark:border-rose-800/35 shadow-inner">
-                                            <div class="flex items-center gap-4 mb-3 px-2">
-                                                <div class="size-10 bg-rose-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-100 dark:shadow-none">
-                                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">history_edu</span>
-                                                </div>
-                                                <span class="text-[11px] font-black uppercase tracking-[0.3em] text-rose-600 dark:text-rose-400">Bài học rèn luyện</span>
-                                            </div>
-                                            ${groupedLogs[date].BAD.length === 0 ? `<div class="p-10 rounded-3xl border-2 border-dashed border-rose-100 text-center italic text-xs text-rose-400 font-bold bg-white/50">Con đã rèn luyện rất tốt hôm nay!</div>` : groupedLogs[date].BAD.map(log => this.renderLogItem(log, false)).join('')}
+                                    <div class="mt-auto relative z-10">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            ${groupedLogs[date].GOOD.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl border border-emerald-100 dark:border-emerald-800/30 text-[10px] font-black text-emerald-600 dark:text-emerald-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">sunny</span> ${groupedLogs[date].GOOD.length} TỐT</div>` : ''}
+                                            ${groupedLogs[date].BAD.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/30 rounded-xl border border-rose-100 dark:border-rose-800/30 text-[10px] font-black text-rose-600 dark:text-rose-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">history_edu</span> ${groupedLogs[date].BAD.length} CẦN RÈN LUYỆN</div>` : ''}
+                                            ${groupedLogs[date].REFLECTION.length > 0 ? `<div class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border border-indigo-100 dark:border-indigo-800/30 text-[10px] font-black text-indigo-600 dark:text-indigo-400 tracking-wider"><span class="material-symbols-outlined text-xs fill-1">auto_awesome</span> ${groupedLogs[date].REFLECTION.length} NHẬT KÝ</div>` : ''}
+                                            ${groupedLogs[date].GOOD.length === 0 && groupedLogs[date].BAD.length === 0 && groupedLogs[date].REFLECTION.length === 0 ? `<div class="text-[10px] font-bold text-slate-400">Không có ghi nhận</div>` : ''}
                                         </div>
                                     </div>
-
-                                    <!-- REFLECTION SECTION AT BOTTOM -->
-                                    ${groupedLogs[date].REFLECTION.length > 0 ? `
-                                        <div class="bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-[#1a140c] dark:to-[#2c2215]/50 rounded-[3.5rem] p-8 sm:p-10 border border-indigo-100 dark:border-[#3a2e22] shadow-inner">
-                                            <div class="flex items-center gap-4 mb-6 px-2">
-                                                <div class="size-12 bg-indigo-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 dark:shadow-none">
-                                                    <span class="material-symbols-outlined text-2xl">auto_awesome</span>
-                                                </div>
-                                                <span class="text-lg font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Lời Tự Sự Của Con</span>
-                                            </div>
-                                            
-                                            <div class="space-y-6">
-                                                ${groupedLogs[date].REFLECTION.map(log => {
-            const ratingMatch = log.itemTitle.match(/(\d+)\/10/);
-            const rating = ratingMatch ? ratingMatch[1] : '?';
-            const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
-            return `
-                                                        <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2.5rem] p-8 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative overflow-hidden group hover:shadow-md transition-all">
-                                                            <div class="absolute top-0 right-0 p-6">
-                                                                <div class="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-rose-900/20 rounded-full border border-red-100 dark:border-rose-900/30">
-                                                                    <span class="material-symbols-outlined text-red-500 text-sm fill-1">favorite</span>
-                                                                    <span class="text-sm font-black text-red-600 dark:text-rose-400">${rating}/10</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="flex gap-6 items-start">
-                                                                <span class="text-5xl opacity-20 text-indigo-300 dark:text-[#3a2e22] font-serif italic">"</span>
-                                                                <div class="flex-1">
-                                                                    <p class="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-4 pt-4 pr-20">${desc}</p>
-                                                                    <div class="flex items-center gap-2 text-[10px] font-black text-slate-300 dark:text-slate-500 uppercase tracking-widest">
-                                                                        <span class="material-symbols-outlined text-xs">schedule</span>
-                                                                        Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    `;
-        }).join('')}
-                                            </div>
-                                        </div>
-                                    ` : ''}
                                 </div>
-                            </details>
+                            `).join('')}
                         </div>
-                    `).join('')}
+                    `}
                 </div>
 
                 <!-- Daily Reflection Corner -->
-                <div class="bg-gradient-to-br from-white via-emerald-50 to-green-100 dark:from-[#2c2215] dark:via-[#2c2215] dark:to-[#1a140c] rounded-[3rem] p-8 sm:p-16 text-slate-800 dark:text-white relative overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] border border-emerald-100 dark:border-[#3a2e22] mt-12 mx-auto max-w-5xl">
+                <div class="bg-gradient-to-br from-white via-emerald-50 to-green-100 dark:from-[#2c2215] dark:via-[#2c2215] dark:to-[#1a140c] rounded-[2.5rem] p-6 sm:p-10 text-slate-800 dark:text-white relative overflow-hidden shadow-xl border border-emerald-100 dark:border-[#3a2e22] mt-12 mx-auto max-w-3xl">
                      <!-- Soft Natural Glows -->
                      <div class="absolute -top-32 -right-32 size-64 bg-emerald-500/10 rounded-full blur-[100px]"></div>
                      <div class="absolute -bottom-32 -left-32 size-64 bg-green-500/10 rounded-full blur-[100px]"></div>
                      
-                     <div class="relative z-10 flex flex-col items-center gap-10">
-                        <div class="text-center space-y-3">
-                            <h3 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">Góc Nhìn Lại Hôm Nay</h3>
-                            <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg">Con hãy tự chấm điểm cho ngày hôm nay của mình thật trung thực nhé!</p>
+                     <div class="relative z-10 flex flex-col items-center gap-6 text-center">
+                        <div class="space-y-2">
+                            <h3 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">Góc Nhìn Lại Hôm Nay</h3>
+                            <p class="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base">Con hãy tự chấm điểm cho ngày hôm nay của mình thật trung thực nhé!</p>
                         </div>
 
                         <!-- 10 Red Hearts -->
-                        <div class="flex flex-wrap justify-center gap-4 sm:gap-6 py-4">
+                        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 py-2">
                             ${Array.from({ length: 10 }).map((_, i) => {
             const rating = i + 1;
             const currentRating = parseInt(localStorage.getItem('daily_rating_' + data.user.id)) || 0;
             const isActive = rating <= currentRating;
             return `
                                     <button onclick="const current = parseInt(localStorage.getItem('daily_rating_${data.user.id}')) || 0; window.setDailyRating(current === ${rating} ? 0 : ${rating})" 
-                                        class="heart-btn group relative transition-all active:scale-75 ${isActive ? 'scale-115' : 'opacity-40 hover:opacity-100'}">
-                                        <div class="absolute inset-0 bg-red-500/10 blur-xl opacity-0 ${isActive ? 'opacity-100' : ''} group-hover:opacity-40 transition-opacity"></div>
-                                        <span class="material-symbols-outlined text-4xl sm:text-5xl ${isActive ? 'text-red-500 fill-1' : 'text-slate-300'} transition-all drop-shadow-sm" 
+                                        class="heart-btn group relative transition-all active:scale-75 ${isActive ? 'scale-110' : 'opacity-50 hover:opacity-100'}">
+                                        <div class="absolute inset-0 bg-red-500/10 blur-md opacity-0 ${isActive ? 'opacity-100' : ''} transition-opacity"></div>
+                                        <span class="material-symbols-outlined text-3xl sm:text-4xl ${isActive ? 'text-red-500 fill-1' : 'text-slate-300'} transition-all drop-shadow-sm" 
                                               style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'}">
                                             favorite
                                         </span>
-                                        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-black ${isActive ? 'text-red-500' : 'text-slate-400'} uppercase transition-colors">${rating}</span>
+                                        <span class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] font-black ${isActive ? 'text-red-500' : 'text-slate-400'} uppercase transition-colors">${rating}</span>
                                     </button>
                                 `;
         }).join('')}
                         </div>
 
                         <!-- Reflection Input Area -->
-                        <div class="w-full space-y-6">
+                        <div class="w-full space-y-4 mt-2">
                             <div class="relative group">
                                 <textarea id="reflection-text" 
                                     oninput="localStorage.setItem('daily_reflection_' + '${data.user.id}', this.value)"
-                                    class="w-full bg-white dark:bg-[#1a140c] border-2 border-emerald-100 dark:border-[#3a2e22] rounded-[2.5rem] p-8 sm:p-10 text-lg sm:text-2xl font-medium text-slate-700 dark:text-slate-200 focus:ring-8 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[220px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none lg:pr-24"
-                                    placeholder="Hôm nay có điều gì làm con vui hay buồn không? Hãy tâm sự với ba mẹ nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
+                                    class="w-full bg-white dark:bg-[#1a140c] border border-emerald-100 dark:border-[#3a2e22] rounded-[1.5rem] p-5 sm:p-6 text-base sm:text-lg font-medium text-slate-700 dark:text-slate-200 focus:ring-4 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/5 focus:border-emerald-300 transition-all outline-none min-h-[120px] placeholder:text-slate-300 dark:placeholder:text-slate-600 shadow-inner resize-none pr-16 lg:pr-20"
+                                    placeholder="Có điều gì làm con vui hay buồn không? Hãy tâm sự nhé...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
                                 
-                                <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="mt-4 lg:mt-0 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:right-8 size-16 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-2xl flex items-center justify-center shadow-md transition-all group/mic active:scale-95">
-                                    <span id="voice-mic-icon" class="material-symbols-outlined text-emerald-600 text-3xl group-hover/mic:scale-110">mic</span>
+                                <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="absolute bottom-4 right-4 size-12 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-xl flex items-center justify-center shadow-sm transition-all group/mic active:scale-95">
+                                    <span id="voice-mic-icon" class="material-symbols-outlined text-emerald-600 text-xl group-hover/mic:scale-110">mic</span>
                                 </button>
                             </div>
 
                             <button onclick="window.saveDailyReflection()" 
-                                class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:shadow-2xl hover:shadow-emerald-500/30 text-white font-black text-xl py-6 rounded-[2rem] shadow-xl transition-all flex items-center justify-center gap-4 active:scale-[0.98] uppercase tracking-widest">
-                                <span class="material-symbols-outlined text-2xl">menu_book</span>
-                                Ghi Vào Nhật Ký Trưởng Thành
+                                class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white font-black text-sm py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98] uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-lg">menu_book</span>
+                                Ghi Vào Nhật Ký
                             </button>
                         </div>
                      </div>

@@ -171,12 +171,6 @@
             // Update components
             podium.setAttribute('mode', mode);
             table.setAttribute('mode', mode);
-
-            // Force re-render
-            if (window.AppState) {
-                podium.render(window.AppState.data);
-                table.render(window.AppState.data);
-            }
         }
     </script>
 </body>
