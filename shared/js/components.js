@@ -25,17 +25,17 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
     modal.id = 'lu-alert-modal';
     modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-300';
     modal.innerHTML = `
-        <div class="bg-white w-full max-w-sm rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 relative">
+        <div class="bg-white dark:bg-[#2c2215] w-full max-w-sm rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 relative">
             <div class="h-2 bg-gradient-to-r ${config.bg}"></div>
             <div class="p-10 text-center space-y-6">
-                <div class="size-20 bg-${config.color}-50 rounded-[2rem] flex items-center justify-center mx-auto ring-8 ring-${config.color}-50/50">
+                <div class="size-20 bg-${config.color}-50 dark:bg-${config.color}-900/20 rounded-[2.2rem] flex items-center justify-center mx-auto ring-8 ring-${config.color}-50/50 dark:ring-${config.color}-900/30">
                     <span class="material-symbols-outlined text-4xl text-${config.color}-500">${config.icon}</span>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="text-2xl font-black text-slate-800 uppercase tracking-tight leading-none">${title}</h3>
-                    <p class="text-sm font-medium text-slate-500 leading-relaxed">${message}</p>
+                    <h3 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight leading-none">${title}</h3>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed">${message}</p>
                 </div>
-                <button id="lu-alert-ok" class="w-full py-4 bg-${config.color === 'primary' ? 'primary' : config.color + '-500'} text-white font-black rounded-2xl hover:opacity-90 shadow-lg shadow-${config.color}-200 transition-all uppercase tracking-widest text-sm">
+                <button id="lu-alert-ok" class="w-full py-4 bg-${config.color === 'primary' ? 'primary' : config.color + '-500'} text-white font-black rounded-2xl hover:opacity-90 shadow-lg shadow-${config.color}-200 dark:shadow-none transition-all uppercase tracking-widest text-sm">
                     Đồng ý
                 </button>
             </div>
@@ -52,6 +52,138 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
 
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.querySelector('#lu-alert-ok').click(); });
     document.body.appendChild(modal);
+};
+
+/**
+ * BIG CELEBRATION SYSTEM
+ * Triggers full screen fireworks and celebratory UI
+ */
+window.celebrate = (config = {}) => {
+    const {
+        title = "Chúc mừng con!",
+        subtitle = "Con đã đạt được một cột mốc mới",
+        icon = "stars",
+        image = null,
+        color = "primary",
+        sound = true
+    } = config;
+
+    // 1. Play Sound
+    if (sound) {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+        audio.volume = 0.5;
+        audio.play().catch(e => console.log("Audio play blocked"));
+    }
+
+    // 2. Clear existing
+    const existing = document.getElementById('global-celebration');
+    if (existing) existing.remove();
+
+    // 3. Create Container
+    const container = document.createElement('div');
+    container.id = 'global-celebration';
+    container.className = 'fixed inset-0 z-[20000] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-xl animate-in fade-in duration-700';
+
+    // Color mapping
+    const colors = {
+        primary: 'from-primary/20 to-orange-500/20',
+        emerald: 'from-emerald-500/20 to-teal-500/20',
+        blue: 'from-blue-500/20 to-indigo-500/20',
+        purple: 'from-purple-500/20 to-pink-500/20',
+        gold: 'from-yellow-400/20 to-amber-600/20'
+    };
+    const activeColor = colors[color] || colors.primary;
+
+    container.innerHTML = `
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br ${activeColor} rounded-full blur-[120px] opacity-50 animate-pulse"></div>
+            <div id="celebration-confetti-canvas" class="absolute inset-0"></div>
+        </div>
+
+        <div class="relative w-full max-w-lg p-8 text-center animate-in zoom-in-90 slide-in-from-bottom-12 duration-700 delay-200">
+            <div class="mb-8 relative inline-block">
+                <div class="absolute inset-0 bg-white/20 rounded-full blur-3xl animate-pulse"></div>
+                ${image ?
+            `<img src="${image}" class="size-48 object-contain drop-shadow-[0_20px_50px_rgba(255,255,255,0.3)] relative z-10 mx-auto transform hover:rotate-6 transition-transform">` :
+            `<div class="size-32 bg-white/10 backdrop-blur-md rounded-[2.5rem] flex items-center justify-center mx-auto border border-white/20 relative z-10 shadow-2xl">
+                        <span class="material-symbols-outlined text-7xl text-white drop-shadow-md" style="font-variation-settings:'FILL' 1">${icon}</span>
+                    </div>`
+        }
+                <!-- Floating Orbs -->
+                <div class="absolute -top-4 -left-4 size-8 bg-blue-400 rounded-full blur-xl animate-bounce"></div>
+                <div class="absolute -bottom-4 -right-4 size-10 bg-purple-400 rounded-full blur-xl animate-bounce" style="animation-delay: 1s"></div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="text-primary font-black uppercase tracking-[0.3em] text-sm md:text-base animate-in slide-in-from-top-4 duration-500 delay-500">Thành tích tuyệt vời!</h4>
+                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-lg animate-in slide-in-from-bottom-4 duration-700 delay-700">${title}</h2>
+                <p class="text-slate-400 text-lg md:text-xl font-medium max-w-md mx-auto animate-in fade-in duration-1000 delay-1000">${subtitle}</p>
+            </div>
+
+            <div class="mt-12 animate-in fade-in zoom-in-50 duration-500 delay-[1.5s]">
+                <button id="close-celebration" class="group relative px-12 py-5 bg-white text-slate-900 font-extrabold rounded-[2rem] text-lg uppercase tracking-widest shadow-[0_20px_50px_-10px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+                    <span class="relative z-10">TIẾP TỤC HÀNH TRÌNH</span>
+                </button>
+            </div>
+        </div>
+
+        <style>
+            @keyframes float-celebration {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-20px); }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(container);
+
+    // 4. Trigger Fireworks
+    const fireConfetti = () => {
+        if (!window.confetti) {
+            const script = document.createElement('script');
+            script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+            script.onload = () => runFireworks();
+            document.head.appendChild(script);
+        } else {
+            runFireworks();
+        }
+    };
+
+    const runFireworks = () => {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 20001 };
+
+        const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+        const interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+
+        // Single heavy burst
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            zIndex: 20001
+        });
+    };
+
+    fireConfetti();
+
+    // 5. Cleanup
+    container.querySelector('#close-celebration').onclick = () => {
+        container.classList.add('fade-out');
+        setTimeout(() => container.remove(), 700);
+    };
 };
 
 class AppHeader extends HTMLElement {
@@ -124,16 +256,37 @@ class AppHeader extends HTMLElement {
                         <p class="text-sm font-bold dark:text-white text-slate-800">${user.name || 'Nhà thám hiểm'}</p>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${data.title.currentTitleName || 'Tân Binh'}</p>
                     </div>
-                    <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300" 
-                         style="background-image: url('${user.avatar}')">
-                    </div>
+                     <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300 cursor-pointer active:scale-90 transition-transform" 
+                          style="background-image: url('${user.avatar}')" id="header-avatar-child">
+                     </div>
                     <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
                         <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
                     </button>
                 </div>
-            </div>
         `;
+
+        // Add click effect
+        setTimeout(() => {
+            const av = this.querySelector('#header-avatar-child');
+            if (av) {
+                av.onclick = (e) => {
+                    if (window.confetti) {
+                        const rect = e.target.getBoundingClientRect();
+                        confetti({
+                            particleCount: 15,
+                            spread: 60,
+                            origin: {
+                                x: (rect.left + rect.width / 2) / window.innerWidth,
+                                y: (rect.top + rect.height / 2) / window.innerHeight
+                            },
+                            colors: ['#FFD700', '#FFA500', '#FFFFFF', '#FFB6C1'],
+                            zIndex: 10001
+                        });
+                    }
+                };
+            }
+        }, 0);
     }
 
     getParentStats(data) {
@@ -297,6 +450,20 @@ class QuestCard extends HTMLElement {
                         });
                     };
                     document.head.appendChild(script);
+                }
+
+                // Check for high reward to trigger window.celebrate
+                const currentReward = parseInt(reward);
+                const currentXp = parseInt(xp);
+                const currentSticker = parseInt(sticker);
+
+                if (currentReward >= 50 || currentXp >= 50 || currentSticker >= 1) {
+                    window.celebrate({
+                        title: title,
+                        subtitle: desc || "Con đã hoàn thành một nhiệm vụ lớn!",
+                        icon: icon,
+                        color: color
+                    });
                 }
 
                 // Update AppState after delay so it gets removed dynamically
@@ -2941,7 +3108,7 @@ class GrowthDiaryView extends HTMLElement {
                                             <span class="text-[11px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em] mb-4">ĐIỂM NHÂN CÁCH</span>
                                             <div class="flex items-center gap-4">
                                                 <div class="flex items-center justify-center size-10 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-inner">
-                                                    <span class="material-symbols-outlined text-xl text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
+                                                    <span class="material-symbols-outlined text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
                                                 </div>
                                                 <span class="${personalityScore > 999 ? 'text-4xl sm:text-5xl' : (personalityScore > 99 ? 'text-5xl sm:text-6xl' : 'text-7xl sm:text-8xl')} font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl transition-all duration-300">${personalityScore}</span>
                                             </div>
@@ -2986,8 +3153,8 @@ class GrowthDiaryView extends HTMLElement {
                             <!-- Roadmap Label (Minimalist Harmonized Style) -->
                             <div class="flex items-center gap-4 mb-8">
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-amber-500 text-sm">timeline</span>
+                                <div class="flex items-center gap-2 text-amber-500">
+                                    <span class="material-symbols-outlined text-sm">timeline</span>
                                     <span class="text-[9px] font-black text-slate-500 dark:text-white/40 uppercase tracking-[0.4em] whitespace-nowrap">Lộ trình trưởng thành</span>
                                 </div>
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>

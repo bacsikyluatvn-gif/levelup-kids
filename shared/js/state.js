@@ -4147,6 +4147,50 @@ class StateManager {
                 }
 
                 this.notify();
+                this.checkRankChange();
+                this.checkDailyBonus();
+                this._initialSyncDone = true;
+        }
+
+        checkDailyBonus() {
+                if (!this.data.user || this.data.user.role !== 'child') return;
+                const todayStr = new Date().toISOString().split('T')[0];
+                const lastLogin = localStorage.getItem(`daily_bonus_${this.data.user.id}`);
+
+                if (lastLogin !== todayStr) {
+                        localStorage.setItem(`daily_bonus_${this.data.user.id}`, todayStr);
+
+                        // Trì hoãn một chút để đảm bảo UI đã sẵn sàng
+                        setTimeout(() => {
+                                this.addRewardsToLocalUser(20, 50, 5, 1);
+                                if (window.celebrate) {
+                                        window.celebrate({
+                                                title: "QUÀ NGÀY MỚI!",
+                                                subtitle: "Tuyệt vời! Chào mừng con đã quay trở lại. Nhận ngay 20 Vàng và 50 XP nhé!",
+                                                icon: "redeem",
+                                                color: "gold"
+                                        });
+                                }
+                                this.syncLocalUserToDb();
+                        }, 1500);
+                }
+        }
+
+        checkRankChange() {
+                if (!this.data.user) return;
+                const currentRank = this.data.leaderboard
+                        .sort((a, b) => (b.totalStickers || 0) - (a.totalStickers || 0))
+                        .findIndex(u => u.id === this.data.user.id) + 1;
+
+                if (this._lastRank && currentRank < this._lastRank && currentRank <= 5 && this._initialSyncDone) {
+                        window.celebrate({
+                                title: `TOP ${currentRank}!`,
+                                subtitle: `Con vừa thăng hạng vươn lên vị trí số ${currentRank} trên bảng xếp hạng!`,
+                                icon: 'leaderboard',
+                                color: 'gold'
+                        });
+                }
+                this._lastRank = currentRank;
         }
 
         calculateMemberStreak(userId) {
@@ -4261,6 +4305,33 @@ class StateManager {
                         if ((user.totalStickers || 0) >= window.TITLE_MILESTONES[i].stickers) tIdx = i;
                 }
                 this.data.title = { currentTitleIndex: tIdx, currentTitleName: tIdx >= 0 ? window.TITLE_MILESTONES[tIdx].name : 'Chưa có danh hiệu' };
+
+                // --- MILESTONE CELEBRATIONS ---
+                if (window.celebrate && this._initialSyncDone) {
+                        // 1. Tree Milestone
+                        if (this._lastTreeStage !== undefined && sIdx > this._lastTreeStage) {
+                                const m = window.TREE_MILESTONES[sIdx];
+                                window.celebrate({
+                                        title: m.name.toUpperCase(),
+                                        subtitle: `Tuyệt vời! Cây thần kỳ đã lớn thêm một bậc mới!`,
+                                        icon: m.icon,
+                                        color: 'emerald'
+                                });
+                        }
+                        this._lastTreeStage = sIdx;
+
+                        // 2. Title Milestone
+                        if (this._lastTitleIdx !== undefined && tIdx > this._lastTitleIdx) {
+                                const m = window.TITLE_MILESTONES[tIdx];
+                                window.celebrate({
+                                        title: m.name.toUpperCase(),
+                                        subtitle: `Thành tích khủng! Con đã đạt được danh hiệu cao quý mới!`,
+                                        icon: m.icon,
+                                        color: 'purple'
+                                });
+                        }
+                        this._lastTitleIdx = tIdx;
+                }
         }
 
         setCurrentUser(id) {
@@ -4507,11 +4578,23 @@ class StateManager {
                 this._lastUpdate = Date.now();
 
                 let req = Math.floor(100 * Math.pow(u.level, 1.5));
+                let leveledUp = false;
                 while (u.xp >= req) {
                         u.level += 1;
                         u.xp -= req;
                         req = Math.floor(100 * Math.pow(u.level, 1.5));
+                        leveledUp = true;
                 }
+
+                if (leveledUp && window.celebrate) {
+                        window.celebrate({
+                                title: `CẤP ĐỘ ${u.level}`,
+                                subtitle: `Chúc mừng con đã thăng cấp! Hãy tiếp tục cố gắng nhé!`,
+                                icon: 'military_tech',
+                                color: 'blue'
+                        });
+                }
+
                 this.notify();
         }
 
@@ -4710,7 +4793,8 @@ class StateManager {
                 }
                 try {
                         const { error } = await this.client.from('profiles').insert({
-                                family_id: this.familyId, name: data.name, avatar: data.avatar, role: 'child'
+                                family_id: this.familyId, name: data.name, avatar: data.avatar, role: 'child',
+                                personality_points: 0
                         });
 
                         if (error) {

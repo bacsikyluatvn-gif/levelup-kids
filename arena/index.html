@@ -1146,9 +1146,9 @@
         });
 
         function scheduleNextBotChallenge() {
-            // Random interval between 3 and 15 minutes (180,000ms to 900,000ms)
-            const randomTime = Math.floor(Math.random() * (900000 - 180000 + 1)) + 180000;
-            console.log(`[Bot] Lên lịch thách đấu tiếp theo sau ${Math.round(randomTime / 60000)} phút.`);
+            // Tần suất cao hơn: 45 giây đến 2.5 phút (45,000ms - 150,000ms)
+            const randomTime = Math.floor(Math.random() * (150000 - 45000 + 1)) + 45000;
+            console.log(`[BotEngine] 🛡️ Đang chờ thách đấu... Lần tới sau ${Math.round(randomTime / 1000)} giây.`);
 
             if (botInvitationInterval) clearTimeout(botInvitationInterval);
             botInvitationInterval = setTimeout(() => {
@@ -1176,15 +1176,25 @@
         }
 
         function checkForBotChallenge() {
-            // Chỉ thách đấu nếu người dùng đang ở tab Arena và không có modal nào đang mở
-            const isModalOpen = document.querySelector('.opacity-100:not(#bot-invitation-modal)');
-            if (isModalOpen || !window.AppState || !window.AppState.data.user) return;
+            // Robust Modal Check: Chỉ thách đấu nếu không có modal quan trọng nào đang mở
+            const isAnyModalVisible = Array.from(document.querySelectorAll('.fixed.inset-0')).some(el => {
+                const isOverlay = el.classList.contains('bg-slate-900/80') || el.classList.contains('bg-slate-900/40') || el.classList.contains('bg-slate-900/90');
+                const isNotHidden = !el.classList.contains('opacity-0') && !el.classList.contains('pointer-events-none');
+                return isOverlay && isNotHidden && el.id !== 'bot-invitation-modal';
+            });
+
+            if (isAnyModalVisible || !window.AppState || !window.AppState.data.user) {
+                console.log("[BotEngine] Bỏ qua thách đấu vì đang bận hoặc chưa sẵn sàng.");
+                return;
+            }
 
             const userData = window.AppState.data.user;
+            if (userData.role !== 'child') return; // Phụ huynh không nhận thách đấu
+
             const passiveUsed = window.AppState.getDailyChallengeCount(userData.id, 'passive');
 
-            // Nếu con còn lượt phòng thủ (<3) và may mắn mỉm cười (25% cơ hội mỗi lần check)
-            if (passiveUsed < 3 && Math.random() < 0.25) {
+            // Cơ hội thách đấu cao hơn (55% thay vì 40%)
+            if (passiveUsed < 3 && Math.random() < 0.55) {
                 const bots = window.AppState.data.leaderboard.filter(p => p.role === 'bot');
                 if (bots.length === 0) return;
 
@@ -1192,8 +1202,11 @@
                 const suitableTask = getSuitableTask(true); // botInitiated = true
 
                 if (suitableTask) {
+                    console.log(`[BotEngine] Bot ${randomBot.name} đang gửi lời thách đấu: ${suitableTask}`);
                     openBotInvitation(randomBot, suitableTask);
                 }
+            } else {
+                console.log(`[BotEngine] Check pass but luck fail or limit reached. Passive used: ${passiveUsed}`);
             }
         }
 
@@ -1383,10 +1396,10 @@
 
             if (isChallengerConfirmed && !isOpponentConfirmed) {
                 powerPercentage = 75;
-                powerComment = `${challenger.name.toUpperCase()} ĐANG DÀN QUÂN ÁP ĐẢO!`;
+                powerComment = `${challenger.name.replace(' (Bot)', '').toUpperCase()} ĐANG DÀN QUÂN ÁP ĐẢO!`;
             } else if (!isChallengerConfirmed && isOpponentConfirmed) {
                 powerPercentage = 25;
-                powerComment = `${opponent.name.split(' ')[0].toUpperCase()} ĐANG CHỐNG TRẢ QUYẾT LIỆT!`;
+                powerComment = `${opponent.name.replace(' (Bot)', '').toUpperCase()} ĐANG CHỐNG TRẢ QUYẾT LIỆT!`;
             } else if (isChallengerConfirmed && isOpponentConfirmed) {
                 // Internal momentum drift using simple natural waves
                 const now = new Date();
@@ -1487,7 +1500,7 @@
                                         <span class="material-symbols-outlined text-white text-[10px] font-bold">face</span>
                                     </div>
                                 </div>
-                                <span class="text-[10px] sm:text-base font-black text-blue-600 dark:text-blue-400 uppercase tracking-tighter">${challenger ? challenger.name : 'Bạn'}</span>
+                                <span class="text-[10px] sm:text-base font-black text-blue-600 dark:text-blue-400 uppercase tracking-tighter">${challenger ? (challenger.id === currentUserId ? 'Bạn' : challenger.name.replace(' (Bot)', '')) : 'Bạn'}</span>
                             </div>
 
                             <!-- VS Badge -->
@@ -1574,7 +1587,7 @@
                     <!-- Bottom Commentary Ticker -->
                     <div class="relative z-10 bg-slate-900/5 dark:bg-black/40 py-2 overflow-hidden whitespace-nowrap border-t border-slate-100 dark:border-white/5">
                         <div class="inline-block commentary-slide text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">
-                            🚀 TRẬN ĐẤU ĐANG CỰC KỲ CĂNG THẲNG... ${challenger.name} ĐANG GÂY ÁP LỰC LỚN! ... ĐẾN 19:00 SẼ BIẾT AI LÀ CHIẾN THẦN ... HÀNH ĐỘNG NGAY ĐỂ GIÀNH LỢI THẾ! ... ⚔️
+                            🚀 TRẬN ĐẤU ĐANG CỰC KỲ CĂNG THẲNG... ${challenger.name.replace(' (Bot)', '')} ĐANG GÂY ÁP LỰC LỚN! ... ĐẾN 19:00 SẼ BIẾT AI LÀ CHIẾN THẦN ... HÀNH ĐỘNG NGAY ĐỂ GIÀNH LỢI THẾ! ... ⚔️
                         </div>
                     </div>
                 </div>`;
@@ -1626,7 +1639,7 @@
                                 <img src="${challenger.avatar}" class="w-12 h-12 rounded-full border-2 ${c.winnerId === c.challengerId ? 'border-yellow-400 shadow-lg scale-110 z-10' : 'border-white/50 dark:border-white/10'}">
                                 ${c.winnerId === c.challengerId ? '<span class="absolute -top-2 -right-2 text-sm drop-shadow-md">👑</span>' : ''}
                             </div>
-                            <span class="text-[10px] font-black truncate w-full text-center ${c.winnerId === c.challengerId ? textColor : subTextColor}">${challenger.name}</span>
+                            <span class="text-[10px] font-black w-full text-center ${c.winnerId === c.challengerId ? textColor : subTextColor}">${challenger.name.replace(' (Bot)', '')}</span>
                         </div>
 
                         <div class="text-[10px] font-black text-slate-300 dark:text-slate-600 italic px-2">VS</div>
@@ -1677,9 +1690,9 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-[12px] font-black text-slate-800 dark:text-white leading-tight mb-1">
-                                <span class="text-primary">${challenger.name.split(' ')[0]}</span> 
+                                <span class="text-primary">${challenger.name.replace(' (Bot)', '')}</span> 
                                 <span class="text-slate-400 font-medium italic opacity-80">vừa ra tay thách đấu</span> 
-                                <span class="text-primary">${opponent.name.split(' ')[0]}</span>
+                                <span class="text-primary">${opponent.name.replace(' (Bot)', '')}</span>
                             </p>
                             <div class="flex items-center gap-2">
                                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded flex items-center gap-1">
