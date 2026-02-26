@@ -863,15 +863,27 @@
         let selectedOpponentId = null;
         let selectedTaskType = null;
         let reportingChallengeId = null;
-        const TASK_EMOJI = { 'Dậy sớm': '🌅', 'Ăn xong suất': '🍽️', 'Tự học bài': '📚', 'Làm việc nhà': '🏠', 'Tập thể dục': '🏃', 'Đánh răng': '🪥', 'Vệ sinh': '🪥' };
+        const TASK_EMOJI = {
+            'Dậy sớm': '🌅', 'Ăn xong suất': '🍽️', 'Tự học bài': '📚', 'Làm việc nhà': '🏠', 'Tập thể dục': '🏃', 'Đánh răng': '🪥',
+            'Viết thư yêu thương': '✉️', 'Ba việc tốt': '🤝', 'Kể chuyện anh hùng': '📖', 'Vũ điệu chiến thắng': '💃', 'Bữa sáng đầu tay': '🥪', 'Reviewer tài năng': '🎬'
+        };
         const TASK_CONDITIONS = {
             'Dậy sớm': 'Bé phải thức dậy trước 6:30 và đã sẵn sàng vệ sinh cá nhân xong để được tính là hoàn thành!',
             'Ăn xong suất': 'Bé cần ăn hết sạch các món trong bát, không để rơi vãi và tự mang bát đi cất đúng nơi quy định.',
             'Tự học bài': 'Bé hoàn thành toàn bộ bài tập giáo viên giao và cả bài tập chuẩn bị cho hôm sau mà không cần nhắc nhở.',
             'Làm việc nhà': 'Khu vực bé được giao (phòng ngủ hoặc phòng khách) phải sạch sẽ, đồ chơi được xếp lại ngay ngắn vào thùng.',
-            'Tập thể dục': 'Bé vỗ tay theo nhạc hoặc chạy bộ cầu thang, thực hiện vận động liên tục trong ít nhất 15 phút.',
-            'Đánh răng': 'Bé đánh răng cả hàm trên và dưới trong đủ 2 phút, đảm bảo hơi thở thơm tho sau khi xong.'
+            'Tập thể dục': 'Bé vận động liên tục trong ít nhất 15 phút theo nhạc hoặc chạy bộ cầu thang.',
+            'Đánh răng': 'Bé đánh răng cả hàm trên và dưới trong đủ 2 phút, đảm bảo hơi thở thơm tho.',
+            // New Heroic Challenges
+            'Viết thư yêu thương': 'Bé hãy viết một bức thư ngắn, ghi âm hoặc quay video nói "Con yêu ba mẹ" và chia sẻ một điều con thấy biết ơn hôm nay.',
+            'Ba việc tốt': 'Bé hãy tìm và giúp đỡ ít nhất 3 người bạn ở trường hoặc hàng xóm (chia sẻ đồ chơi, giúp bạn nhặt đồ, hướng dẫn bài...).',
+            'Kể chuyện anh hùng': 'Bé chọn 1 cuốn sách hay, đọc xong và kể lại bài học ý nghĩa nhất cho cả nhà nghe trong bữa tối.',
+            'Vũ điệu chiến thắng': 'Bé tự học một điệu nhảy ngắn hoặc 3 động tác thể dục mới trên mạng và biểu diễn lại cho ba mẹ xem.',
+            'Bữa sáng đầu tay': 'Bé tự tay chuẩn bị một bữa sáng đơn giản (bánh mì kẹp, ngũ cốc...) và mời người thân cùng thưởng thức.',
+            'Reviewer tài năng': 'Bé hãy quay một đoạn clip ngắn giới thiệu về món đồ chơi hoặc cuốn sách yêu thích nhất của mình.'
         };
+
+        const HERO_TASKS = ['Viết thư yêu thương', 'Ba việc tốt', 'Kể chuyện anh hùng', 'Vũ điệu chiến thắng', 'Bữa sáng đầu tay', 'Reviewer tài năng'];
 
         const TASK_SCHEDULE = {
             'Dậy sớm': { start: 5, end: 9 },
@@ -879,7 +891,13 @@
             'Tự học bài': { start: 9, end: 21 },
             'Làm việc nhà': { start: 8, end: 19 },
             'Tập thể dục': { start: 6, end: 19 },
-            'Đánh răng': { start: 6, end: 22 }
+            'Đánh răng': { start: 6, end: 22 },
+            'Viết thư yêu thương': { start: 8, end: 21 },
+            'Ba việc tốt': { start: 7, end: 18 },
+            'Kể chuyện anh hùng': { start: 15, end: 20 },
+            'Vũ điệu chiến thắng': { start: 9, end: 19 },
+            'Bữa sáng đầu tay': { start: 6, end: 10 },
+            'Reviewer tài năng': { start: 9, end: 20 }
         };
 
         let currentInvitingBot = null;
@@ -898,14 +916,21 @@
             }
         });
 
-        function getSuitableTask() {
+        function getSuitableTask(isBotInitiated = false) {
             const hour = new Date().getHours();
-            const validTasks = Object.keys(TASK_SCHEDULE).filter(task => {
+
+            // Nếu là Bot mời, CHỈ chọn trong danh sách HERO_TASKS
+            const taskPool = isBotInitiated ? HERO_TASKS : Object.keys(TASK_SCHEDULE);
+
+            const validTasks = taskPool.filter(task => {
                 const range = TASK_SCHEDULE[task];
-                return hour >= range.start && hour <= range.end;
+                return range && hour >= range.start && hour <= range.end;
             });
 
-            if (validTasks.length === 0) return null;
+            if (validTasks.length === 0) {
+                // Fallback nếu không có task hero nào trong khung giờ, chọn 1 cái hero bất kỳ
+                return isBotInitiated ? HERO_TASKS[Math.floor(Math.random() * HERO_TASKS.length)] : null;
+            }
             return validTasks[Math.floor(Math.random() * validTasks.length)];
         }
 
@@ -923,7 +948,7 @@
                 if (bots.length === 0) return;
 
                 const randomBot = bots[Math.floor(Math.random() * bots.length)];
-                const suitableTask = getSuitableTask();
+                const suitableTask = getSuitableTask(true); // botInitiated = true
 
                 if (suitableTask) {
                     openBotInvitation(randomBot, suitableTask);
