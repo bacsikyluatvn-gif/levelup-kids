@@ -4035,6 +4035,14 @@ class StateManager {
                         time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
                 }));
 
+                // Populate growthLogs for the Growth Diary view
+                this.data.growthLogs = this.data.requests.filter(r =>
+                        r.type === 'behavior_good' ||
+                        r.type === 'behavior_bad' ||
+                        r.type === 'reflection' ||
+                        r.type === 'atonement'
+                );
+
                 // Fallback images
                 this.data.requests.forEach(req => {
                         if (!req.image || req.image === 'null') {
