@@ -1,0 +1,21 @@
+# Exclude python scripts
+*.py
+check_db.js
+check_db_status.js
+fix_bots.js
+fix_quest_completed_by.js
+fix_remove_parent_and_bot_names.js
+patch_bots.js
+test_update.js
+verify_challenges_table.js
+purge_bots.js
+
+# Exclude git
+.git
+.gitignore
+
+# Exclude OS files
+.DS_Store
+
+# Exclude gemini artifacts
+.gemini/
