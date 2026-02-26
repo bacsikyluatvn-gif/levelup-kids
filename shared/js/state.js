@@ -3806,7 +3806,32 @@ class StateManager {
 
         notify() {
                 this.recalculateDerivedStats();
+                this.syncUserToLeaderboard();
                 this.listeners.forEach(cb => cb(this.data));
+        }
+
+        /**
+         * Đồng bộ dữ liệu local của User hiện tại vào danh sách Leaderboard
+         * Giúp BXH cập nhật "Real-time" ngay cả khi database chưa sync kịp
+         */
+        syncUserToLeaderboard() {
+                if (!this.data.user || !this.data.leaderboard) return;
+                const activeId = this.data.user.id;
+                const lbEntry = this.data.leaderboard.find(u => u.id === activeId);
+                if (lbEntry) {
+                        const u = this.data.user;
+                        lbEntry.gold = u.gold;
+                        lbEntry.xp = u.xp;
+                        lbEntry.level = u.level;
+                        lbEntry.personalityPoints = u.personalityPoints;
+                        lbEntry.weeklyXp = u.weeklyXp;
+                        lbEntry.water = u.water;
+                        lbEntry.stickers = u.stickers;
+                        lbEntry.totalStickers = u.totalStickers;
+                        lbEntry.actionStreak = u.actionStreak;
+                        lbEntry.completionStreak = u.completionStreak;
+                        lbEntry.weeklyStreak = u.weeklyStreak;
+                }
         }
 
         async initDatabase() {
@@ -3958,11 +3983,19 @@ class StateManager {
                                 'Hải Đăng': 'boy', 'Gia Bảo': 'boy', 'Tiến Phát': 'boy', 'Đức Minh': 'boy', 'Tuấn Kiệt': 'boy',
                                 'Nhật Minh': 'boy', 'Duy Anh': 'boy', 'Trọng Nhân': 'boy', 'Thành Nam': 'boy', 'Minh Khôi': 'boy',
                                 'Tường Vy': 'girl', 'Linh Đan': 'girl', 'Bé Na': 'girl', 'Minh Anh': 'girl', 'Khánh An': 'girl',
-                                'Phương Thảo': 'girl', 'Kim Ngân': 'girl', 'Quỳnh Chi': 'girl', 'Bảo Ngọc': 'girl', 'Thanh Trúc': 'girl'
+                                'Phương Thảo': 'girl', 'Kim Ngân': 'girl', 'Quỳnh Chi': 'girl', 'Bảo Ngọc': 'girl', 'Thanh Trúc': 'girl',
+                                'Gia Huy': 'boy', 'Khôi Nguyên': 'boy', 'Bảo Nam': 'boy', 'Đức Anh': 'boy', 'Tùng Lâm': 'boy',
+                                'Khánh Linh': 'girl', 'Ngọc Diệp': 'girl', 'Trà My': 'girl', 'Hoài An': 'girl', 'Mỹ Tâm': 'girl'
                         },
                         nicknames: [
                                 { n: 'Sóc Nâu', g: 'boy' }, { n: 'Bi Béo', g: 'boy' }, { n: 'Khoai Tây', g: 'boy' }, { n: 'Bun Bun', g: 'boy' },
-                                { n: 'Thỏ Ngọc', g: 'girl' }, { n: 'Bé Bống', g: 'girl' }, { n: 'Mây Xinh', g: 'girl' }, { n: 'Kem Dâu', g: 'girl' }
+                                { n: 'Gà Chíp', g: 'boy' }, { n: 'Cún Con', g: 'boy' }, { n: 'Tí Quậy', g: 'boy' }, { n: 'Mít Ướt', g: 'boy' },
+                                { n: 'Bé Bống', g: 'girl' }, { n: 'Mây Xinh', g: 'girl' }, { n: 'Kem Dâu', g: 'girl' }, { n: 'Thỏ Ngọc', g: 'girl' },
+                                { n: 'Nấm Lùn', g: 'girl' }, { n: 'Dâu Tây', g: 'girl' }, { n: 'Mèo Lười', g: 'girl' }, { n: 'Na Cute', g: 'girl' },
+                                { n: 'Heo Con', g: 'boy' }, { n: 'Gấu Bự', g: 'boy' }, { n: 'Bơ Ngọt', g: 'boy' }, { n: 'Su Su', g: 'boy' },
+                                { n: 'Ớt Hiểm', g: 'boy' }, { n: 'Đậu Đậu', g: 'boy' }, { n: 'Bắp Cải', g: 'boy' }, { n: 'Cà Rốt', g: 'boy' },
+                                { n: 'Bống Bang', g: 'girl' }, { n: 'Xu Xu', g: 'girl' }, { n: 'Chíp Chíp', g: 'girl' }, { n: 'Búp Bê', g: 'girl' },
+                                { n: 'Cốm Thơm', g: 'girl' }, { n: 'Mít Mật', g: 'girl' }, { n: 'Sapo', g: 'girl' }, { n: 'Chôm Chôm', g: 'girl' }
                         ]
                 };
 
@@ -3983,6 +4016,15 @@ class StateManager {
                                         name = nick.n;
                                         gender = nick.g;
                                 }
+
+                                // 3. ĐẢM BẢO DUY NHẤT: Nếu vẫn trùng (do hết nickname), thêm số hậu tố
+                                let finalUniqueName = name;
+                                let collisionCount = 2;
+                                while (usedNames.has(finalUniqueName)) {
+                                        finalUniqueName = `${name} ${collisionCount}`;
+                                        collisionCount++;
+                                }
+                                name = finalUniqueName;
                                 usedNames.add(name);
 
                                 // 3. Gán Avatar chuẩn giới tính (Hash dựa trên ID để không bị nhảy hình)
