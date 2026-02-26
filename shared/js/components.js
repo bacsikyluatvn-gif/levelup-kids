@@ -1851,12 +1851,11 @@ class ChildNav extends HTMLElement {
             ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center"> ${balance > 9 ? '9+' : balance}</span> `
             : '';
         return `
-            <a href="../sticker-book/index.html" class="relative flex flex-col items-center gap-1 transition-all duration-300 ${activeClass} flex-1 min-w-[56px] text-center">
-                <div class="${isActive ? 'bg-primary/10 p-2 rounded-2xl' : 'p-2'} transition-all duration-300 relative">
+            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[44px] text-center">
+                <div class="${isActive ? 'bg-primary/10 p-2.5 rounded-2xl' : 'p-2.5'} transition-all duration-300 relative">
                     <span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>
                     ${badge}
                 </div>
-                <span class="text-[10px] font-bold ${isActive ? 'opacity-100' : 'opacity-0 absolute -bottom-4 pointer-events-none'} transition-all duration-300 whitespace-nowrap">Sổ Sticker</span>
                 ${dot}
             </a>
             `;
@@ -1875,11 +1874,10 @@ class ChildNav extends HTMLElement {
         const attrs = onClickStr ? `href="${href}" onclick="${onClickStr}"` : `href="../${href}"`;
 
         return `
-            <a ${attrs} class="relative flex flex-col items-center gap-1 transition-all duration-300 ${activeClass} flex-1 min-w-[56px] text-center">
-                <div class="${isActive ? 'bg-primary/10 p-2 rounded-2xl' : 'p-2'} transition-all duration-300">
+            <a ${attrs} class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[44px] text-center">
+                <div class="${isActive ? 'bg-primary/10 p-2.5 rounded-2xl' : 'p-2.5'} transition-all duration-300">
                     <span class="material-symbols-outlined text-2xl ${iconClass}">${icon}</span>
                 </div>
-                <span class="text-[10px] font-bold ${isActive ? 'opacity-100' : 'opacity-0 absolute -bottom-4 pointer-events-none'} transition-all duration-300 whitespace-nowrap">${label}</span>
                 ${dot}
             </a>
             `;
