@@ -5219,6 +5219,40 @@ class StateManager {
                 return data;
         }
 
+        // --- NEW: Bot Challenge Human ---
+        async createBotChallenge(botId, taskType) {
+                if (!this.data.user || !this.familyId) return null;
+
+                // Kiểm tra giới hạn BỊ ĐỘNG của chính mình
+                if (this.getDailyChallengeCount(this.data.user.id, 'passive') >= 3) {
+                        return { error: 'LIMIT_REACHED' };
+                }
+
+                const today = new Date().toISOString().split('T')[0];
+                const botSuccess = Math.random() < 0.6; // Bot "quyết tâm" hơn khi chủ động thách đấu
+
+                const challengeData = {
+                        family_id: this.familyId,
+                        challenger_id: botId,
+                        opponent_id: this.data.user.id,
+                        task_type: taskType,
+                        status: 'active',
+                        challenger_confirmed: botSuccess, // Bot báo cáo (giả lập)
+                        opponent_confirmed: null,
+                        date: today
+                };
+
+                const { data, error } = await this.client.from('challenges').insert(challengeData).select().single();
+
+                if (error) {
+                        console.error("[Arena] Lỗi ghi nhận lời thách đấu từ Bot:", error);
+                        return null;
+                }
+
+                await this.syncFromDatabase();
+                return data;
+        }
+
         // Bé tự báo cáo kết quả của mình (Trust-First Model)
         async selfCompleteChallenge(challengeId, isSuccess = true) {
                 if (!this.data.user || !this.client) {
