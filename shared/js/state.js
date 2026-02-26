@@ -3918,170 +3918,101 @@ class StateManager {
 
                 // --- BOT SYSTEM INJECTION & AUTO-HEALING ---
                 const botProfiles = profiles.filter(p => p.role === 'bot');
-                const humanChildren = profiles.filter(p => p.role === 'child');
 
-                if (botProfiles.length === 0 && this.familyId && !this._isGeneratingBots) {
+                if (botProfiles.length < 40 && this.familyId && !this._isGeneratingBots) {
                         this._isGeneratingBots = true;
-                        const bots = [
-                                { name: 'Bé Sóc', gender: 'girl' },
-                                { name: 'Gia Bảo', gender: 'boy' },
-                                { name: 'Minh Anh', gender: 'girl' },
-                                { name: 'Đức Minh', gender: 'boy' },
-                                { name: 'Khánh An', gender: 'girl' },
-                                { name: 'Hải Đăng', gender: 'boy' },
-                                { name: 'Tường Vy', gender: 'girl' },
-                                { name: 'Tuấn Kiệt', gender: 'boy' },
-                                { name: 'Linh Đan', gender: 'girl' },
-                                { name: 'Nhật Minh', gender: 'boy' },
-                                { name: 'Bé Na', gender: 'girl' },
-                                { name: 'Bi béo', gender: 'boy' },
-                                { name: 'Mèo con', gender: 'girl' },
-                                { name: 'Gấu nhỏ', gender: 'boy' },
-                                { name: 'Phương Thảo', gender: 'girl' },
-                                { name: 'Kim Ngân', gender: 'girl' },
-                                { name: 'Tiến Phát', gender: 'boy' },
-                                { name: 'Duy Anh', gender: 'boy' },
-                                { name: 'Quỳnh Chi', gender: 'girl' },
-                                { name: 'Trọng Nhân', gender: 'boy' }
+                        const seedNames = [
+                                'Hải Đăng', 'Gia Bảo', 'Tiến Phát', 'Đức Minh', 'Tuấn Kiệt', 'Nhật Minh', 'Duy Anh', 'Trọng Nhân',
+                                'Tường Vy', 'Linh Đan', 'Bé Na', 'Minh Anh', 'Khánh An', 'Phương Thảo', 'Kim Ngân', 'Quỳnh Chi',
+                                'Thành Nam', 'Minh Khôi', 'Bảo Ngọc', 'Thanh Trúc'
                         ];
-
-                        const boysAvatars = [1, 2, 4, 10, 11, 14, 15, 17, 18, 19, 23, 24, 27, 28, 29, 30]; // Index numbers
-                        const girlsAvatars = [3, 5, 6, 7, 8, 9, 12, 13, 16, 20, 21, 22, 25, 26];
-
-                        const botsToInsert = bots.map((bot, i) => {
-                                const lvl = Math.floor(Math.random() * 4) + 1;
-                                const actionStreak = Math.floor(Math.random() * 6) + 1;
-                                const stickers = (lvl * 4) + Math.floor(Math.random() * 8);
-
-                                const avatarPool = bot.gender === 'boy' ? boysAvatars : girlsAvatars;
-                                const avatarNum = avatarPool[Math.floor(Math.random() * avatarPool.length)];
-
-                                return {
+                        const needed = 40 - botProfiles.length;
+                        const botsToInsert = [];
+                        for (let i = 0; i < needed; i++) {
+                                botsToInsert.push({
                                         family_id: this.familyId,
-                                        name: `${bot.name} (Bot)`,
+                                        name: `${seedNames[i % seedNames.length]} (Bot)`,
                                         role: 'bot',
-                                        avatar: `../shared/assets/generated_avatars/avatar_${avatarNum}.png`,
-                                        level: lvl,
-                                        xp: Math.floor(Math.random() * 100),
-                                        gold: stickers * 25,
-                                        water: actionStreak * 5,
-                                        total_stickers: stickers,
-                                        weekly_xp: Math.floor(Math.random() * 100) + 20,
-                                        action_streak: actionStreak,
-                                        weekly_streak: Math.floor(Math.random() * 5) + 1,
-                                        completion_streak: Math.floor(Math.random() * actionStreak)
-                                };
-                        });
-                        this.client.from('profiles').insert(botsToInsert).then(() => {
-                                console.log("20 Friendly Bots created!");
-                                this.syncFromDatabase();
-                        });
-                } else if (botProfiles.length > 0) {
-                        // FORCE UPDATE: Nếu thấy bot cũ (ví dụ chứa dấu ngoặc hoặc tên cũ), ta update sang tên mới
-                        const oldBotNames = ['Bảo (Báo Thù)', 'Tiểu Vy', 'Nhóc Long', 'Chị Trang', 'Bé Phúc', 'Việt (Boss)', 'Mai Mai', 'Linh Mít', 'Đại Quân', 'Bé Châu', 'Tâm Tít', 'Hải Dớ', 'Chíp', 'Đạt Cỏ', 'Bé An', 'Bình Gold', 'Bé Ngọc', 'Sơn Sói', 'Quang Teo', 'Hà Múm'];
-                        const botsToFix = botProfiles.filter(p => oldBotNames.some(old => p.name.includes(old)));
-
-                        if (botsToFix.length > 0) {
-                                const newBots = [
-                                        { name: 'Bé Sóc', gender: 'girl' }, { name: 'Gia Bảo', gender: 'boy' }, { name: 'Minh Anh', gender: 'girl' },
-                                        { name: 'Đức Minh', gender: 'boy' }, { name: 'Khánh An', gender: 'girl' }, { name: 'Hải Đăng', gender: 'boy' },
-                                        { name: 'Tường Vy', gender: 'girl' }, { name: 'Tuấn Kiệt', gender: 'boy' }, { name: 'Linh Đan', gender: 'girl' },
-                                        { name: 'Nhật Minh', gender: 'boy' }, { name: 'Bé Na', gender: 'girl' }, { name: 'Bi béo', gender: 'boy' },
-                                        { name: 'Mèo con', gender: 'girl' }, { name: 'Gấu nhỏ', gender: 'boy' }, { name: 'Phương Thảo', gender: 'girl' },
-                                        { name: 'Kim Ngân', gender: 'girl' }, { name: 'Tiến Phát', gender: 'boy' }, { name: 'Duy Anh', gender: 'boy' },
-                                        { name: 'Quỳnh Chi', gender: 'girl' }, { name: 'Trọng Nhân', gender: 'boy' }
-                                ];
-
-                                const boysAvatars = [1, 2, 4, 10, 11, 14, 15, 17, 18, 19, 23, 24, 27, 28, 29, 30];
-                                const girlsAvatars = [3, 5, 6, 7, 8, 9, 12, 13, 16, 20, 21, 22, 25, 26];
-
-                                botsToFix.forEach((bot, i) => {
-                                        const newBotInfo = newBots[i % newBots.length];
-                                        const avatarPool = newBotInfo.gender === 'boy' ? boysAvatars : girlsAvatars;
-                                        const avatarNum = avatarPool[Math.floor(Math.random() * avatarPool.length)];
-
-                                        this.client.from('profiles').update({
-                                                name: `${newBotInfo.name} (Bot)`,
-                                                avatar: `../shared/assets/generated_avatars/avatar_${avatarNum}.png`
-                                        }).eq('id', bot.id).then();
+                                        avatar: `../shared/assets/generated_avatars/avatar_1.png`,
+                                        level: Math.floor(Math.random() * 5) + 1,
+                                        gold: 150, xp: 50, water: 5, total_stickers: 5, action_streak: 2
                                 });
                         }
-
-                        // HEALING: Đảm bảo TẤT CẢ bot đều có lịch sử đấu và chỉ số
-                        const nonParents = profiles.filter(p => p.role !== 'parent');
-
-                        botProfiles.forEach(bot => {
-                                // Kiểm tra nếu bot còn quá "nghèo nàn" hoặc chưa có trận đấu nào (dựa trên weekly_streak làm đại diện nhanh)
-                                const needsBoost = (bot.total_stickers || 0) < 5 || (bot.weekly_streak || 0) === 0;
-
-                                if (needsBoost) {
-                                        const lvl = bot.level || 2;
-                                        const winCount = Math.floor(Math.random() * 8) + 3;
-                                        const stickerCount = Math.max(bot.total_stickers || 0, (lvl * 5) + Math.floor(Math.random() * 10));
-
-                                        // Update stats
-                                        this.client.from('profiles').update({
-                                                total_stickers: stickerCount,
-                                                weekly_streak: winCount,
-                                                gold: Math.max(bot.gold || 0, stickerCount * 20),
-                                                water: Math.max(bot.water || 0, lvl * 10),
-                                                action_streak: Math.max(bot.action_streak || 0, Math.floor(Math.random() * 4) + 2),
-                                                completion_streak: Math.max(bot.completion_streak || 0, Math.floor(Math.random() * 3) + 1)
-                                        }).eq('id', bot.id).then();
-
-                                        // Seed historical matches
-                                        const matchCount = Math.floor(Math.random() * 8) + 5;
-                                        const historyBatch = Array.from({ length: matchCount }).map(() => {
-                                                const r = Math.random();
-                                                let winnerId = null;
-                                                if (r < 0.45) winnerId = bot.id;
-                                                else if (r < 0.8) winnerId = botProfiles[Math.floor(Math.random() * botProfiles.length)].id;
-
-                                                return {
-                                                        family_id: this.familyId,
-                                                        challenger_id: bot.id,
-                                                        opponent_id: botProfiles[Math.floor(Math.random() * botProfiles.length)].id,
-                                                        status: 'completed',
-                                                        winner_id: winnerId,
-                                                        date: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0],
-                                                        task_type: 'Thử thách Hệ thống'
-                                                };
-                                        });
-                                        this.client.from('challenges').insert(historyBatch).then();
-                                }
+                        this.client.from('profiles').insert(botsToInsert).then(() => {
+                                this._isGeneratingBots = false;
+                                this.syncFromDatabase();
                         });
-
-                        // Mỗi lần sync có 10% cơ hội simulated bot activity (giảm xuống để tránh bot vượt quá xa)
-                        if (Math.random() < 0.1) {
-                                this.simulateBotActivity(botProfiles, nonParents);
-                        }
                 }
-                // --- END BOT SYSTEM INJECTION ---
 
+                // Cấu hình giới tính và Avatar chuẩn
+                const BOT_CONFIG = {
+                        boys: [1, 3, 4, 5, 9, 10, 15, 18, 19, 20, 21, 22, 25, 26, 30],
+                        girls: [2, 6, 7, 8, 11, 12, 13, 14, 16, 17, 23, 24, 27, 28, 29],
+                        knownGenders: {
+                                'Hải Đăng': 'boy', 'Gia Bảo': 'boy', 'Tiến Phát': 'boy', 'Đức Minh': 'boy', 'Tuấn Kiệt': 'boy',
+                                'Nhật Minh': 'boy', 'Duy Anh': 'boy', 'Trọng Nhân': 'boy', 'Thành Nam': 'boy', 'Minh Khôi': 'boy',
+                                'Tường Vy': 'girl', 'Linh Đan': 'girl', 'Bé Na': 'girl', 'Minh Anh': 'girl', 'Khánh An': 'girl',
+                                'Phương Thảo': 'girl', 'Kim Ngân': 'girl', 'Quỳnh Chi': 'girl', 'Bảo Ngọc': 'girl', 'Thanh Trúc': 'girl'
+                        },
+                        nicknames: [
+                                { n: 'Sóc Nâu', g: 'boy' }, { n: 'Bi Béo', g: 'boy' }, { n: 'Khoai Tây', g: 'boy' }, { n: 'Bun Bun', g: 'boy' },
+                                { n: 'Thỏ Ngọc', g: 'girl' }, { n: 'Bé Bống', g: 'girl' }, { n: 'Mây Xinh', g: 'girl' }, { n: 'Kem Dâu', g: 'girl' }
+                        ]
+                };
 
-                this.data.leaderboard = profiles.map(p => ({
-                        id: p.id,
-                        name: p.role === 'bot' ? (p.name || "Bot").replace(' (Bot)', '').trim() : (p.name || "Bé"),
-                        role: p.role,
-                        avatar: p.avatar,
-                        pinCode: p.pin_code,
-                        level: p.level || 1,
-                        gold: p.gold || 0,
-                        xp: p.xp || 0,
-                        personalityPoints: p.personality_points || 0,
-                        weeklyXp: p.weekly_xp || 0,
-                        water: p.water || 0,
-                        stickers: p.stickers || 0,
-                        totalStickers: p.total_stickers || 0,
-                        actionStreak: p.action_streak || 0,
-                        weeklyStreak: p.weekly_streak || 0,
-                        completionStreak: p.completion_streak || 0,
-                        treePoints: p.role === 'bot' ? (p.action_streak || 0) : 0, // Initalize for humans, will refine from requests below
-                        isCurrentUser: false,
-                        unlockedStickers: p.unlocked_stickers || []
-                }));
+                const usedNames = new Set();
+                this.data.leaderboard = profiles.map(p => {
+                        let name = (p.name || "Bé").replace(' (Bot)', '').trim();
+                        let avatar = p.avatar;
 
-                // Populate requests first to calculate daily completions for quests
+                        if (p.role === 'bot') {
+                                // 1. Xác định giới tính từ tên
+                                let gender = BOT_CONFIG.knownGenders[name] || (usedNames.has(name) ? null : 'unknown');
+
+                                // 2. Nếu tên trùng hoặc không rõ giới tính -> Đổi sang biệt danh
+                                if (!gender || gender === 'unknown' || usedNames.has(name)) {
+                                        let hash = 0;
+                                        for (let i = 0; i < p.id.length; i++) hash += p.id.charCodeAt(i);
+                                        const nick = BOT_CONFIG.nicknames[hash % BOT_CONFIG.nicknames.length];
+                                        name = nick.n;
+                                        gender = nick.g;
+                                }
+                                usedNames.add(name);
+
+                                // 3. Gán Avatar chuẩn giới tính (Hash dựa trên ID để không bị nhảy hình)
+                                let idHash = 0;
+                                for (let i = 0; i < p.id.length; i++) idHash += p.id.charCodeAt(i);
+                                const pool = gender === 'boy' ? BOT_CONFIG.boys : BOT_CONFIG.girls;
+                                const avNum = pool[idHash % pool.length];
+                                avatar = `../shared/assets/generated_avatars/avatar_${avNum}.png`;
+                        } else {
+                                usedNames.add(name);
+                        }
+
+                        return {
+                                id: p.id,
+                                name: name,
+                                role: p.role,
+                                avatar: avatar,
+                                pinCode: p.pin_code,
+                                level: p.level || 1,
+                                gold: p.gold || 0,
+                                xp: p.xp || 0,
+                                personalityPoints: p.personality_points || 0,
+                                weeklyXp: p.weekly_xp || 0,
+                                water: p.water || 0,
+                                stickers: p.stickers || 0,
+                                totalStickers: p.total_stickers || 0,
+                                actionStreak: p.action_streak || 0,
+                                weeklyStreak: p.weekly_streak || 0,
+                                completionStreak: p.completion_streak || 0,
+                                treePoints: p.role === 'bot' ? (p.action_streak || 0) : 0,
+                                isCurrentUser: p.id === this.currentProfileId,
+                                unlockedStickers: p.unlocked_stickers || []
+                        };
+                });
+
+                // Populate requests first
                 this.data.requests = (reqRes.data || []).map(r => ({
                         id: r.id,
                         profileId: r.profile_id,
@@ -4104,11 +4035,10 @@ class StateManager {
                         time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
                 }));
 
-                // Fallback for missing images in requests (e.g. if the 'image' column is missing or null)
+                // Fallback images
                 this.data.requests.forEach(req => {
                         if (!req.image || req.image === 'null') {
                                 if (req.type === 'perk') {
-                                        // Clean title to match perk
                                         const cleanTitle = req.itemTitle.replace(' (Đặc quyền Sticker)', '');
                                         const perk = this.data.instantPerks.find(p => p.title === cleanTitle);
                                         if (perk) req.image = perk.emoji || perk.icon;
@@ -4127,105 +4057,40 @@ class StateManager {
                 const todayStr = getLocalDateStr(new Date());
 
                 this.data.quests = (questRes.data || []).map(q => {
-                        // Recalculate completedBy based on today's logs only (make quests recurring daily)
                         const completedByToday = this.data.requests
                                 .filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && getLocalDateStr(r.createdAt) === todayStr)
                                 .map(r => r.profileId);
-
                         return {
-                                id: q.id,
-                                title: q.title,
-                                desc: q.description,
-                                reward: q.reward,
-                                xp: q.xp,
-                                water: q.water,
-                                sticker: q.sticker,
-                                icon: q.icon,
-                                color: q.color,
-                                category: q.category,
-                                type: q.type,
-                                completedBy: completedByToday
+                                id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
+                                water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
+                                category: q.category, type: q.type, completedBy: completedByToday
                         };
                 });
 
                 this.data.shopItems = (shopRes.data || []).filter(s => s.item_type === 'premium' || s.item_type === 'special').map(s => ({
-                        id: s.id,
-                        title: s.title,
-                        desc: s.description,
-                        price: s.price,
-                        personalityPrice: s.personality_price,
-                        image: s.image,
-                        emoji: s.emoji,
-                        category: s.category,
-                        color: s.color
+                        id: s.id, title: s.title, desc: s.description, price: s.price, personalityPrice: s.personality_price,
+                        image: s.image, emoji: s.emoji, category: s.category, color: s.color
                 }));
 
                 this.data.instantPerks = (shopRes.data || []).filter(s => s.item_type === 'perk').map(s => ({
                         id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
                 }));
 
-
-
-                this.data.growthLogs = this.data.requests.filter(r => r.type === 'behavior_good' || r.type === 'behavior_bad');
-
                 this.data.challenges = (challRes.data || []).map(c => ({
-                        id: c.id,
-                        challengerId: c.challenger_id,
-                        opponentId: c.opponent_id,
-                        taskType: c.task_type,
-                        status: c.status,
-                        challengerConfirmed: c.challenger_confirmed,
-                        opponentConfirmed: c.opponent_confirmed,
-                        winnerId: c.winner_id,
-                        date: c.date,
-                        time: new Date(c.created_at).toLocaleString('vi-VN'),
-                        createdAt: c.created_at
+                        id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id, taskType: c.task_type,
+                        status: c.status, challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
+                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at
                 }));
 
-                // --- REFINE TREE POINTS FOR HUMANS FROM REQUESTS ---
-                profiles.filter(p => p.role === 'child').forEach(child => {
-                        const lbUser = this.data.leaderboard.find(u => u.id === child.id);
-                        if (lbUser) {
-                                const waterRequests = this.data.requests.filter(r => r.profileId === child.id && r.type === 'tree_watering');
-                                lbUser.treePoints = waterRequests.length;
-                        }
-                });
-
-
-                // Khôi phục user hiện tại trên thiết bị
+                // Khôi phục user thiết bị
                 savedId = localStorage.getItem('family_quest_active_profile');
                 let activeUser = this.data.leaderboard.find(p => p.id === savedId);
                 if (!activeUser && this.data.leaderboard.length > 0) activeUser = this.data.leaderboard.find(p => p.role === 'child') || this.data.leaderboard[0];
 
                 if (activeUser) {
                         activeUser.isCurrentUser = true;
-
-                        // --- XÂY DỰNG USER TỪ DB ---
-                        // Luôn tin tưởng giá trị từ DB (DB đã được update trước khi Realtime Sync kích hoạt)
                         this.data.user = { ...activeUser };
-
-                        // Xử lý danh sách sticker đã mở
-                        const rawList = activeUser.unlockedStickers || [];
-                        // Lọc chỉ giữ các ID hợp lệ trong catalog
-                        const validIds = new Set((window.STICKER_CATALOG || []).map(s => s.id));
-                        const validList = rawList.filter(id => validIds.has(id));
-
-                        this.data.user.unlockedStickers = validList;
-
-                        // Nếu danh sách hợp lệ khác danh sách gốc (có ID rác), cập nhật lại DB
-                        if (validList.length !== rawList.length) {
-                                console.warn(`[StickerHealth] Removed ${rawList.length - validList.length} invalid sticker IDs. Cleaning up DB...`);
-                                this.client.from('profiles').update({
-                                        unlocked_stickers: validList
-                                }).eq('id', activeUser.id).then();
-                        }
-
-                        // Healing: Nếu totalStickers bị thấp hơn số dư hiện tại (do lỗi logic cũ), tự động cập nhật lại theo số dư để cứu dữ liệu BXH
-                        if ((this.data.user.totalStickers || 0) < (this.data.user.stickers || 0)) {
-                                console.log(`[StickerHealing] Updating totalStickers for ${this.data.user.name} to ${this.data.user.stickers}`);
-                                this.data.user.totalStickers = this.data.user.stickers;
-                                this.client.from('profiles').update({ total_stickers: this.data.user.stickers }).eq('id', activeUser.id).then();
-                        }
+                        this.data.user.unlockedStickers = activeUser.unlockedStickers || [];
                 }
 
                 // --- MERGE PENDING OPTIMISTIC UPDATES (cho hoàn thành nhiệm vụ) ---
@@ -4247,7 +4112,7 @@ class StateManager {
                         member.actionStreak = streakObj.actionStreak;
                         member.completionStreak = streakObj.completionStreak;
 
-                        if (member.id === activeUser.id) {
+                        if (activeUser && member.id === activeUser.id) {
                                 this.data.user.actionStreak = streakObj.actionStreak;
                                 this.data.user.completionStreak = streakObj.completionStreak;
                                 this.data.user.weeklyLog = streakObj.weeklyLog;
@@ -4257,18 +4122,20 @@ class StateManager {
                 this.recalculateDerivedStats();
 
                 // Đồng bộ ngược lại leaderboard để hiển thị đúng data mới nhất của local user
-                const lbCurrentUser = this.data.leaderboard.find(u => u.id === activeUser.id);
-                if (lbCurrentUser) {
-                        lbCurrentUser.gold = this.data.user.gold;
-                        lbCurrentUser.xp = this.data.user.xp;
-                        lbCurrentUser.weeklyXp = this.data.user.weeklyXp;
-                        lbCurrentUser.water = this.data.user.water;
-                        lbCurrentUser.stickers = this.data.user.stickers;
-                        lbCurrentUser.totalStickers = this.data.user.totalStickers;
-                        lbCurrentUser.actionStreak = this.data.user.actionStreak;
-                        lbCurrentUser.weeklyStreak = this.data.user.weeklyStreak;
-                        lbCurrentUser.completionStreak = this.data.user.completionStreak;
-                        lbCurrentUser.isCurrentUser = true;
+                if (activeUser) {
+                        const lbCurrentUser = this.data.leaderboard.find(u => u.id === activeUser.id);
+                        if (lbCurrentUser) {
+                                lbCurrentUser.gold = this.data.user.gold;
+                                lbCurrentUser.xp = this.data.user.xp;
+                                lbCurrentUser.weeklyXp = this.data.user.weeklyXp;
+                                lbCurrentUser.water = this.data.user.water;
+                                lbCurrentUser.stickers = this.data.user.stickers;
+                                lbCurrentUser.totalStickers = this.data.user.totalStickers;
+                                lbCurrentUser.actionStreak = this.data.user.actionStreak;
+                                lbCurrentUser.weeklyStreak = this.data.user.weeklyStreak;
+                                lbCurrentUser.completionStreak = this.data.user.completionStreak;
+                                lbCurrentUser.isCurrentUser = true;
+                        }
                 }
 
                 this.notify();
@@ -5123,13 +4990,8 @@ class StateManager {
                 }
 
                 if (mode === 'passive') {
-                        // Lượt người khác thách đấu mình (Chỉ tính người thách đấu, bỏ qua bot thách đấu)
-                        return challenges.filter(c => {
-                                if (c.opponentId !== userId) return false;
-                                // Tìm xem người thách đấu (challenger) có phải là human không
-                                const challenger = this.data.leaderboard.find(u => u.id === c.challengerId);
-                                return challenger && challenger.role !== 'bot';
-                        }).length;
+                        // Lượt người khác thách đấu mình (Bao gồm cả Bot và người thật)
+                        return challenges.filter(c => c.opponentId === userId).length;
                 }
 
                 return challenges.filter(c => (c.challengerId === userId || c.opponentId === userId)).length;

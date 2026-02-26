@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Avatar Checker</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .item {
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <script>
+            for (let i = 1; i <= 30; i++) {
+                document.write(`
+                    <div class="item">
+                        <img src="../shared/assets/generated_avatars/avatar_${i}.png">
+                        <p>Avatar ${i}</p>
+                    </div>
+                `);
+            }
+        </script>
+    </div>
+</body>
+
+</html>
