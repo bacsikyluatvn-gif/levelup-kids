@@ -330,20 +330,25 @@ class ShopItem extends HTMLElement {
 
     render() {
         const title = this.getAttribute('title') || 'Phần thưởng';
-        const price = parseInt(this.getAttribute('price') || '100');
+        const price = parseInt(this.getAttribute('price') || '0');
+        const personalityPrice = parseInt(this.getAttribute('personality-price') || '0');
+        const isPersonalityItem = personalityPrice > 0;
+
         const image = this.getAttribute('image') || '';
         const desc = this.getAttribute('desc') || '';
         const color = this.getAttribute('color') || 'blue';
+        const emoji = this.getAttribute('emoji') || '';
 
-        const currentGold = window.AppState.data.user.gold;
-        const canAfford = currentGold >= price;
+        const userBalance = isPersonalityItem ? window.AppState.data.user.personalityPoints : window.AppState.data.user.gold;
+        const targetPrice = isPersonalityItem ? personalityPrice : price;
+        const canAfford = userBalance >= targetPrice;
 
         this.innerHTML = `
             <div class="group bg-white dark:bg-[#2c2215] rounded-3xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm card-hover-effect flex flex-col h-full transition-all hover:shadow-lg">
                 <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-${color}-50 flex items-center justify-center">
                     ${(image && image !== 'null' && image !== 'undefined' && image !== '')
-                ? `<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="${image}" alt="${title}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'material-symbols-outlined text-4xl text-slate-300\'>redeem</span>'">`
-                : `<span class="material-symbols-outlined text-4xl text-slate-300">redeem</span>`
+                ? `<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="${image}" alt="${title}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-5xl\'>${emoji || '🎁'}</span>'">`
+                : (emoji ? `<span class="text-5xl">${emoji}</span>` : `<span class="material-symbols-outlined text-4xl text-slate-300">redeem</span>`)
             }
                 </div>
                 <div class="flex flex-col flex-grow">
@@ -351,20 +356,20 @@ class ShopItem extends HTMLElement {
                     <p class="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2">${desc}</p>
                     <div class="mt-auto pt-4 border-t border-slate-50 dark:border-slate-800/50">
                         <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Giá</span>
-                            <div class="flex items-center gap-1 text-primary font-black text-xl">
-                                ${price} <span class="material-symbols-outlined text-lg">monetization_on</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Giá</span>
+                            <div class="flex items-center gap-1.5 ${isPersonalityItem ? 'text-orange-500' : 'text-primary'} font-black text-xl">
+                                ${targetPrice} <span class="material-symbols-outlined text-lg" style="${isPersonalityItem ? "font-variation-settings:'FILL' 1" : ''}">${isPersonalityItem ? 'favorite' : 'monetization_on'}</span>
                             </div>
                         </div>
                         
                         ${canAfford ? `
-                            <button class="btn-buy btn-pressable w-full py-3 bg-primary text-white font-bold rounded-xl shadow-btn-3d flex items-center justify-center gap-2">
-                                <span>Đổi Quà</span>
-                                <span class="material-symbols-outlined">redeem</span>
+                            <button class="btn-buy btn-pressable w-full py-3 ${isPersonalityItem ? 'bg-orange-500' : 'bg-primary'} text-white font-bold rounded-xl shadow-btn-3d flex items-center justify-center gap-2">
+                                <span>${isPersonalityItem ? 'Đổi Đặc Quyền' : 'Đổi Quà'}</span>
+                                <span class="material-symbols-outlined">${isPersonalityItem ? 'auto_awesome' : 'redeem'}</span>
                             </button>
                         ` : `
                             <button class="w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold rounded-xl flex items-center justify-center gap-2 cursor-not-allowed border-2 border-dashed border-slate-200 dark:border-slate-700" disabled>
-                                <span>Thêm ${price - currentGold}</span>
+                                <span>Thêm ${targetPrice - userBalance}</span>
                                 <span class="material-symbols-outlined text-sm">lock</span>
                             </button>
                         `}
@@ -376,30 +381,37 @@ class ShopItem extends HTMLElement {
         const btn = this.querySelector('.btn-buy');
         if (btn) {
             btn.addEventListener('click', () => {
-                this.showConfirmDialog(title, price, image, () => {
-                    if (window.AppState.spendGold(price, title, image)) {
-                        this.showSuccess();
+                this.showConfirmDialog(title, targetPrice, isPersonalityItem, () => {
+                    if (isPersonalityItem) {
+                        if (window.AppState.spendPersonalityPoints(targetPrice, title, image)) {
+                            this.showSuccess();
+                        }
+                    } else {
+                        if (window.AppState.spendGold(targetPrice, title, image)) {
+                            this.showSuccess();
+                        }
                     }
                 });
             });
         }
     }
 
-    showConfirmDialog(title, price, image, onConfirm) {
+    showConfirmDialog(title, price, isPersonality, onConfirm) {
         const existing = document.getElementById('shop-confirm-modal');
         if (existing) existing.remove();
 
+        const currencyName = isPersonality ? 'Điểm Nhân Cách' : 'Vàng';
         const modalHtml = `
             <div id="shop-confirm-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none">
                 <div id="shop-confirm-content" class="bg-white dark:bg-[#2c2215] w-full max-w-sm rounded-[2rem] p-6 text-center shadow-2xl transform scale-90 transition-transform duration-300 relative overflow-hidden tracking-tight">
                     <div class="size-20 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4 relative drop-shadow-sm">
-                        <span class="material-symbols-outlined text-[40px] text-orange-500">help</span>
+                        <span class="material-symbols-outlined text-[40px] text-orange-500">${isPersonality ? 'auto_awesome' : 'help'}</span>
                         <div class="absolute -right-1 -bottom-1 bg-white dark:bg-[#2c2215] rounded-full p-1 leading-none shadow-sm">
-                            <span class="material-symbols-outlined text-[16px] text-primary">monetization_on</span>
+                            <span class="material-symbols-outlined text-[16px] text-orange-500" style="${isPersonality ? "font-variation-settings:'FILL' 1" : ''}">${isPersonality ? 'favorite' : 'monetization_on'}</span>
                         </div>
                     </div>
-                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">Đổi rương kho báu?</h3>
-                    <p class="text-slate-500 dark:text-slate-400 mb-8 text-sm leading-relaxed">Bạn sẽ dùng <b class="text-primary">${price} Vàng</b> để lấy <b>${title}</b>. Bạn có chắc chắn muốn đổi không?</p>
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">${isPersonality ? 'Đổi Đặc Quyền Yêu Thương?' : 'Đổi rương kho báu?'}</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-8 text-sm leading-relaxed">Bạn sẽ dùng <b class="text-orange-500">${price} ${currencyName}</b> để nhận <b>${title}</b>. Bạn có chắc chắn muốn đổi không?</p>
                     <div class="flex gap-3">
                         <button id="shop-confirm-cancel" class="flex-1 py-3.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">Để sau</button>
                         <button id="shop-confirm-yes" class="flex-1 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-btn-3d active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-1.5 focus:outline-none">
@@ -1481,7 +1493,9 @@ class ActivityFeed extends HTMLElement {
                     <p class="font-bold text-xs text-slate-700 dark:text-slate-400 truncate mt-1">${req.itemTitle}</p>
                     <div class="flex items-center justify-between mt-2">
                         <span class="text-[10px] font-bold text-slate-400">${req.time}</span>
-                        <span class="text-[10px] font-black text-primary">${req.isSticker ? '🎟️ ' : '💰 '}${req.price}</span>
+                        <span class="text-[10px] font-black text-primary">
+                            ${req.pricePersonality ? '❤️ ' + req.pricePersonality : (req.isSticker ? '🎟️ ' + (req.price || 0) : '💰 ' + (req.price || 0))}
+                        </span>
                     </div>
                     
                     ${isPending ? `
@@ -1573,12 +1587,27 @@ class ShopGrid extends HTMLElement {
     render(data) {
         if (!data || !data.shopItems) return;
 
+        const targetCategory = this.getAttribute('category');
+        let items = data.shopItems;
+        if (targetCategory === 'personality') {
+            items = items.filter(i => i.personalityPrice > 0);
+        } else if (targetCategory) {
+            items = items.filter(i => i.category === targetCategory);
+        } else {
+            // If no category specified, show only gold-priced items (those without a personality price)
+            items = items.filter(i => !i.personalityPrice || i.personalityPrice <= 0);
+        }
+
         const userGold = data.user.gold;
+        const userPersonality = data.user.personalityPoints || 0;
 
         this.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                ${data.shopItems.map(item => {
-            const canAfford = userGold >= item.price;
+                ${items.map(item => {
+            const isPersonalityItem = item.personalityPrice > 0;
+            const userBalance = isPersonalityItem ? userPersonality : userGold;
+            const targetPrice = isPersonalityItem ? item.personalityPrice : item.price;
+            const canAfford = userBalance >= targetPrice;
             const isPending = (data.requests || []).some(r => r.itemTitle === item.title && r.status === 'pending' && r.profileId === data.user.id);
 
             const colorAccent = {
@@ -1591,35 +1620,37 @@ class ShopGrid extends HTMLElement {
             return `
                     <div class="group bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
                         <!-- Item Image -->
-                        <div class="relative h-44 overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <div class="relative h-44 overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
                             ${(item.image && item.image !== 'null' && item.image !== 'undefined' && item.image !== '')
                     ? `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'material-symbols-outlined text-5xl text-slate-300\'>redeem</span>'">`
                     : `<span class="material-symbols-outlined text-5xl text-slate-300">redeem</span>`
                 }
                             <!-- Price badge -->
-                            <div class="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-amber-600 font-black text-sm px-3 py-1.5 rounded-full shadow-md flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px] text-amber-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                                ${item.price}
+                            <div class="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm ${isPersonalityItem ? 'text-orange-600' : 'text-amber-600'} font-black text-sm px-3 py-1.5 rounded-full shadow-md flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px] ${isPersonalityItem ? 'text-orange-500' : 'text-amber-500'}" style="font-variation-settings:'FILL' 1">${isPersonalityItem ? 'favorite' : 'monetization_on'}</span>
+                                ${targetPrice}
                             </div>
                             ${(!canAfford || isPending) ? `<div class="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] flex items-center justify-center">
                                 <div class="bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                                    ${isPending ? 'Đang chờ duyệt...' : `Cần thêm ${item.price - userGold} <span class="material-symbols-outlined text-[14px] text-amber-500" style="font-variation-settings:\'FILL\' 1">monetization_on</span>`}
+                                    ${isPending ? 'Đang chờ duyệt...' : `Cần thêm ${targetPrice - userBalance} <span class="material-symbols-outlined text-[14px] ${isPersonalityItem ? 'text-orange-500' : 'text-amber-500'}" style="font-variation-settings:\'FILL\' 1">${isPersonalityItem ? 'favorite' : 'monetization_on'}</span>`}
                                 </div>
                             </div>` : ''}
                         </div>
                         <!-- Content -->
                         <div class="p-5 flex flex-col flex-1">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">${item.category}</span>
-                            <h3 class="font-black text-slate-800 dark:text-white text-base mb-2 leading-tight">${item.title}</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 mb-4">${item.desc}</p>
+                            <div class="cursor-pointer flex-1 flex flex-col" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')" title="Nhấn để xem chi tiết">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1 ${(item.category === 'power_card' || item.category === 'POWER_CARD') ? 'hidden' : ''}">${item.category}</span>
+                                <h3 class="font-black text-slate-800 dark:text-white text-base mb-2 leading-tight group-hover:text-primary transition-colors">${item.title}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 mb-4 line-clamp-2">${item.desc}</p>
+                            </div>
                             <button
                                 onclick="window.redeemPremiumItem && window.redeemPremiumItem('${item.id}')" class="${(canAfford && !isPending)
-                    ? `bg-gradient-to-r ${colorAccent} text-white hover:opacity-90 shadow-md active:scale-95`
+                    ? (isPersonalityItem ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white hover:opacity-90 shadow-md active:scale-95' : `bg-gradient-to-r ${colorAccent} text-white hover:opacity-90 shadow-md active:scale-95`)
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
                 } w-full font-bold py-3 rounded-2xl transition-all flex items-center justify-center gap-2"
                                 ${(!canAfford || isPending) ? 'disabled' : ''}>
-                                <span class="material-symbols-outlined text-lg">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock')}</span>
-                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? 'Gửi Yêu Cầu' : 'Chưa Đủ Vàng')}
+                                <span class="material-symbols-outlined text-lg">${isPending ? 'schedule' : (canAfford ? (isPersonalityItem ? 'auto_awesome' : 'redeem') : 'lock')}</span>
+                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? (isPersonalityItem ? 'Đổi Đặc Quyền' : 'Gửi Yêu Cầu') : (isPersonalityItem ? 'Chưa Đủ Điểm' : 'Chưa Đủ Vàng'))}
                             </button>
                         </div>
                     </div>`;
@@ -1787,7 +1818,7 @@ class ChildNav extends HTMLElement {
             <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
                     ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard' || active === '')}
-                    ${this.navItem('book_5', 'Nhật ký', 'diary/index.html', active === 'diary')}
+                    ${this.navItem('book_5', 'Nhật Ký Trưởng Thành', 'diary/index.html', active === 'diary')}
                     ${this.navItem('sports_kabaddi', 'Đấu trường', 'arena/index.html', active === 'arena')}
                     ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
                     ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
@@ -2309,7 +2340,7 @@ class BehaviorLogModal extends HTMLElement {
             if (window.showToast) window.showToast('Lỗi khi ghi nhận!', 'error');
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = 'GHI VÀO NHẬT KÝ';
+                btn.innerHTML = 'GHI NHẬT KÝ TRƯỞNG THÀNH';
             }
         }
     }
@@ -2356,7 +2387,7 @@ class BehaviorLogModal extends HTMLElement {
                                 </span>
                             </div>
                             <div>
-                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white">Ghi Nhật Ký</h2>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white">Ghi Nhật Ký Trưởng Thành</h2>
                                 <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${this.activeType === 'GOOD' ? 'Khen ngợi con yêu' : 'Nhắc nhở con rèn luyện'}</p>
                             </div>
                         </div>
@@ -2511,7 +2542,7 @@ class BehaviorLogModal extends HTMLElement {
                                         </div>
 
                                         <button onclick="window.submitBehaviorLog()" id="submit-bh-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 transition-all mt-4 flex items-center justify-center gap-3">
-                                            GHI VÀO NHẬT KÝ
+                                            GHI NHẬT KÝ TRƯỞNG THÀNH
                                             <span class="material-symbols-outlined text-sm">auto_stories</span>
                                         </button>
                                     </div>
@@ -2557,7 +2588,7 @@ class GrowthDiaryView extends HTMLElement {
         const personalityScore = Math.max(0, (goodCount * 10) - (badCount * 5));
 
         const milestones = [
-            { score: 0, title: "Bạn Nhỏ Lễ Phép", color: "slate", emoji: "🌱" },
+            { score: 0, title: "Bạn Nhỏ Lễ Phép", color: "slate", emoji: "🙇" },
             { score: 50, title: "Bé Ngoan Đáng Yêu", color: "blue", emoji: "👶" },
             { score: 150, title: "Dũng Sĩ Tốt Bụng", color: "emerald", emoji: "🛡️" },
             { score: 350, title: "Trái Tim Ấm Áp", color: "rose", emoji: "💝" },
@@ -2905,12 +2936,12 @@ class GrowthDiaryView extends HTMLElement {
                                         <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,0,0,0.05),transparent)] dark:bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
                                         
                                         <div class="flex flex-col items-center gap-0">
-                                            <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.4em] mb-4 opacity-60">ĐIỂM NHÂN CÁCH</span>
+                                            <span class="text-[11px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em] mb-4">ĐIỂM NHÂN CÁCH</span>
                                             <div class="flex items-center gap-4">
-                                                <div class="flex items-center justify-center size-12 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-inner">
-                                                    <span class="material-symbols-outlined text-2xl text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
+                                                <div class="flex items-center justify-center size-10 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-inner">
+                                                    <span class="material-symbols-outlined text-xl text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
                                                 </div>
-                                                <span class="text-7xl sm:text-8xl font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl">${personalityScore}</span>
+                                                <span class="${spendablePoints > 999 ? 'text-4xl sm:text-5xl' : (spendablePoints > 99 ? 'text-5xl sm:text-6xl' : 'text-7xl sm:text-8xl')} font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl transition-all duration-300">${spendablePoints}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -3285,7 +3316,7 @@ class GrowthDiaryView extends HTMLElement {
                         if (window.confetti) {
                             window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
                         }
-                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật ký của con đã được lưu vào 'Hành Trình Trưởng Thành' ở phía trên rồi nhé! ✨", "success");
+                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật Ký Trưởng Thành của con đã được lưu vào rồi nhé! ✨", "success");
 
                         window.scrollTo({ top: 0, behavior: 'smooth' });
 

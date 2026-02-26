@@ -3837,7 +3837,8 @@ class StateManager {
                 }
 
                 const parentId = session.user.id;
-                let { data: family } = await this.client.from('families').select('*').eq('parent_id', parentId).single();
+                const { data: families } = await this.client.from('families').select('*').eq('parent_id', parentId).limit(1);
+                let family = families && families.length > 0 ? families[0] : null;
 
                 if (!family) {
                         // First time ever! Create family and seed data
@@ -4067,6 +4068,7 @@ class StateManager {
                         level: p.level || 1,
                         gold: p.gold || 0,
                         xp: p.xp || 0,
+                        personalityPoints: p.personality_points || 0,
                         weeklyXp: p.weekly_xp || 0,
                         water: p.water || 0,
                         stickers: p.stickers || 0,
@@ -4146,8 +4148,16 @@ class StateManager {
                         };
                 });
 
-                this.data.shopItems = (shopRes.data || []).filter(s => s.item_type === 'premium').map(s => ({
-                        id: s.id, title: s.title, desc: s.description, price: s.price, image: s.image, category: s.category, color: s.color
+                this.data.shopItems = (shopRes.data || []).filter(s => s.item_type === 'premium' || s.item_type === 'special').map(s => ({
+                        id: s.id,
+                        title: s.title,
+                        desc: s.description,
+                        price: s.price,
+                        personalityPrice: s.personality_price,
+                        image: s.image,
+                        emoji: s.emoji,
+                        category: s.category,
+                        color: s.color
                 }));
 
                 this.data.instantPerks = (shopRes.data || []).filter(s => s.item_type === 'perk').map(s => ({
@@ -4440,12 +4450,16 @@ class StateManager {
                         return null;
                 }
 
+                // Tự động cộng/trừ điểm nhân cách: Tốt +10, Xấu -5
+                const personalityChange = type === 'GOOD' ? 10 : -5;
+
                 // Update profile stats immediately
                 await this.client.from('profiles').update({
                         gold: Math.max(0, (profile.gold || 0) + rewardGold),
                         xp: Math.max(0, (profile.xp || 0) + rewardXp),
                         water: Math.max(0, (profile.water || 0) + rewardWater),
-                        stickers: Math.max(0, (profile.stickers || 0) + rewardSticker)
+                        stickers: Math.max(0, (profile.stickers || 0) + rewardSticker),
+                        personality_points: Math.max(0, (profile.personalityPoints || 0) + personalityChange)
                 }).eq('id', profileId);
 
                 await this.syncFromDatabase();
@@ -4645,7 +4659,8 @@ class StateManager {
                                 weekly_streak: this.data.user.weeklyStreak,
                                 completion_streak: this.data.user.completionStreak,
                                 action_streak: this.data.user.actionStreak, // Keep action_streak for task streaks
-                                unlocked_stickers: this.data.user.unlockedStickers || []
+                                unlocked_stickers: this.data.user.unlockedStickers || [],
+                                personality_points: this.data.user.personalityPoints || 0
                         }).eq('id', this.data.user.id);
                 } finally {
                         this._syncingProfile = false;
@@ -4975,10 +4990,40 @@ class StateManager {
                 return true;
         }
 
+        async spendPersonalityPoints(amount, itemTitle = null, image = null) {
+                if (!this.data.user || (this.data.user.personalityPoints || 0) < amount) return false;
+
+                this.data.user.personalityPoints -= parseInt(amount);
+                this.notify();
+                await this.syncLocalUserToDb();
+
+                if (itemTitle) {
+                        await this.client.from('requests').insert({
+                                family_id: this.familyId,
+                                profile_id: this.data.user.id,
+                                item_title: `[POWER CARD] ${itemTitle}`,
+                                status: 'pending',
+                                type: 'shop',
+                                price_personality: parseInt(amount),
+                                image: image
+                        });
+                }
+                return true;
+        }
+
         addShopItem(item) {
                 if (!this.familyId) return;
                 this.client.from('shop_items').insert({
-                        family_id: this.familyId, title: item.title, description: item.desc, price: item.price, image: item.image, item_type: 'premium', color: item.color, category: item.category
+                        family_id: this.familyId,
+                        title: item.title,
+                        description: item.desc,
+                        price: item.price || 0,
+                        personality_price: item.personalityPrice || 0,
+                        image: item.image,
+                        emoji: item.emoji,
+                        item_type: item.itemType || 'premium',
+                        color: item.color,
+                        category: item.category
                 }).then(({ error }) => {
                         if (error) {
                                 console.error("Lỗi thêm vật phẩm:", error);
@@ -5007,8 +5052,11 @@ class StateManager {
                 await this.client.from('shop_items').update({
                         title: data.title,
                         description: data.desc || data.description,
-                        price: data.price,
+                        price: data.price || 0,
+                        personality_price: data.personalityPrice || 0,
                         image: data.image,
+                        emoji: data.emoji,
+                        item_type: data.itemType || 'premium',
                         category: data.category,
                         color: data.color
                 }).eq('id', id);

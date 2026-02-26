@@ -83,17 +83,22 @@
 
                 <!-- Tabs -->
                 <div
-                    class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 w-fit mb-6">
+                    class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 w-fit mb-6 overflow-x-auto whitespace-nowrap max-w-full">
                     <button id="tab-btn-shop" onclick="switchTab('shop')"
                         class="px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all">Các
-                        vật phẩm</button>
+                        vật phẩm (Vàng)</button>
                     <button id="tab-btn-perks" onclick="switchTab('perks')"
                         class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Quà
                         Tặng Ngay (Sticker)</button>
+                    <button id="tab-btn-special" onclick="switchTab('special')"
+                        class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Đặc
+                        Quyền (Nhân Cách)</button>
                     <button id="tab-btn-requests" onclick="switchTab('requests')"
                         class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all relative">
                         Yêu cầu
-                        <span class="absolute top-1 right-1 size-2.5 bg-red-500 rounded-full animate-pulse"></span>
+                        <span id="requests-badge"
+                            class="absolute top-1 right-1 size-2.5 bg-red-500 rounded-full animate-pulse"
+                            style="display: none;"></span>
                     </button>
                 </div>
 
@@ -122,7 +127,40 @@
                                             Thao tác</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-primary/5">
+                                <tbody id="shop-tbody" class="divide-y divide-primary/5">
+                                    <!-- Rendered from AppState via script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 1.7: Special (Personality) Table -->
+                <div id="tab-special" style="display: none;">
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-rose-500/20 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-rose-50 dark:bg-rose-900/10 border-b border-rose-500/20">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Hình ảnh</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Tên Đặc Quyền</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Danh mục</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                            Giá (Nhân Cách)</th>
+                                        <th
+                                            class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                                            Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="special-tbody" class="divide-y divide-rose-500/10">
                                     <!-- Rendered from AppState via script -->
                                 </tbody>
                             </table>
@@ -284,14 +322,12 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold mb-2">Giá (Vàng)</label>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
-                            <input id="item-price"
-                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-10 pr-4 py-3 font-bold text-primary"
-                                type="number" value="100" />
-                        </div>
+                        <label class="block text-sm font-bold mb-2">Loại tiền tệ</label>
+                        <select id="item-price-type" onchange="togglePriceFields()"
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-bold">
+                            <option value="gold">💰 Vàng</option>
+                            <option value="personality">❤️ Nhân Cách</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-2">Danh mục</label>
@@ -300,7 +336,30 @@
                             <option value="Vật phẩm">🎁 Vật phẩm</option>
                             <option value="Đặc quyền">⭐ Đặc quyền</option>
                             <option value="Chuyến đi">🎢 Chuyến đi</option>
+                            <option value="Gắn kết">✨ Gắn kết</option>
                         </select>
+                    </div>
+                </div>
+
+                <div id="gold-price-group">
+                    <label class="block text-sm font-bold mb-2">Giá (Vàng)</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
+                        <input id="item-price"
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-10 pr-4 py-3 font-bold text-primary"
+                            type="number" value="100" />
+                    </div>
+                </div>
+
+                <div id="personality-price-group" style="display: none;">
+                    <label class="block text-sm font-bold mb-2">Giá (Điểm Nhân Cách)</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-rose-500">favorite</span>
+                        <input id="item-personality-price"
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-rose-500 rounded-xl pl-10 pr-4 py-3 font-bold text-rose-600"
+                            type="number" value="50" />
                     </div>
                 </div>
 
@@ -400,21 +459,25 @@
         function switchTab(tab) {
             const btnShop = document.getElementById('tab-btn-shop');
             const btnPerks = document.getElementById('tab-btn-perks');
+            const btnSpecial = document.getElementById('tab-btn-special');
             const btnReq = document.getElementById('tab-btn-requests');
             const divShop = document.getElementById('tab-shop');
             const divPerks = document.getElementById('tab-perks');
+            const divSpecial = document.getElementById('tab-special');
             const divReq = document.getElementById('tab-requests');
 
             const activeClass = "px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all";
             const inactiveClass = "px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all";
 
-            btnShop.className = inactiveClass;
-            btnPerks.className = inactiveClass;
-            btnReq.className = inactiveClass + " relative";
+            if (btnShop) btnShop.className = inactiveClass;
+            if (btnPerks) btnPerks.className = inactiveClass;
+            if (btnSpecial) btnSpecial.className = inactiveClass;
+            if (btnReq) btnReq.className = inactiveClass + " relative";
 
-            divShop.style.display = 'none';
-            divPerks.style.display = 'none';
-            divReq.style.display = 'none';
+            if (divShop) divShop.style.display = 'none';
+            if (divPerks) divPerks.style.display = 'none';
+            if (divSpecial) divSpecial.style.display = 'none';
+            if (divReq) divReq.style.display = 'none';
 
             if (tab === 'shop') {
                 btnShop.className = activeClass;
@@ -422,9 +485,29 @@
             } else if (tab === 'perks') {
                 btnPerks.className = activeClass.replace('bg-primary', 'bg-teal-500');
                 divPerks.style.display = 'block';
+            } else if (tab === 'special') {
+                btnSpecial.className = activeClass.replace('bg-primary', 'bg-rose-500');
+                divSpecial.style.display = 'block';
             } else {
                 btnReq.className = activeClass + " relative";
                 divReq.style.display = 'block';
+            }
+        }
+
+        function togglePriceFields() {
+            const type = document.getElementById('item-price-type').value;
+            const goldGroup = document.getElementById('gold-price-group');
+            const personalityGroup = document.getElementById('personality-price-group');
+            const categorySelect = document.getElementById('item-category');
+
+            if (type === 'personality') {
+                goldGroup.style.display = 'none';
+                personalityGroup.style.display = 'block';
+                categorySelect.value = "Gắn kết";
+            } else {
+                goldGroup.style.display = 'block';
+                personalityGroup.style.display = 'none';
+                if (categorySelect.value === "Gắn kết") categorySelect.value = "Vật phẩm";
             }
         }
 
@@ -437,6 +520,7 @@
                 modal.classList.add('opacity-0', 'pointer-events-none');
                 modal.classList.remove('opacity-100', 'pointer-events-auto');
                 document.getElementById('add-item-form').reset();
+                togglePriceFields(); // Reset field visibility
                 currentEditItemId = null;
                 document.querySelector('#add-item-modal h3').innerText = "Thêm Vật phẩm mới";
                 document.querySelector('button[onclick*="saveItem"]').innerText = "Tạo vật phẩm";
@@ -466,20 +550,39 @@
         }
 
         function renderShopItems() {
-            const tbody = document.querySelector('#tab-shop tbody');
-            tbody.innerHTML = '';
+            const tbodyShop = document.getElementById('shop-tbody');
+            const tbodySpecial = document.getElementById('special-tbody');
+            if (!tbodyShop) return;
 
-            window.AppState.data.shopItems.forEach(item => {
-                let catColor = item.category === "Vật phẩm" ? "green" : (item.category === "Đặc quyền" ? "purple" : "blue");
+            tbodyShop.innerHTML = '';
+            if (tbodySpecial) tbodySpecial.innerHTML = '';
 
-                let imageHTML = `<span class="material-symbols-outlined text-teal-600 text-3xl">image</span>`;
-                if (item.image && item.image !== 'null' && item.image !== 'undefined') {
-                    imageHTML = `<img src="${item.image}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'material-symbols-outlined text-teal-600 text-3xl\\'>image</span>'" />`;
+            const items = window.AppState.data.shopItems || [];
+
+            items.forEach(item => {
+                const isPersonality = item.personalityPrice > 0;
+                let catColor = item.category === "Vật phẩm" ? "green" : (item.category === "Đặc quyền" ? "purple" : (item.category === "Gắn kết" ? "rose" : "blue"));
+
+                let imageHTML = `<span class="material-symbols-outlined text-gray-400 text-3xl">image</span>`;
+                if (item.image && item.image !== 'null' && item.image !== 'undefined' && item.image !== '') {
+                    imageHTML = `<img src="${item.image}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'material-symbols-outlined text-gray-400 text-3xl\\'>image</span>'" />`;
                 }
 
-                const newRow = `<tr class="hover:bg-primary/5 transition-colors group" data-id="${item.id}">
+                const priceHTML = isPersonality ? `
+                    <div class="flex items-center gap-1.5 font-black text-rose-600">
+                        <span class="material-symbols-outlined fill-1 text-xl">favorite</span>
+                        ${item.personalityPrice} Điểm
+                    </div>
+                ` : `
+                    <div class="flex items-center gap-1.5 font-black text-primary">
+                        <span class="material-symbols-outlined fill-1 text-xl">monetization_on</span>
+                        ${item.price} Vàng
+                    </div>
+                `;
+
+                const rowHTML = `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" data-id="${item.id}">
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="size-16 rounded-lg flex items-center justify-center overflow-hidden border border-primary/10">
+                        <div class="size-16 rounded-lg flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
                             ${imageHTML}
                         </div>
                     </td>
@@ -488,13 +591,10 @@
                         <p class="text-xs text-slate-500">${item.desc}</p>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-3 py-1 bg-${catColor}-100 text-${catColor}-600 text-xs font-bold rounded-full">${item.category || 'Vật phẩm'}</span>
+                        <span class="px-3 py-1 bg-${catColor}-100 dark:bg-${catColor}-900/30 text-${catColor}-600 dark:text-${catColor}-400 text-xs font-bold rounded-full">${item.category || 'Vật phẩm'}</span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center gap-1.5 font-black text-primary">
-                            <span class="material-symbols-outlined fill-1 text-xl">monetization_on</span>
-                            ${item.price} Vàng
-                        </div>
+                        ${priceHTML}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right">
                         <div class="flex items-center justify-end gap-2">
@@ -503,17 +603,24 @@
                         </div>
                     </td>
                 </tr>`;
-                tbody.insertAdjacentHTML('beforeend', newRow);
+
+                if (isPersonality) {
+                    if (tbodySpecial) tbodySpecial.insertAdjacentHTML('beforeend', rowHTML);
+                } else {
+                    tbodyShop.insertAdjacentHTML('beforeend', rowHTML);
+                }
             });
 
-            document.getElementById('total-items').innerText = window.AppState.data.shopItems.length;
+            document.getElementById('total-items').innerText = items.length;
         }
 
         function renderPerks() {
             const tbody = document.getElementById('perks-tbody');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
-            window.AppState.data.instantPerks.forEach(perk => {
+            const perks = window.AppState.data.instantPerks || [];
+            perks.forEach(perk => {
                 const newRow = `<tr class="hover:bg-teal-500/5 transition-colors group">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="size-12 rounded-full bg-${perk.color || 'teal'}-100 text-${perk.color || 'teal'}-500 flex items-center justify-center border border-${perk.color || 'teal'}-200">
@@ -613,12 +720,10 @@
             }
 
             // Highlight notification dot if pending requests exist
-            // Chỉ đếm các yêu cầu thực sự cần xử lý (Shop Item), Sticker thường tự động nhưng vẫn đếm nếu muốn thông báo
             const pendingCount = window.AppState.data.requests.filter(r => r.status === 'pending' && (r.type === 'shop' || r.type === 'perk')).length;
-            const notifDot = document.querySelector('#tab-btn-requests span');
+            const notifDot = document.getElementById('requests-badge');
             if (notifDot) {
                 notifDot.style.display = pendingCount > 0 ? 'block' : 'none';
-                // Cập nhật số lượng vào badge nếu cần
             }
         }
 
@@ -641,8 +746,11 @@
         function saveItem() {
             const name = document.getElementById('item-name').value;
             const desc = document.getElementById('item-desc').value;
-            const price = document.getElementById('item-price').value;
             const category = document.getElementById('item-category').value;
+            const priceType = document.getElementById('item-price-type').value;
+
+            const goldPrice = parseInt(document.getElementById('item-price').value) || 0;
+            const personalityPrice = parseInt(document.getElementById('item-personality-price').value) || 0;
 
             if (!name) {
                 alert("Vui lòng điền tên vật phẩm!");
@@ -653,16 +761,13 @@
             const previewImg = document.getElementById('preview-image');
             let finalImage = "";
 
-            // Check if preview image is visible and has a valid src
             if (previewImg && !previewImg.classList.contains('hidden') && previewImg.src) {
                 const src = previewImg.src;
-                // Accept data: URIs (newly uploaded) or any http/https URL (existing image)
                 if (src.startsWith('data:') || src.startsWith('http')) {
                     finalImage = src;
                 }
             }
 
-            // When editing, keep old image if no new image was provided
             if (currentEditItemId && !finalImage) {
                 const existingItem = window.AppState.data.shopItems.find(i => i.id == currentEditItemId);
                 if (existingItem && existingItem.image) {
@@ -670,22 +775,23 @@
                 }
             }
 
-            const newItem = {
-                id: 'item_' + Date.now(),
+            const itemData = {
                 title: name,
-                desc: desc || 'Vừa mới thêm',
-                price: parseInt(price),
+                desc: desc || (priceType === 'personality' ? 'Đặc quyền yêu thương' : 'Vừa mới thêm'),
+                price: priceType === 'gold' ? goldPrice : 0,
+                personalityPrice: priceType === 'personality' ? personalityPrice : 0,
                 category: category,
                 image: finalImage,
-                color: category === "Vật phẩm" ? "green" : (category === "Đặc quyền" ? "purple" : "blue")
+                itemType: priceType === 'personality' ? 'special' : 'premium',
+                color: category === "Vật phẩm" ? "green" : (category === "Đặc quyền" ? "purple" : (category === "Gắn kết" ? "rose" : "blue"))
             };
 
             if (currentEditItemId) {
-                window.AppState.updateShopItem(currentEditItemId, newItem);
-                alert("Cập nhật vật phẩm '" + name + "' thành công!");
+                window.AppState.updateShopItem(currentEditItemId, itemData);
+                alert("Cập nhật thành công!");
             } else {
-                window.AppState.addShopItem(newItem);
-                alert("Tạo vật phẩm '" + name + "' thành công với giá " + price + " Vàng!");
+                window.AppState.addShopItem(itemData);
+                alert("Tạo vật phẩm mới thành công!");
             }
 
             toggleModal(false);
@@ -708,8 +814,16 @@
             // Set values to form
             document.getElementById('item-name').value = item.title;
             document.getElementById('item-desc').value = item.desc;
-            document.getElementById('item-price').value = item.price;
-            document.getElementById('item-category').value = item.category || "Vật phẩm";
+
+            const isPersonality = item.personalityPrice > 0;
+            const priceType = isPersonality ? 'personality' : 'gold';
+
+            document.getElementById('item-price-type').value = priceType;
+            document.getElementById('item-price').value = item.price || 0;
+            document.getElementById('item-personality-price').value = item.personalityPrice || 0;
+            document.getElementById('item-category').value = item.category || (isPersonality ? "Gắn kết" : "Vật phẩm");
+
+            togglePriceFields();
 
             if (item.image) {
                 const previewImg = document.getElementById('preview-image');

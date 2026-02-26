@@ -27,71 +27,177 @@
 
     <main class="flex-grow w-full max-w-[1200px] mx-auto p-6 md:p-8 pb-32 space-y-14">
 
-        <!-- Balances -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h1 class="text-4xl font-black text-slate-800 dark:text-white mb-2">Đổi Quà Tặng 🎁</h1>
-                <p class="text-slate-500 font-medium text-lg mb-4">Dùng Vàng và Huy hiệu (Sticker) kiếm được để đổi lấy
-                    những
-                    phần quà con thích nhé!</p>
-                <button onclick="window.openGlobalRewardHistoryModal && window.openGlobalRewardHistoryModal()"
-                    class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-colors cursor-pointer w-max shadow-sm active:scale-95">
-                    <span class="material-symbols-outlined text-xl"
-                        style="font-variation-settings:'FILL' 1">history</span> Lịch sử Đổi Quà
-                </button>
-            </div>
-            <div class="flex gap-3 self-start sm:self-auto">
-                <div id="gold-badge"
-                    class="flex items-center gap-3 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-700 px-5 py-3 rounded-2xl shadow-sm">
-                    <span class="material-symbols-outlined text-3xl text-amber-500"
-                        style="font-variation-settings:'FILL' 1">monetization_on</span>
-                    <div>
-                        <p class="text-xs text-amber-600 font-bold uppercase tracking-wider">Số Vàng</p>
-                        <p id="gold-display" class="text-2xl font-black text-amber-600">---</p>
-                    </div>
-                </div>
+        <!-- Page Header -->
+        <div
+            class="flex flex-col items-center justify-center text-center gap-2 mb-10 w-full animate-in slide-in-from-top-4 duration-500">
+            <h1
+                class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 mb-2 tracking-tight drop-shadow-sm pb-1">
+                Thế Giới Quà Tặng 🎁</h1>
+            <p class="text-slate-500 font-medium text-base">Nơi đổi những phần thưởng xứng đáng cho sự nỗ lực của con!
+            </p>
+        </div>
 
-                <div id="sticker-badge"
-                    class="flex items-center gap-3 bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-200 dark:border-purple-700 px-5 py-3 rounded-2xl shadow-sm">
-                    <span class="material-symbols-outlined text-3xl text-purple-500 transform rotate-12"
+        <!-- Balances Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 w-full">
+            <!-- Personality Points -->
+            <div id="personality-badge"
+                class="bg-gradient-to-br from-rose-400 to-pink-500 p-5 rounded-3xl shadow-lg shadow-rose-500/20 text-white flex items-center justify-start gap-4 relative overflow-hidden group w-full">
+                <div
+                    class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500 rotate-12">
+                    <span class="material-symbols-outlined text-8xl"
+                        style="font-variation-settings:'FILL' 1">favorite</span>
+                </div>
+                <div class="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shrink-0">
+                    <span class="material-symbols-outlined text-3xl font-black block"
+                        style="font-variation-settings:'FILL' 1">favorite</span>
+                </div>
+                <div class="z-10 flex flex-col justify-center">
+                    <p class="text-[10px] md:text-xs font-black uppercase tracking-widest text-white/80 mb-0.5">Nhân
+                        Cách</p>
+                    <p id="personality-display" class="text-3xl font-black leading-none tracking-tighter">---</p>
+                </div>
+            </div>
+
+            <!-- Gold -->
+            <div id="gold-badge"
+                class="bg-gradient-to-br from-amber-400 to-orange-500 p-5 rounded-3xl shadow-lg shadow-amber-500/20 text-white flex items-center justify-start gap-4 relative overflow-hidden group w-full">
+                <div
+                    class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500 rotate-12">
+                    <span class="material-symbols-outlined text-8xl"
+                        style="font-variation-settings:'FILL' 1">monetization_on</span>
+                </div>
+                <div class="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shrink-0">
+                    <span class="material-symbols-outlined text-3xl font-black block"
+                        style="font-variation-settings:'FILL' 1">monetization_on</span>
+                </div>
+                <div class="z-10 flex flex-col justify-center">
+                    <p class="text-[10px] md:text-xs font-black uppercase tracking-widest text-white/80 mb-0.5">Số Vàng
+                    </p>
+                    <p id="gold-display" class="text-3xl font-black leading-none tracking-tighter">---</p>
+                </div>
+            </div>
+
+            <!-- Stickers -->
+            <div id="sticker-badge"
+                class="bg-gradient-to-br from-purple-400 to-indigo-500 p-5 rounded-3xl shadow-lg shadow-purple-500/20 text-white flex items-center justify-start gap-4 relative overflow-hidden group w-full">
+                <div
+                    class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500 rotate-12">
+                    <span class="material-symbols-outlined text-8xl"
                         style="font-variation-settings:'FILL' 1">sell</span>
-                    <div>
-                        <p class="text-xs text-purple-600 font-bold uppercase tracking-wider">Huy Hiệu</p>
-                        <p id="sticker-display" class="text-2xl font-black text-purple-600">---</p>
-                    </div>
+                </div>
+                <div class="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shrink-0">
+                    <span class="material-symbols-outlined text-3xl font-black block transform rotate-12"
+                        style="font-variation-settings:'FILL' 1">sell</span>
+                </div>
+                <div class="z-10 flex flex-col justify-center">
+                    <p class="text-[10px] md:text-xs font-black uppercase tracking-widest text-white/80 mb-0.5">Huy Hiệu
+                    </p>
+                    <p id="sticker-display" class="text-3xl font-black leading-none tracking-tighter">---</p>
                 </div>
             </div>
         </div>
 
-        <!-- ── SECTION 1: Instant Perks ── -->
-        <section>
-            <div class="flex items-center gap-3 mb-6">
-                <div class="bg-gradient-to-br from-orange-400 to-pink-500 p-2.5 rounded-xl text-white shadow-lg">
-                    <span class="material-symbols-outlined text-xl">bolt</span>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-black text-slate-800 dark:text-white">Quà Tặng Ngay ⚡</h2>
-                    <p class="text-sm text-slate-500">Đổi trực tiếp bằng <strong class="text-purple-500">Huy hiệu
-                            (Stickers)</strong> — nhận đặc quyền ngay hôm nay!</p>
-                </div>
-            </div>
-            <instant-perks-grid></instant-perks-grid>
-        </section>
-
-        <!-- ── SECTION 2: Premium Shop ── -->
-        <section>
-            <div class="flex items-center gap-3 mb-6">
-                <div class="bg-gradient-to-br from-amber-400 to-orange-500 p-2.5 rounded-xl text-white shadow-lg">
+        <!-- Tab Navigation (Centered, Sleek) -->
+        <div class="flex justify-center mb-10 w-full overflow-x-auto hide-scrollbar">
+            <div
+                class="inline-flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl shadow-inner whitespace-nowrap overflow-x-auto min-w-max md:min-w-0">
+                <button onclick="switchShopTab('power')" id="tab-btn-power"
+                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-rose-500">
+                    <span class="material-symbols-outlined text-xl"
+                        style="font-variation-settings:'FILL' 1">favorite</span>
+                    <span>Đặc Quyền ✨</span>
+                </button>
+                <button onclick="switchShopTab('premium')" id="tab-btn-premium"
+                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white">
                     <span class="material-symbols-outlined text-xl">redeem</span>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-black text-slate-800 dark:text-white">Phần Thưởng Lớn 🏆</h2>
-                    <p class="text-sm text-slate-500">Tích lũy vàng để đổi những phần thưởng đặc biệt — cần bố mẹ xác
-                        nhận.</p>
-                </div>
+                    <span>Phần Thưởng 🏆</span>
+                </button>
+                <button onclick="switchShopTab('instant')" id="tab-btn-instant"
+                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white">
+                    <span class="material-symbols-outlined text-xl transform rotate-12"
+                        style="font-variation-settings:'FILL' 1">sell</span>
+                    <span>Quà Tặng Ngay ⚡</span>
+                </button>
             </div>
-            <shop-grid></shop-grid>
-        </section>
+        </div>
+
+        <!-- Tabs Content -->
+        <div class="mt-4">
+            <!-- ── TAB: Power Cards (Nhân Cách) ── -->
+            <div id="shop-tab-power"
+                class="shop-tab-content block animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-16 bg-rose-100 dark:bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500 shadow-sm border border-rose-200 dark:border-rose-800">
+                            <span class="material-symbols-outlined text-3xl"
+                                style="font-variation-settings:'FILL' 1">favorite</span>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black text-slate-800 dark:text-white mb-1">Đặc Quyền Yêu Thương
+                            </h2>
+                            <p class="text-slate-500 font-medium">Bố mẹ đã chuẩn bị những phần quà tinh thần giúp gắn
+                                kết cả
+                                nhà mình đấy!</p>
+                        </div>
+                    </div>
+                    <button onclick="window.openGlobalRewardHistoryModal && window.openGlobalRewardHistoryModal()"
+                        class="bg-white dark:bg-[#2c2215] hover:bg-slate-50 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border border-slate-200 dark:border-slate-800 active:scale-95 text-sm w-full sm:w-auto shrink-0">
+                        <span class="material-symbols-outlined text-lg">history</span> Lịch sử Đổi Quà
+                    </button>
+                </div>
+                <!-- Request personality component with proper attribute tracking -->
+                <shop-grid category="personality"></shop-grid>
+            </div>
+
+            <!-- ── TAB: Premium Shop (Vàng) ── -->
+            <div id="shop-tab-premium"
+                class="shop-tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-16 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center text-amber-500 shadow-sm border border-amber-200 dark:border-amber-800">
+                            <span class="material-symbols-outlined text-3xl">redeem</span>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black text-slate-800 dark:text-white mb-1">Phần Thưởng Lớn</h2>
+                            <p class="text-slate-500 font-medium">Những món quà tuyệt vời mà con có thể đổi bằng số Vàng
+                                đã
+                                chăm chỉ kiếm được.</p>
+                        </div>
+                    </div>
+                    <button onclick="window.openGlobalRewardHistoryModal && window.openGlobalRewardHistoryModal()"
+                        class="bg-white dark:bg-[#2c2215] hover:bg-slate-50 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border border-slate-200 dark:border-slate-800 active:scale-95 text-sm w-full sm:w-auto shrink-0">
+                        <span class="material-symbols-outlined text-lg">history</span> Lịch sử Đổi Quà
+                    </button>
+                </div>
+                <shop-grid></shop-grid>
+            </div>
+
+            <!-- ── TAB: Instant Perks (Stickers) ── -->
+            <div id="shop-tab-instant"
+                class="shop-tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-16 bg-teal-100 dark:bg-teal-900/30 rounded-2xl flex items-center justify-center text-teal-600 shadow-sm border border-teal-200 dark:border-teal-800">
+                            <span class="material-symbols-outlined text-3xl">bolt</span>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black text-slate-800 dark:text-white mb-1">Quà Tặng Ngay</h2>
+                            <p class="text-slate-500 font-medium">Đổi trực tiếp bằng Stickers để nhận đặc quyền ngay lập
+                                tức
+                                mà không cần chờ duyệt.</p>
+                        </div>
+                    </div>
+                    <button onclick="window.openGlobalRewardHistoryModal && window.openGlobalRewardHistoryModal()"
+                        class="bg-white dark:bg-[#2c2215] hover:bg-slate-50 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border border-slate-200 dark:border-slate-800 active:scale-95 text-sm w-full sm:w-auto shrink-0">
+                        <span class="material-symbols-outlined text-lg">history</span> Lịch sử Đổi Quà
+                    </button>
+                </div>
+                <instant-perks-grid></instant-perks-grid>
+            </div>
+        </div>
 
     </main>
 
@@ -131,6 +237,35 @@
         </div>
     </div>
 
+    <!-- ── Item Detail Modal ── -->
+    <div id="item-detail-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-[#1a140d] w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl transform scale-90 transition-transform duration-300 relative border border-slate-100 dark:border-slate-800">
+            <button onclick="closeItemDetailModal()"
+                class="absolute top-4 right-4 z-10 size-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div id="item-detail-image-container"
+                class="w-full h-56 bg-slate-100 dark:bg-slate-800 relative flex items-center justify-center">
+                <img id="item-detail-img" src="" alt="" class="w-full h-full object-cover">
+                <span id="item-detail-icon"
+                    class="material-symbols-outlined text-6xl text-slate-300 hidden">redeem</span>
+            </div>
+            <div class="p-8">
+                <h3 id="item-detail-title" class="text-2xl font-black text-slate-800 dark:text-white mb-4">Item Title
+                </h3>
+                <div class="bg-slate-50 dark:bg-[#2c2215] p-5 rounded-2xl mb-6">
+                    <p id="item-detail-desc"
+                        class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">Item
+                        description...</p>
+                </div>
+                <button onclick="closeItemDetailModal()"
+                    class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 rounded-xl transition-all">Đóng</button>
+            </div>
+        </div>
+    </div>
+
     <reward-history-modal></reward-history-modal>
 
     <child-nav active="shop"></child-nav>
@@ -149,10 +284,40 @@
             if (window.AppState) {
                 const gold = window.AppState.data.user.gold;
                 const stickers = window.AppState.data.user.stickers;
+                const personality = window.AppState.data.user.personalityPoints;
                 const goldEl = document.getElementById('gold-display');
                 const stickerEl = document.getElementById('sticker-display');
+                const personalityEl = document.getElementById('personality-display');
                 if (goldEl) goldEl.textContent = gold;
                 if (stickerEl) stickerEl.textContent = stickers;
+                if (personalityEl) personalityEl.textContent = personality;
+            }
+        }
+
+        // Tab switching
+        function switchShopTab(tabId) {
+            // Hide all tab content
+            document.querySelectorAll('.shop-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.shop-tab-content').forEach(el => el.classList.remove('block'));
+
+            // Show target content
+            const target = document.getElementById(`shop-tab-${tabId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            // Reset all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white";
+            });
+
+            // Set active button style
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) {
+                if (tabId === 'power') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-rose-500";
+                else if (tabId === 'premium') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-amber-500";
+                else if (tabId === 'instant') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-purple-500";
             }
         }
         document.addEventListener('DOMContentLoaded', () => {
@@ -184,6 +349,33 @@
                 alert('Không đủ Huy hiệu (Stickers) để đổi quà này!');
             }
         };
+
+        // Item Detail Modal
+        window.showItemDetailModal = function (title, desc, image) {
+            document.getElementById('item-detail-title').textContent = decodeURIComponent(title);
+            document.getElementById('item-detail-desc').textContent = decodeURIComponent(desc);
+
+            const imgEl = document.getElementById('item-detail-img');
+            const iconEl = document.getElementById('item-detail-icon');
+
+            if (image && image !== 'null' && image !== 'undefined' && image !== '') {
+                imgEl.src = image;
+                imgEl.classList.remove('hidden');
+                iconEl.classList.add('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+                iconEl.classList.remove('hidden');
+            }
+
+            const modal = document.getElementById('item-detail-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-90');
+        };
+
+        function closeItemDetailModal() {
+            const modal = document.getElementById('item-detail-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
 
         // Redeem premium shop item (called from component)
         window.redeemPremiumItem = async function (itemId) {
