@@ -1019,7 +1019,7 @@ class LeaderboardPodium extends HTMLElement {
                         </div>
                     </div>
                     <div class="relative mb-2 sm:mb-4 group-hover:-translate-y-2 transition-transform duration-300">
-                         <div class="absolute -top-8 left-1/2 -translate-x-1/2 w-full flex justify-center golden-aura rounded-full"></div>
+
                          <img src="${first.avatar}" alt="Top 1" class="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full border-4 border-[#ee9d2b] shadow-[0_0_20px_rgba(238,157,43,0.5)] z-10 relative ${first.isCurrentUser ? 'ring-4 ring-primary ring-offset-4' : ''}">
                          <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-yellow-900 text-sm sm:text-base font-black w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full shadow-lg border-2 border-white dark:border-[#221a10] z-20">1</div>
                          <span class="material-symbols-outlined absolute -top-5 -right-2 text-3xl sm:text-4xl text-yellow-400 drop-shadow-md z-20 rotate-12">crown</span>
