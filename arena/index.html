@@ -961,7 +961,7 @@
 
     <!-- ================ BOT INVITATION MODAL (NEW) ================ -->
     <div id="bot-invitation-modal"
-        class="fixed inset-0 z-[250] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-700">
+        class="fixed inset-0 z-[250] flex items-center justify-center p-0 bg-black backdrop-blur-3xl opacity-0 pointer-events-none transition-all duration-700">
 
         <!-- Background VFX -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -972,7 +972,7 @@
         </div>
 
         <div id="bot-invitation-content"
-            class="w-full max-w-xl rounded-[4rem] shadow-[0_0_120px_rgba(0,0,0,0.8)] transform scale-90 transition-all duration-700 overflow-hidden relative border-[1px] border-white/20 bg-[#0f172a]">
+            class="w-full h-full transform scale-90 transition-all duration-700 overflow-hidden relative bg-[#0f172a] flex flex-col justify-center">
 
             <!-- Animated Split Background -->
             <div class="absolute inset-0 flex pointer-events-none z-0">
@@ -1010,6 +1010,11 @@
                             </div>
                             <h3 class="text-2xl font-black text-white uppercase italic tracking-widest drop-shadow-lg"
                                 id="invitation-bot-name">Hiệp sĩ</h3>
+                            <div id="invitation-bot-rank"
+                                class="mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 font-black text-xs uppercase tracking-[0.2em] backdrop-blur-md">
+                                <span class="material-symbols-outlined text-[14px]">military_tech</span>
+                                HẠNG <span id="invitation-bot-rank-num">-</span>
+                            </div>
                         </div>
 
                         <!-- VS Center -->
@@ -1031,7 +1036,13 @@
                                     class="absolute -bottom-3 -left-3 bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-2xl shadow-2xl z-20 uppercase tracking-tighter border-2 border-white/20">
                                     DEFENDER</div>
                             </div>
-                            <h3 class="text-2xl font-black text-white/60 uppercase italic tracking-widest">BẠN</h3>
+                            <h3 class="text-2xl font-black text-white uppercase italic tracking-widest drop-shadow-lg"
+                                id="invitation-your-name">BẠN</h3>
+                            <div id="invitation-your-rank"
+                                class="mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 font-black text-xs uppercase tracking-[0.2em] backdrop-blur-md">
+                                <span class="material-symbols-outlined text-[14px]">stars</span>
+                                HẠNG <span id="invitation-your-rank-num">-</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1338,10 +1349,21 @@
             document.getElementById('invitation-bot-avatar').src = bot.avatar;
             document.getElementById('invitation-bot-name').textContent = bot.name.replace(' (Bot)', '');
 
-            // Set your avatar in invitation
+            // --- CALCULATE RANKS ---
+            const lb = [...window.AppState.data.leaderboard].sort((a, b) => (b.weeklyXp || 0) - (a.weeklyXp || 0));
+            const botRank = lb.findIndex(p => p.id === bot.id) + 1;
+            document.getElementById('invitation-bot-rank-num').textContent = botRank > 0 ? botRank : '-';
+
+            // Set your avatar and rank in invitation
             const yourAvatarImg = document.getElementById('invitation-your-avatar');
-            if (yourAvatarImg && window.AppState.data.user) {
-                yourAvatarImg.src = window.AppState.data.user.avatar;
+            const currentUser = window.AppState.data.user;
+            if (yourAvatarImg && currentUser) {
+                yourAvatarImg.src = currentUser.avatar;
+                const yourRank = lb.findIndex(p => p.id === currentUser.id) + 1;
+                document.getElementById('invitation-your-rank-num').textContent = yourRank > 0 ? yourRank : '-';
+                // Cập nhật tên của bạn nếu có thể
+                const yourNameEl = document.getElementById('invitation-your-name');
+                if (yourNameEl) yourNameEl.textContent = currentUser.name.toUpperCase();
             }
 
             document.getElementById('invitation-task-emoji').textContent = TASK_EMOJI[task] || '⚔️';

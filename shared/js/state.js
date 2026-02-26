@@ -3863,14 +3863,15 @@ class StateManager {
         setupRealtimeSync() {
                 // Setup Realtime with Throttling
                 this._syncTimeout = null;
-                this.client.channel('public:*').on('postgres_changes', { event: '*', schema: 'public' }, payload => {
+                this.client.channel('any-change').on('postgres_changes', { event: '*', schema: 'public' }, payload => {
                         // Tránh lặp vô tận khi chính mình update bot
                         if (payload.table === 'profiles' && payload.new && payload.new.role === 'bot') return;
 
                         if (this._syncTimeout) clearTimeout(this._syncTimeout);
                         this._syncTimeout = setTimeout(() => {
+                                console.log(`[Realtime] 🔄 Dữ liệu thay đổi tại bàn ${payload.table}, đang cập nhật...`);
                                 this.syncFromDatabase();
-                        }, 500); // Đợi 500ms để gom các thay đổi
+                        }, 100); // Đợi 100ms để gom các thay đổi (gần như tức thì)
                 }).subscribe();
         }
 
@@ -4403,8 +4404,10 @@ class StateManager {
                 await this.client.from('profiles').update({
                         gold: Math.max(0, (profile.gold || 0) + rewardGold),
                         xp: Math.max(0, (profile.xp || 0) + rewardXp),
+                        weekly_xp: Math.max(0, (profile.weeklyXp || 0) + rewardXp),
                         water: Math.max(0, (profile.water || 0) + rewardWater),
                         stickers: Math.max(0, (profile.stickers || 0) + rewardSticker),
+                        total_stickers: Math.max(0, (profile.totalStickers || 0) + rewardSticker),
                         personality_points: Math.max(0, (profile.personalityPoints || 0) + personalityChange)
                 }).eq('id', profileId);
 
@@ -4470,7 +4473,7 @@ class StateManager {
                         profile_id: profileId,
                         item_title: resolutionData.title + (resolutionData.description ? ` | ${resolutionData.description}` : ""),
                         status: 'approved',
-                        type: 'behavior_good',
+                        type: 'reflection',
                         reward_gold: 5,
                         reward_xp: 10,
                         reward_water: 2,
@@ -4492,8 +4495,10 @@ class StateManager {
                         await this.client.from('profiles').update({
                                 gold: (u.gold || 0) + 5,
                                 xp: (u.xp || 0) + 10,
+                                weekly_xp: (u.weeklyXp || 0) + 10,
                                 water: (u.water || 0) + 2,
-                                stickers: (u.stickers || 0) + 1
+                                stickers: (u.stickers || 0) + 1,
+                                total_stickers: (u.totalStickers || 0) + 1
                         }).eq('id', profileId);
                 }
 
@@ -4705,11 +4710,18 @@ class StateManager {
                                 if (u) {
                                         u.gold = (u.gold || 0) + (r.reward || 0);
                                         u.xp = (u.xp || 0) + (r.xp || 0);
+                                        u.weeklyXp = (u.weeklyXp || 0) + (r.xp || 0);
                                         u.water = (u.water || 0) + (r.water || 0);
                                         u.stickers = (u.stickers || 0) + (r.sticker || 0);
+                                        u.totalStickers = (u.totalStickers || 0) + (r.sticker || 0);
 
                                         await this.client.from('profiles').update({
-                                                gold: u.gold, xp: u.xp, water: u.water, stickers: u.stickers
+                                                gold: u.gold,
+                                                xp: u.xp,
+                                                weekly_xp: u.weeklyXp,
+                                                water: u.water,
+                                                stickers: u.stickers,
+                                                total_stickers: u.totalStickers
                                         }).eq('id', u.id);
 
                                         // Update original log if it was an atonement
@@ -4750,8 +4762,10 @@ class StateManager {
                                 if (r.type === 'task' && r.rewardsGranted) {
                                         u.gold = Math.max(0, u.gold - r.reward);
                                         u.xp = Math.max(0, u.xp - r.xp);
+                                        u.weeklyXp = Math.max(0, (u.weeklyXp || 0) - r.xp);
                                         u.water = Math.max(0, u.water - r.water);
                                         u.stickers = Math.max(0, u.stickers - r.sticker);
+                                        u.totalStickers = Math.max(0, (u.totalStickers || 0) - r.sticker);
                                 } else if (r.type === 'shop') {
                                         u.gold += r.price;
                                 } else if (r.type === 'perk') {
@@ -4768,7 +4782,12 @@ class StateManager {
                                 }
 
                                 await this.client.from('profiles').update({
-                                        gold: u.gold, xp: u.xp, water: u.water, stickers: u.stickers
+                                        gold: u.gold,
+                                        xp: u.xp,
+                                        weekly_xp: u.weeklyXp,
+                                        water: u.water,
+                                        stickers: u.stickers,
+                                        total_stickers: u.totalStickers
                                 }).eq('id', u.id);
                         }
                         this.notify();
@@ -5353,6 +5372,7 @@ class StateManager {
                         await this.client.from('profiles').update({
                                 gold: Math.max(0, (pC.gold || 0) + pointsG_C),
                                 xp: Math.max(0, (pC.xp || 0) + pointsXP_C),
+                                weekly_xp: Math.max(0, (pC.weekly_xp || 0) + pointsXP_C),
                                 stickers: (pC.stickers || 0) + spins_C
                         }).eq('id', pC.id);
                 }
@@ -5361,6 +5381,7 @@ class StateManager {
                         await this.client.from('profiles').update({
                                 gold: Math.max(0, (pO.gold || 0) + pointsG_O),
                                 xp: Math.max(0, (pO.xp || 0) + pointsXP_O),
+                                weekly_xp: Math.max(0, (pO.weekly_xp || 0) + pointsXP_O),
                                 stickers: (pO.stickers || 0) + spins_O
                         }).eq('id', pO.id);
                 }

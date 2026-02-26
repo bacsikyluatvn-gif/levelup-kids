@@ -2796,6 +2796,7 @@ class GrowthDiaryView extends HTMLElement {
             const desc = (log.itemDesc || "").toLowerCase();
 
             const isReflection = log.type === 'reflection' ||
+                log.type === 'behavior_reflection' ||
                 title.includes('tự đánh giá') ||
                 title.includes('nhật ký') ||
                 (log.type === 'behavior_good' && title.includes('/10'));
@@ -3234,6 +3235,43 @@ class GrowthDiaryView extends HTMLElement {
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- TODAY'S REFLECTIONS -->
+                            ${todayGroup.REFLECTION.length > 0 ? `
+                                <div class="col-span-1 md:col-span-2 space-y-6 pt-10 border-t border-slate-100 dark:border-white/5">
+                                    <div class="flex items-center gap-3 px-5 py-3 bg-indigo-500/10 text-indigo-500 rounded-2xl w-fit border border-indigo-500/20 shadow-lg shadow-indigo-500/5">
+                                        <span class="material-symbols-outlined text-base">auto_awesome</span>
+                                        <span class="text-xs font-black uppercase tracking-[0.2em]">Lời Tự Sự Của Con</span>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        ${todayGroup.REFLECTION.map(log => {
+            const ratingMatch = (log.itemTitle || "").match(/(\d+)\/10/);
+            const rating = ratingMatch ? ratingMatch[1] : '?';
+            const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
+            return `
+                                                <div class="bg-white dark:bg-[#1a140c]/60 rounded-3xl p-6 shadow-sm border border-indigo-50 dark:border-white/5 relative group hover:shadow-md transition-all">
+                                                    <div class="absolute top-4 right-4">
+                                                        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-full border border-rose-100 dark:border-rose-900/30">
+                                                            <span class="material-symbols-outlined text-rose-500 text-xs" style="font-variation-settings:'FILL' 1">favorite</span>
+                                                            <span class="text-xs font-black text-rose-600 dark:text-rose-400">${rating}/10</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex gap-4 items-start pr-16 text-left">
+                                                        <span class="text-4xl opacity-20 text-indigo-300 dark:text-slate-700 font-serif leading-none mt-1">"</span>
+                                                        <div class="flex-1">
+                                                            <p class="text-base font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-3 pt-2">${desc}</p>
+                                                            <div class="flex items-center gap-1.5 text-[9px] font-black text-slate-300 dark:text-slate-500 uppercase tracking-widest">
+                                                                <span class="material-symbols-outlined text-[10px]">schedule</span>
+                                                                Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+        }).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
                         `}
                     </section>
 
@@ -3462,26 +3500,36 @@ class GrowthDiaryView extends HTMLElement {
                 return;
             }
 
+            if (!currentRating) {
+                window.showFamilyQuestAlert("Lưu ý", "Con hãy chọn mức độ hài lòng bằng các trái tim trước nhé! ❤️", "warning");
+                return;
+            }
+
             const backupText = currentText;
             const backupRating = currentRating;
 
-            // 1. CLEAR IMMEDIATELY (More aggressive)
-            localStorage.setItem('daily_rating_' + userId, '');
-            localStorage.setItem('daily_reflection_' + userId, '');
-            localStorage.removeItem('daily_rating_' + userId);
-            localStorage.removeItem('daily_reflection_' + userId);
-
-            if (textarea) textarea.value = '';
-            window.setDailyRating(0);
-
             if (window.AppState) {
                 try {
+                    // Show loading state on button
+                    const btn = document.querySelector('button[onclick="window.saveDailyReflection()"]');
+                    const originalBtnContent = btn ? btn.innerHTML : '';
+                    if (btn) btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> ĐANG LƯU...';
+
                     const result = await window.AppState.resolveBehavior(null, {
                         title: `Tự đánh giá: ${currentRating}/10 điểm`,
                         description: currentText || "Con cảm thấy hài lòng với hôm nay!"
                     });
 
                     if (result) {
+                        // 1. CLEAR NOW (after success)
+                        localStorage.setItem('daily_rating_' + userId, '');
+                        localStorage.setItem('daily_reflection_' + userId, '');
+                        localStorage.removeItem('daily_rating_' + userId);
+                        localStorage.removeItem('daily_reflection_' + userId);
+                        if (textarea) textarea.value = '';
+                        window.setDailyRating(0);
+
+                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật Ký Trưởng Thành của con đã được lưu vào rồi nhé! ✨", "success");
                         if (window.confetti) {
                             window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
                         }
@@ -3492,6 +3540,7 @@ class GrowthDiaryView extends HTMLElement {
                         // Final cleanup just in case sync put it back
                         localStorage.removeItem('daily_rating_' + userId);
                         localStorage.removeItem('daily_reflection_' + userId);
+                        localStorage.setItem('daily_rating_saved_' + userId, 'true'); // Flag to prevent immediate clear on re-render
 
                         setTimeout(() => {
                             this.render(window.AppState.data);
@@ -3504,6 +3553,9 @@ class GrowthDiaryView extends HTMLElement {
                         throw new Error("Save failure");
                     }
                 } catch (err) {
+                    const errorBtn = document.querySelector('button[onclick="window.saveDailyReflection()"]');
+                    if (errorBtn) errorBtn.innerHTML = '<span class="material-symbols-outlined pb-1">save</span> Ghi lại hành trình';
+
                     console.error("Diary save error:", err);
                     localStorage.setItem('daily_rating_' + userId, backupRating);
                     localStorage.setItem('daily_reflection_' + userId, backupText);
