@@ -2943,7 +2943,7 @@ class GrowthDiaryView extends HTMLElement {
                                                 <div class="flex items-center justify-center size-10 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-inner">
                                                     <span class="material-symbols-outlined text-xl text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
                                                 </div>
-                                                <span class="${spendablePoints > 999 ? 'text-4xl sm:text-5xl' : (spendablePoints > 99 ? 'text-5xl sm:text-6xl' : 'text-7xl sm:text-8xl')} font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl transition-all duration-300">${spendablePoints}</span>
+                                                <span class="${personalityScore > 999 ? 'text-4xl sm:text-5xl' : (personalityScore > 99 ? 'text-5xl sm:text-6xl' : 'text-7xl sm:text-8xl')} font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl transition-all duration-300">${personalityScore}</span>
                                             </div>
                                         </div>
                                     </div>
