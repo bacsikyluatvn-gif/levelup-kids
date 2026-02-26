@@ -3985,7 +3985,9 @@ class StateManager {
                                 'Tường Vy': 'girl', 'Linh Đan': 'girl', 'Bé Na': 'girl', 'Minh Anh': 'girl', 'Khánh An': 'girl',
                                 'Phương Thảo': 'girl', 'Kim Ngân': 'girl', 'Quỳnh Chi': 'girl', 'Bảo Ngọc': 'girl', 'Thanh Trúc': 'girl',
                                 'Gia Huy': 'boy', 'Khôi Nguyên': 'boy', 'Bảo Nam': 'boy', 'Đức Anh': 'boy', 'Tùng Lâm': 'boy',
-                                'Khánh Linh': 'girl', 'Ngọc Diệp': 'girl', 'Trà My': 'girl', 'Hoài An': 'girl', 'Mỹ Tâm': 'girl'
+                                'Anh Quân': 'boy', 'Quang Vinh': 'boy', 'Minh Triết': 'boy', 'Thiên Ân': 'boy', 'Hữu Phước': 'boy',
+                                'Khánh Linh': 'girl', 'Ngọc Diệp': 'girl', 'Trà My': 'girl', 'Hoài An': 'girl', 'Mỹ Tâm': 'girl',
+                                'An Chi': 'girl', 'Tuệ Lâm': 'girl', 'Minh Thư': 'girl', 'Thảo Nguyên': 'girl', 'Hà Phương': 'girl'
                         },
                         nicknames: [
                                 { n: 'Sóc Nâu', g: 'boy' }, { n: 'Bi Béo', g: 'boy' }, { n: 'Khoai Tây', g: 'boy' }, { n: 'Bun Bun', g: 'boy' },
@@ -3995,8 +3997,11 @@ class StateManager {
                                 { n: 'Heo Con', g: 'boy' }, { n: 'Gấu Bự', g: 'boy' }, { n: 'Bơ Ngọt', g: 'boy' }, { n: 'Su Su', g: 'boy' },
                                 { n: 'Ớt Hiểm', g: 'boy' }, { n: 'Đậu Đậu', g: 'boy' }, { n: 'Bắp Cải', g: 'boy' }, { n: 'Cà Rốt', g: 'boy' },
                                 { n: 'Bống Bang', g: 'girl' }, { n: 'Xu Xu', g: 'girl' }, { n: 'Chíp Chíp', g: 'girl' }, { n: 'Búp Bê', g: 'girl' },
-                                { n: 'Cốm Thơm', g: 'girl' }, { n: 'Mít Mật', g: 'girl' }, { n: 'Sapo', g: 'girl' }, { n: 'Chôm Chôm', g: 'girl' }
-                        ]
+                                { n: 'Cốm Thơm', g: 'girl' }, { n: 'Mít Mật', g: 'girl' }, { n: 'Sapo', g: 'girl' }, { n: 'Chôm Chôm', g: 'girl' },
+                                { n: 'Dưa Hấu', g: 'boy' }, { n: 'Cà Pháo', g: 'boy' }, { n: 'Tôm Tít', g: 'boy' }, { n: 'Bin Bin', g: 'boy' },
+                                { n: 'Kem Bơ', g: 'girl' }, { n: 'Kẹo Ngọt', g: 'girl' }, { n: 'Mây Bồng', g: 'girl' }, { n: 'Nắng Hồng', g: 'girl' }
+                        ],
+                        identityMarkers: ['Lém Lỉnh', 'Thông Thái', 'Siêu Quậy', 'Nhí Nhảnh', 'Dễ Thương', 'Hào Hiệp', 'Nhanh Nhẹn', 'Dũng Cảm', 'Chăm Chỉ', 'Kiên Trì']
                 };
 
                 const usedNames = new Set();
@@ -4017,14 +4022,18 @@ class StateManager {
                                         gender = nick.g;
                                 }
 
-                                // 3. ĐẢM BẢO DUY NHẤT: Nếu vẫn trùng (do hết nickname), thêm số hậu tố
-                                let finalUniqueName = name;
-                                let collisionCount = 2;
-                                while (usedNames.has(finalUniqueName)) {
-                                        finalUniqueName = `${name} ${collisionCount}`;
-                                        collisionCount++;
+                                // 3. ĐẢM BẢO DUY NHẤT: Nếu trùng, thêm định danh tính cách thay vì số
+                                if (usedNames.has(name)) {
+                                        let idHash = 0;
+                                        for (let i = 0; i < p.id.length; i++) idHash += p.id.charCodeAt(i);
+                                        let marker = BOT_CONFIG.identityMarkers[idHash % BOT_CONFIG.identityMarkers.length];
+                                        let finalUniqueName = `${name} ${marker}`;
+
+                                        if (usedNames.has(finalUniqueName)) {
+                                                finalUniqueName = `✨ ${finalUniqueName}`;
+                                        }
+                                        name = finalUniqueName;
                                 }
-                                name = finalUniqueName;
                                 usedNames.add(name);
 
                                 // 3. Gán Avatar chuẩn giới tính (Hash dựa trên ID để không bị nhảy hình)
