@@ -1556,7 +1556,7 @@ class InstantPerksGrid extends HTMLElement {
                         <!-- Content -->
                         <div class="p-4 flex flex-col flex-1">
                             <h3 class="font-black text-slate-800 dark:text-white text-sm leading-tight mb-1">${perk.title}</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1">${perk.desc}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 hidden">${perk.desc}</p>
                             <button
                                 onclick="window.redeemInstantPerk && window.redeemInstantPerk('${perk.id}')" class="mt-3 w-full ${canAfford
                     ? `bg-gradient-to-r ${c.bg} text-white hover:opacity-90 shadow-sm`
@@ -1641,7 +1641,7 @@ class ShopGrid extends HTMLElement {
                             <div class="cursor-pointer flex-1 flex flex-col" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')" title="Nhấn để xem chi tiết">
                                 <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1 ${(item.category === 'power_card' || item.category === 'POWER_CARD') ? 'hidden' : ''}">${item.category}</span>
                                 <h3 class="font-black text-slate-800 dark:text-white text-base mb-2 leading-tight group-hover:text-primary transition-colors">${item.title}</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 mb-4 line-clamp-2">${item.desc}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 mb-4 line-clamp-2 hidden">${item.desc}</p>
                             </div>
                             <button
                                 onclick="window.redeemPremiumItem && window.redeemPremiumItem('${item.id}')" class="${(canAfford && !isPending)
