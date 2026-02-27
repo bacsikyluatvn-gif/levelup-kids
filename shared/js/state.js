@@ -824,8 +824,18 @@ class StateManager {
                 }
 
                 localStorage.setItem('family_quest_active_profile', id);
-                this.loadFromCache(); // Load new profile cache immediately
-                this.syncFromDatabase();
+
+                // ƯU TIÊN: Nếu ta đang có thông tin profile này trong leaderboard (ví dụ vừa ở trang Portal),
+                // hãy ghi đè vào cache ngay lập tức để khi chuyển trang, UI hiện lên TỨC THÌ
+                const profileInfo = (this.data.leaderboard || []).find(p => p.id === id);
+                if (profileInfo) {
+                        this.data.user = { ...profileInfo, isCurrentUser: true };
+                        this.saveToCache();
+                        console.log(`[State] ⚡ Fast-track cache saved for ${profileInfo.name}`);
+                }
+
+                this.loadFromCache(); // Nạp cache (bao gồm cả cái vừa lưu ở trên)
+                this.syncFromDatabase(); // Chạy sync ngầm
         }
 
         // ==========================================
