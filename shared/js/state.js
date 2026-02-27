@@ -328,8 +328,26 @@ class StateManager {
 
                         if (p.role === 'bot') {
                                 const isBoy = idHash % 2 === 0;
-                                const pool = isBoy ? ['Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Sóc Nâu', 'Bi Bi', 'Khoai Tây'] : ['Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc'];
+                                // Mở rộng danh sách tên Bot để tránh trùng lặp trên nhiều trang BXH
+                                const boyPool = [
+                                        'Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Sóc Nâu', 'Bi Bi', 'Khoai Tây',
+                                        'Nhật Minh', 'Tuấn Kiệt', 'Hữu Phước', 'Anh Khôi', 'Tuấn Minh', 'Thế Vinh', 'Minh Phát', 'Đăng Khoa', 'Đức Duy', 'Duy Nam',
+                                        'Quang Vinh', 'Quốc Bảo', 'Trung Kiên', 'Hoàng Long', 'Việt Anh', 'Bách Khoa', 'Cà Rốt', 'Su Su', 'Tí Quậy', 'Cún Con',
+                                        'Gấu Nhỏ', 'Sư Tử', 'Tèo', 'Bin', 'Bo', 'Ken', 'Kid', 'Tin Tin', 'Zin', 'Ben',
+                                        'Gấu', 'Nghé', 'Cu Bin', 'Cu Bo', 'Mì Tôm', 'Bánh Mì', 'Phô Mai', 'Xúc Xích', 'Bắp', 'Đậu Đỏ'
+                                ];
+                                const girlPool = [
+                                        'Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc',
+                                        'Bảo Anh', 'Thùy Chi', 'Diễm My', 'Lan Hương', 'Tuyết Mai', 'Phương Thảo', 'Minh Anh', 'Linh Đan', 'Phương Vy', 'Kim Ngân',
+                                        'Quỳnh Chi', 'Thảo Nguyên', 'Thanh Hằng', 'Mai Phương', 'Diệu Anh', 'Hà My', 'Bánh Gạo', 'Su Kem', 'Luna', 'Sunny',
+                                        'Bella', 'Mi Mi', 'Na Na', 'Xu Xu', 'Bông', 'Bống', 'Tép', 'Mận', 'Sơ Ri', 'Dâu Tây',
+                                        'Đào', 'Mít', 'Cam', 'Quýt', 'Na', 'Ổi', 'Sâu', 'Nhím', 'Sóc', 'Chít Chít'
+                                ];
+
+                                const pool = isBoy ? boyPool : girlPool;
+                                // Sử dụng idHash kết hợp để đảo vị trí tốt hơn
                                 name = pool[idHash % pool.length];
+
                                 const avPool = isBoy ? [1, 3, 4, 5, 9, 10, 15, 18, 19, 20] : [2, 6, 7, 8, 11, 12, 13, 14, 16, 17];
                                 avatar = `../shared/assets/generated_avatars/avatar_${avPool[idHash % avPool.length]}.png`;
                         }
