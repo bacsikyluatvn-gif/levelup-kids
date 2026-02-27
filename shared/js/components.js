@@ -98,7 +98,7 @@ window.celebrate = (config = {}) => {
             accent: "amber",
             btn: "bg-amber-500 shadow-amber-200",
             defaultIcon: "workspace_premium",
-            sound: "https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3",
+            sound: "../shared/assets/chuc mung.mp3",
             confetti: { colors: ['#f59e0b', '#fbbf24', '#ffffff'], particleCount: 200 }
         },
         challenge: {
@@ -118,7 +118,7 @@ window.celebrate = (config = {}) => {
             accent: "yellow",
             btn: "bg-orange-500 shadow-orange-200",
             defaultIcon: "auto_awesome",
-            sound: "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3",
+            sound: "../shared/assets/chuc mung.mp3",
             confetti: { colors: ['#fbbf24', '#f97316', '#ffffff'] }
         },
         shop: {
