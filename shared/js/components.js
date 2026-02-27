@@ -294,95 +294,125 @@ class AppHeader extends HTMLElement {
     }
 
     render(data) {
+        if (!data) return;
         const title = this.getAttribute('title') || 'LevelUp Kids';
         const type = this.getAttribute('type') || 'child';
 
         this.innerHTML = `
-            <header class="sticky top-0 z-50 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-b border-[#e6e1db] dark:border-[#3a2e22] px-6 py-4 shadow-sm">
-                <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="navigateWithTransition('../index.html')">
-                        <div class="bg-primary/20 p-2 rounded-xl text-primary">
-                            <span class="material-symbols-outlined text-3xl">castle</span>
+            <header class="sticky top-0 z-50 bg-white/80 dark:bg-[#1a140c]/80 backdrop-blur-xl border-b border-[#e6e1db] dark:border-[#3a2e22] shadow-sm transition-all duration-300">
+                <div class="max-w-[1280px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+                    <!-- Brand Section -->
+                    <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateWithTransition('../index.html')">
+                        <div class="bg-primary/20 p-2.5 rounded-2xl text-primary group-hover:scale-110 group-active:scale-95 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1">castle</span>
                         </div>
-                        <h1 class="text-2xl font-bold tracking-tight text-text-main dark:text-white">LevelUp Kids</h1>
+                        <div class="hidden sm:block">
+                            <h1 class="text-xl font-black tracking-tight text-text-main dark:text-white leading-none">${title}</h1>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Adventure Awaits</p>
+                        </div>
                     </div>
+
+                    <!-- Statistics & Actions Sections -->
                     ${type === 'child' ? this.getChildStats(data) : this.getParentStats(data)}
                 </div>
             </header>
         `;
+
+        if (type === 'child') this.attachChildEffects();
     }
 
     getChildStats(data) {
         const user = data.user;
         const xpPercent = Math.floor((user.xp / user.maxXp) * 100);
         return `
-            <div class="flex flex-1 w-full md:w-auto items-center justify-center md:justify-end gap-2 md:gap-3">
-                <div class="flex flex-col w-full max-w-[200px] gap-1">
-                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <span>CẤP ${user.level}</span>
-                        <span>${user.xp}/${user.maxXp} XP</span>
+            <!-- Stats Hub (Center) -->
+            <div class="hidden lg:flex items-center gap-6 bg-slate-100/50 dark:bg-white/5 px-6 py-2 rounded-[2rem] border border-slate-200/50 dark:border-white/10 shadow-inner">
+                <!-- Progress -->
+                <div class="flex items-center gap-4 border-r border-slate-200 dark:border-white/10 pr-6">
+                    <div class="flex flex-col w-32 gap-1">
+                        <div class="flex justify-between text-[9px] font-black uppercase tracking-tighter text-slate-500 dark:text-slate-400">
+                            <span>LEVEL ${user.level}</span>
+                            <span>${user.xp}/${user.maxXp} XP</span>
+                        </div>
+                        <div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-sm">
+                            <div class="h-full bg-gradient-to-r from-yellow-300 via-primary to-orange-500 transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style="width: ${xpPercent}%"></div>
+                        </div>
                     </div>
-                    <div class="h-3 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden relative">
-                        <div class="h-full bg-gradient-to-r from-yellow-300 to-primary transition-all duration-500" style="width: ${xpPercent}%"></div>
-                    </div>
                 </div>
-                <div class="flex items-center gap-1.5 bg-rose-50 dark:bg-rose-900/20 px-3 py-1.5 rounded-full border border-rose-200 dark:border-rose-800/30 transition-all hover:scale-110" title="Nhân Cách (để đổi đặc quyền tinh thần)">
-                    <span class="material-symbols-outlined text-[18px] text-rose-500" style="font-variation-settings:'FILL' 1">favorite</span>
-                    <span class="font-bold text-rose-700 dark:text-rose-400 tabular-nums">${user.personalityPoints || 0}</span>
-                </div>
-                <div class="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-900/20 px-3 py-1.5 rounded-full border border-orange-200 dark:border-orange-800/30 transition-all hover:scale-110" title="Vàng (để đổi phần thưởng lớn)">
-                    <span class="material-symbols-outlined text-[18px] text-orange-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                    <span class="font-bold text-orange-700 dark:text-orange-400 tabular-nums">${user.gold}</span>
-                </div>
-                <div class="flex items-center gap-1.5 bg-purple-50 dark:bg-purple-900/20 px-3 py-1.5 rounded-full border border-purple-200 dark:border-purple-800/30 transition-all hover:scale-110" title="Huy hiệu (để đổi đặc quyền nhanh)">
-                    <span class="material-symbols-outlined text-[18px] text-purple-500 transform rotate-12">sell</span>
-                    <span class="font-bold text-purple-700 dark:text-purple-400 tabular-nums">${user.stickers || 0}</span>
-                </div>
-                <div class="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-800/30 transition-all hover:scale-110" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (để tưới cây)">
-                    <span class="material-symbols-outlined text-[18px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
-                    <span class="font-bold text-blue-700 dark:text-blue-400 tabular-nums">${user.water || 0}</span>
-                </div>
-                <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-700">
-                    <button onclick="window.toggleDarkMode()" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all">
-                        <span class="material-symbols-outlined dark:hidden">dark_mode</span>
-                        <span class="material-symbols-outlined hidden dark:block text-yellow-500">light_mode</span>
-                    </button>
-                    <div class="text-right flex flex-col justify-center">
-                        <p class="text-sm font-bold dark:text-white text-slate-800">${user.name || 'Nhà thám hiểm'}</p>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${data.title.currentTitleName || 'Tân Binh'}</p>
-                    </div>
-                     <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300 cursor-pointer active:scale-90 transition-transform" 
-                          style="background-image: url('${user.avatar}')" id="header-avatar-child">
-                     </div>
-                    <button onclick="window.location.href='../portal/index.html'" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-white/5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-primary transition-all group" 
-                            title="Đổi nhân vật">
-                        <span class="material-symbols-outlined text-[20px]">person_switch</span>
-                        <span class="text-[10px] font-black uppercase tracking-wider">Đổi Bé</span>
-                    </button>
-                    <button onclick="window.AppState.logout()" class="flex items-center gap-1.5 px-3 py-2 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-100 transition-all group" 
-                            title="Đăng xuất Gia đình">
-                        <span class="material-symbols-outlined text-[20px]">logout</span>
-                        <span class="text-[10px] font-black uppercase tracking-wider">Đăng xuất</span>
-                    </button>
-                </div>
-        `;
 
-        // Add click effect
+                <!-- Resources -->
+                <div class="flex items-center gap-1.5 font-bold">
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform cursor-help" title="Nhân Cách (Personality Points)">
+                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                        <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform cursor-help" title="Vàng (Gold)">
+                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                        <span class="text-sm tabular-nums">${user.gold}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform cursor-help" title="Huy hiệu (Stickers)">
+                        <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
+                        <span class="text-sm tabular-nums">${user.stickers || 0}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
+                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                        <span class="text-sm tabular-nums">${user.water || 0}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile & System (Right) -->
+            <div class="flex items-center gap-2 md:gap-4 ml-auto">
+                <!-- Theme Toggle -->
+                <button onclick="window.toggleDarkMode()" class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm border border-transparent hover:border-primary/20">
+                    <span class="material-symbols-outlined dark:hidden text-xl">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-xl">light_mode</span>
+                </button>
+
+                <!-- Profile Card -->
+                <div class="flex items-center gap-3 pl-3 md:pl-4 border-l border-slate-200 dark:border-white/10 group relative">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">${user.name || 'Alex'}</p>
+                        <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] opacity-80">${data.title.currentTitleName || 'Tân Binh'}</p>
+                    </div>
+                    
+                    <div class="relative cursor-pointer group/avatar" id="header-avatar-child">
+                        <div class="size-11 rounded-2xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md group-hover/avatar:ring-primary group-hover/avatar:scale-105 transition-all overflow-hidden" 
+                             style="background-image: url('${user.avatar}')">
+                        </div>
+                        <div class="absolute -top-1 -right-1 size-4 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
+                    </div>
+
+                    <!-- Compact Menu Actions -->
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="window.location.href='../portal/index.html'" 
+                                class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-90 border border-transparent hover:border-primary/30 group" title="Đổi Bé">
+                            <span class="material-symbols-outlined text-[20px]">person_switch</span>
+                        </button>
+                        <button onclick="window.AppState.logout()" 
+                                class="size-10 flex items-center justify-center bg-rose-50 dark:bg-rose-500/10 rounded-2xl text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 border border-rose-100 dark:border-rose-500/20" title="Đăng xuất">
+                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    attachChildEffects() {
         setTimeout(() => {
             const av = this.querySelector('#header-avatar-child');
             if (av) {
                 av.onclick = (e) => {
                     if (window.confetti) {
-                        const rect = e.target.getBoundingClientRect();
+                        const rect = av.getBoundingClientRect();
                         confetti({
-                            particleCount: 15,
-                            spread: 60,
-                            origin: {
-                                x: (rect.left + rect.width / 2) / window.innerWidth,
-                                y: (rect.top + rect.height / 2) / window.innerHeight
-                            },
+                            particleCount: 25,
+                            spread: 70,
+                            origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight },
                             colors: ['#FFD700', '#FFA500', '#FFFFFF', '#FFB6C1'],
-                            zIndex: 10001
+                            zIndex: 10001,
+                            scalar: 0.8
                         });
                     }
                 };
@@ -392,34 +422,39 @@ class AppHeader extends HTMLElement {
 
     getParentStats(data) {
         return `
-            <div class="flex items-center gap-4">
-                <button onclick="window.openBehaviorLogModal()" class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                    <span class="material-symbols-outlined text-xl">auto_awesome</span>
-                    <span class="hidden sm:inline">GHI NHẬN HÀNH ĐỘNG</span>
+            <div class="flex items-center gap-3 md:gap-6 ml-auto">
+                <button onclick="window.openBehaviorLogModal()" class="flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-primary to-orange-500 text-white rounded-[1.5rem] text-xs font-black shadow-lg shadow-primary/30 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+                    <span class="hidden md:inline">Ghi nhận hành động</span>
                 </button>
+                
                 <notification-bell></notification-bell>
-                <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-700">
-                    <button onclick="window.toggleDarkMode()" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all">
+
+                <div class="flex items-center gap-3 pl-3 md:pl-6 border-l border-slate-200 dark:border-white/10">
+                    <button onclick="window.toggleDarkMode()" class="p-2.5 bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-95">
                         <span class="material-symbols-outlined dark:hidden">dark_mode</span>
                         <span class="material-symbols-outlined hidden dark:block text-yellow-500">light_mode</span>
                     </button>
+                    
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-bold dark:text-white">Admin Bố</p>
-                        <p class="text-xs text-slate-500">Người quản trị</p>
+                        <p class="text-sm font-black dark:text-white text-slate-800 uppercase tracking-tight">Admin Phụ Huynh</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Family Manager</p>
                     </div>
-                    <div class="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white">
-                        <span class="material-symbols-outlined">person</span>
+                    
+                    <div class="size-11 rounded-2xl bg-gradient-to-br from-primary to-orange-500 flex items-center justify-center text-white shadow-lg overflow-hidden">
+                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">person</span>
                     </div>
-                    <button onclick="window.location.href='../portal/index.html'" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-white/5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-primary transition-all group" 
-                            title="Đổi tài khoản">
-                        <span class="material-symbols-outlined text-[20px]">person_switch</span>
-                        <span class="text-[10px] font-black uppercase tracking-wider">Đổi Bé</span>
-                    </button>
-                    <button onclick="window.AppState.logout()" class="flex items-center gap-1.5 px-3 py-2 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-100 transition-all group" 
-                            title="Đăng xuất hoàn toàn">
-                        <span class="material-symbols-outlined text-[20px]">logout</span>
-                        <span class="text-[10px] font-black uppercase tracking-wider">Đăng xuất</span>
-                    </button>
+
+                    <div class="flex items-center gap-1.5 ml-1">
+                        <button onclick="window.location.href='../portal/index.html'" 
+                                class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-90 border border-transparent hover:border-primary/30" title="Quản lý Family">
+                            <span class="material-symbols-outlined text-[20px]">home_info</span>
+                        </button>
+                        <button onclick="window.AppState.logout()" 
+                                class="size-10 flex items-center justify-center bg-rose-50 dark:bg-rose-500/10 rounded-2xl text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 border border-rose-100 dark:border-rose-500/20" title="Đăng xuất hoàn toàn">
+                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <behavior-log-modal></behavior-log-modal>
