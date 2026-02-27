@@ -175,140 +175,202 @@
             </div>
         </section>
 
-        <!-- 3. The Grand Guide (Bí Kíp Chinh Phục - GAME FLOW) -->
+        <!-- 3. Bí Kíp Chinh Phục (Unified Game Loop) -->
         <section
-            class="bg-white dark:bg-[#1e1a13] rounded-[3rem] p-8 lg:p-12 shadow-sm border border-slate-100 dark:border-slate-800">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h3 class="text-xs font-black text-primary uppercase tracking-[0.3em] mb-3">Hướng Dẫn Con Đường Đế
-                        Vương</h3>
-                    <h4 class="text-2xl lg:text-4xl font-black text-slate-800 dark:text-white mb-4">LÀM SAO ĐỂ TRỞ THÀNH
-                        SIÊU ANH HÙNG?</h4>
-                    <p class="text-slate-500 dark:text-slate-400 font-medium">Khám phá cách thức vận hành của thế giới
-                        LevelUp Kids để chinh phục mọi thử thách!</p>
+            class="bg-white dark:bg-[#1e1a13] rounded-[3.5rem] p-8 lg:p-14 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+                <span class="material-symbols-outlined text-[300px]">auto_stories</span>
+            </div>
+
+            <div class="max-w-5xl mx-auto relative z-10">
+                <div class="text-center mb-16">
+                    <div
+                        class="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-4">
+                        Cẩm Nang Anh Hùng</div>
+                    <h3 class="text-3xl lg:text-5xl font-black text-slate-800 dark:text-white mb-6">MỌI THỨ BẮT ĐẦU TỪ
+                        ĐÂU?</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-bold max-w-2xl mx-auto leading-relaxed italic">
+                        "Làm việc tốt là chìa khóa mở ra mọi kho báu. Hãy xem mỗi hành động của con sẽ nở hoa như thế
+                        nào nhé!"
+                    </p>
                 </div>
 
-                <div class="space-y-16">
-                    <!-- Flow 1: Gold Path -->
+                <!-- Main Flow Systems -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+                    <!-- Flow 1: Personal Wealth -->
                     <div
-                        class="bg-amber-50/50 dark:bg-amber-900/5 rounded-3xl p-6 border border-amber-100 dark:border-amber-900/20">
-                        <div class="flex items-center gap-3 mb-8">
+                        class="group bg-amber-50/40 dark:bg-amber-900/5 rounded-[2.5rem] p-8 border border-amber-100/50 dark:border-amber-900/20 hover:shadow-xl hover:shadow-amber-500/5 transition-all duration-500">
+                        <div class="flex items-center gap-4 mb-10">
                             <div
-                                class="size-10 bg-amber-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg">
+                                class="size-10 bg-amber-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg shadow-amber-500/20">
                                 1</div>
-                            <h5 class="text-xl font-black text-amber-800 dark:text-amber-400">Con đường Tài Chính</h5>
+                            <h4 class="text-lg font-black text-amber-900 dark:text-amber-400 uppercase tracking-tight">
+                                Dòng chảy TÀI CHÍNH</h4>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flow-step flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-amber-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-emerald-500">task_alt</span>
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-emerald-500">task_alt</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Làm Việc Tốt</span>
-                                <p class="text-[10px] font-bold text-slate-500">Nhiệm vụ hàng ngày & việc nhà</p>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Làm Việc Tốt</span>
                             </div>
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                            <div class="flow-step flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-amber-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-amber-500"
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-amber-500"
                                         style="font-variation-settings:'FILL' 1">payments</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Tích Lũy Vàng</span>
-                                <p class="text-[10px] font-bold text-slate-500">Nhận thưởng Vàng từ bố mẹ</p>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Tích Lũy Vàng</span>
                             </div>
-                            <div class="flex flex-col items-center text-center p-4">
+                            <div class="flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-amber-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-rose-500"
-                                        style="font-variation-settings:'FILL' 1">redeem</span>
+                                    class="size-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl shadow-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-3xl text-white">redeem</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Đổi Quà Tặng</span>
-                                <p class="text-[10px] font-bold text-slate-500">Mua thẻ ưu đãi tại Cửa Hàng</p>
+                                <span class="text-[10px] font-black uppercase text-amber-600 mb-1">Đổi Quà Shop</span>
                             </div>
                         </div>
+                        <p
+                            class="mt-8 text-center text-xs font-bold text-slate-500 dark:text-slate-400 px-4 leading-relaxed">
+                            Vàng kiếm được từ nhiệm vụ dùng để đổi lấy thẻ đặc quyền tại Cửa Hàng.</p>
                     </div>
 
-                    <!-- Flow 2: Growth Path -->
+                    <!-- Flow 2: Family Growth -->
                     <div
-                        class="bg-blue-50/50 dark:bg-blue-900/5 rounded-3xl p-6 border border-blue-100 dark:border-blue-900/20">
-                        <div class="flex items-center gap-3 mb-8">
+                        class="group bg-blue-50/40 dark:bg-blue-900/5 rounded-[2.5rem] p-8 border border-blue-100/50 dark:border-blue-900/20 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-500">
+                        <div class="flex items-center gap-4 mb-10">
                             <div
-                                class="size-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg">
+                                class="size-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg shadow-blue-500/20">
                                 2</div>
-                            <h5 class="text-xl font-black text-blue-800 dark:text-blue-400">Sức Mạnh Sinh Trưởng</h5>
+                            <h4 class="text-lg font-black text-blue-900 dark:text-blue-400 uppercase tracking-tight">
+                                Dòng chảy TRƯỞNG THÀNH</h4>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flow-step flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-blue-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-blue-500"
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-emerald-500">task_alt</span>
+                                </div>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Làm Việc Tốt</span>
+                            </div>
+                            <div class="flow-step flex flex-col items-center">
+                                <div
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-blue-500"
                                         style="font-variation-settings:'FILL' 1">water_drop</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Nhận Nước Thần</span>
-                                <p class="text-[10px] font-bold text-slate-500">Thưởng kèm khi làm nhiệm vụ</p>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Nhận Nước</span>
                             </div>
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                            <div class="flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-blue-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-emerald-500">park</span>
+                                    class="size-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl shadow-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-3xl text-white">park</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Nuôi Cây Đại Thụ</span>
-                                <p class="text-[10px] font-bold text-slate-500">Tưới nước để cây lớn nhanh</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center p-4">
-                                <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-blue-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-purple-500"
-                                        style="font-variation-settings:'FILL' 1">workspace_premium</span>
-                                </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Ưu Đãi Gia Đình</span>
-                                <p class="text-[10px] font-bold text-slate-500">Cây lớn càng to, quà càng xịn</p>
+                                <span class="text-[10px] font-black uppercase text-blue-600 mb-1">Cây Gia Đình</span>
                             </div>
                         </div>
+                        <p
+                            class="mt-8 text-center text-xs font-bold text-slate-500 dark:text-slate-400 px-4 leading-relaxed">
+                            Giọt nước từ nhiệm vụ giúp nuôi Cây Thần để mở khóa quà cho cả nhà.</p>
                     </div>
 
-                    <!-- Flow 3: Glory Path -->
+                    <!-- Flow 3: Glory System -->
                     <div
-                        class="bg-indigo-50/50 dark:bg-indigo-900/5 rounded-3xl p-6 border border-indigo-100 dark:border-indigo-900/20">
-                        <div class="flex items-center gap-3 mb-8">
+                        class="group bg-purple-50/40 dark:bg-purple-900/5 rounded-[2.5rem] p-8 border border-purple-100/50 dark:border-purple-900/20 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-500">
+                        <div class="flex items-center gap-4 mb-10">
                             <div
-                                class="size-10 bg-indigo-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg">
+                                class="size-10 bg-purple-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg shadow-purple-500/20">
                                 3</div>
-                            <h5 class="text-xl font-black text-indigo-800 dark:text-indigo-400">Danh Tiếng & Nhân Cách
-                            </h5>
+                            <h4
+                                class="text-lg font-black text-purple-900 dark:text-purple-400 uppercase tracking-tight">
+                                Dòng chảy DANH TIẾNG</h4>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flow-step flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-indigo-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-rose-500">swords</span>
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-emerald-500">task_alt</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Chiến Đấu Arena</span>
-                                <p class="text-[10px] font-bold text-slate-500">Thắng bạn bè hoặc chơi quân tử</p>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Làm Việc Tốt</span>
                             </div>
-                            <div class="flow-step flex flex-col items-center text-center p-4">
+                            <div class="flow-step flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-indigo-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-pink-500"
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-purple-500"
+                                        style="font-variation-settings:'FILL' 1">sell</span>
+                                </div>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Mở Sticker</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="size-16 bg-gradient-to-br from-purple-400 to-fuchsia-600 rounded-2xl shadow-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-3xl text-white">leaderboard</span>
+                                </div>
+                                <span class="text-[10px] font-black uppercase text-purple-600 mb-1">Leo Bảng Xếp
+                                    Hạng</span>
+                            </div>
+                        </div>
+                        <p
+                            class="mt-8 text-center text-xs font-bold text-slate-500 dark:text-slate-400 px-4 leading-relaxed">
+                            Mồi Sticker mở được giúp con tăng hạng và nhận Danh Hiệu siêu anh hùng.</p>
+                    </div>
+
+                    <!-- Flow 4: Heritage & Character -->
+                    <div
+                        class="group bg-rose-50/40 dark:bg-rose-900/5 rounded-[2.5rem] p-8 border border-rose-100/50 dark:border-rose-900/20 hover:shadow-xl hover:shadow-rose-500/5 transition-all duration-500">
+                        <div class="flex items-center gap-4 mb-10">
+                            <div
+                                class="size-10 bg-rose-500 text-white rounded-xl flex items-center justify-center font-black shadow-lg shadow-rose-500/20">
+                                4</div>
+                            <h4 class="text-lg font-black text-rose-900 dark:text-rose-400 uppercase tracking-tight">Cốt
+                                cách THỦ LĨNH</h4>
+                        </div>
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flow-step flex flex-col items-center">
+                                <div
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-rose-500">swords</span>
+                                </div>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Đấu Trường</span>
+                            </div>
+                            <div class="flow-step flex flex-col items-center">
+                                <div
+                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-3 border border-slate-100 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-3xl text-pink-500"
                                         style="font-variation-settings:'FILL' 1">psychology</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Điểm Nhân Cách</span>
-                                <p class="text-[10px] font-bold text-slate-500">Chỉ số của Thủ Lĩnh đích thực</p>
+                                <span class="text-[10px] font-black uppercase text-slate-400 mb-1">Điểm Nhân Cách</span>
                             </div>
-                            <div class="flex flex-col items-center text-center p-4">
+                            <div class="flex flex-col items-center">
                                 <div
-                                    class="size-16 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center mb-4 border border-indigo-100 transition-transform hover:scale-110">
-                                    <span class="material-symbols-outlined text-4xl text-blue-600"
-                                        style="font-variation-settings:'FILL' 1">leaderboard</span>
+                                    class="size-16 bg-gradient-to-br from-rose-400 to-pink-600 rounded-2xl shadow-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-3xl text-white">military_tech</span>
                                 </div>
-                                <span class="font-black text-sm mb-1 uppercase tracking-tighter">Top Bảng Xếp
-                                    Hạng</span>
-                                <p class="text-[10px] font-bold text-slate-500">Khẳng định vị thế trong cộng đồng</p>
+                                <span class="text-[10px] font-black uppercase text-rose-600 mb-1">Trở Thành Elite</span>
                             </div>
                         </div>
+                        <p
+                            class="mt-8 text-center text-xs font-bold text-slate-500 dark:text-slate-400 px-4 leading-relaxed">
+                            Chiến đấu trung thực tại Đấu Trường giúp rèn luyện Nhân Cách và bản lĩnh.</p>
                     </div>
+
                 </div>
             </div>
+        </section>
+        <span class="material-symbols-outlined text-4xl text-blue-600"
+            style="font-variation-settings:'FILL' 1">leaderboard</span>
+        </div>
+        <span class="font-black text-sm mb-1 uppercase tracking-tighter">Top Bảng Xếp
+            Hạng</span>
+        <p class="text-[10px] font-bold text-slate-500">Khẳng định vị thế trong cộng đồng</p>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
         </section>
 
         <!-- 4. Next Mission Area -->
