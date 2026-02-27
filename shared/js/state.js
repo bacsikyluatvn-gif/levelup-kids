@@ -88,9 +88,43 @@ class StateManager {
                 this.data = JSON.parse(JSON.stringify(defaultEmptyData));
                 this.familyId = null;
                 this.client = null;
+                this._botMatchesGenerated = false;
+
+                // Load immediate cache for faster UI
+                this.loadFromCache();
 
                 // Tự động nhúng thư viện Supabase nếu chưa có
                 this.initSupabaseSDK();
+        }
+
+        loadFromCache() {
+                try {
+                        const cached = localStorage.getItem('family_quest_state_cache');
+                        if (cached) {
+                                const parsed = JSON.parse(cached);
+                                // Merge with default to be safe
+                                this.data = { ...this.data, ...parsed };
+                                console.log("[State] 🚀 Đã nạp dữ liệu từ bộ nhớ đệm.");
+                        }
+                } catch (e) {
+                        console.error("[State] Cache load error:", e);
+                }
+        }
+
+        saveToCache() {
+                try {
+                        // Chỉ lưu những phần cần thiết để tránh tràn bộ nhớ
+                        const toSave = {
+                                user: this.data.user,
+                                leaderboard: this.data.leaderboard,
+                                tree: this.data.tree,
+                                title: this.data.title,
+                                treePoints: this.data.treePoints
+                        };
+                        localStorage.setItem('family_quest_state_cache', JSON.stringify(toSave));
+                } catch (e) {
+                        console.error("[State] Cache save error:", e);
+                }
         }
 
         initSupabaseSDK() {
@@ -124,6 +158,7 @@ class StateManager {
         notify() {
                 this.recalculateDerivedStats();
                 this.syncUserToLeaderboard();
+                this.saveToCache();
                 this.listeners.forEach(cb => cb(this.data));
         }
 
@@ -209,13 +244,15 @@ class StateManager {
                         // 1. Tránh lặp vô tận khi chính mình update bot
                         if (payload.table === 'profiles' && payload.new && payload.new.role === 'bot') return;
 
-                        // 2. Tăng thời gian trì hoãn để gom các thay đổi (Debounce)
-                        // Tăng lên 1000ms để tránh việc re-render liên tục gây lag UI
+                        // 2. Phân tầng ưu tiên dựa trên bảng
+                        const isPriority = ['profiles', 'families'].includes(payload.table);
+                        const delay = isPriority ? 400 : 2000; // Ưu tiên hồ sơ cập nhật nhanh
+
                         if (this._syncTimeout) clearTimeout(this._syncTimeout);
                         this._syncTimeout = setTimeout(() => {
-                                console.log(`[Realtime] 🔄 Thay đổi tại ${payload.table}, đang cập nhật...`);
-                                this.syncFromDatabase();
-                        }, 1000);
+                                console.log(`[Realtime] 🔄 Đồng bộ ${isPriority ? 'ƯU TIÊN' : 'THÔNG THƯỜNG'} do thay đổi tại ${payload.table}...`);
+                                this.syncFromDatabase(isPriority);
+                        }, delay);
                 }).subscribe();
         }
 
@@ -237,19 +274,34 @@ class StateManager {
                 ]);
         }
 
-        async syncFromDatabase() {
+        async syncFromDatabase(priorityOnly = false) {
                 if (!this.client || !this.familyId) return;
 
-                // Sync bot matches if needed
-                this.generateBotMatches();
+                // 1. Phân tầng ưu tiên: Nạp User và Leaderboard trước
+                const queries = [
+                        this.client.from('profiles').select('*').eq('family_id', this.familyId)
+                ];
 
-                const [profRes, questRes, reqRes, shopRes, challRes] = await Promise.all([
-                        this.client.from('profiles').select('*').eq('family_id', this.familyId),
-                        this.client.from('quests').select('*').eq('family_id', this.familyId),
-                        this.client.from('requests').select('*').eq('family_id', this.familyId).order('created_at', { ascending: false }),
-                        this.client.from('shop_items').select('*').eq('family_id', this.familyId),
-                        this.client.from('challenges').select('*').eq('family_id', this.familyId)
-                ]);
+                if (!priorityOnly) {
+                        queries.push(
+                                this.client.from('quests').select('*').eq('family_id', this.familyId),
+                                this.client.from('requests').select('*').eq('family_id', this.familyId).order('created_at', { ascending: false }).limit(50),
+                                this.client.from('shop_items').select('*').eq('family_id', this.familyId),
+                                this.client.from('challenges').select('*').eq('family_id', this.familyId).order('date', { ascending: false }).limit(100)
+                        );
+                }
+
+                const results = await Promise.all(queries);
+                const profRes = results[0];
+                const questRes = results[1] || { data: this.data.quests };
+                const reqRes = results[2] || { data: this.data.requests };
+                const shopRes = results[3] || { data: this.data.shopItems };
+                const challRes = results[4] || { data: this.data.challenges };
+
+                // Chạy ngầm việc tạo trận Bot sau khi đã có dữ liệu cơ bản
+                if (!priorityOnly && !this._botMatchesGenerated) {
+                        setTimeout(() => this.generateBotMatches(), 5000);
+                }
 
 
                 const profiles = profRes.data || [];
@@ -261,17 +313,16 @@ class StateManager {
                         localStorage.removeItem('family_quest_active_profile');
                 }
 
-                // --- BOT SYSTEM INJECTION & AUTO-HEALING ---
+                // --- BOT SYSTEM INJECTION (OPTIMIZED: ONLY 15 BOTS) ---
                 const botProfiles = profiles.filter(p => p.role === 'bot');
 
-                if (botProfiles.length < 40 && this.familyId && !this._isGeneratingBots) {
+                if (botProfiles.length < 15 && this.familyId && !this._isGeneratingBots) {
                         this._isGeneratingBots = true;
                         const seedNames = [
                                 'Hải Đăng', 'Gia Bảo', 'Tiến Phát', 'Đức Minh', 'Tuấn Kiệt', 'Nhật Minh', 'Duy Anh', 'Trọng Nhân',
-                                'Tường Vy', 'Linh Đan', 'Bé Na', 'Minh Anh', 'Khánh An', 'Phương Thảo', 'Kim Ngân', 'Quỳnh Chi',
-                                'Thành Nam', 'Minh Khôi', 'Bảo Ngọc', 'Thanh Trúc'
+                                'Tường Vy', 'Linh Đan', 'Bé Na', 'Minh Anh', 'Khánh An', 'Phương Thảo', 'Kim Ngân'
                         ];
-                        const needed = 40 - botProfiles.length;
+                        const needed = 15 - botProfiles.length;
                         const botsToInsert = [];
                         for (let i = 0; i < needed; i++) {
                                 botsToInsert.push({
@@ -1889,30 +1940,21 @@ class StateManager {
 
         async generateBotMatches() {
                 if (this._botMatchesGenerated) return;
-                this._botMatchesGenerated = true;
-                // Nếu bots chưa load xong, dời việc generate sang lần sync sau
-                const lbBots = (this.data.leaderboard || []).filter(p => p.role === 'bot');
-                if (lbBots.length < 5) {
+                this._botMatchesGenerated = true; // Chặn việc spam
+
+                const bots = (this.data.leaderboard || []).filter(p => p.role === 'bot');
+                if (bots.length < 5) {
                         this._botMatchesGenerated = false;
                         return;
                 }
 
                 const today = new Date().toISOString().split('T')[0];
-                const bots = this.data.leaderboard.filter(p => p.role === 'bot');
-                if (bots.length < 2) return;
-
-                console.log("[BotEnginer] Tuyển tập các cặp đấu Bot (Giới hạn 3 trận/bot)...");
                 const tasks = ["DẬY SỚM", "LÀM VIỆC NHÀ", "ĂN XONG SUẤT", "DỌN PHÒNG", "HỌC BÀI"];
-
-                // Cố gắng tạo một số trận đấu ngẫu nhiên giữa các bot chưa đủ lượt
-                let matchesCreated = 0;
+                const newMatches = [];
                 let attempts = 0;
-                const maxMatchesToCreate = 8; // Tổng số trận bot-bot tối đa muốn tạo thêm mỗi ngày
 
-                while (matchesCreated < maxMatchesToCreate && attempts < 20) {
+                while (newMatches.length < 8 && attempts < 20) {
                         attempts++;
-
-                        // Lọc những bot còn lượt (dưới 3 trận)
                         const availableBots = bots.filter(b => this.getDailyChallengeCount(b.id) < 3);
                         if (availableBots.length < 2) break;
 
@@ -1923,14 +1965,13 @@ class StateManager {
                         const b2 = availableOpponents[Math.floor(Math.random() * availableOpponents.length)];
                         const task = tasks[Math.floor(Math.random() * tasks.length)];
 
-                        // Bot result decider
                         const r = Math.random();
                         let challenger_confirmed = false, opponent_confirmed = false, winner_id = null;
                         if (r < 0.45) { challenger_confirmed = true; winner_id = b1.id; }
                         else if (r < 0.9) { opponent_confirmed = true; winner_id = b2.id; }
-                        else { challenger_confirmed = true; opponent_confirmed = true; } // Hòa
+                        else { challenger_confirmed = true; opponent_confirmed = true; }
 
-                        await this.client.from('challenges').insert({
+                        newMatches.push({
                                 family_id: this.familyId,
                                 challenger_id: b1.id,
                                 opponent_id: b2.id,
@@ -1942,17 +1983,15 @@ class StateManager {
                                 date: today
                         });
 
-                        matchesCreated++;
-                        // Cập nhật state local để vòng lặp sau getDailyChallengeCount chính xác
-                        this.data.challenges.push({
-                                challengerId: b1.id,
-                                opponentId: b2.id,
-                                date: today,
-                                status: 'completed'
-                        });
+                        // Fake push to avoid over-limit in same loop
+                        this.data.challenges.push({ challengerId: b1.id, opponentId: b2.id, date: today, status: 'completed' });
                 }
 
-                if (matchesCreated > 0) await this.syncFromDatabase();
+                if (newMatches.length > 0) {
+                        console.log(`[BotEngine] 🤖 Đang tạo nhanh ${newMatches.length} trận đấu giả lập...`);
+                        await this.client.from('challenges').insert(newMatches);
+                        await this.syncFromDatabase();
+                }
         }
 
         async simulateBotActivity(bots, humans) {
