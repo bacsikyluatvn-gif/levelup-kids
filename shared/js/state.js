@@ -276,279 +276,146 @@ class StateManager {
 
         async syncFromDatabase(priorityOnly = false) {
                 if (!this.client || !this.familyId) return;
+                if (this._isSyncing) return;
+                this._isSyncing = true;
 
-                // 1. Phân tầng ưu tiên: Nạp User và Leaderboard trước
+                const challengeLimit = 3000;
+                const requestLimit = 2000;
+
                 const queries = [
-                        this.client.from('profiles').select('*').eq('family_id', this.familyId)
+                        this.client.from('profiles').select('*').eq('family_id', this.familyId),
+                        !priorityOnly ? this.client.from('quests').select('*').eq('family_id', this.familyId) : Promise.resolve({ data: null }),
+                        !priorityOnly ? this.client.from('requests').select('*').eq('family_id', this.familyId).order('created_at', { ascending: false }).limit(requestLimit) : Promise.resolve({ data: null }),
+                        !priorityOnly ? this.client.from('shop_items').select('*').eq('family_id', this.familyId) : Promise.resolve({ data: null }),
+                        !priorityOnly ? this.client.from('challenges').select('*').eq('family_id', this.familyId).order('created_at', { ascending: false }).limit(challengeLimit) : Promise.resolve({ data: null }),
+                        // Ta luôn lấy treePoints để tránh bị reset UI khi sync nhanh (Profiles update)
+                        // Tăng limit lên 5000 để tránh bị hụt điểm khi chơi lâu
+                        this.client.from('requests').select('profile_id', { count: 'exact' }).eq('family_id', this.familyId).eq('type', 'tree_watering').limit(5000)
                 ];
-
-                if (!priorityOnly) {
-                        queries.push(
-                                this.client.from('quests').select('*').eq('family_id', this.familyId),
-                                this.client.from('requests').select('*').eq('family_id', this.familyId).order('created_at', { ascending: false }).limit(50),
-                                this.client.from('shop_items').select('*').eq('family_id', this.familyId),
-                                this.client.from('challenges').select('*').eq('family_id', this.familyId).order('date', { ascending: false }).limit(100)
-                        );
-                }
 
                 const results = await Promise.all(queries);
                 const profRes = results[0];
-                const questRes = results[1] || { data: this.data.quests };
-                const reqRes = results[2] || { data: this.data.requests };
-                const shopRes = results[3] || { data: this.data.shopItems };
-                const challRes = results[4] || { data: this.data.challenges };
-
-                // Chạy ngầm việc tạo trận Bot sau khi đã có dữ liệu cơ bản
-                if (!priorityOnly && !this._botMatchesGenerated) {
-                        setTimeout(() => this.generateBotMatches(), 5000);
-                }
-
-
                 const profiles = profRes.data || [];
                 this._lastRawProfiles = profiles;
 
-                // Nếu ID đã lưu bị xóa khỏi DB, giải phóng bộ nhớ ID cũ
-                let savedId = localStorage.getItem('family_quest_active_profile');
-                if (savedId && !profiles.find(p => p.id === savedId)) {
-                        localStorage.removeItem('family_quest_active_profile');
-                }
+                // Lưu lại điểm cũ để tránh bị reset về 0 khi đang map dở
+                const oldPointsMap = new Map((this.data.leaderboard || []).map(p => [p.id, p.treePoints]));
 
-                // --- BOT SYSTEM INJECTION (OPTIMIZED: ONLY 15 BOTS) ---
-                const botProfiles = profiles.filter(p => p.role === 'bot');
-
-                if (botProfiles.length < 15 && this.familyId && !this._isGeneratingBots) {
-                        this._isGeneratingBots = true;
-                        const seedNames = [
-                                'Hải Đăng', 'Gia Bảo', 'Tiến Phát', 'Đức Minh', 'Tuấn Kiệt', 'Nhật Minh', 'Duy Anh', 'Trọng Nhân',
-                                'Tường Vy', 'Linh Đan', 'Bé Na', 'Minh Anh', 'Khánh An', 'Phương Thảo', 'Kim Ngân'
-                        ];
-                        const needed = 15 - botProfiles.length;
-                        const botsToInsert = [];
-                        for (let i = 0; i < needed; i++) {
-                                botsToInsert.push({
-                                        family_id: this.familyId,
-                                        name: `${seedNames[i % seedNames.length]} (Bot)`,
-                                        role: 'bot',
-                                        avatar: `../shared/assets/generated_avatars/avatar_1.png`,
-                                        level: Math.floor(Math.random() * 5) + 1,
-                                        gold: 150, xp: 50, water: 5, total_stickers: 5, action_streak: 2
-                                });
-                        }
-                        this.client.from('profiles').insert(botsToInsert).then(() => {
-                                // Clear generating flag after a delay to ensure sync returns new data
-                                setTimeout(() => {
-                                        this._isGeneratingBots = false;
-                                        this.syncFromDatabase();
-                                }, 2000);
-                        }).catch(() => {
-                                this._isGeneratingBots = false;
-                        });
-                }
-
-                // Cấu hình giới tính và Avatar chuẩn
-                const BOT_CONFIG = {
-                        boys: [1, 3, 4, 5, 9, 10, 15, 18, 19, 20, 21, 22, 25, 26, 30],
-                        girls: [2, 6, 7, 8, 11, 12, 13, 14, 16, 17, 23, 24, 27, 28, 29],
-                        boyNames: ['Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Anh Quân', 'Quang Vinh', 'Minh Triết', 'Thiên Ân', 'Hữu Phước', 'Đăng Khoa', 'Minh Nhật', 'Gia Khánh', 'Bảo Long', 'Quốc Bảo', 'Tuấn Minh', 'Hoàng Bách', 'Phúc Lâm', 'Minh Khang', 'Gia Minh', 'Đình Phong', 'Mạnh Hùng', 'Trọng Hiếu', 'Hồng Đăng', 'Minh Vũ', 'Công Vinh', 'Minh Tâm', 'Thái Sơn'],
-                        girlNames: ['Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Minh Thư', 'Thảo Nguyên', 'Hà Phương', 'Bảo Anh', 'Ngọc Anh', 'Khánh Vy', 'Minh Ngọc', 'Tú Anh', 'Lan Khuê', 'Diệp Chi', 'Mỹ Anh', 'Hương Giang', 'Ngọc Huyền', 'Thanh Mai', 'Hà Anh', 'Thục Anh', 'Mai Chi', 'Phương Vy', 'Linh Chi', 'Trang Anh', 'Thanh Tâm', 'Phương Anh', 'Tú Linh'],
-                        nicknames: ['Sóc Nâu', 'Bi Bi', 'Khoai Tây', 'Bun Bun', 'Gà Chíp', 'Cún Con', 'Tí Quậy', 'Heo Con', 'Gấu Bự', 'Sim Ba', 'Bin Bin', 'Bơ Ngọt', 'Đậu Đậu', 'Cà Pháo', 'Tôm Tít', 'Ớt Hiểm', 'Bắp Cải', 'Bé Bống', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc', 'Nấm Lùn', 'Dâu Tây', 'Mèo Lười', 'Na Cute', 'Xuka', 'Bống Bang', 'Xu Xu', 'Chíp Chíp', 'Búp Bê', 'Cốm Thơm', 'Mít Mật', 'Sapo', 'Chôm Chôm', 'Dưa Hấu', 'Bin Bin', 'Kem Bơ', 'Kẹo Ngọt', 'Mây Bồng', 'Nắng Hồng']
-                };
-
-                const usedNames = new Set();
+                // --- PROCESS PROFILES (ALWAYS) ---
                 this.data.leaderboard = profiles.map(p => {
+                        const idHash = p.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
                         let name = (p.name || "Bé").replace(' (Bot)', '').trim();
                         let avatar = p.avatar;
 
                         if (p.role === 'bot') {
-                                // 1. Chọn tên duy nhất từ Pool khổng lồ dựa trên ID
-                                const idHash = p.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
                                 const isBoy = idHash % 2 === 0;
-                                const pool = isBoy ? [...BOT_CONFIG.boyNames, ...BOT_CONFIG.nicknames] : [...BOT_CONFIG.girlNames, ...BOT_CONFIG.nicknames];
-
-                                let nameIdx = idHash % pool.length;
-                                let chosenName = pool[nameIdx];
-
-                                let attempts = 0;
-                                while (usedNames.has(chosenName) && attempts < pool.length) {
-                                        nameIdx = (nameIdx + 1) % pool.length;
-                                        chosenName = pool[nameIdx];
-                                        attempts++;
-                                }
-
-                                name = chosenName;
-                                usedNames.add(name);
-
-                                // 2. Avatar chuẩn giới tính
-                                const avPool = isBoy ? BOT_CONFIG.boys : BOT_CONFIG.girls;
-                                const avNum = avPool[idHash % avPool.length];
-                                avatar = `../shared/assets/generated_avatars/avatar_${avNum}.png`;
-                        } else {
-                                usedNames.add(name);
+                                const pool = isBoy ? ['Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Sóc Nâu', 'Bi Bi', 'Khoai Tây'] : ['Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc'];
+                                name = pool[idHash % pool.length];
+                                const avPool = isBoy ? [1, 3, 4, 5, 9, 10, 15, 18, 19, 20] : [2, 6, 7, 8, 11, 12, 13, 14, 16, 17];
+                                avatar = `../shared/assets/generated_avatars/avatar_${avPool[idHash % avPool.length]}.png`;
                         }
 
                         return {
-                                id: p.id,
-                                name: name,
-                                role: p.role,
-                                avatar: avatar,
-                                pinCode: p.pin_code,
-                                level: p.level || 1,
-                                gold: p.gold || 0,
-                                xp: p.xp || 0,
-                                personalityPoints: p.personality_points || 0,
-                                weeklyXp: p.weekly_xp || 0,
-                                water: p.water || 0,
-                                stickers: p.stickers || 0,
+                                id: p.id, name, role: p.role, avatar, pinCode: p.pin_code,
+                                level: p.level || 1, gold: p.gold || 0, xp: p.xp || 0,
+                                personalityPoints: p.personality_points || 0, weeklyXp: p.weekly_xp || 0,
+                                water: p.water || 0, stickers: p.stickers || 0,
                                 totalStickers: Math.max(p.total_stickers || 0, (p.unlocked_stickers || []).length + (p.stickers || 0)),
-                                actionStreak: p.action_streak || 0,
-                                weeklyStreak: p.weekly_streak || 0,
-                                completionStreak: p.completion_streak || 0,
-                                treePoints: p.role === 'bot' ? (p.action_streak || 0) : (reqRes.data || []).filter(r => r.profile_id === p.id && r.type === 'tree_watering').length,
-                                isCurrentUser: p.id === this.currentProfileId,
-                                unlockedStickers: p.unlocked_stickers || []
+                                actionStreak: p.action_streak || 0, weeklyStreak: p.weekly_streak || 0, completionStreak: p.completion_streak || 0,
+                                unlockedStickers: p.unlocked_stickers || [],
+                                metadata: p.metadata || {}
                         };
                 });
 
-                // Populate requests first
-                this.data.requests = (reqRes.data || []).map(r => ({
-                        id: r.id,
-                        profileId: r.profile_id,
-                        user: this.getProfileName(r.profile_id, profiles),
-                        itemTitle: r.item_title,
-                        itemDesc: r.item_desc,
-                        status: r.status,
-                        type: r.type,
-                        taskId: r.task_id,
-                        reward: r.reward_gold,
-                        xp: r.reward_xp,
-                        water: r.reward_water,
-                        sticker: r.reward_sticker,
-                        price: r.price_gold,
-                        stickerPrice: r.price_sticker,
-                        isSticker: r.is_sticker,
-                        rewardsGranted: r.rewards_granted,
-                        image: r.image,
-                        createdAt: r.created_at,
-                        time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
-                }));
+                // --- PROCESS OTHERS (ONLY IF FULL SYNC) ---
+                if (!priorityOnly && results.length > 1) {
+                        const questRes = results[1];
+                        const reqRes = results[2];
+                        const shopRes = results[3];
+                        const challRes = results[4];
 
-                // Populate growthLogs for the Growth Diary view
-                this.data.growthLogs = this.data.requests.filter(r =>
-                        r.type === 'behavior_good' ||
-                        r.type === 'behavior_bad' ||
-                        r.type === 'reflection' ||
-                        r.type === 'atonement'
-                );
+                        if (reqRes && reqRes.data) {
+                                this.data.requests = reqRes.data.map(r => ({
+                                        id: r.id, profileId: r.profile_id, user: this.getProfileName(r.profile_id, profiles),
+                                        itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
+                                        taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
+                                        sticker: r.reward_sticker, price: r.price_gold, stickerPrice: r.price_sticker,
+                                        image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
+                                }));
+                                // Growth Logs
+                                this.data.growthLogs = this.data.requests.filter(r => ['behavior_good', 'behavior_bad', 'reflection', 'atonement'].includes(r.type));
+                        }
 
-                // Fallback images
-                this.data.requests.forEach(req => {
-                        if (!req.image || req.image === 'null') {
-                                if (req.type === 'perk') {
-                                        const cleanTitle = req.itemTitle.replace(' (Đặc quyền Sticker)', '');
-                                        const perk = this.data.instantPerks.find(p => p.title === cleanTitle);
-                                        if (perk) req.image = perk.emoji || perk.icon;
-                                } else if (req.type === 'shop') {
-                                        const item = this.data.shopItems.find(i => i.title === req.itemTitle);
-                                        if (item) req.image = item.image;
-                                }
+                        if (questRes && questRes.data) {
+                                const todayStr = new Date().toISOString().split('T')[0];
+                                this.data.quests = questRes.data.map(q => ({
+                                        id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
+                                        water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
+                                        category: q.category, type: q.type,
+                                        completedBy: this.data.requests.filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && r.createdAt.startsWith(todayStr)).map(r => r.profileId)
+                                }));
+                        }
+
+                        if (shopRes && shopRes.data) {
+                                this.data.shopItems = shopRes.data.filter(s => s.item_type === 'premium').map(s => ({
+                                        id: s.id, title: s.title, desc: s.description, price: s.price, image: s.image, emoji: s.emoji, category: s.category, color: s.color
+                                }));
+                                this.data.instantPerks = shopRes.data.filter(s => s.item_type === 'perk').map(s => ({
+                                        id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
+                                }));
+                        }
+
+                        if (challRes && challRes.data) {
+                                this.data.challenges = challRes.data.map(c => ({
+                                        id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id,
+                                        taskType: c.task_type, status: c.status,
+                                        challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
+                                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at,
+                                        logs: c.logs || [], metadata: c.metadata || {}
+                                }));
+                        }
+
+                        if (!this._botMatchesGenerated) {
+                                setTimeout(() => this.generateBotMatches(), 5000);
+                        }
+                }
+
+                // Finalize active profile
+                // Streaks & Points - Phải tính Points trước rồi mới tính Streaks/Tree
+                const wateringCounts = results[5]?.data || [];
+
+                this.data.leaderboard.forEach(p => {
+                        const dbCount = wateringCounts.filter(r => r.profile_id === p.id).length;
+                        const oldPoints = oldPointsMap.get(p.id) || 0;
+
+                        if (!priorityOnly && wateringCounts.length > 0) {
+                                // Nếu là Full Sync, dùng dữ liệu DB chuẩn xác nhất
+                                p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : dbCount;
+                        } else {
+                                // Nếu sync nhanh (Priority), dùng Math.max để giữ feedback tức thì
+                                p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : Math.max(dbCount, oldPoints);
                         }
                 });
 
-                const getLocalDateStr = (date) => {
-                        const d = typeof date === 'string' ? new Date(date) : date;
-                        if (isNaN(d.getTime())) return "";
-                        return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-                };
-                const todayStr = getLocalDateStr(new Date());
-
-                this.data.quests = (questRes.data || []).map(q => {
-                        const completedByToday = this.data.requests
-                                .filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && getLocalDateStr(r.createdAt) === todayStr)
-                                .map(r => r.profileId);
-                        return {
-                                id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
-                                water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
-                                category: q.category, type: q.type, completedBy: completedByToday
-                        };
-                });
-
-                this.data.shopItems = (shopRes.data || []).filter(s => s.item_type === 'premium' || s.item_type === 'special').map(s => ({
-                        id: s.id, title: s.title, desc: s.description, price: s.price, personalityPrice: s.personality_price,
-                        image: s.image, emoji: s.emoji, category: s.category, color: s.color
-                }));
-
-                this.data.instantPerks = (shopRes.data || []).filter(s => s.item_type === 'perk').map(s => ({
-                        id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
-                }));
-
-                this.data.challenges = (challRes.data || []).map(c => ({
-                        id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id, taskType: c.task_type,
-                        status: c.status, challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
-                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at,
-                        logs: c.logs || [], metadata: c.metadata || {}
-                }));
-
-                // Khôi phục user thiết bị
-                savedId = localStorage.getItem('family_quest_active_profile');
+                // Finalize active profile - Phải làm SAO khi đã có treePoints
+                let savedId = localStorage.getItem('family_quest_active_profile');
                 let activeUser = this.data.leaderboard.find(p => p.id === savedId);
                 if (!activeUser && this.data.leaderboard.length > 0) activeUser = this.data.leaderboard.find(p => p.role === 'child') || this.data.leaderboard[0];
 
                 if (activeUser) {
-                        activeUser.isCurrentUser = true;
-                        this.data.user = { ...activeUser };
-                        this.data.user.unlockedStickers = activeUser.unlockedStickers || [];
-                }
-
-                // --- MERGE PENDING OPTIMISTIC UPDATES (cho hoàn thành nhiệm vụ) ---
-                if (this._pendingCompletions) {
-                        this._pendingCompletions.forEach(taskId => {
-                                const q = this.data.quests.find(x => x.id === taskId);
-                                if (q && this.data.user && !q.completedBy.includes(this.data.user.id)) {
-                                        q.completedBy.push(this.data.user.id);
-                                }
-                        });
+                        this.currentProfileId = activeUser.id;
+                        this.data.user = { ...activeUser, isCurrentUser: true };
                 }
 
                 this.calculateStreaks();
-
-                // --- CALCULATE STREAKS FOR ALL LEADERBOARD MEMBERS ---
-                this.data.leaderboard.forEach(member => {
-                        if (member.role === 'bot') return; // Bots already have their streaks set
-                        const streakObj = this.calculateMemberStreak(member.id);
-                        member.actionStreak = streakObj.actionStreak;
-                        member.completionStreak = streakObj.completionStreak;
-
-                        if (activeUser && member.id === activeUser.id) {
-                                this.data.user.actionStreak = streakObj.actionStreak;
-                                this.data.user.completionStreak = streakObj.completionStreak;
-                                this.data.user.weeklyLog = streakObj.weeklyLog;
-                        }
-                });
-
                 this.recalculateDerivedStats();
 
-                // Đồng bộ ngược lại leaderboard để hiển thị đúng data mới nhất của local user
-                if (activeUser) {
-                        const lbCurrentUser = this.data.leaderboard.find(u => u.id === activeUser.id);
-                        if (lbCurrentUser) {
-                                lbCurrentUser.gold = this.data.user.gold;
-                                lbCurrentUser.xp = this.data.user.xp;
-                                lbCurrentUser.weeklyXp = this.data.user.weeklyXp;
-                                lbCurrentUser.water = this.data.user.water;
-                                lbCurrentUser.stickers = this.data.user.stickers;
-                                lbCurrentUser.totalStickers = this.data.user.totalStickers;
-                                lbCurrentUser.actionStreak = this.data.user.actionStreak;
-                                lbCurrentUser.weeklyStreak = this.data.user.weeklyStreak;
-                                lbCurrentUser.completionStreak = this.data.user.completionStreak;
-                                lbCurrentUser.isCurrentUser = true;
-                        }
-                }
-
+                this._initialSyncDone = true;
+                this._isSyncing = false;
                 this.notify();
                 this.checkRankChange();
-                // this.checkDailyBonus(); // Loại bỏ quà tặng đăng nhập
-                this._initialSyncDone = true;
         }
+
 
         checkDailyBonus() {
                 if (!this.data.user || this.data.user.role !== 'child') return;
@@ -1333,8 +1200,10 @@ class StateManager {
                         reward_water: -waterAmount
                 });
 
-                // Tăng điểm cây local
+                // Tăng điểm cây local - Cập nhật cả 2 nơi để đồng bộ tuyệt đối
                 this.data.user.treePoints = (this.data.user.treePoints || 0) + 1;
+                const lItem = this.data.leaderboard.find(p => p.id === this.data.user.id);
+                if (lItem) lItem.treePoints = this.data.user.treePoints;
 
                 this.notify();
                 await this.syncLocalUserToDb();
@@ -1361,8 +1230,10 @@ class StateManager {
 
                 await this.client.from('requests').insert(waterBatch);
 
-                // Tăng điểm cây local
+                // Tăng điểm cây local - Cập nhật cả 2 nơi để đồng bộ tuyệt đối
                 this.data.user.treePoints = (this.data.user.treePoints || 0) + fullSets;
+                const lItem = this.data.leaderboard.find(p => p.id === this.data.user.id);
+                if (lItem) lItem.treePoints = this.data.user.treePoints;
 
                 this.notify();
                 await this.syncLocalUserToDb();

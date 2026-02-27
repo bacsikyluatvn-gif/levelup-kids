@@ -540,7 +540,10 @@
         preload="auto"></audio>
     <audio id="snd-challenge" src="https://assets.mixkit.co/active_storage/sfx/2536/2536-preview.mp3"
         preload="auto"></audio>
-    <audio id="snd-win" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
+    <audio id="snd-win" src="../shared/assets/thang.mp3" preload="auto"></audio>
+    <audio id="snd-lose" src="../shared/assets/thua.mp3" preload="auto"></audio>
+    <audio id="snd-lose2" src="../shared/assets/thua2.mp3" preload="auto"></audio>
+    <audio id="snd-draw" src="../shared/assets/hoa.mp3" preload="auto"></audio>
     <audio id="snd-bg-epic" src="https://assets.mixkit.co/active_storage/sfx/2536/2536-preview.mp3" preload="auto"
         loop></audio>
 
@@ -594,31 +597,51 @@
                             <p class="text-[8px] font-bold text-slate-300 mt-1 uppercase">Lượt được thách</p>
                         </div>
                     </div>
-                </div>
 
-                <button id="btn-open-modal" onclick="openChallengeModal()"
-                    class="group w-full bg-gradient-to-r from-arena-orange to-primary text-white px-8 py-5 rounded-[2rem] font-black shadow-lg hover:shadow-arena-orange/30 transition-all flex items-center justify-center gap-3 active:scale-95 text-lg">
-                    <span
-                        class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform">swords</span>
-                    TẠO KÈO MỚI
-                </button>
+                    <!-- Battle Result Stats -->
+                    <div
+                        class="bg-white dark:bg-[#1a140c]/40 rounded-[2rem] p-4 border-2 border-slate-100 dark:border-slate-800 flex justify-between items-center shadow-sm">
+                        <div class="text-center flex-1">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Thắng</p>
+                            <span id="user-wins" class="text-xl font-black text-emerald-500 leading-none">0</span>
+                        </div>
+                        <div class="text-center flex-1 border-x border-slate-100 dark:border-slate-800 px-2">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Hòa</p>
+                            <span id="user-draws" class="text-xl font-black text-blue-400 leading-none">0</span>
+                        </div>
+                        <div class="text-center flex-1">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Bại</p>
+                            <span id="user-losses" class="text-xl font-black text-rose-400 leading-none">0</span>
+                        </div>
+                    </div>
+
+
+                    <button id="btn-open-modal" onclick="openChallengeModal()"
+                        class="group w-full bg-gradient-to-r from-arena-orange to-primary text-white px-8 py-5 rounded-[2rem] font-black shadow-lg hover:shadow-arena-orange/30 transition-all flex items-center justify-center gap-3 active:scale-95 text-lg">
+                        <span
+                            class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform">swords</span>
+                        TẠO KÈO MỚI
+                    </button>
+                </div>
             </div>
-        </div>
+        </div> <!-- KẾT THÚC GRID TITLE ROW (Dòng 552) -->
 
         <!-- ======= YOUR ACTIVE CHALLENGES ======= -->
-        <section class="mb-14">
+        <section class="mb-14 col-span-full">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-arena-blue/10 dark:bg-arena-blue/20 p-2 rounded-xl text-arena-blue">
                     <span class="material-symbols-outlined text-xl"
                         style="font-variation-settings:'FILL' 1">swords</span>
                 </div>
-                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Kèo Đang Đấu</h3>
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Kèo Đang Đấu
+                </h3>
                 <span id="active-count"
                     class="bg-arena-orange text-white text-xs font-black px-2.5 py-1 rounded-full hidden">0</span>
             </div>
             <div id="active-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
                 <!-- Skeleton Loader -->
-                <div class="skeleton-card rounded-[3.5rem] bg-slate-100 dark:bg-white/5 h-[400px] animate-pulse"></div>
+                <div class="skeleton-card rounded-[3.5rem] bg-slate-100 dark:bg-white/5 h-[400px] animate-pulse">
+                </div>
                 <div
                     class="skeleton-card rounded-[3.5rem] bg-slate-100 dark:bg-white/5 h-[400px] animate-pulse hidden md:block">
                 </div>
@@ -632,7 +655,8 @@
                     <span class="material-symbols-outlined text-xl"
                         style="font-variation-settings:'FILL' 1">history</span>
                 </div>
-                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Chiến Tích Của
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Chiến Tích
+                    Của
                     Bạn</h3>
             </div>
             <div id="completed-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -648,7 +672,8 @@
                 <div class="bg-purple-500/10 dark:bg-purple-500/20 p-2 rounded-xl text-purple-500">
                     <span class="material-symbols-outlined text-xl">language</span>
                 </div>
-                <h3 class="text-xl font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Tin Tức Đấu
+                <h3 class="text-xl font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Tin Tức
+                    Đấu
                     Trường</h3>
             </div>
             <div id="arena-news-list" class="space-y-3">
@@ -1299,14 +1324,14 @@
                 window.AppState.subscribe(data => renderArena(data));
                 renderArena(window.AppState.data);
 
-                // Khởi động vòng lặp kiểm tra thách đấu từ Bot với thời gian ngẫu nhiên (3 - 15 phút)
+                // Khởi động vòng lặp kiểm tra thách đấu từ Bot với thời gian ngẫu nhiên (3 - 5 phút)
                 scheduleNextBotChallenge();
             }
         });
 
         function scheduleNextBotChallenge() {
-            // Tần suất cao hơn: 45 giây đến 2.5 phút (45,000ms - 150,000ms)
-            const randomTime = Math.floor(Math.random() * (150000 - 45000 + 1)) + 45000;
+            // Tần suất ngẫu nhiên từ 3 đến 5 phút (180,000ms - 300,000ms)
+            const randomTime = Math.floor(Math.random() * (300000 - 180000 + 1)) + 180000;
             console.log(`[BotEngine] 🛡️ Đang chờ thách đấu... Lần tới sau ${Math.round(randomTime / 1000)} giây.`);
 
             if (botInvitationInterval) clearTimeout(botInvitationInterval);
@@ -1352,8 +1377,8 @@
 
             const passiveUsed = window.AppState.getDailyChallengeCount(userData.id, 'passive');
 
-            // Cơ hội thách đấu cao hơn (55% thay vì 40%)
-            if (passiveUsed < 3 && Math.random() < 0.55) {
+            // Tăng cơ hội thách đấu để đảm bảo xuất hiện đều đặn trong khoảng 3-5 phút
+            if (passiveUsed < 3 && Math.random() < 0.85) {
                 const bots = window.AppState.data.leaderboard.filter(p => p.role === 'bot');
                 if (bots.length === 0) return;
 
@@ -1506,25 +1531,9 @@
 
             const challenges = data.challenges || [];
 
-            // 1. Prioritize essential UI (Active Challenges)
-            const myActive = challenges.filter(c => c.status !== 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
-
+            // Render everything in one go to prevent flickering
             requestAnimationFrame(() => {
-                if (myActive.length > 0) {
-                    activeCount.textContent = myActive.length;
-                    activeCount.classList.remove('hidden');
-                    activeGrid.innerHTML = myActive.map((c, i) => renderActiveCard(c, data, i)).join('');
-                } else {
-                    activeCount.classList.add('hidden');
-                    activeGrid.innerHTML = `
-                        <div class="col-span-full py-16 text-center bg-white/40 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
-                            <span class="material-symbols-outlined text-5xl text-slate-300 mb-3 block">sports_kabaddi</span>
-                            <p class="text-slate-400 font-bold">Bạn không có kèo nào đang đấu.</p>
-                            <p class="text-slate-400 text-sm mt-1">Hãy thách đấu ai đó để bắt đầu!</p>
-                        </div>`;
-                }
-
-                // Daily counter
+                // 1. Stats Counters
                 const activeToday = window.AppState.getDailyChallengeCount(currentUserId, 'active');
                 const passiveToday = window.AppState.getDailyChallengeCount(currentUserId, 'passive');
                 const activeRem = Math.max(0, 3 - activeToday);
@@ -1540,42 +1549,52 @@
                     passiveEl.textContent = `${passiveRem}/3`;
                     passiveEl.className = passiveRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-blue-500";
                 }
-
                 document.getElementById('welcome-text').textContent = `Sẵn sàng để trở thành chiến thần, ${data.user.name}?`;
-            });
 
-            // 2. Delayed rendering of non-essential UI (News & History)
-            setTimeout(() => {
-                const myCompleted = challenges.filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId)).reverse().slice(0, 6);
-                const othersChallenges = challenges
-                    .filter(c => c.challengerId !== currentUserId && c.opponentId !== currentUserId)
-                    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-                    .slice(0, 6);
+                // 2. Active Challenges (Grid)
+                const myActive = (data.challenges || []).filter(c => c.status !== 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
+                if (myActive.length > 0) {
+                    activeCount.textContent = myActive.length;
+                    activeCount.classList.remove('hidden');
+                    activeGrid.innerHTML = myActive.map((c, i) => renderActiveCard(c, data, i)).join('');
+                    activeGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-8 pb-20 w-full"; // Explicitly ensure grid
+                } else {
+                    activeCount.classList.add('hidden');
+                    activeGrid.innerHTML = `
+                        <div class="col-span-full py-16 text-center bg-white/40 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800 w-full">
+                            <span class="material-symbols-outlined text-5xl text-slate-300 mb-3 block">sports_kabaddi</span>
+                            <p class="text-slate-400 font-bold">Bạn không có kèo nào đang đấu.</p>
+                            <p class="text-slate-400 text-sm mt-1">Hãy thách đấu ai đó để bắt đầu!</p>
+                        </div>`;
+                }
 
-                if (myCompleted.length > 0) {
+                // 3. User Stats (Lifetime)
+                const myCompleted = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
+                const winsEl = document.getElementById('user-wins');
+                const drawsEl = document.getElementById('user-draws');
+                const lossesEl = document.getElementById('user-losses');
+                if (winsEl) winsEl.textContent = myCompleted.filter(c => c.winnerId === currentUserId).length;
+                if (drawsEl) drawsEl.textContent = myCompleted.filter(c => c.winnerId === null).length;
+                if (lossesEl) lossesEl.textContent = myCompleted.length - (myCompleted.filter(c => c.winnerId === currentUserId).length) - (myCompleted.filter(c => c.winnerId === null).length);
+
+                // 4. Completed Section (History)
+                const recentCompleted = [...myCompleted].reverse().slice(0, 6);
+                if (recentCompleted.length > 0) {
                     completedSection.classList.remove('hidden');
-                    completedGrid.innerHTML = myCompleted.map(c => renderCompletedCard(c, data)).join('');
+                    completedGrid.innerHTML = recentCompleted.map(c => renderCompletedCard(c, data)).join('');
                 } else {
                     completedSection.classList.add('hidden');
                 }
 
+                // 5. News & Opponents
+                const othersChallenges = (data.challenges || [])
+                    .filter(c => c.challengerId !== currentUserId && c.opponentId !== currentUserId)
+                    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+                    .slice(0, 6);
                 newsGrid.innerHTML = othersChallenges.length > 0 ? othersChallenges.map(c => renderNewsCard(c, data)).join('') : `<p class="text-xs text-slate-400 text-center py-4">Đang cập nhật tin tức từ vương quốc...</p>`;
 
-                // Update user stats
-                const now = new Date();
-                const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-                startOfWeek.setHours(0, 0, 0, 0);
-
-                const myMatches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId) && new Date(c.date) >= startOfWeek);
-                const winsEl = document.getElementById('user-wins');
-                const drawsEl = document.getElementById('user-draws');
-                const lossesEl = document.getElementById('user-losses');
-                if (winsEl) winsEl.textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
-                if (drawsEl) drawsEl.textContent = myMatches.filter(c => c.winnerId === null).length;
-                if (lossesEl) lossesEl.textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
-
                 renderOpponentList(data);
-            }, 300);
+            });
         }
 
         function renderActiveCard(c, data, index) {
@@ -1675,7 +1694,7 @@
             }
 
             return `
-                <div class="gladiator-card card-enter rounded-[3.5rem] bg-white dark:bg-[#1a140c] shadow-2xl overflow-hidden relative group border-4 border-white dark:border-slate-800 flex flex-col cursor-pointer active:scale-95 transition-all" onclick="openChallengeDetails('${c.id}')">
+                <div class="gladiator-card card-enter rounded-[3.5rem] bg-white dark:bg-[#1a140c] shadow-2xl overflow-hidden relative group border-4 border-white dark:border-slate-800 flex flex-col cursor-pointer active:scale-95 transition-all w-full shrink-0 min-h-[500px]" onclick="openChallengeDetails('${c.id}')">
                     <!-- Background Split -->
                     <div class="absolute inset-0 flex pointer-events-none">
                         <div class="w-1/2 bg-blue-50/50 dark:bg-blue-900/5 transform -skew-x-12 -translate-x-12"></div>
@@ -1966,7 +1985,8 @@
             localStorage.setItem(`started_challenge_${id}`, 'true');
             if (window.AppState) renderArena(window.AppState.data);
 
-            window.showLevelUpAlert && window.showLevelUpAlert("Xung trận! ⚔️", "Thử thách đã bắt đầu. Hãy nỗ lực hết mình để giành chiến thắng nhé!", "success");
+            // Removed alert to avoid inflation
+            // window.showLevelUpAlert && window.showLevelUpAlert("Xung trận! ⚔️", "Thử thách đã bắt đầu. Hãy nỗ lực hết mình để giành chiến thắng nhé!", "success");
         }
 
         function openChallengeDetails(challengeId) {
@@ -2110,11 +2130,14 @@
                     // Sync to refresh UI
                     await window.AppState.syncFromDatabase();
 
+                    // Removed alert to avoid inflation
+                    /*
                     window.showLevelUpAlert && window.showLevelUpAlert(
                         isSuccess ? "Đã ghi nhận! 🎉" : "Đã ghi nhận",
                         isSuccess ? "Bạn đã báo cáo hoàn thành. Hãy chờ kết quả tối nay nhé!" : "Kết quả đã được ghi nhận. Cố gắng hơn lần sau nhé!",
                         isSuccess ? "success" : "info"
                     );
+                    */
                 } catch (err) {
                     console.error("[Arena] confirmReport error:", err);
                     if (window.showLevelUpAlert) {
@@ -2225,11 +2248,15 @@
                     });
                 }
             } else if (isDraw) {
+                playSound('snd-draw');
                 emoji.textContent = '🤝';
                 title.textContent = 'HÒA CUỘC!';
                 desc.textContent = result.flavor || 'Bất phân thắng bại! Cả hai đều rất xuất sắc.';
                 content.className = "result-overlay w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-2xl text-white relative bg-gradient-to-br from-blue-600 to-indigo-900";
             } else {
+                // Ngẫu nhiên chọn 1 trong 2 âm thanh thua
+                const loseSnd = Math.random() < 0.5 ? 'snd-lose' : 'snd-lose2';
+                playSound(loseSnd);
                 emoji.textContent = '💪';
                 title.textContent = 'CỐ GẮNG LÊN!';
                 desc.textContent = result.flavor || `Dù kết quả thế nào, nỗ lực của ${window.AppState.data.user.name} vẫn rất đáng khen!`;

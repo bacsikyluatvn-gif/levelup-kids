@@ -88,7 +88,7 @@ window.celebrate = (config = {}) => {
             accent: "purple",
             btn: "bg-purple-600 shadow-purple-200",
             defaultIcon: "trending_up",
-            sound: "https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3",
+            sound: "../shared/assets/chuc mung.mp3",
             confetti: { colors: ['#a855f7', '#ec4899', '#ffffff'], shapes: ['star'] }
         },
         title: {
@@ -108,7 +108,7 @@ window.celebrate = (config = {}) => {
             accent: "rose",
             btn: "bg-indigo-600 shadow-indigo-200",
             defaultIcon: "swords",
-            sound: "https://assets.mixkit.co/active_storage/sfx/1433/1433-preview.mp3",
+            sound: "../shared/assets/thang.mp3",
             confetti: { colors: ['#e11d48', '#2563eb', '#ffffff'] }
         },
         sticker: {
@@ -517,11 +517,8 @@ class QuestCard extends HTMLElement {
                     document.head.appendChild(script);
                 }
 
-                // Check for high reward to trigger window.celebrate
-                const currentReward = parseInt(reward);
-                const currentXp = parseInt(xp);
-                const currentSticker = parseInt(sticker);
-
+                // Removed celebration popup to avoid inflation
+                /*
                 if (currentReward >= 50 || currentXp >= 50 || currentSticker >= 1) {
                     window.celebrate({
                         type: 'task',
@@ -531,6 +528,7 @@ class QuestCard extends HTMLElement {
                         color: color
                     });
                 }
+                */
 
                 // Update AppState after delay so it gets removed dynamically
                 setTimeout(() => {
@@ -1124,17 +1122,28 @@ class LeaderboardPodium extends HTMLElement {
 
         let sorted = data.leaderboard.filter(u => u.role === 'child' || u.role === 'bot');
 
-        // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
+        // --- PRE-CALCULATE STATS FOR OPTIMIZATION (O(N+M) instead of O(N*M)) ---
         const userStatsMap = new Map();
-        sorted.forEach(user => {
-            const matches = (data.challenges || []).filter(c =>
-                c.status === 'completed' &&
-                (c.challengerId === user.id || c.opponentId === user.id)
-            );
-            const wins = matches.filter(c => c.winnerId === user.id).length;
-            const draws = matches.filter(c => c.winnerId === null).length;
-            const losses = matches.length - wins - draws;
-            userStatsMap.set(user.id, { wins, draws, losses });
+        sorted.forEach(u => userStatsMap.set(u.id, { wins: 0, draws: 0, losses: 0 }));
+
+        (data.challenges || []).forEach(c => {
+            if (c.status !== 'completed') return;
+
+            // Stats for Challenger
+            if (userStatsMap.has(c.challengerId)) {
+                const s = userStatsMap.get(c.challengerId);
+                if (c.winnerId === c.challengerId) s.wins++;
+                else if (c.winnerId === null) s.draws++;
+                else s.losses++;
+            }
+
+            // Stats for Opponent
+            if (userStatsMap.has(c.opponentId)) {
+                const s = userStatsMap.get(c.opponentId);
+                if (c.winnerId === c.opponentId) s.wins++;
+                else if (c.winnerId === null) s.draws++;
+                else s.losses++;
+            }
         });
 
         if (mode === 'xp') {
@@ -1326,17 +1335,28 @@ class LeaderboardTable extends HTMLElement {
 
         let sorted = data.leaderboard.filter(u => u.role === 'child' || u.role === 'bot');
 
-        // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
+        // --- PRE-CALCULATE STATS FOR OPTIMIZATION (O(N+M) instead of O(N*M)) ---
         const userStatsMap = new Map();
-        sorted.forEach(user => {
-            const matches = (data.challenges || []).filter(c =>
-                c.status === 'completed' &&
-                (c.challengerId === user.id || c.opponentId === user.id)
-            );
-            const wins = matches.filter(c => c.winnerId === user.id).length;
-            const draws = matches.filter(c => c.winnerId === null).length;
-            const losses = matches.length - wins - draws;
-            userStatsMap.set(user.id, { wins, draws, losses });
+        sorted.forEach(u => userStatsMap.set(u.id, { wins: 0, draws: 0, losses: 0 }));
+
+        (data.challenges || []).forEach(c => {
+            if (c.status !== 'completed') return;
+
+            // Stats for Challenger
+            if (userStatsMap.has(c.challengerId)) {
+                const s = userStatsMap.get(c.challengerId);
+                if (c.winnerId === c.challengerId) s.wins++;
+                else if (c.winnerId === null) s.draws++;
+                else s.losses++;
+            }
+
+            // Stats for Opponent
+            if (userStatsMap.has(c.opponentId)) {
+                const s = userStatsMap.get(c.opponentId);
+                if (c.winnerId === c.opponentId) s.wins++;
+                else if (c.winnerId === null) s.draws++;
+                else s.losses++;
+            }
         });
 
         if (mode === 'xp') {
@@ -2871,7 +2891,7 @@ class GrowthDiaryView extends HTMLElement {
 
         const goodCount = logs.filter(l => l.type === 'behavior_good').length;
         const badCount = logs.filter(l => l.type === 'behavior_bad').length;
-        const personalityScore = Math.max(0, (goodCount * 10) - (badCount * 5));
+        const personalityScore = data.user.personalityPoints || 0;
 
         const milestones = [
             { score: 0, title: "Bạn Nhỏ Lễ Phép", color: "slate", emoji: "🙇" },
