@@ -173,6 +173,12 @@
             border: 4px solid rgba(255, 255, 255, 0.2);
         }
 
+        .hero-avatar {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
         .group:hover .icon-bloom {
             transform: scale(1.1);
         }
@@ -465,8 +471,8 @@
                     <div class="mt-4 flex flex-col items-center">
                         <span class="text-4xl font-[1000] text-blue-600 dark:text-blue-400 italic"
                             id="rank-val">--</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">THỨ HẠNG HIỆN
-                            TẠI</span>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">BẢNG VÀNG TUẦN
+                            NÀY</span>
                     </div>
                 </a>
                 <!-- Achievements (Spotlight) -->
@@ -597,7 +603,8 @@
                 // 4. Category: Showcase
                 document.getElementById('stickers-stat').innerText = `${user.unlockedStickers?.length || 0}`;
                 if (data.leaderboard) {
-                    const sorted = [...data.leaderboard].sort((a, b) => (b.totalStickers || 0) - (a.totalStickers || 0));
+                    // Ưu tiên xếp hạng theo XP Tuần để tạo không khí thi đua sôi nổi
+                    const sorted = [...data.leaderboard].sort((a, b) => (b.weeklyXp || 0) - (a.weeklyXp || 0));
                     const myRank = sorted.findIndex(p => p.id === user.id) + 1;
                     document.getElementById('rank-val').innerText = myRank > 0 ? `#${myRank}` : '--';
                 }
