@@ -78,7 +78,7 @@ window.celebrate = (config = {}) => {
             accent: "emerald",
             btn: "bg-emerald-500 shadow-emerald-200",
             defaultIcon: "check_circle",
-            sound: "https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3",
+            sound: "../shared/assets/chuc mung.mp3",
             confetti: { colors: ['#10b981', '#34d399', '#ffffff'] }
         },
         level: {
@@ -128,7 +128,7 @@ window.celebrate = (config = {}) => {
             accent: "blue",
             btn: "bg-blue-600 shadow-blue-200",
             defaultIcon: "redeem",
-            sound: "https://assets.mixkit.co/active_storage/sfx/1997/1997-preview.mp3",
+            sound: "../shared/assets/chuc mung.mp3",
             confetti: { colors: ['#2563eb', '#4f46e5', '#ffffff'] }
         }
     };

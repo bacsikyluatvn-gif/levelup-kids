@@ -28,18 +28,19 @@
     </script>
     <style>
         .gladiator-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #ffffff;
+            /* backdrop-filter: blur(10px); -> Removed for performance */
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            will-change: transform;
         }
 
         .dark .gladiator-card {
-            background: rgba(44, 34, 21, 0.95);
+            background: #1a140c;
         }
 
         .gladiator-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px) translateZ(0);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         }
 
         .vs-badge {
@@ -291,18 +292,41 @@
 
             0%,
             100% {
-                transform: translate(-50%, -50%) translateY(0) scale(1.2);
-                filter: drop-shadow(0 0 8px yellow);
+                transform: translate(-50%, -50%) translateY(0) scale(1.1);
             }
 
             50% {
-                transform: translate(-50%, -50%) translateY(-3px) scale(1.5);
-                filter: drop-shadow(0 0 15px white);
+                transform: translate(-50%, -50%) translateY(-3px) scale(1.3);
             }
         }
 
         .lightning-bolt-vfx {
-            animation: lightning-float 0.3s infinite;
+            will-change: transform;
+            animation: lightning-float 1.5s ease-in-out infinite;
+        }
+
+        /* Hardware Acceleration for bars */
+        .power-bar-fill {
+            will-change: width, background-position;
+            transform: translateZ(0);
+        }
+
+        /* Optimize expensive shadows */
+        .dominant-blue,
+        .dominant-red {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .aura-active-blue,
+        .aura-active-red {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .lightning-bolt-vfx {
+            will-change: transform;
+            animation: lightning-float 1.5s ease-in-out infinite;
         }
 
         .struggle-container {
@@ -374,99 +398,31 @@
             }
         }
 
+        /* Consolidated Aura Effects */
+        .aura-active-blue {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            will-change: transform, box-shadow;
+            transform: translateZ(0);
+        }
+
+        .aura-active-red {
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+            will-change: transform, box-shadow;
+            transform: translateZ(0);
+        }
+
         .intense-battle {
-            animation: battlefield-shake 0.2s infinite;
-        }
-
-        /* Aura & Dominance Effects */
-        .aura-active-blue {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
-        }
-
-        .aura-active-red {
-            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
-            filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.3));
-        }
-
-        /* Lightning Bolt Float */
-        @keyframes lightning-float {
-
-            0%,
-            100% {
-                transform: translate(-50%, -50%) translateY(0) scale(1.2);
-                filter: drop-shadow(0 0 8px yellow);
-            }
-
-            50% {
-                transform: translate(-50%, -50%) translateY(-3px) scale(1.5);
-                filter: drop-shadow(0 0 15px white);
-            }
-        }
-
-        /* NEW: Lightning Modal Effects */
-        @keyframes lightning-strike {
-
-            0%,
-            50%,
-            100% {
-                opacity: 0;
-            }
-
-            52% {
-                opacity: 0.1;
-            }
-
-            53% {
-                opacity: 0;
-            }
-        }
-
-        .lightning-overlay {
-            animation: lightning-strike 15s infinite;
-        }
-
-        @keyframes aura-active-blue {
-            0% {
-                box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
-            }
-
-            100% {
-                box-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.4);
-            }
-        }
-
-        .aura-active-blue {
-            animation: aura-active-blue 1s infinite alternate;
-        }
-
-        .aura-active-red {
-            animation: aura-active-red 1s infinite alternate;
-        }
-
-        /* NEW: Invitation Modal Enhancement Styles */
-        @keyframes vs-bounce {
-
-            0%,
-            100% {
-                transform: scale(1) rotate(-2deg);
-            }
-
-            50% {
-                transform: scale(1.1) rotate(2deg);
-            }
+            animation: battlefield-shake 1s infinite;
         }
 
         .vs-text-styled {
-            font-family: 'Montserrat', sans-serif;
             font-weight: 900;
             font-style: italic;
             background: linear-gradient(to bottom, #fff 30%, #ffd700 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-            animation: vs-bounce 0.4s infinite ease-in-out;
+            animation: vs-bounce 2s infinite ease-in-out;
         }
 
         .invitation-glass-card {
@@ -542,8 +498,6 @@
     <audio id="snd-lose" src="../shared/assets/thua.mp3" preload="auto"></audio>
     <audio id="snd-lose2" src="../shared/assets/thua2.mp3" preload="auto"></audio>
     <audio id="snd-draw" src="../shared/assets/hoa.mp3" preload="auto"></audio>
-    <audio id="snd-bg-epic" src="https://assets.mixkit.co/active_storage/sfx/2536/2536-preview.mp3" preload="auto"
-        loop></audio>
 
     <app-header title="Đấu Trường" type="child"></app-header>
 
@@ -1427,13 +1381,6 @@
         function openBotInvitation(bot, task) {
             playSound('snd-challenge'); // Âm thanh thách đấu uy lực
 
-            // Nhạc nền sử thi hùng tráng
-            const bgMusic = document.getElementById('snd-bg-epic');
-            if (bgMusic) {
-                bgMusic.volume = 0.5;
-                bgMusic.currentTime = 0;
-                bgMusic.play().catch(e => console.log("Epic music blocked"));
-            }
             currentInvitingBot = bot;
             currentInvitingTask = task;
 
@@ -1541,38 +1488,31 @@
             }
         }
 
-        let lastDataHash = "";
+        let lastGridHash = "";
+        let lastStatsHash = "";
+
         function renderArena(data) {
             if (!data || !data.user) return;
 
             const currentUserId = String(data.user.id);
             if (!currentUserId) return;
 
-            // Generate a more comprehensive hash to avoid blocking actual updates
             const challenges = data.challenges || [];
             const logsHash = challenges.reduce((acc, c) => acc + (c.logs?.length || 0), 0);
             const confirmedHash = challenges.reduce((acc, c) => acc + (c.challengerConfirmed ? 1 : 0) + (c.opponentConfirmed ? 1 : 0), 0);
 
-            // Local "started" states also need to be part of the hash
+            // Local "started" states
             let startedHash = 0;
             challenges.forEach(c => {
                 if (localStorage.getItem(`started_challenge_${c.id}`) === 'true') startedHash++;
             });
 
-            const currentHash = `${challenges.length}-${data.user.gold}-${data.user.xp}-${logsHash}-${confirmedHash}-${startedHash}`;
+            // NEW: Split hashes to avoid unnecessary re-renders of the whole grid
+            const gridHash = `${challenges.length}-${logsHash}-${confirmedHash}-${startedHash}`;
+            const statsHash = `${data.user.gold}-${data.user.xp}-${data.user.level}`;
 
-            if (currentHash === lastDataHash) return;
-            lastDataHash = currentHash;
-
-            const activeGrid = document.getElementById('active-challenges-grid');
-            const completedGrid = document.getElementById('completed-challenges-grid');
-            const newsGrid = document.getElementById('arena-news-list');
-            const completedSection = document.getElementById('completed-section');
-            const activeCount = document.getElementById('active-count');
-
-            // Render everything in one go to prevent flickering
+            // 1. Always update basic stats (cheap)
             requestAnimationFrame(() => {
-                // 1. Stats Counters
                 const activeToday = window.AppState.getDailyChallengeCount(currentUserId, 'active');
                 const passiveToday = window.AppState.getDailyChallengeCount(currentUserId, 'passive');
                 const activeRem = Math.max(0, 3 - activeToday);
@@ -1589,7 +1529,19 @@
                     passiveEl.className = passiveRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-blue-500";
                 }
                 document.getElementById('welcome-text').textContent = `Sẵn sàng để trở thành chiến thần, ${data.user.name}?`;
+            });
 
+            // 2. Only re-render grids if data changed (expensive)
+            if (gridHash === lastGridHash) return;
+            lastGridHash = gridHash;
+
+            const activeGrid = document.getElementById('active-challenges-grid');
+            const completedGrid = document.getElementById('completed-challenges-grid');
+            const newsGrid = document.getElementById('arena-news-list');
+            const completedSection = document.getElementById('completed-section');
+            const activeCount = document.getElementById('active-count');
+
+            requestAnimationFrame(() => {
                 // 2. Active Challenges (Grid)
                 const myActive = (data.challenges || []).filter(c => c.status !== 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
                 if (myActive.length > 0) {
@@ -1733,7 +1685,7 @@
             }
 
             return `
-                <div class="gladiator-card card-enter rounded-[3.5rem] bg-white dark:bg-[#1a140c] shadow-2xl overflow-hidden relative group border-4 border-white dark:border-slate-800 flex flex-col cursor-pointer active:scale-95 transition-all w-full shrink-0 min-h-[500px]" onclick="openChallengeDetails('${c.id}')">
+                <div class="gladiator-card rounded-[3.5rem] bg-white dark:bg-[#1a140c] shadow-xl overflow-hidden relative group border-2 border-slate-100 dark:border-slate-800 flex flex-col cursor-pointer active:scale-95 transition-all w-full shrink-0 min-h-[500px]" onclick="openChallengeDetails('${c.id}')">
                     <!-- Background Split -->
                     <div class="absolute inset-0 flex pointer-events-none">
                         <div class="w-1/2 bg-blue-50/50 dark:bg-blue-900/5 transform -skew-x-12 -translate-x-12"></div>
@@ -1756,10 +1708,10 @@
                             <!-- Challenger (You) -->
                             <div class="flex flex-col items-center gap-4 flex-1">
                                 <div class="relative">
-                                    <div class="absolute -inset-4 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+                                    <div class="absolute -inset-2 bg-blue-500/10 rounded-full"></div>
                                     <img src="${challenger ? challenger.avatar : ''}" 
                                         onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Me'"
-                                        class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl relative z-20 ${isChallengerConfirmed ? 'aura-active-blue' : ''} ${dominantSide === 'challenger' ? 'dominant-blue' : ''} transition-all duration-500">
+                                        class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-xl relative z-20 ${isChallengerConfirmed ? 'aura-active-blue' : ''} ${dominantSide === 'challenger' ? 'dominant-blue' : ''} transition-all duration-300">
                                     <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-500 rounded-full border-4 border-white dark:border-[#1a140c] flex items-center justify-center z-30">
                                         <span class="material-symbols-outlined text-white text-[10px] font-bold">face</span>
                                     </div>
@@ -1769,16 +1721,16 @@
 
                             <!-- VS Badge -->
                             <div class="flex flex-col items-center gap-2 px-2 shrink-0">
-                                <div class="bg-gradient-to-br from-slate-800 to-black text-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center font-black text-lg italic shadow-2xl transform rotate-12 -translate-y-4 group-hover:rotate-[-12deg] transition-transform duration-500 border-4 border-white dark:border-slate-800">VS</div>
+                                <div class="bg-gradient-to-br from-slate-800 to-black text-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center font-black text-lg italic shadow-xl transform rotate-12 -translate-y-4 group-hover:rotate-0 transition-transform duration-300 border-2 border-white dark:border-slate-800">VS</div>
                             </div>
 
                             <!-- Opponent -->
                             <div class="flex flex-col items-center gap-4 flex-1">
                                 <div class="relative">
-                                    <div class="absolute -inset-4 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
+                                    <div class="absolute -inset-2 bg-rose-500/10 rounded-full"></div>
                                     <img src="${opponent ? opponent.avatar : ''}" 
                                         onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Enemy'"
-                                        class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl relative z-20 ${isOpponentConfirmed ? 'aura-active-red' : ''} ${dominantSide === 'opponent' ? 'dominant-red' : ''} transition-all duration-500">
+                                        class="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-xl relative z-20 ${isOpponentConfirmed ? 'aura-active-red' : ''} ${dominantSide === 'opponent' ? 'dominant-red' : ''} transition-all duration-300">
                                     <div class="absolute -bottom-1 -left-1 w-8 h-8 bg-rose-500 rounded-full border-4 border-white dark:border-[#1a140c] flex items-center justify-center z-30">
                                         <span class="material-symbols-outlined text-white text-[10px] font-bold">face</span>
                                     </div>
@@ -1867,11 +1819,6 @@
                             </div>
                         </div>
                 </div>
-                <!-- Bottom Commentary Ticker -->
-                <div class="relative z-10 bg-slate-900/5 dark:bg-black/40 py-2 overflow-hidden whitespace-nowrap border-t border-slate-100 dark:border-white/5">
-                    <div class="inline-block commentary-slide text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">
-                        🚀 TRẬN ĐẤU ĐANG CỰC KỲ CĂNG THẲNG... ${challenger.name.replace(' (Bot)', '')} ĐANG GÂY ÁP LỰC LỚN! ... ĐẾN 19:00 SẼ BIẾT AI LÀ CHIẾN THẦN ... HÀNH ĐỘNG NGAY ĐỂ GIÀNH LỢI THẾ! ... ⚔️
-                    </div>
                 </div>
             </div>`;
         }
@@ -2311,7 +2258,7 @@
             xText.className = "text-3xl font-black text-white";
 
             if (iWon) {
-                playSound('snd-win');
+                // let celebrate handle win sound (thang.mp3)
                 emoji.textContent = '🏆';
                 title.textContent = 'THẮNG RỒI!';
                 desc.textContent = result.flavor || `Chúc mừng ${window.AppState.data.user.name} !Bạn đã chiến thắng kèo đấu này!`;
@@ -2600,16 +2547,21 @@
             await window.AppState.selfCompleteChallenge(challengeId);
         }
 
+        let lastOpponentHash = "";
         async function renderOpponentList(inputData) {
-            const list = document.getElementById('opponent-list');
-            if (!list) return;
-
-            // Ưu tiên AppState.data nếu inputData có vẻ đang bị thiếu (sync chưa xong)
-            const data = (inputData && inputData.leaderboard && inputData.leaderboard.length > 1) ? inputData : window.AppState.data;
-
             try {
+                const list = document.getElementById('opponent-list');
+                if (!list) return;
+
+                const data = (inputData && inputData.leaderboard && inputData.leaderboard.length > 1) ? inputData : window.AppState.data;
                 const currentUserId = data.user && String(data.user.id);
                 const leaderboard = data.leaderboard || [];
+                const challenges = data.challenges || [];
+
+                // Simple hash based on users and challenge counts to avoid excessive re-renders
+                const currentHash = `${leaderboard.length}-${challenges.length}`;
+                if (currentHash === lastOpponentHash) return;
+                lastOpponentHash = currentHash;
 
                 // Lấy tất cả trừ ba mẹ và chính mình
                 const others = leaderboard.filter(p => {
@@ -2642,8 +2594,6 @@
                 const now = new Date();
                 const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
                 startOfWeek.setHours(0, 0, 0, 0);
-
-                const challenges = data.challenges || [];
 
                 list.innerHTML = others.map(p => {
                     const pid = String(p.id);
@@ -2680,7 +2630,8 @@
 
             } catch (err) {
                 console.error("Render error:", err);
-                list.innerHTML = `<div class="p-4 text-rose-500 text-[10px] font-bold">Lỗi nạp dữ liệu: ${err.message}</div>`;
+                const list = document.getElementById('opponent-list');
+                if (list) list.innerHTML = `<div class="p-4 text-rose-500 text-[10px] font-bold">Lỗi nạp dữ liệu: ${err.message}</div>`;
             }
         }
     </script>
