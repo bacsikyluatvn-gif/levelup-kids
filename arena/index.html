@@ -617,7 +617,11 @@
                     class="bg-arena-orange text-white text-xs font-black px-2.5 py-1 rounded-full hidden">0</span>
             </div>
             <div id="active-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
-                <!-- Loader or empty state -->
+                <!-- Skeleton Loader -->
+                <div class="skeleton-card rounded-[3.5rem] bg-slate-100 dark:bg-white/5 h-[400px] animate-pulse"></div>
+                <div
+                    class="skeleton-card rounded-[3.5rem] bg-slate-100 dark:bg-white/5 h-[400px] animate-pulse hidden md:block">
+                </div>
             </div>
         </section>
 
@@ -631,7 +635,11 @@
                 <h3 class="text-xl font-black uppercase tracking-wider text-slate-700 dark:text-white">Chiến Tích Của
                     Bạn</h3>
             </div>
-            <div id="completed-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            <div id="completed-challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="h-32 bg-slate-100 dark:bg-white/5 rounded-3xl animate-pulse"></div>
+                <div class="h-32 bg-slate-100 dark:bg-white/5 rounded-3xl animate-pulse"></div>
+                <div class="h-32 bg-slate-100 dark:bg-white/5 rounded-3xl animate-pulse"></div>
+            </div>
         </section>
 
         <!-- ======= ARENA WORLD NEWS ======= -->
@@ -644,7 +652,8 @@
                     Trường</h3>
             </div>
             <div id="arena-news-list" class="space-y-3">
-                <!-- News from other players -->
+                <div class="h-20 bg-slate-100 dark:bg-white/5 rounded-2xl animate-pulse"></div>
+                <div class="h-20 bg-slate-100 dark:bg-white/5 rounded-2xl animate-pulse"></div>
             </div>
         </section>
     </main>
@@ -1481,18 +1490,13 @@
         function renderArena(data) {
             if (!data || !data.user) return;
 
-            // Generate a simple hash of data that affects Arena UI to prevent unnecessary re-renders
-            const currentHash = JSON.stringify({
-                userIds: (data.leaderboard || []).map(p => p.id + p.xp),
-                challenges: (data.challenges || []).map(c => c.id + c.status + c.challengerConfirmed + c.opponentConfirmed),
-                gold: data.user.gold
-            });
+            const currentUserId = String(data.user.id);
+            if (!currentUserId) return;
 
+            // Generate a simpler hash
+            const currentHash = `${data.challenges?.length || 0}-${data.user.gold}-${data.user.xp}`;
             if (currentHash === lastDataHash) return;
             lastDataHash = currentHash;
-
-            const currentUserId = data.user ? String(data.user.id) : null;
-            if (!currentUserId) return;
 
             const activeGrid = document.getElementById('active-challenges-grid');
             const completedGrid = document.getElementById('completed-challenges-grid');
@@ -1502,76 +1506,76 @@
 
             const challenges = data.challenges || [];
 
-            // --- FILTERING ---
+            // 1. Prioritize essential UI (Active Challenges)
             const myActive = challenges.filter(c => c.status !== 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId));
-            // Limit history to LAST 6 for cleanliness
-            const myCompleted = challenges.filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId)).reverse().slice(0, 6);
 
-            // World news: Sort by newest first
-            const othersChallenges = challenges
-                .filter(c => c.challengerId !== currentUserId && c.opponentId !== currentUserId)
-                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-                .slice(0, 8);
+            requestAnimationFrame(() => {
+                if (myActive.length > 0) {
+                    activeCount.textContent = myActive.length;
+                    activeCount.classList.remove('hidden');
+                    activeGrid.innerHTML = myActive.map((c, i) => renderActiveCard(c, data, i)).join('');
+                } else {
+                    activeCount.classList.add('hidden');
+                    activeGrid.innerHTML = `
+                        <div class="col-span-full py-16 text-center bg-white/40 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+                            <span class="material-symbols-outlined text-5xl text-slate-300 mb-3 block">sports_kabaddi</span>
+                            <p class="text-slate-400 font-bold">Bạn không có kèo nào đang đấu.</p>
+                            <p class="text-slate-400 text-sm mt-1">Hãy thách đấu ai đó để bắt đầu!</p>
+                        </div>`;
+                }
 
-            // Daily counter
-            const activeToday = window.AppState.getDailyChallengeCount(currentUserId, 'active');
-            const passiveToday = window.AppState.getDailyChallengeCount(currentUserId, 'passive');
+                // Daily counter
+                const activeToday = window.AppState.getDailyChallengeCount(currentUserId, 'active');
+                const passiveToday = window.AppState.getDailyChallengeCount(currentUserId, 'passive');
+                const activeRem = Math.max(0, 3 - activeToday);
+                const passiveRem = Math.max(0, 3 - passiveToday);
 
-            const activeRem = Math.max(0, 3 - activeToday);
-            const passiveRem = Math.max(0, 3 - passiveToday);
+                const activeEl = document.getElementById('active-counter');
+                const passiveEl = document.getElementById('passive-counter');
+                if (activeEl) {
+                    activeEl.textContent = `${activeRem}/3`;
+                    activeEl.className = activeRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-arena-orange";
+                }
+                if (passiveEl) {
+                    passiveEl.textContent = `${passiveRem}/3`;
+                    passiveEl.className = passiveRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-blue-500";
+                }
 
-            const activeEl = document.getElementById('active-counter');
-            const passiveEl = document.getElementById('passive-counter');
+                document.getElementById('welcome-text').textContent = `Sẵn sàng để trở thành chiến thần, ${data.user.name}?`;
+            });
 
-            activeEl.textContent = `${activeRem}/3`;
-            activeEl.className = activeRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-arena-orange";
+            // 2. Delayed rendering of non-essential UI (News & History)
+            setTimeout(() => {
+                const myCompleted = challenges.filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId)).reverse().slice(0, 6);
+                const othersChallenges = challenges
+                    .filter(c => c.challengerId !== currentUserId && c.opponentId !== currentUserId)
+                    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+                    .slice(0, 6);
 
-            passiveEl.textContent = `${passiveRem}/3`;
-            passiveEl.className = passiveRem === 0 ? "text-2xl font-black text-rose-500" : "text-2xl font-black text-blue-500";
+                if (myCompleted.length > 0) {
+                    completedSection.classList.remove('hidden');
+                    completedGrid.innerHTML = myCompleted.map(c => renderCompletedCard(c, data)).join('');
+                } else {
+                    completedSection.classList.add('hidden');
+                }
 
-            // Active Grid
-            if (myActive.length > 0) {
-                activeCount.textContent = myActive.length;
-                activeCount.classList.remove('hidden');
-                activeGrid.innerHTML = myActive.map((c, i) => renderActiveCard(c, data, i)).join('');
-            } else {
-                activeCount.classList.add('hidden');
-                activeGrid.innerHTML = `
-                    <div class="col-span-full py-16 text-center bg-white/40 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
-                        <span class="material-symbols-outlined text-5xl text-slate-300 mb-3 block">sports_kabaddi</span>
-                        <p class="text-slate-400 font-bold">Bạn không có kèo nào đang đấu.</p>
-                        <p class="text-slate-400 text-sm mt-1">Hãy thách đấu ai đó để bắt đầu!</p>
-                    </div>`;
-            }
+                newsGrid.innerHTML = othersChallenges.length > 0 ? othersChallenges.map(c => renderNewsCard(c, data)).join('') : `<p class="text-xs text-slate-400 text-center py-4">Đang cập nhật tin tức từ vương quốc...</p>`;
 
-            // Completed History
-            if (myCompleted.length > 0) {
-                completedSection.classList.remove('hidden');
-                completedGrid.innerHTML = myCompleted.map(c => renderCompletedCard(c, data)).join('');
-            } else {
-                completedSection.classList.add('hidden');
-            }
+                // Update user stats
+                const now = new Date();
+                const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
+                startOfWeek.setHours(0, 0, 0, 0);
 
-            // Welcome Text Fix
-            document.getElementById('welcome-text').textContent = `Sẵn sàng để trở thành chiến thần, ${data.user.name}?`;
+                const myMatches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId) && new Date(c.date) >= startOfWeek);
+                const winsEl = document.getElementById('user-wins');
+                const drawsEl = document.getElementById('user-draws');
+                const lossesEl = document.getElementById('user-losses');
+                if (winsEl) winsEl.textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
+                if (drawsEl) drawsEl.textContent = myMatches.filter(c => c.winnerId === null).length;
+                if (lossesEl) lossesEl.textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
 
-            // World news
-            newsGrid.innerHTML = othersChallenges.length > 0 ? othersChallenges.map(c => renderNewsCard(c, data)).join('') : `<p class="text-xs text-slate-400 text-center py-4">Đang cập nhật tin tức từ vương quốc...</p>`;
-
-            // Update user stats
-            const now = new Date();
-            const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-            startOfWeek.setHours(0, 0, 0, 0);
-
-            const myMatches = (data.challenges || []).filter(c => c.status === 'completed' && (c.challengerId === currentUserId || c.opponentId === currentUserId) && new Date(c.date) >= startOfWeek);
-            const winsEl = document.getElementById('user-wins');
-            const drawsEl = document.getElementById('user-draws');
-            const lossesEl = document.getElementById('user-losses');
-            if (winsEl) winsEl.textContent = myMatches.filter(c => c.winnerId === currentUserId).length;
-            if (drawsEl) drawsEl.textContent = myMatches.filter(c => c.winnerId === null).length;
-            if (lossesEl) lossesEl.textContent = myMatches.length - myMatches.filter(c => c.winnerId === currentUserId).length - myMatches.filter(c => c.winnerId === null).length;
-
-            renderOpponentList(data);
+                renderOpponentList(data);
+            }, 300);
         }
 
         function renderActiveCard(c, data, index) {
