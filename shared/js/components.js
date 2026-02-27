@@ -302,7 +302,7 @@ class AppHeader extends HTMLElement {
             <header class="sticky top-0 z-50 bg-white/80 dark:bg-[#1a140c]/80 backdrop-blur-xl border-b border-[#e6e1db] dark:border-[#3a2e22] shadow-sm transition-all duration-300">
                 <div class="max-w-[1200px] mx-auto px-6 md:px-8 py-3 flex items-center justify-between gap-4">
                     <!-- Brand Section -->
-                    <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateWithTransition('../index.html')">
+                    <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateWithTransition(this.closest('app-header').getAttribute('type') === 'child' ? '../home/index.html' : '../admin/index.html')">
                         <div class="bg-primary/20 p-2.5 rounded-2xl text-primary group-hover:scale-110 group-active:scale-95 transition-all shadow-sm">
                             <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1">castle</span>
                         </div>
@@ -2203,8 +2203,9 @@ class ChildNav extends HTMLElement {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
-                    ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard' || active === '')}
-                    ${this.navItem('book_5', 'Nhật Ký Trưởng Thành', 'diary/index.html', active === 'diary')}
+                    ${this.navItem('home', 'Tổng quan', 'home/index.html', active === 'home' || active === '')}
+                    ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
+                    ${this.navItem('book_5', 'Nhật Ký', 'diary/index.html', active === 'diary')}
                     ${this.navItem('sports_kabaddi', 'Đấu trường', 'arena/index.html', active === 'arena')}
                     ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
                     ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
