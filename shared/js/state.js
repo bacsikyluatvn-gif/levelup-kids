@@ -421,38 +421,43 @@ class StateManager {
 
                 if (activeUser) {
                         this.currentProfileId = activeUser.id;
-                        // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu
+
+                        // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu (Tránh race condition khi đang Save)
                         if (!this._isUpdatingProfile) {
-                                // CHIẾN THUẬT MERGE THÔNG MINH:
-                                // Tránh việc dữ liệu DB cũ đè mất tiến trình local vừa thực hiện (nhất là sau khi F5)
                                 const oldUser = this.data.user || {};
                                 const newUser = { ...activeUser, isCurrentUser: true };
 
-                                // 1. Gộp danh sách Sticker đã mở (Luôn lấy Union - không bao giờ mất đi)
-                                const mergedUnlocked = Array.from(new Set([
-                                        ...(oldUser.unlockedStickers || []),
-                                        ...(newUser.unlockedStickers || [])
-                                ]));
-                                newUser.unlockedStickers = mergedUnlocked;
+                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
+                                if (oldUser.id === newUser.id) {
+                                        // 1. Gộp danh sách Sticker (Union) - chỉ dành cho chính người đó
+                                        const mergedUnlocked = Array.from(new Set([
+                                                ...(oldUser.unlockedStickers || []),
+                                                ...(newUser.unlockedStickers || [])
+                                        ]));
+                                        newUser.unlockedStickers = mergedUnlocked;
 
-                                // 2. Bảo vệ số lượt Sticker (Balance): 
-                                // Nếu số sticker đã mở ở local đang NHIỀU HƠN ở DB, nghĩa là DB đang stale.
-                                // Chúng ta giữ lại số dư (stickers) ở local để tránh bị nhảy ngược về số cũ.
-                                const localUnlockedCount = (oldUser.unlockedStickers || []).length;
-                                const dbUnlockedCount = (activeUser.unlockedStickers || []).length;
-
-                                if (localUnlockedCount > dbUnlockedCount && (oldUser.stickers !== undefined)) {
-                                        if (oldUser.stickers < newUser.stickers) {
-                                                console.log(`[State] 🛡️ Phát hiện DB stale (${dbUnlockedCount} vs ${localUnlockedCount} stickers). Giữ lại balance local: ${oldUser.stickers}`);
-                                                newUser.stickers = oldUser.stickers;
+                                        // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ
+                                        const localCount = (oldUser.unlockedStickers || []).length;
+                                        const dbCount = (activeUser.unlockedStickers || []).length;
+                                        if (localCount > dbCount && oldUser.stickers !== undefined) {
+                                                if (oldUser.stickers < newUser.stickers) {
+                                                        newUser.stickers = oldUser.stickers;
+                                                }
                                         }
-                                }
+                                } else {
+                                        // Nếu chuyển đổi sang profile khác hoàn toàn: 
+                                        // 1. Reset các trạng thái milestone để không hiện popup cũ cho người mới
+                                        this._lastTreeStage = undefined;
+                                        this._lastTitleIdx = undefined;
+                                        this._completedCollections = new Set();
 
-                                // 3. Tương tự cho Gold/XP/Water nếu cần thiết (Tạm thời ưu tiên Sticker vì nó đang lỗi trọng tâm)
+                                        // 2. KHÔNG gộp unlockedStickers. Dữ liệu newUser sẽ hoàn toàn từ DB của người mới.
+                                        console.log(`[State] 🔄 Chuyển đổi profile: ${oldUser.name} -> ${newUser.name}. Tách biệt kho Sticker.`);
+                                }
 
                                 this.data.user = newUser;
                         } else {
-                                console.log("[State] 🛡️ Bảo vệ dữ liệu user local khỏi việc ghi đè bởi dữ liệu DB cũ.");
+                                console.log("[State] 🛡️ Đang cập nhật dữ liệu... Bảo vệ profile local khỏi việc ghi đè.");
                         }
                 }
 
