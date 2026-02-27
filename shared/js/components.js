@@ -58,6 +58,8 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
  * BIG CELEBRATION SYSTEM
  * Triggers full screen fireworks and celebratory UI
  */
+let activeCelebrationAudio = null;
+
 window.celebrate = (config = {}) => {
     const {
         type = 'task', // task, level, title, challenge, sticker, shop
@@ -138,14 +140,24 @@ window.celebrate = (config = {}) => {
 
     // 1. Play Sound
     if (sound) {
-        const audio = new Audio(theme.sound);
-        audio.volume = 0.5;
-        audio.play().catch(e => console.log("Audio play blocked"));
+        // Stop any previous celebration sound
+        if (activeCelebrationAudio) {
+            activeCelebrationAudio.pause();
+            activeCelebrationAudio.currentTime = 0;
+        }
+
+        activeCelebrationAudio = new Audio(theme.sound);
+        activeCelebrationAudio.volume = 0.5;
+        activeCelebrationAudio.play().catch(e => console.log("Audio play blocked"));
     }
 
     // 2. Clear existing
     const existing = document.getElementById('global-celebration');
-    if (existing) existing.remove();
+    if (existing) {
+        existing.remove();
+        // If sound was playing for previous one, we might want to keep it or stop it.
+        // The user says "sequence of sounds" is bad, so we stop previous.
+    }
 
     // 3. Create Container
     const container = document.createElement('div');

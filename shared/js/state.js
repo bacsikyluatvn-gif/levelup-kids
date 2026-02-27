@@ -497,12 +497,15 @@ class StateManager {
                         .findIndex(u => u.id === this.data.user.id) + 1;
 
                 if (this._lastRank && currentRank < this._lastRank && currentRank <= 5 && this._initialSyncDone) {
-                        window.celebrate({
-                                type: 'title',
-                                title: `TOP ${currentRank}!`,
-                                subtitle: `Con vừa thăng hạng vươn lên vị trí số ${currentRank} trên bảng xếp hạng!`,
-                                icon: 'leaderboard'
-                        });
+                        // Delay slighty to avoid clashing with other immediate sync popups
+                        setTimeout(() => {
+                                window.celebrate({
+                                        type: 'title',
+                                        title: `TOP ${currentRank}!`,
+                                        subtitle: `Xuất sắc! Con đã vượt qua thử thách và vươn lên vị trí số ${currentRank} trên Bảng Xếp Hạng Sticker toàn gia đình!`,
+                                        icon: 'leaderboard'
+                                });
+                        }, 2000);
                 }
                 this._lastRank = currentRank;
         }
@@ -625,24 +628,28 @@ class StateManager {
                         // 1. Tree Milestone
                         if (this._lastTreeStage !== undefined && sIdx > this._lastTreeStage) {
                                 const m = window.TREE_MILESTONES[sIdx];
-                                window.celebrate({
-                                        type: 'sticker',
-                                        title: m.name.toUpperCase(),
-                                        subtitle: `Tuyệt vời! Cây thần kỳ đã lớn thêm một bậc mới!`,
-                                        icon: m.icon
-                                });
+                                setTimeout(() => {
+                                        window.celebrate({
+                                                type: 'sticker',
+                                                title: m.name.toUpperCase(),
+                                                subtitle: `Tuyệt vời! Cây thần kỳ đã lớn thêm một bậc mới: ${m.name}!`,
+                                                icon: m.icon
+                                        });
+                                }, 500);
                         }
                         this._lastTreeStage = sIdx;
 
                         // 2. Title Milestone
                         if (this._lastTitleIdx !== undefined && tIdx > this._lastTitleIdx) {
                                 const m = window.TITLE_MILESTONES[tIdx];
-                                window.celebrate({
-                                        type: 'title',
-                                        title: m.name.toUpperCase(),
-                                        subtitle: `Thành tích khủng! Con đã đạt được danh hiệu cao quý mới!`,
-                                        icon: m.icon
-                                });
+                                setTimeout(() => {
+                                        window.celebrate({
+                                                type: 'title',
+                                                title: m.name.toUpperCase(),
+                                                subtitle: `Thành tích khủng! Con đã đạt được danh hiệu cao quý mới: ${m.name}!`,
+                                                icon: m.icon
+                                        });
+                                }, 1500);
                         }
                         this._lastTitleIdx = tIdx;
 
@@ -660,12 +667,14 @@ class StateManager {
                                         if (isDone) {
                                                 this._completedCollections.add(colId);
                                                 const info = window.STICKER_COLLECTIONS[colId];
-                                                window.celebrate({
-                                                        type: 'sticker',
-                                                        title: info.name.toUpperCase(),
-                                                        subtitle: `Tuyệt đỉnh! Con đã sưu tầm trọn bộ sticker ${info.name}!`,
-                                                        icon: 'auto_awesome'
-                                                });
+                                                setTimeout(() => {
+                                                        window.celebrate({
+                                                                type: 'sticker',
+                                                                title: "BỘ SƯU TẬP HOÀN TẤT!",
+                                                                subtitle: `Tuyệt đỉnh! Con đã sưu tầm trọn bộ sticker "${info.name}"!`,
+                                                                icon: 'auto_awesome'
+                                                        });
+                                                }, 3000);
                                         }
                                 });
                         }
@@ -930,12 +939,14 @@ class StateManager {
                 }
 
                 if (leveledUp && window.celebrate) {
-                        window.celebrate({
-                                type: 'level',
-                                title: `CẤP ĐỘ ${u.level}`,
-                                subtitle: `Chúc mừng con đã thăng cấp! Hãy tiếp tục cố gắng nhé!`,
-                                icon: 'military_tech'
-                        });
+                        setTimeout(() => {
+                                window.celebrate({
+                                        type: 'level',
+                                        title: `CẤP ĐỘ ${u.level}`,
+                                        subtitle: `Chúc mừng con đã thăng lên Cấp độ ${u.level}! Hãy tiếp tục nỗ lực nhé!`,
+                                        icon: 'military_tech'
+                                });
+                        }, 100);
                 }
 
                 this.notify();
