@@ -354,13 +354,15 @@ class AppHeader extends HTMLElement {
                      <div class="h-10 w-10 shrink-0 rounded-full ring-2 ring-primary/20 bg-cover bg-center shadow-md bg-slate-300 cursor-pointer active:scale-90 transition-transform" 
                           style="background-image: url('${user.avatar}')" id="header-avatar-child">
                      </div>
-                    <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../portal/index.html'" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-white/5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-primary transition-all group" 
                             title="Đổi nhân vật">
-                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">person_switch</span>
+                        <span class="material-symbols-outlined text-[20px]">person_switch</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Đổi Bé</span>
                     </button>
-                    <button onclick="window.AppState.logout()" class="p-2 hover:bg-rose-50 dark:hover:bg-rose-900/10 rounded-xl text-slate-400 hover:text-rose-500 transition-all group" 
+                    <button onclick="window.AppState.logout()" class="flex items-center gap-1.5 px-3 py-2 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-100 transition-all group" 
                             title="Đăng xuất Gia đình">
-                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">logout</span>
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Đăng xuất</span>
                     </button>
                 </div>
         `;
@@ -408,13 +410,15 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white">
                         <span class="material-symbols-outlined">person</span>
                     </div>
-                    <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../portal/index.html'" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-white/5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
-                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">person_switch</span>
+                        <span class="material-symbols-outlined text-[20px]">person_switch</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Đổi Bé</span>
                     </button>
-                    <button onclick="window.AppState.logout()" class="p-2 hover:bg-rose-50 dark:hover:bg-rose-900/10 rounded-xl text-slate-400 hover:text-rose-500 transition-all group" 
+                    <button onclick="window.AppState.logout()" class="flex items-center gap-1.5 px-3 py-2 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-100 transition-all group" 
                             title="Đăng xuất hoàn toàn">
-                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">logout</span>
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Đăng xuất</span>
                     </button>
                 </div>
             </div>
