@@ -355,8 +355,12 @@ class AppHeader extends HTMLElement {
                           style="background-image: url('${user.avatar}')" id="header-avatar-child">
                      </div>
                     <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
-                            title="Đổi tài khoản">
-                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
+                            title="Đổi nhân vật">
+                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">person_switch</span>
+                    </button>
+                    <button onclick="window.AppState.logout()" class="p-2 hover:bg-rose-50 dark:hover:bg-rose-900/10 rounded-xl text-slate-400 hover:text-rose-500 transition-all group" 
+                            title="Đăng xuất Gia đình">
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">logout</span>
                     </button>
                 </div>
         `;
@@ -404,9 +408,13 @@ class AppHeader extends HTMLElement {
                     <div class="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white">
                         <span class="material-symbols-outlined">person</span>
                     </div>
-                    <button onclick="window.location.href='../login/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
+                    <button onclick="window.location.href='../portal/index.html'" class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all group" 
                             title="Đổi tài khoản">
-                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">logout</span>
+                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">person_switch</span>
+                    </button>
+                    <button onclick="window.AppState.logout()" class="p-2 hover:bg-rose-50 dark:hover:bg-rose-900/10 rounded-xl text-slate-400 hover:text-rose-500 transition-all group" 
+                            title="Đăng xuất hoàn toàn">
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">logout</span>
                     </button>
                 </div>
             </div>

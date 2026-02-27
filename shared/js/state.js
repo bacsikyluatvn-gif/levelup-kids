@@ -2093,6 +2093,15 @@ class StateManager {
                         await this.syncFromDatabase();
                 }
         }
+
+        async logout() {
+                if (this.client) {
+                        await this.client.auth.signOut();
+                }
+                localStorage.removeItem('family_quest_active_profile');
+                localStorage.removeItem('family_quest_fid');
+                window.location.href = '../login/index.html';
+        }
 }
 
 window.AppState = new StateManager();
