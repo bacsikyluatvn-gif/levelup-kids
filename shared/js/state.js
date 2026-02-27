@@ -696,7 +696,17 @@ class StateManager {
         }
 
         setCurrentUser(id) {
+                if (this.data.user && this.data.user.id !== id) {
+                        // Reset local state for celebrations to avoid old notifications
+                        this._lastTreeStage = undefined;
+                        this._lastTitleIdx = undefined;
+                        this._completedCollections = new Set();
+                        this._initialSyncDone = false; // Reset sync flag for the new person
+                        console.log(`[State] Switching profile to ${id}, resetting local celebrations state.`);
+                }
+
                 localStorage.setItem('family_quest_active_profile', id);
+                this.loadFromCache(); // Load new profile cache immediately
                 this.syncFromDatabase();
         }
 
