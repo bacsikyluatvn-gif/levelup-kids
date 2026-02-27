@@ -136,32 +136,39 @@
     <app-header></app-header>
 
     <!-- 1. VICTORY TICKER (BẢN TIN CHIẾN THẮNG) -->
-    <!-- Fixed: Increased overflow container and inner flex center -->
     <div
-        class="fixed top-[70px] left-0 w-full z-40 bg-slate-900/95 backdrop-blur-xl border-y border-white/10 h-12 flex items-center overflow-hidden victory-ticker-container shadow-2xl">
-        <div class="animate-scroll whitespace-nowrap gap-24 text-blue-400 font-black text-xs uppercase tracking-widest px-8"
+        class="fixed top-[88px] left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-40 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border border-white/20 dark:border-white/5 h-12 flex items-center overflow-hidden victory-ticker-container shadow-2xl rounded-full">
+        <div class="animate-scroll whitespace-nowrap gap-24 text-blue-400 dark:text-blue-300 font-black text-xs uppercase tracking-widest px-12"
             style="animation-duration: 40s">
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-1">Đang tải bản tin chiến thắng...</span></div>
+                <span id="news-1">Đang tải bản tin chiến thắng...</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-2">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span></div>
+                <span id="news-2">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-3">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span></div>
+                <span id="news-3">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span></div>
+                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span>
+            </div>
             <!-- Duplicates for seamless loop -->
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-1-dup">Đang tải bản tin chiến thắng...</span></div>
+                <span id="news-1-dup">Đang tải bản tin chiến thắng...</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-2-dup">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span></div>
+                <span id="news-2-dup">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span id="news-3-dup">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span></div>
+                <span id="news-3-dup">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span>
+            </div>
             <div class="flex items-center gap-4"><span class="size-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span></div>
+                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span>
+            </div>
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 pt-48 pb-32 space-y-24">
+    <main class="max-w-7xl mx-auto px-4 pt-56 pb-32 space-y-24">
 
         <!-- 2. POWER CORE (TRUNG TÂM NĂNG LƯỢNG) -->
         <section class="relative flex flex-col items-center justify-center py-10 animate-fade-in-up">
@@ -180,7 +187,6 @@
                 <div
                     class="absolute -inset-12 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-20 group-hover:opacity-60 transition-opacity animate-aura">
                 </div>
-                <!-- Fixed size and more playful rounded corners for kids -->
                 <div id="hero-avatar"
                     class="size-56 md:size-80 rounded-[5rem] bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-2">
                     <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-primary to-amber-600 text-white size-20 md:size-24 rounded-[2.5rem] md:rounded-[3rem] flex flex-col items-center justify-center border-4 border-white dark:border-slate-800 shadow-2xl"
@@ -197,8 +203,12 @@
                     id="hero-name">ALEX</h1>
                 <div
                     class="inline-flex items-center gap-4 bg-white/70 dark:bg-black/40 backdrop-blur-2xl px-10 py-4 rounded-full border border-white/30 shadow-2xl">
-                    <img src="../shared/assets/icons/achievement.png" class="size-10 object-contain drop-shadow"
-                        alt="Achievement">
+                    <div
+                        class="size-10 bg-gradient-to-br from-primary to-amber-500 rounded-xl flex items-center justify-center text-white shadow-lg overflow-hidden relative">
+                        <span class="material-symbols-outlined text-2xl relative z-10"
+                            style="font-variation-settings:'FILL' 1">workspace_premium</span>
+                        <div class="absolute inset-0 bg-white/20 animate-shine"></div>
+                    </div>
                     <span
                         class="font-[1000] tracking-[0.2em] text-xs md:text-sm uppercase text-slate-700 dark:text-slate-200"
                         id="hero-title">ĐANG QUÉT DANH HIỆU...</span>
@@ -233,10 +243,19 @@
                 <!-- Mission -->
                 <a href="../dashboard/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div
-                        class="absolute -right-10 -top-10 size-48 bg-amber-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    <div class="mb-8 relative flex items-center justify-center">
+                        <div
+                            class="absolute inset-0 bg-amber-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                        </div>
+                        <div
+                            class="size-24 bg-gradient-to-br from-amber-400 to-orange-500 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-amber-500/30 transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 relative z-10 border-4 border-white/20">
+                            <span class="material-symbols-outlined text-5xl"
+                                style="font-variation-settings:'FILL' 1">target</span>
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent">
+                            </div>
+                        </div>
                     </div>
-                    <img src="../shared/assets/icons/mission.png" class="icon-3d" alt="Nhiệm vụ">
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHIỆM
                         VỤ</h3>
                     <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Làm việc tốt để tích lũy
@@ -251,10 +270,19 @@
                 <!-- Growth Diary -->
                 <a href="../personality/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div
-                        class="absolute -right-10 -top-10 size-48 bg-rose-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    <div class="mb-8 relative flex items-center justify-center">
+                        <div
+                            class="absolute inset-0 bg-rose-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                        </div>
+                        <div
+                            class="size-24 bg-gradient-to-br from-rose-400 to-pink-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-rose-500/30 transform group-hover:-rotate-6 group-hover:scale-110 transition-all duration-500 relative z-10 border-4 border-white/20">
+                            <span class="material-symbols-outlined text-5xl"
+                                style="font-variation-settings:'FILL' 1">auto_stories</span>
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent">
+                            </div>
+                        </div>
                     </div>
-                    <img src="../shared/assets/icons/diary.png" class="icon-3d" alt="Nhật ký">
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHẬT
                         KÝ</h3>
                     <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Soi chiếu tâm hồn, nhận Điểm
@@ -267,10 +295,19 @@
                 <!-- Arena -->
                 <a href="../arena/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div
-                        class="absolute -right-10 -top-10 size-48 bg-blue-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    <div class="mb-8 relative flex items-center justify-center">
+                        <div
+                            class="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                        </div>
+                        <div
+                            class="size-24 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-blue-500/30 transform group-hover:scale-110 transition-all duration-500 relative z-10 border-4 border-white/20">
+                            <span class="material-symbols-outlined text-5xl"
+                                style="font-variation-settings:'FILL' 1">swords</span>
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent">
+                            </div>
+                        </div>
                     </div>
-                    <img src="../shared/assets/icons/arena.png" class="icon-3d" alt="Đấu trường">
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">ĐẤU
                         TRƯỜNG</h3>
                     <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Giao lưu bản lĩnh, thăng cấp
@@ -293,8 +330,11 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <!-- Stickers -->
                 <a href="../sticker-book/index.html" class="cute-card group flex flex-col items-center text-center">
-                    <img src="../shared/assets/icons/sticker.png" class="icon-3d group-hover:animate-wiggle"
-                        alt="Stickers">
+                    <div
+                        class="mb-6 size-24 bg-purple-100 dark:bg-purple-900/30 rounded-3xl flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:animate-wiggle transform transition-transform">
+                        <span class="material-symbols-outlined text-5xl"
+                            style="font-variation-settings:'FILL' 1">sell</span>
+                    </div>
                     <h3 class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">BỘ SƯU TẬP
                     </h3>
                     <div class="mt-4 flex flex-col items-center">
@@ -306,8 +346,11 @@
                 </a>
                 <!-- Leaderboard -->
                 <a href="../leaderboard/index.html" class="cute-card group flex flex-col items-center text-center">
-                    <img src="../shared/assets/icons/leaderboard.png" class="icon-3d group-hover:animate-float"
-                        alt="Leaderboard">
+                    <div
+                        class="mb-6 size-24 bg-blue-100 dark:bg-blue-900/30 rounded-3xl flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:animate-float transform transition-transform">
+                        <span class="material-symbols-outlined text-5xl"
+                            style="font-variation-settings:'FILL' 1">emoji_events</span>
+                    </div>
                     <h3 class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">SIÊU SAO
                         BẢNG VÀNG</h3>
                     <div class="mt-4 flex flex-col items-center">
@@ -319,11 +362,18 @@
                 </a>
                 <!-- Achievements (Spotlight) -->
                 <div
-                    class="cute-card group flex flex-col items-center text-center bg-gradient-to-br from-slate-900 to-slate-800 border-none">
-                    <img src="../shared/assets/icons/achievement.png"
-                        class="icon-3d drop-shadow-[0_0_20px_rgba(255,255,255,0.3)] animate-float" alt="Achievement">
-                    <h3 class="text-2xl font-[1000] text-white uppercase tracking-tight">DANH HIỆU TỰ HÀO</h3>
-                    <div class="mt-6 flex flex-col items-center">
+                    class="cute-card group flex flex-col items-center text-center bg-gradient-to-br from-slate-900 to-slate-800 border-none relative overflow-hidden">
+                    <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="mb-6 size-24 bg-white/10 rounded-3xl flex items-center justify-center text-primary animate-float">
+                        <span class="material-symbols-outlined text-5xl"
+                            style="font-variation-settings:'FILL' 1">workspace_premium</span>
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent"></div>
+                    </div>
+                    <h3 class="text-2xl font-[1000] text-white uppercase tracking-tight relative z-10">DANH HIỆU TỰ HÀO
+                    </h3>
+                    <div class="mt-6 flex flex-col items-center relative z-10">
                         <span class="text-lg font-black text-primary uppercase italic text-center px-4"
                             id="latest-achievement">...</span>
                         <p class="text-[9px] font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Danh hiệu mới nhất
@@ -347,7 +397,8 @@
                             class="bg-white/30 backdrop-blur-md px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.4em] mb-8 inline-block">KHO
                             BÁU ELITE</span>
                         <h2 class="text-6xl font-[1000] tracking-tighter uppercase italic mb-6 leading-none">CỬA HÀNG
-                            <br><span class="text-amber-200">WINNER</span></h2>
+                            <br><span class="text-amber-200">WINNER</span>
+                        </h2>
                         <p class="text-xl font-bold text-white/90 italic leading-relaxed">"Quy đổi công sức làm việc tốt
                             của con thành những món quà thần kỳ!"</p>
                     </div>
