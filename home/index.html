@@ -15,29 +15,13 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fast Image Hydration Hint -->
-    <script>
-        (function () {
-            const pid = localStorage.getItem('family_quest_active_profile');
-            if (pid) {
-                const cache = localStorage.getItem('family_quest_state_v3_cache_' + pid);
-                if (cache) {
-                    try {
-                        const data = JSON.parse(cache);
-                        if (data.user && data.user.avatar) {
-                            const link = document.createElement('link');
-                            link.rel = 'preload';
-                            link.as = 'image';
-                            link.href = data.user.avatar;
-                            document.head.appendChild(link);
-                        }
-                    } catch (e) { }
-                }
-            }
-        })();
+    }
+    }
+    })();
     </script>
     <!-- Shared Scripts -->
-    <script src="../shared/js/state.js?v=1.1.0_CUTE_V2"></script>
-    <script src="../shared/js/components.js?v=1.1.0" defer></script>
+    <script src="../shared/js/state.js?v=1.1.2_FAST"></script>
+    <script src="../shared/js/components.js?v=1.1.2_FAST" defer></script>
     <!-- Theme Config -->
     <script>
         tailwind.config = {
@@ -287,19 +271,43 @@
                     class="absolute -inset-12 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-20 group-hover:opacity-60 transition-opacity animate-aura">
                 </div>
                 <div id="hero-avatar"
-                    class="size-56 md:size-80 rounded-[5rem] bg-slate-200 dark:bg-slate-800 bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-2">
+                    class="size-56 md:size-80 rounded-[5rem] bg-slate-200 dark:bg-slate-800 bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-2 animate-pulse">
                     <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-primary to-amber-600 text-white size-20 md:size-24 rounded-[2.5rem] md:rounded-[3rem] flex flex-col items-center justify-center border-4 border-white dark:border-slate-800 shadow-2xl"
                         id="hero-level-ring">
                         <span class="text-[10px] font-black uppercase tracking-tighter opacity-80">Cấp</span>
-                        <span class="font-[1000] text-3xl md:text-4xl leading-none mt-1" id="hero-level">1</span>
+                        <span class="font-[1000] text-3xl md:text-4xl leading-none mt-1" id="hero-level">&nbsp;</span>
                     </div>
                 </div>
+
+                <!-- HYDRATION SCRIPT: Run immediately after elements exist -->
+                <script>
+                    (function () {
+                        const pid = localStorage.getItem('family_quest_active_profile');
+                        if (!pid) return;
+                        const cache = localStorage.getItem('family_quest_state_v3_cache_' + pid);
+                        if (!cache) return;
+                        try {
+                            const data = JSON.parse(cache);
+                            const user = data.user;
+                            if (!user) return;
+                            const nameEl = document.getElementById('hero-name');
+                            const levelEl = document.getElementById('hero-level');
+                            const avatarEl = document.getElementById('hero-avatar');
+                            if (nameEl && user.name) nameEl.innerText = user.name;
+                            if (levelEl && user.level) levelEl.innerText = user.level;
+                            if (avatarEl && user.avatar) {
+                                avatarEl.style.backgroundImage = 'url("' + user.avatar + '")';
+                                avatarEl.classList.remove('animate-pulse'); // Stop pulsing once image is set
+                            }
+                        } catch (e) { }
+                    })();
+                </script>
             </div>
 
             <!-- Identity -->
             <div class="mt-16 text-center relative z-10">
                 <h1 class="text-7xl md:text-9xl font-[1000] tracking-tighter uppercase italic text-slate-900 dark:text-white mb-4 drop-shadow-2xl"
-                    id="hero-name">ALEX</h1>
+                    id="hero-name">&nbsp;</h1>
                 <div
                     class="inline-flex items-center gap-4 bg-white/70 dark:bg-black/40 backdrop-blur-2xl px-10 py-4 rounded-full border border-white/30 shadow-2xl">
                     <div

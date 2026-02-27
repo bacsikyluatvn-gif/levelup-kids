@@ -70,7 +70,7 @@ window.GROWTH_BEHAVIORS = GROWTH_BEHAVIORS;
 
 // --- STICKER DATA MOVED TO stickers-data.js ---
 const defaultEmptyData = {
-        user: { id: null, name: 'Loading...', level: 1, xp: 0, maxXp: 100, gold: 0, stickers: 0, totalStickers: 0, water: 0, avatar: '' },
+        user: { id: null, name: '', level: '', xp: 0, maxXp: 100, gold: 0, stickers: 0, totalStickers: 0, water: 0, avatar: '' },
         leaderboard: [],
         quests: [],
         shopItems: [],
