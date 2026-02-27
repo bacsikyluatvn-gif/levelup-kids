@@ -356,21 +356,29 @@ class StateManager {
                                         const isBoy = idHash % 2 === 0;
 
                                         // Expanded Name Pools (Hàng nghìn tổ hợp)
-                                        const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương', 'Đinh', 'Trịnh', 'Mai', 'Lâm', 'Đoàn'];
+                                        const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương', 'Đinh', 'Trịnh', 'Mai', 'Lâm', 'Đoàn', 'Tạ', 'Trương', 'Quách', 'Lương', 'Đào', 'Hà', 'Võ', 'Nghiêm', 'Lục', 'Chu', 'Thân', 'Phùng', 'Bạch', 'Hứa', 'Giang'];
 
-                                        const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy', 'Khắc', 'Thanh', 'Khải', 'Mạnh', 'Hùng'];
-                                        const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh', 'Trí', 'Tâm', 'Hải', 'Phong', 'Việt'];
+                                        const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy', 'Khắc', 'Thanh', 'Khải', 'Mạnh', 'Hùng', 'Vĩnh', 'Trường', 'Tiến', 'Sơn', 'Ngọc', 'Kim', 'Bình', 'An', 'Hải', 'Việt', 'Nam', 'Hoàng'];
+                                        const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh', 'Trí', 'Tâm', 'Hải', 'Phong', 'Việt', 'Đăng', 'Dũng', 'Hoàng', 'Long', 'Lân', 'Phú', 'Quý', 'Thái', 'Thiện', 'Thắng', 'Tân', 'Tùng', 'Uy'];
 
-                                        const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh', 'Thanh', 'Hải', 'Mai', 'Lan', 'Kim'];
-                                        const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên', 'Huệ', 'Cúc', 'Trúc', 'Mây', 'Nắng'];
+                                        const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh', 'Thanh', 'Hải', 'Mai', 'Lan', 'Kim', 'Diễm', 'Hồng', 'Thục', 'Đan', 'Tâm', 'Linh', 'Trúc', 'An', 'Bích', 'Trâm', 'Nhã', 'Như'];
+                                        const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên', 'Huệ', 'Cúc', 'Trúc', 'Mây', 'Nắng', 'Quyên', 'Ly', 'San', 'Yến', 'Trang', 'Hương', 'Tú', 'Trâm', 'Mai', 'Lan', 'Đào', 'Mận'];
 
-                                        const nicknames = ['Sóc con', 'Thỏ béo', 'Gấu nhỏ', 'Ỉn con', 'Mèo lười', 'Bống xinh', 'Voi con', 'Cún yêu', 'Sâu nhỏ', 'Tít', 'Bin Bin', 'Zôn', 'Mít', 'Bơ', 'Táo', 'Dâu', 'Kem', 'Su Su', 'Bánh bao', 'Xúc xắc'];
+                                        const nicknames = [
+                                                'Sóc con', 'Thỏ béo', 'Gấu nhỏ', 'Ỉn con', 'Mèo lười', 'Bống xinh', 'Voi con', 'Cún yêu', 'Sâu nhỏ', 'Tít', 'Bin Bin', 'Zôn', 'Mít', 'Bơ', 'Táo', 'Dâu', 'Kem', 'Su Su', 'Bánh bao', 'Xúc xắc',
+                                                'Cà rốt', 'Khoai tây', 'Bắp ngô', 'Xoài xanh', 'Dưa hấu', 'Cam sành', 'Bưởi hồng', 'Măng cụt', 'Ô liu', 'Kiwi', 'Jerry', 'Mickey', 'Donald', 'Simba', 'Pikachu', 'Doraemon', 'Nobita', 'Shizuka', 'Chaien', 'Xeko',
+                                                'Batman', 'Ironman', 'Spiderman', 'Elsa', 'Anna', 'Olaf', 'Nana', 'Mimi', 'Lulu', 'Kiki', 'Tutu', 'Popo', 'Bebe', 'Chip', 'Xinh', 'Gạo', 'Bún', 'Phở', 'Mì', 'Tôm',
+                                                'Cốm', 'Vừng', 'Đậu', 'Lạc', 'Ngô', 'Sắn', 'Dâu tây', 'Việt quất', 'Mâm xôi', 'Hạt dẻ', 'Hạt óc chó', 'Bơ sáp', 'Na Chi Lăng', 'Vải Thiều', 'Nhãn lồng', 'Mít mật', 'Sầu riêng', 'Thanh long', 'Khế ngọt', 'Ổi găng',
+                                                'Mận hậu', 'Đào Sa Pa', 'Mơ Bắc Kạn', 'Quất hồng bì', 'Hồng Gia Định', 'Na bở', 'Dứa mật', 'Kiwi vàng', 'Nho tím', 'Sim tím', 'Sen hồng', 'Súng xanh', 'Cúc họa mi', 'Hướng dương', 'Bồ công anh', 'Lavender', 'Tulip', 'Hoa giấy', 'Mai vàng', 'Đào thắm',
+                                                'Lan hồ điệp', 'Trạng nguyên', 'Bách hợp', 'Cẩm tú cầu', 'Thạch thảo', 'Họa mi', 'Sơn ca', 'Vàng anh', 'Yến phụng', 'Khướu đầu trắng', 'Chào mào', 'Sáo sậu', 'Đại bàng', 'Hải âu', 'Chim cánh cụt', 'Vẹt xanh', 'Thiên nga', 'Sếu đầu đỏ', 'Cò trắng', 'Vịt bầu'
+                                        ];
 
                                         // Use different multiplication factors for each index to maximize variation
-                                        const sIdx = idHash % surnames.length;
-                                        const mIdx = (idHash * 3 + 7) % 20;
-                                        const nIdx = (idHash * 7 + 13) % 25;
-                                        const nickIdx = (idHash * 11 + 3) % nicknames.length;
+                                        // Adding a larger prime to the hash to spread distribution
+                                        const sIdx = (idHash * 17) % surnames.length;
+                                        const mIdx = (idHash * 31 + 7) % (isBoy ? boyMiddles.length : girlMiddles.length);
+                                        const nIdx = (idHash * 47 + 13) % (isBoy ? boyNames.length : girlNames.length);
+                                        const nickIdx = (idHash * 97 + 3) % nicknames.length;
 
                                         if (isBoy) {
                                                 name = `${surnames[sIdx]} ${boyMiddles[mIdx]} ${boyNames[nIdx]}`;
@@ -379,6 +387,7 @@ class StateManager {
                                         }
 
                                         // 40% chance: Only Nickname (for extra shortness as requested)
+                                        // Use idHash % 100 for more granular probability control
                                         if (idHash % 10 < 4) {
                                                 name = nicknames[nickIdx];
                                         } else if (idHash % 10 < 7) {
