@@ -111,13 +111,18 @@ class StateManager {
                         const cacheKey = `family_quest_state_v3_cache_${profileId}`;
                         const cached = localStorage.getItem(cacheKey);
                         if (cached) {
-                                const parsed = JSON.parse(cached);
-                                if (parsed.user) {
-                                        // KHÔNG xóa unlockedStickers nữa để có thể gộp khi load lại trang
+                                try {
+                                        const parsed = JSON.parse(cached);
+                                        // Merge with default to be safe
+                                        this.data = { ...this.data, ...parsed };
+                                        // Lưu lại bản sao cache của user để gộp với DB trong lần sync đầu tiên
+                                        if (this.data.user && this.data.user.id) {
+                                                this._initialUserCache = JSON.parse(JSON.stringify(this.data.user));
+                                        }
+                                        console.log(`[State] 🚀 Đã nạp dữ liệu cache riêng cho profile: ${profileId}`);
+                                } catch (e) {
+                                        console.error("[State] Cache parse error:", e);
                                 }
-                                // Merge with default to be safe
-                                this.data = { ...this.data, ...parsed };
-                                console.log(`[State] 🚀 Đã nạp dữ liệu cache riêng cho profile: ${profileId}`);
                         }
                 } catch (e) {
                         console.error("[State] Cache load error:", e);
@@ -320,25 +325,39 @@ class StateManager {
 
                 // --- PROCESS PROFILES (ALWAYS) ---
                 this.data.leaderboard = profiles.map(p => {
-                        const idHash = p.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                        // Robust hash for components based on position (similar to Java's hashCode)
+                        const getHashCode = (str) => {
+                                let hash = 0;
+                                for (let i = 0; i < str.length; i++) {
+                                        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                                        hash |= 0; // Convert to 32bit integer
+                                }
+                                return Math.abs(hash);
+                        };
+
+                        const idHash = getHashCode(p.id);
                         let name = (p.name || "Bé").replace(' (Bot)', '').trim();
                         let avatar = p.avatar;
 
                         if (p.role === 'bot') {
                                 const isBoy = idHash % 2 === 0;
 
-                                // Hệ thống tạo tên tổ hợp để đảm bảo tính duy nhất (Unique)
-                                const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương'];
+                                // Expanded Name Pools (Hàng nghìn tổ hợp)
+                                const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương', 'Đinh', 'Trịnh', 'Mai', 'Lâm', 'Đoàn'];
 
-                                const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy'];
-                                const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh'];
+                                const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy', 'Khắc', 'Thanh', 'Khải', 'Mạnh', 'Hùng'];
+                                const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh', 'Trí', 'Tâm', 'Hải', 'Phong', 'Việt'];
 
-                                const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh'];
-                                const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên'];
+                                const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh', 'Thanh', 'Hải', 'Mai', 'Lan', 'Kim'];
+                                const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên', 'Huệ', 'Cúc', 'Trúc', 'Mây', 'Nắng'];
 
+                                const nicknames = ['Sóc con', 'Thỏ béo', 'Gấu nhỏ', 'Ỉn con', 'Mèo lười', 'Bống xinh', 'Voi con', 'Cún yêu', 'Sâu nhỏ', 'Tít', 'Bin Bin', 'Zôn', 'Mít', 'Bơ', 'Táo', 'Dâu', 'Kem', 'Su Su', 'Bánh bao', 'Xúc xắc'];
+
+                                // Use different multiplication factors for each index to maximize variation
                                 const sIdx = idHash % surnames.length;
-                                const mIdx = (idHash + 7) % 15;
-                                const nIdx = (idHash + 13) % 20;
+                                const mIdx = (idHash * 3 + 7) % 20;
+                                const nIdx = (idHash * 7 + 13) % 25;
+                                const nickIdx = (idHash * 11 + 3) % nicknames.length;
 
                                 if (isBoy) {
                                         name = `${surnames[sIdx]} ${boyMiddles[mIdx]} ${boyNames[nIdx]}`;
@@ -346,8 +365,16 @@ class StateManager {
                                         name = `${surnames[sIdx]} ${girlMiddles[mIdx]} ${girlNames[nIdx]}`;
                                 }
 
+                                // Randomly use nicknames as requested by user (20% chance)
+                                if (idHash % 5 === 0) {
+                                        name = nicknames[nickIdx];
+                                } else if (idHash % 3 === 0) {
+                                        // Combine name and nickname (1/3 chance)
+                                        name += ` (${nicknames[nickIdx]})`;
+                                }
+
                                 // Avatar: Dùng thuật toán băm khác để tránh trùng lặp với tên
-                                const avHash = p.id.split('').reduce((acc, char, i) => acc + (char.charCodeAt(0) * (i + 1)), 0);
+                                const avHash = getHashCode(p.id + "_avatar");
                                 const avPool = isBoy ? [1, 3, 4, 5, 9, 10, 15, 18, 19, 20] : [2, 6, 7, 8, 11, 12, 13, 14, 16, 17];
                                 avatar = `../shared/assets/generated_avatars/avatar_${avPool[avHash % avPool.length]}.png`;
                         }
@@ -458,45 +485,40 @@ class StateManager {
 
                         // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu (Tránh race condition khi đang Save)
                         if (!this._isUpdatingProfile) {
-                                const oldUser = this.data.user || {};
+                                // Lấy dữ liệu từ cache HOẶC state hiện tại để gộp
+                                const localUser = this.data.user && this.data.user.id === activeUser.id
+                                        ? this.data.user
+                                        : (this._initialUserCache || {});
+
                                 const newUser = { ...activeUser, isCurrentUser: true };
 
                                 // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
-                                // Tháo bỏ check this._initialSyncDone để cho phép gộp cả khi vừa F5 trang từ Cache
-                                if (oldUser.id === newUser.id) {
-                                        // 1. Gộp danh sách Sticker (Union) - chỉ dành cho chính người đó
+                                if (localUser.id === newUser.id) {
+                                        // 1. Gộp danh sách Sticker (Union)
                                         const mergedUnlocked = Array.from(new Set([
-                                                ...(oldUser.unlockedStickers || []),
+                                                ...(localUser.unlockedStickers || []),
                                                 ...(newUser.unlockedStickers || [])
                                         ]));
                                         newUser.unlockedStickers = mergedUnlocked;
 
                                         // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ (Sử dụng delta)
-                                        const localUnlockedCount = (oldUser.unlockedStickers || []).length;
+                                        const localUnlockedCount = (localUser.unlockedStickers || []).length;
                                         const dbUnlockedCount = (activeUser.unlockedStickers || []).length;
 
+                                        // Nếu local đã mở nhiều hơn DB, ta cần "bù" vào stickers để số tổng không đổi
                                         if (localUnlockedCount > dbUnlockedCount) {
                                                 const delta = localUnlockedCount - dbUnlockedCount;
-                                                // Nếu local đã mở nhiều hơn DB, ta trừ đi delta từ số dư mới của DB
-                                                // Điều này giúp bảo vệ cả các phần thưởng mới nhận từ Parent
+                                                // newUser.stickers lúc này là giá trị từ DB (ví dụ 5)
+                                                // Ta trừ delta (ví dụ 1) để ra đúng số lượt còn lại (4)
                                                 newUser.stickers = Math.max(0, (newUser.stickers || 0) - delta);
-                                                console.log(`[Sync] 🛡️ Bảo vệ sticker: Local mở ${localUnlockedCount}, DB mở ${dbUnlockedCount}. Trừ delta ${delta}. Còn lại: ${newUser.stickers}`);
+                                                console.log(`[Sync] 🛡️ Bảo vệ sticker: Local(${localUnlockedCount}) > DB(${dbUnlockedCount}). Delta=${delta}. Stickers=${newUser.stickers}`);
                                         }
 
-                                        // 3. Tính lại totalStickers
-                                        newUser.totalStickers = Math.max(
-                                                newUser.totalStickers || 0,
-                                                newUser.unlockedStickers.length + (newUser.stickers || 0)
-                                        );
-                                } else {
-                                        // Nếu chuyển đổi sang profile khác hoàn toàn: 
-                                        // 1. Reset các trạng thái milestone để không hiện popup cũ cho người mới
-                                        this._lastTreeStage = undefined;
-                                        this._lastTitleIdx = undefined;
-                                        this._completedCollections = new Set();
-
-                                        // 2. KHÔNG gộp unlockedStickers. Dữ liệu newUser sẽ hoàn toàn từ DB của người mới.
-                                        console.log(`[State] 🔄 Chuyển đổi profile: ${oldUser.name} -> ${newUser.name}. Tách biệt kho Sticker.`);
+                                        // 3. Bảo vệ các chỉ số quan trọng khác nếu DB bị trễ (XP, Gold)
+                                        // Chỉ gộp nếu local cao hơn DB (tránh rollback do delay)
+                                        newUser.gold = Math.max(newUser.gold || 0, localUser.gold || 0);
+                                        newUser.xp = Math.max(newUser.xp || 0, localUser.xp || 0);
+                                        newUser.level = Math.max(newUser.level || 0, localUser.level || 1);
                                 }
 
                                 this.data.user = newUser;
