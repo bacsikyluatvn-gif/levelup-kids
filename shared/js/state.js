@@ -435,8 +435,9 @@ class StateManager {
                                 const oldUser = this.data.user || {};
                                 const newUser = { ...activeUser, isCurrentUser: true };
 
-                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
-                                if (oldUser.id === newUser.id) {
+                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng VÀ đã qua lần sync đầu tiên
+                                // Nếu là lần đầu tiên (ngay sau load hoặc đổi profile): Trust DB hoàn toàn để xóa sạch rác cache.
+                                if (oldUser.id === newUser.id && this._initialSyncDone) {
                                         // 1. Gộp danh sách Sticker (Union) - chỉ dành cho chính người đó
                                         const mergedUnlocked = Array.from(new Set([
                                                 ...(oldUser.unlockedStickers || []),
