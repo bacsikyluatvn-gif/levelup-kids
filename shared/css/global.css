@@ -130,6 +130,56 @@
     filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
 }
 
+@keyframes aura-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(238, 157, 43, 0.4), 0 0 40px rgba(238, 157, 43, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(238, 157, 43, 0.6), 0 0 80px rgba(238, 157, 43, 0.3);
+    }
+}
+
+@keyframes float-subtle {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shine-sweep {
+    0% {
+        transform: translateX(-100%) skewX(-15deg);
+    }
+
+    100% {
+        transform: translateX(200%) skewX(-15deg);
+    }
+}
+
+.animate-aura {
+    animation: aura-pulse 3s infinite ease-in-out;
+}
+
+.animate-float {
+    animation: float-subtle 4s infinite ease-in-out;
+}
+
+.animate-shine-sweep {
+    animation: shine-sweep 2s infinite linear;
+}
+
+.glow-text {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(238, 157, 43, 0.3);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
