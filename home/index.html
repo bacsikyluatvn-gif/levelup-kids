@@ -107,11 +107,23 @@
         }
 
         .cute-card {
-            @apply bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[3.5rem] p-8 shadow-2xl transition-all duration-300;
+            background-color: white;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 3.5rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .dark .cute-card {
+            background-color: rgba(15, 23, 42, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .cute-card:hover {
-            @apply -translate-y-3 shadow-[0_20px_40px_rgba(0, 0, 0, 0.1)];
+            transform: translateY(-0.75rem);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 1) 100%);
         }
 
@@ -121,20 +133,72 @@
 
         /* Unified Button Style */
         .btn-glass {
-            @apply mt-10 h-12 px-8 rounded-full text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 border border-white/20 backdrop-blur-md;
+            margin-top: 2.5rem;
+            height: 3rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+        }
+
+        .btn-glass:active {
+            transform: scale(0.95);
         }
 
         /* Icon Container Style */
         .icon-bloom {
-            @apply size-24 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl transform group-hover:scale-110 transition-all duration-500 relative z-10 border-4 border-white/20;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s;
+            position: relative;
+            z-index: 10;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .group:hover .icon-bloom {
+            transform: scale(1.1);
         }
 
         .icon-3d {
-            @apply w-28 h-28 object-contain mb-6 transition-transform group-hover:scale-110 group-hover:rotate-6 drop-shadow-2xl;
+            width: 7rem;
+            height: 7rem;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
         }
 
         .section-title {
-            @apply text-3xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tighter italic flex items-center gap-4;
+            font-size: 1.875rem;
+            font-weight: 1000;
+            color: rgba(30, 41, 59, 1);
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .dark .section-title {
+            color: white;
         }
     </style>
 </head>
