@@ -208,6 +208,61 @@
         .dark .section-title {
             color: white;
         }
+
+        /* Reward Tag Styles */
+        .reward-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.75rem;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .dark .reward-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .reward-tag i {
+            font-size: 14px;
+        }
+
+        .tag-gold {
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .tag-xp {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .tag-sticker {
+            color: #a855f7;
+            background: rgba(168, 85, 247, 0.1);
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .tag-water {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .tag-personality {
+            color: #f43f5e;
+            background: rgba(244, 63, 94, 0.1);
+            border-color: rgba(244, 63, 94, 0.2);
+        }
     </style>
 </head>
 
@@ -356,8 +411,16 @@
                     </div>
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHIỆM
                         VỤ</h3>
-                    <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Tích lũy vàng, exp, sticker
-                        & giọt nước"</p>
+                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                        <div class="reward-tag tag-gold"><span
+                                class="material-symbols-outlined !text-[14px]">payments</span>Vàng</div>
+                        <div class="reward-tag tag-xp"><span
+                                class="material-symbols-outlined !text-[14px]">bolt</span>XP</div>
+                        <div class="reward-tag tag-sticker"><span
+                                class="material-symbols-outlined !text-[14px]">sell</span>Sticker</div>
+                        <div class="reward-tag tag-water"><span
+                                class="material-symbols-outlined !text-[14px]">water_drop</span>Nước</div>
+                    </div>
                     <div class="btn-glass bg-amber-500/10 text-amber-600 border-amber-500/20" id="pending-count">
                         0 ĐANG CHỜ
                     </div>
@@ -380,8 +443,12 @@
                     </div>
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHẬT
                         KÝ</h3>
-                    <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Soi chiếu tâm hồn, nhận Điểm
-                        Nhân Cách."</p>
+                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                        <div class="reward-tag tag-personality"><span
+                                class="material-symbols-outlined !text-[14px]">psychology</span>Nhân Cách</div>
+                        <div class="reward-tag tag-xp"><span
+                                class="material-symbols-outlined !text-[14px]">bolt</span>XP</div>
+                    </div>
                     <div class="btn-glass bg-rose-500/10 text-rose-600 border-rose-500/20">
                         VIẾT NHẬT KÝ
                     </div>
@@ -403,8 +470,12 @@
                     </div>
                     <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">ĐẤU
                         TRƯỜNG</h3>
-                    <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Giao lưu bản lĩnh, thăng cấp
-                        kỹ năng."</p>
+                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                        <div class="reward-tag tag-xp"><span
+                                class="material-symbols-outlined !text-[14px]">military_tech</span>Kỹ năng</div>
+                        <div class="reward-tag tag-gold"><span
+                                class="material-symbols-outlined !text-[14px]">emoji_events</span>Hạng</div>
+                    </div>
                     <div class="btn-glass bg-blue-500/10 text-blue-600 border-blue-500/20" id="arena-status">
                         ĐANG CHỜ KÈO...
                     </div>
