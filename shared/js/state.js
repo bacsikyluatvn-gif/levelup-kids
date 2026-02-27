@@ -68,3690 +68,7 @@ const GROWTH_BEHAVIORS = {
 };
 window.GROWTH_BEHAVIORS = GROWTH_BEHAVIORS;
 
-window.STICKER_CATALOG = [
-        {
-                "id": "sticker_hellokitty_0_0",
-                "name": "Hello Kitty 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_0_0.png"
-        },
-        {
-                "id": "sticker_hellokitty_0_1",
-                "name": "Hello Kitty 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_0_1.png"
-        },
-        {
-                "id": "sticker_hellokitty_0_2",
-                "name": "Hello Kitty 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_0_2.png"
-        },
-        {
-                "id": "sticker_hellokitty_0_3",
-                "name": "Hello Kitty 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_0_3.png"
-        },
-        {
-                "id": "sticker_hellokitty_0_4",
-                "name": "Hello Kitty 0.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_0_4.png"
-        },
-        {
-                "id": "sticker_hellokitty_1_0",
-                "name": "Hello Kitty 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_1_0.png"
-        },
-        {
-                "id": "sticker_hellokitty_1_1",
-                "name": "Hello Kitty 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_1_1.png"
-        },
-        {
-                "id": "sticker_hellokitty_1_2",
-                "name": "Hello Kitty 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_1_2.png"
-        },
-        {
-                "id": "sticker_hellokitty_1_3",
-                "name": "Hello Kitty 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_1_3.png"
-        },
-        {
-                "id": "sticker_hellokitty_1_4",
-                "name": "Hello Kitty 1.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_1_4.png"
-        },
-        {
-                "id": "sticker_hellokitty_2_0",
-                "name": "Hello Kitty 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_2_0.png"
-        },
-        {
-                "id": "sticker_hellokitty_2_1",
-                "name": "Hello Kitty 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_2_1.png"
-        },
-        {
-                "id": "sticker_hellokitty_2_2",
-                "name": "Hello Kitty 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_2_2.png"
-        },
-        {
-                "id": "sticker_hellokitty_2_3",
-                "name": "Hello Kitty 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_2_3.png"
-        },
-        {
-                "id": "sticker_hellokitty_2_4",
-                "name": "Hello Kitty 2.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_2_4.png"
-        },
-        {
-                "id": "sticker_hellokitty_3_0",
-                "name": "Hello Kitty 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_3_0.png"
-        },
-        {
-                "id": "sticker_hellokitty_3_1",
-                "name": "Hello Kitty 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_3_1.png"
-        },
-        {
-                "id": "sticker_hellokitty_3_2",
-                "name": "Hello Kitty 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_3_2.png"
-        },
-        {
-                "id": "sticker_hellokitty_3_3",
-                "name": "Hello Kitty 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_3_3.png"
-        },
-        {
-                "id": "sticker_hellokitty_3_4",
-                "name": "Hello Kitty 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_hellokitty_3_4.png"
-        },
-        {
-                "id": "sticker_dragonball_0_0",
-                "name": "Ngọc Rồng 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_0_0.png"
-        },
-        {
-                "id": "sticker_dragonball_0_1",
-                "name": "Ngọc Rồng 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_0_1.png"
-        },
-        {
-                "id": "sticker_dragonball_0_2",
-                "name": "Ngọc Rồng 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_0_2.png"
-        },
-        {
-                "id": "sticker_dragonball_0_3",
-                "name": "Ngọc Rồng 0.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_0_3.png"
-        },
-        {
-                "id": "sticker_dragonball_0_4",
-                "name": "Ngọc Rồng 0.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_0_4.png"
-        },
-        {
-                "id": "sticker_dragonball_1_0",
-                "name": "Ngọc Rồng 1.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_1_0.png"
-        },
-        {
-                "id": "sticker_dragonball_1_1",
-                "name": "Ngọc Rồng 1.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_1_1.png"
-        },
-        {
-                "id": "sticker_dragonball_1_2",
-                "name": "Ngọc Rồng 1.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_1_2.png"
-        },
-        {
-                "id": "sticker_dragonball_1_3",
-                "name": "Ngọc Rồng 1.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_1_3.png"
-        },
-        {
-                "id": "sticker_dragonball_1_4",
-                "name": "Ngọc Rồng 1.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_1_4.png"
-        },
-        {
-                "id": "sticker_dragonball_2_0",
-                "name": "Ngọc Rồng 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_0.png"
-        },
-        {
-                "id": "sticker_dragonball_2_1",
-                "name": "Ngọc Rồng 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_1.png"
-        },
-        {
-                "id": "sticker_dragonball_2_2",
-                "name": "Ngọc Rồng 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_2.png"
-        },
-        {
-                "id": "sticker_dragonball_2_3",
-                "name": "Ngọc Rồng 2.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_3.png"
-        },
-        {
-                "id": "sticker_dragonball_2_4",
-                "name": "Ngọc Rồng 2.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_4.png"
-        },
-        {
-                "id": "sticker_dragonball_2_5",
-                "name": "Ngọc Rồng 2.5",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_2_5.png"
-        },
-        {
-                "id": "sticker_dragonball_3_0",
-                "name": "Ngọc Rồng 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_3_0.png"
-        },
-        {
-                "id": "sticker_dragonball_3_1",
-                "name": "Ngọc Rồng 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_3_1.png"
-        },
-        {
-                "id": "sticker_dragonball_3_2",
-                "name": "Ngọc Rồng 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_3_2.png"
-        },
-        {
-                "id": "sticker_dragonball_3_3",
-                "name": "Ngọc Rồng 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_3_3.png"
-        },
-        {
-                "id": "sticker_dragonball_3_4",
-                "name": "Ngọc Rồng 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball_3_4.png"
-        },
-        {
-                "id": "sticker_dragonball2_0_0",
-                "name": "Siêu Saiyan 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_0_0.png"
-        },
-        {
-                "id": "sticker_dragonball2_0_1",
-                "name": "Siêu Saiyan 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_0_1.png"
-        },
-        {
-                "id": "sticker_dragonball2_0_2",
-                "name": "Siêu Saiyan 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_0_2.png"
-        },
-        {
-                "id": "sticker_dragonball2_0_3",
-                "name": "Siêu Saiyan 0.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_0_3.png"
-        },
-        {
-                "id": "sticker_dragonball2_0_4",
-                "name": "Siêu Saiyan 0.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_0_4.png"
-        },
-        {
-                "id": "sticker_dragonball2_1_0",
-                "name": "Siêu Saiyan 1.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_1_0.png"
-        },
-        {
-                "id": "sticker_dragonball2_1_1",
-                "name": "Siêu Saiyan 1.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_1_1.png"
-        },
-        {
-                "id": "sticker_dragonball2_1_2",
-                "name": "Siêu Saiyan 1.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_1_2.png"
-        },
-        {
-                "id": "sticker_dragonball2_1_3",
-                "name": "Siêu Saiyan 1.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_1_3.png"
-        },
-        {
-                "id": "sticker_dragonball2_1_4",
-                "name": "Siêu Saiyan 1.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_1_4.png"
-        },
-        {
-                "id": "sticker_dragonball2_2_0",
-                "name": "Siêu Saiyan 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_2_0.png"
-        },
-        {
-                "id": "sticker_dragonball2_2_1",
-                "name": "Siêu Saiyan 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_2_1.png"
-        },
-        {
-                "id": "sticker_dragonball2_2_2",
-                "name": "Siêu Saiyan 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_2_2.png"
-        },
-        {
-                "id": "sticker_dragonball2_2_3",
-                "name": "Siêu Saiyan 2.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_2_3.png"
-        },
-        {
-                "id": "sticker_dragonball2_2_4",
-                "name": "Siêu Saiyan 2.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_2_4.png"
-        },
-        {
-                "id": "sticker_dragonball2_3_0",
-                "name": "Siêu Saiyan 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_3_0.png"
-        },
-        {
-                "id": "sticker_dragonball2_3_1",
-                "name": "Siêu Saiyan 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_3_1.png"
-        },
-        {
-                "id": "sticker_dragonball2_3_2",
-                "name": "Siêu Saiyan 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_3_2.png"
-        },
-        {
-                "id": "sticker_dragonball2_3_3",
-                "name": "Siêu Saiyan 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_3_3.png"
-        },
-        {
-                "id": "sticker_dragonball2_3_4",
-                "name": "Siêu Saiyan 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball2_3_4.png"
-        },
-        {
-                "id": "sticker_fastfood_0_0",
-                "name": "Đồ Ăn Nhanh 0.0",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_0_0.png"
-        },
-        {
-                "id": "sticker_fastfood_0_1",
-                "name": "Đồ Ăn Nhanh 0.1",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_0_1.png"
-        },
-        {
-                "id": "sticker_fastfood_0_2",
-                "name": "Đồ Ăn Nhanh 0.2",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_0_2.png"
-        },
-        {
-                "id": "sticker_fastfood_0_3",
-                "name": "Đồ Ăn Nhanh 0.3",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_0_3.png"
-        },
-        {
-                "id": "sticker_fastfood_0_4",
-                "name": "Đồ Ăn Nhanh 0.4",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_0_4.png"
-        },
-        {
-                "id": "sticker_fastfood_1_0",
-                "name": "Đồ Ăn Nhanh 1.0",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_1_0.png"
-        },
-        {
-                "id": "sticker_fastfood_1_1",
-                "name": "Đồ Ăn Nhanh 1.1",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_1_1.png"
-        },
-        {
-                "id": "sticker_fastfood_1_2",
-                "name": "Đồ Ăn Nhanh 1.2",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_1_2.png"
-        },
-        {
-                "id": "sticker_fastfood_1_3",
-                "name": "Đồ Ăn Nhanh 1.3",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_1_3.png"
-        },
-        {
-                "id": "sticker_fastfood_1_4",
-                "name": "Đồ Ăn Nhanh 1.4",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_1_4.png"
-        },
-        {
-                "id": "sticker_fastfood_2_0",
-                "name": "Đồ Ăn Nhanh 2.0",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_2_0.png"
-        },
-        {
-                "id": "sticker_fastfood_2_1",
-                "name": "Đồ Ăn Nhanh 2.1",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_2_1.png"
-        },
-        {
-                "id": "sticker_fastfood_2_2",
-                "name": "Đồ Ăn Nhanh 2.2",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_2_2.png"
-        },
-        {
-                "id": "sticker_fastfood_2_3",
-                "name": "Đồ Ăn Nhanh 2.3",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_2_3.png"
-        },
-        {
-                "id": "sticker_fastfood_2_4",
-                "name": "Đồ Ăn Nhanh 2.4",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_2_4.png"
-        },
-        {
-                "id": "sticker_fastfood_3_0",
-                "name": "Đồ Ăn Nhanh 3.0",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_3_0.png"
-        },
-        {
-                "id": "sticker_fastfood_3_1",
-                "name": "Đồ Ăn Nhanh 3.1",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_3_1.png"
-        },
-        {
-                "id": "sticker_fastfood_3_2",
-                "name": "Đồ Ăn Nhanh 3.2",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_3_2.png"
-        },
-        {
-                "id": "sticker_fastfood_3_3",
-                "name": "Đồ Ăn Nhanh 3.3",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_3_3.png"
-        },
-        {
-                "id": "sticker_fastfood_3_4",
-                "name": "Đồ Ăn Nhanh 3.4",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_3_4.png"
-        },
-        {
-                "id": "sticker_fastfood_4_0",
-                "name": "Đồ Ăn Nhanh 4.0",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_4_0.png"
-        },
-        {
-                "id": "sticker_fastfood_4_1",
-                "name": "Đồ Ăn Nhanh 4.1",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_4_1.png"
-        },
-        {
-                "id": "sticker_fastfood_4_2",
-                "name": "Đồ Ăn Nhanh 4.2",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_4_2.png"
-        },
-        {
-                "id": "sticker_fastfood_4_3",
-                "name": "Đồ Ăn Nhanh 4.3",
-                "collection": "food",
-                "img": "../stickers/sticker_fastfood_4_3.png"
-        },
-        {
-                "id": "sticker_flower_0_0",
-                "name": "Hoa Đẹp 0.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_0_0.png"
-        },
-        {
-                "id": "sticker_flower_0_1",
-                "name": "Hoa Đẹp 0.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_0_1.png"
-        },
-        {
-                "id": "sticker_flower_0_2",
-                "name": "Hoa Đẹp 0.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_0_2.png"
-        },
-        {
-                "id": "sticker_flower_0_3",
-                "name": "Hoa Đẹp 0.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_0_3.png"
-        },
-        {
-                "id": "sticker_flower_0_4",
-                "name": "Hoa Đẹp 0.4",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_0_4.png"
-        },
-        {
-                "id": "sticker_flower_1_0",
-                "name": "Hoa Đẹp 1.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_1_0.png"
-        },
-        {
-                "id": "sticker_flower_1_1",
-                "name": "Hoa Đẹp 1.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_1_1.png"
-        },
-        {
-                "id": "sticker_flower_1_2",
-                "name": "Hoa Đẹp 1.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_1_2.png"
-        },
-        {
-                "id": "sticker_flower_1_3",
-                "name": "Hoa Đẹp 1.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_1_3.png"
-        },
-        {
-                "id": "sticker_flower_1_4",
-                "name": "Hoa Đẹp 1.4",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_1_4.png"
-        },
-        {
-                "id": "sticker_flower_2_0",
-                "name": "Hoa Đẹp 2.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_2_0.png"
-        },
-        {
-                "id": "sticker_flower_2_1",
-                "name": "Hoa Đẹp 2.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_2_1.png"
-        },
-        {
-                "id": "sticker_flower_2_2",
-                "name": "Hoa Đẹp 2.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_2_2.png"
-        },
-        {
-                "id": "sticker_flower_2_3",
-                "name": "Hoa Đẹp 2.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_2_3.png"
-        },
-        {
-                "id": "sticker_flower_2_4",
-                "name": "Hoa Đẹp 2.4",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_2_4.png"
-        },
-        {
-                "id": "sticker_flower_3_0",
-                "name": "Hoa Đẹp 3.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_3_0.png"
-        },
-        {
-                "id": "sticker_flower_3_1",
-                "name": "Hoa Đẹp 3.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_3_1.png"
-        },
-        {
-                "id": "sticker_flower_3_2",
-                "name": "Hoa Đẹp 3.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_3_2.png"
-        },
-        {
-                "id": "sticker_flower_3_3",
-                "name": "Hoa Đẹp 3.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_3_3.png"
-        },
-        {
-                "id": "sticker_flower_3_4",
-                "name": "Hoa Đẹp 3.4",
-                "collection": "nature",
-                "img": "../stickers/sticker_flower_3_4.png"
-        },
-        {
-                "id": "sticker_hero_0_0",
-                "name": "Anh Hùng 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_0_0.png"
-        },
-        {
-                "id": "sticker_hero_0_1",
-                "name": "Anh Hùng 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_0_1.png"
-        },
-        {
-                "id": "sticker_hero_0_2",
-                "name": "Anh Hùng 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_0_2.png"
-        },
-        {
-                "id": "sticker_hero_0_3",
-                "name": "Anh Hùng 0.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_0_3.png"
-        },
-        {
-                "id": "sticker_hero_0_4",
-                "name": "Anh Hùng 0.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_0_4.png"
-        },
-        {
-                "id": "sticker_hero_1_0",
-                "name": "Anh Hùng 1.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_1_0.png"
-        },
-        {
-                "id": "sticker_hero_1_1",
-                "name": "Anh Hùng 1.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_1_1.png"
-        },
-        {
-                "id": "sticker_hero_1_2",
-                "name": "Anh Hùng 1.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_1_2.png"
-        },
-        {
-                "id": "sticker_hero_1_3",
-                "name": "Anh Hùng 1.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_1_3.png"
-        },
-        {
-                "id": "sticker_hero_1_4",
-                "name": "Anh Hùng 1.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_1_4.png"
-        },
-        {
-                "id": "sticker_hero_2_0",
-                "name": "Anh Hùng 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_2_0.png"
-        },
-        {
-                "id": "sticker_hero_2_1",
-                "name": "Anh Hùng 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_2_1.png"
-        },
-        {
-                "id": "sticker_hero_2_2",
-                "name": "Anh Hùng 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_2_2.png"
-        },
-        {
-                "id": "sticker_hero_2_3",
-                "name": "Anh Hùng 2.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_2_3.png"
-        },
-        {
-                "id": "sticker_hero_2_4",
-                "name": "Anh Hùng 2.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_2_4.png"
-        },
-        {
-                "id": "sticker_hero_3_0",
-                "name": "Anh Hùng 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_3_0.png"
-        },
-        {
-                "id": "sticker_hero_3_1",
-                "name": "Anh Hùng 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_3_1.png"
-        },
-        {
-                "id": "sticker_hero_3_2",
-                "name": "Anh Hùng 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_3_2.png"
-        },
-        {
-                "id": "sticker_hero_3_3",
-                "name": "Anh Hùng 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_3_3.png"
-        },
-        {
-                "id": "sticker_hero_3_4",
-                "name": "Anh Hùng 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_hero_3_4.png"
-        },
-        {
-                "id": "sticker_koromi_0_0",
-                "name": "Koromi 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_0_0.png"
-        },
-        {
-                "id": "sticker_koromi_0_1",
-                "name": "Koromi 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_0_1.png"
-        },
-        {
-                "id": "sticker_koromi_0_2",
-                "name": "Koromi 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_0_2.png"
-        },
-        {
-                "id": "sticker_koromi_0_3",
-                "name": "Koromi 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_0_3.png"
-        },
-        {
-                "id": "sticker_koromi_1_0",
-                "name": "Koromi 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_1_0.png"
-        },
-        {
-                "id": "sticker_koromi_1_1",
-                "name": "Koromi 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_1_1.png"
-        },
-        {
-                "id": "sticker_koromi_1_2",
-                "name": "Koromi 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_1_2.png"
-        },
-        {
-                "id": "sticker_koromi_1_3",
-                "name": "Koromi 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_1_3.png"
-        },
-        {
-                "id": "sticker_koromi_2_0",
-                "name": "Koromi 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_2_0.png"
-        },
-        {
-                "id": "sticker_koromi_2_1",
-                "name": "Koromi 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_2_1.png"
-        },
-        {
-                "id": "sticker_koromi_2_2",
-                "name": "Koromi 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_2_2.png"
-        },
-        {
-                "id": "sticker_koromi_2_3",
-                "name": "Koromi 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_2_3.png"
-        },
-        {
-                "id": "sticker_koromi_3_0",
-                "name": "Koromi 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_3_0.png"
-        },
-        {
-                "id": "sticker_koromi_3_1",
-                "name": "Koromi 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_3_1.png"
-        },
-        {
-                "id": "sticker_koromi_3_2",
-                "name": "Koromi 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_3_2.png"
-        },
-        {
-                "id": "sticker_koromi_3_3",
-                "name": "Koromi 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_koromi_3_3.png"
-        },
-        {
-                "id": "sticker_magic_0_0",
-                "name": "Pháp Thuật 0.0",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_0_0.png"
-        },
-        {
-                "id": "sticker_magic_0_1",
-                "name": "Pháp Thuật 0.1",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_0_1.png"
-        },
-        {
-                "id": "sticker_magic_0_2",
-                "name": "Pháp Thuật 0.2",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_0_2.png"
-        },
-        {
-                "id": "sticker_magic_0_3",
-                "name": "Pháp Thuật 0.3",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_0_3.png"
-        },
-        {
-                "id": "sticker_magic_0_4",
-                "name": "Pháp Thuật 0.4",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_0_4.png"
-        },
-        {
-                "id": "sticker_magic_1_0",
-                "name": "Pháp Thuật 1.0",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_1_0.png"
-        },
-        {
-                "id": "sticker_magic_1_1",
-                "name": "Pháp Thuật 1.1",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_1_1.png"
-        },
-        {
-                "id": "sticker_magic_1_2",
-                "name": "Pháp Thuật 1.2",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_1_2.png"
-        },
-        {
-                "id": "sticker_magic_1_3",
-                "name": "Pháp Thuật 1.3",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_1_3.png"
-        },
-        {
-                "id": "sticker_magic_1_4",
-                "name": "Pháp Thuật 1.4",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_1_4.png"
-        },
-        {
-                "id": "sticker_magic_2_0",
-                "name": "Pháp Thuật 2.0",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_0.png"
-        },
-        {
-                "id": "sticker_magic_2_1",
-                "name": "Pháp Thuật 2.1",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_1.png"
-        },
-        {
-                "id": "sticker_magic_2_2",
-                "name": "Pháp Thuật 2.2",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_2.png"
-        },
-        {
-                "id": "sticker_magic_2_3",
-                "name": "Pháp Thuật 2.3",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_3.png"
-        },
-        {
-                "id": "sticker_magic_2_4",
-                "name": "Pháp Thuật 2.4",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_4.png"
-        },
-        {
-                "id": "sticker_magic_2_5",
-                "name": "Pháp Thuật 2.5",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_2_5.png"
-        },
-        {
-                "id": "sticker_magic_3_0",
-                "name": "Pháp Thuật 3.0",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_3_0.png"
-        },
-        {
-                "id": "sticker_magic_3_1",
-                "name": "Pháp Thuật 3.1",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_3_1.png"
-        },
-        {
-                "id": "sticker_magic_3_2",
-                "name": "Pháp Thuật 3.2",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_3_2.png"
-        },
-        {
-                "id": "sticker_magic_3_3",
-                "name": "Pháp Thuật 3.3",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_3_3.png"
-        },
-        {
-                "id": "sticker_magic_3_4",
-                "name": "Pháp Thuật 3.4",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_3_4.png"
-        },
-        {
-                "id": "sticker_magic_4_0",
-                "name": "Pháp Thuật 4.0",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_4_0.png"
-        },
-        {
-                "id": "sticker_magic_4_1",
-                "name": "Pháp Thuật 4.1",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_4_1.png"
-        },
-        {
-                "id": "sticker_magic_4_2",
-                "name": "Pháp Thuật 4.2",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_4_2.png"
-        },
-        {
-                "id": "sticker_magic_4_3",
-                "name": "Pháp Thuật 4.3",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_4_3.png"
-        },
-        {
-                "id": "sticker_magic_4_4",
-                "name": "Pháp Thuật 4.4",
-                "collection": "magic",
-                "img": "../stickers/sticker_magic_4_4.png"
-        },
-        {
-                "id": "sticker_panda_0_0",
-                "name": "Gấu Trúc 0.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_0_0.png"
-        },
-        {
-                "id": "sticker_panda_0_1",
-                "name": "Gấu Trúc 0.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_0_1.png"
-        },
-        {
-                "id": "sticker_panda_0_2",
-                "name": "Gấu Trúc 0.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_0_2.png"
-        },
-        {
-                "id": "sticker_panda_0_3",
-                "name": "Gấu Trúc 0.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_0_3.png"
-        },
-        {
-                "id": "sticker_panda_1_0",
-                "name": "Gấu Trúc 1.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_1_0.png"
-        },
-        {
-                "id": "sticker_panda_1_1",
-                "name": "Gấu Trúc 1.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_1_1.png"
-        },
-        {
-                "id": "sticker_panda_1_2",
-                "name": "Gấu Trúc 1.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_1_2.png"
-        },
-        {
-                "id": "sticker_panda_1_3",
-                "name": "Gấu Trúc 1.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_1_3.png"
-        },
-        {
-                "id": "sticker_panda_2_0",
-                "name": "Gấu Trúc 2.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_2_0.png"
-        },
-        {
-                "id": "sticker_panda_2_1",
-                "name": "Gấu Trúc 2.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_2_1.png"
-        },
-        {
-                "id": "sticker_panda_2_2",
-                "name": "Gấu Trúc 2.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_2_2.png"
-        },
-        {
-                "id": "sticker_panda_2_3",
-                "name": "Gấu Trúc 2.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_2_3.png"
-        },
-        {
-                "id": "sticker_panda_3_0",
-                "name": "Gấu Trúc 3.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_3_0.png"
-        },
-        {
-                "id": "sticker_panda_3_1",
-                "name": "Gấu Trúc 3.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_3_1.png"
-        },
-        {
-                "id": "sticker_panda_3_2",
-                "name": "Gấu Trúc 3.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_3_2.png"
-        },
-        {
-                "id": "sticker_panda_3_3",
-                "name": "Gấu Trúc 3.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_panda_3_3.png"
-        },
-        {
-                "id": "sticker_princess_0_0",
-                "name": "Công Chúa 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_0_0.png"
-        },
-        {
-                "id": "sticker_princess_0_1",
-                "name": "Công Chúa 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_0_1.png"
-        },
-        {
-                "id": "sticker_princess_0_2",
-                "name": "Công Chúa 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_0_2.png"
-        },
-        {
-                "id": "sticker_princess_0_3",
-                "name": "Công Chúa 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_0_3.png"
-        },
-        {
-                "id": "sticker_princess_2_0",
-                "name": "Công Chúa 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_2_0.png"
-        },
-        {
-                "id": "sticker_princess_2_1",
-                "name": "Công Chúa 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_2_1.png"
-        },
-        {
-                "id": "sticker_princess_2_2",
-                "name": "Công Chúa 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_2_2.png"
-        },
-        {
-                "id": "sticker_princess_2_3",
-                "name": "Công Chúa 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_2_3.png"
-        },
-        {
-                "id": "sticker_princess_3_0",
-                "name": "Công Chúa 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_3_0.png"
-        },
-        {
-                "id": "sticker_princess_3_1",
-                "name": "Công Chúa 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_3_1.png"
-        },
-        {
-                "id": "sticker_princess_3_2",
-                "name": "Công Chúa 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_3_2.png"
-        },
-        {
-                "id": "sticker_princess_3_3",
-                "name": "Công Chúa 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_3_3.png"
-        },
-        {
-                "id": "sticker_princess_3_4",
-                "name": "Công Chúa 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_3_4.png"
-        },
-        {
-                "id": "sticker_princess_4_0",
-                "name": "Công Chúa 4.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_4_0.png"
-        },
-        {
-                "id": "sticker_princess_4_1",
-                "name": "Công Chúa 4.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_4_1.png"
-        },
-        {
-                "id": "sticker_princess_4_2",
-                "name": "Công Chúa 4.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_4_2.png"
-        },
-        {
-                "id": "sticker_princess_4_3",
-                "name": "Công Chúa 4.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_4_3.png"
-        },
-        {
-                "id": "sticker_princess_4_4",
-                "name": "Công Chúa 4.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_4_4.png"
-        },
-        {
-                "id": "sticker_princess_5_0",
-                "name": "Công Chúa 5.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_5_0.png"
-        },
-        {
-                "id": "sticker_princess_5_1",
-                "name": "Công Chúa 5.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_5_1.png"
-        },
-        {
-                "id": "sticker_princess_5_2",
-                "name": "Công Chúa 5.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_5_2.png"
-        },
-        {
-                "id": "sticker_princess_5_3",
-                "name": "Công Chúa 5.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_5_3.png"
-        },
-        {
-                "id": "sticker_princess_5_4",
-                "name": "Công Chúa 5.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess_5_4.png"
-        },
-        {
-                "id": "sticker_princess1_0_0",
-                "name": "Công Chúa 1 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_0.png"
-        },
-        {
-                "id": "sticker_princess1_0_1",
-                "name": "Công Chúa 1 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_1.png"
-        },
-        {
-                "id": "sticker_princess1_0_2",
-                "name": "Công Chúa 1 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_2.png"
-        },
-        {
-                "id": "sticker_princess1_0_3",
-                "name": "Công Chúa 1 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_3.png"
-        },
-        {
-                "id": "sticker_princess1_0_4",
-                "name": "Công Chúa 1 0.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_4.png"
-        },
-        {
-                "id": "sticker_princess1_0_5",
-                "name": "Công Chúa 1 0.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_0_5.png"
-        },
-        {
-                "id": "sticker_princess1_1_0",
-                "name": "Công Chúa 1 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_0.png"
-        },
-        {
-                "id": "sticker_princess1_1_1",
-                "name": "Công Chúa 1 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_1.png"
-        },
-        {
-                "id": "sticker_princess1_1_2",
-                "name": "Công Chúa 1 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_2.png"
-        },
-        {
-                "id": "sticker_princess1_1_3",
-                "name": "Công Chúa 1 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_3.png"
-        },
-        {
-                "id": "sticker_princess1_1_4",
-                "name": "Công Chúa 1 1.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_4.png"
-        },
-        {
-                "id": "sticker_princess1_1_5",
-                "name": "Công Chúa 1 1.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_1_5.png"
-        },
-        {
-                "id": "sticker_princess1_2_0",
-                "name": "Công Chúa 1 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_0.png"
-        },
-        {
-                "id": "sticker_princess1_2_1",
-                "name": "Công Chúa 1 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_1.png"
-        },
-        {
-                "id": "sticker_princess1_2_2",
-                "name": "Công Chúa 1 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_2.png"
-        },
-        {
-                "id": "sticker_princess1_2_3",
-                "name": "Công Chúa 1 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_3.png"
-        },
-        {
-                "id": "sticker_princess1_2_4",
-                "name": "Công Chúa 1 2.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_4.png"
-        },
-        {
-                "id": "sticker_princess1_2_5",
-                "name": "Công Chúa 1 2.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_2_5.png"
-        },
-        {
-                "id": "sticker_princess1_3_0",
-                "name": "Công Chúa 1 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_0.png"
-        },
-        {
-                "id": "sticker_princess1_3_1",
-                "name": "Công Chúa 1 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_1.png"
-        },
-        {
-                "id": "sticker_princess1_3_2",
-                "name": "Công Chúa 1 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_2.png"
-        },
-        {
-                "id": "sticker_princess1_3_3",
-                "name": "Công Chúa 1 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_3.png"
-        },
-        {
-                "id": "sticker_princess1_3_4",
-                "name": "Công Chúa 1 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_4.png"
-        },
-        {
-                "id": "sticker_princess1_3_5",
-                "name": "Công Chúa 1 3.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess1_3_5.png"
-        },
-        {
-                "id": "sticker_princess2_0_0",
-                "name": "Công Chúa 2 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_0.png"
-        },
-        {
-                "id": "sticker_princess2_0_1",
-                "name": "Công Chúa 2 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_1.png"
-        },
-        {
-                "id": "sticker_princess2_0_2",
-                "name": "Công Chúa 2 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_2.png"
-        },
-        {
-                "id": "sticker_princess2_0_3",
-                "name": "Công Chúa 2 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_3.png"
-        },
-        {
-                "id": "sticker_princess2_0_4",
-                "name": "Công Chúa 2 0.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_4.png"
-        },
-        {
-                "id": "sticker_princess2_0_5",
-                "name": "Công Chúa 2 0.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_0_5.png"
-        },
-        {
-                "id": "sticker_princess2_1_0",
-                "name": "Công Chúa 2 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_0.png"
-        },
-        {
-                "id": "sticker_princess2_1_1",
-                "name": "Công Chúa 2 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_1.png"
-        },
-        {
-                "id": "sticker_princess2_1_2",
-                "name": "Công Chúa 2 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_2.png"
-        },
-        {
-                "id": "sticker_princess2_1_3",
-                "name": "Công Chúa 2 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_3.png"
-        },
-        {
-                "id": "sticker_princess2_1_4",
-                "name": "Công Chúa 2 1.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_4.png"
-        },
-        {
-                "id": "sticker_princess2_1_5",
-                "name": "Công Chúa 2 1.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_1_5.png"
-        },
-        {
-                "id": "sticker_princess2_2_0",
-                "name": "Công Chúa 2 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_0.png"
-        },
-        {
-                "id": "sticker_princess2_2_1",
-                "name": "Công Chúa 2 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_1.png"
-        },
-        {
-                "id": "sticker_princess2_2_2",
-                "name": "Công Chúa 2 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_2.png"
-        },
-        {
-                "id": "sticker_princess2_2_3",
-                "name": "Công Chúa 2 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_3.png"
-        },
-        {
-                "id": "sticker_princess2_2_4",
-                "name": "Công Chúa 2 2.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_4.png"
-        },
-        {
-                "id": "sticker_princess2_2_5",
-                "name": "Công Chúa 2 2.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_2_5.png"
-        },
-        {
-                "id": "sticker_princess2_3_0",
-                "name": "Công Chúa 2 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_0.png"
-        },
-        {
-                "id": "sticker_princess2_3_1",
-                "name": "Công Chúa 2 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_1.png"
-        },
-        {
-                "id": "sticker_princess2_3_2",
-                "name": "Công Chúa 2 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_2.png"
-        },
-        {
-                "id": "sticker_princess2_3_3",
-                "name": "Công Chúa 2 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_3.png"
-        },
-        {
-                "id": "sticker_princess2_3_4",
-                "name": "Công Chúa 2 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_4.png"
-        },
-        {
-                "id": "sticker_princess2_3_5",
-                "name": "Công Chúa 2 3.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_3_5.png"
-        },
-        {
-                "id": "sticker_princess2_4_0",
-                "name": "Công Chúa 2 4.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess2_4_0.png"
-        },
-        {
-                "id": "sticker_princess3_0_0",
-                "name": "Công Chúa 3 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_0_0.png"
-        },
-        {
-                "id": "sticker_princess3_0_1",
-                "name": "Công Chúa 3 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_0_1.png"
-        },
-        {
-                "id": "sticker_princess3_0_2",
-                "name": "Công Chúa 3 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_0_2.png"
-        },
-        {
-                "id": "sticker_princess3_0_3",
-                "name": "Công Chúa 3 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_0_3.png"
-        },
-        {
-                "id": "sticker_princess3_0_4",
-                "name": "Công Chúa 3 0.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_0_4.png"
-        },
-        {
-                "id": "sticker_princess3_1_0",
-                "name": "Công Chúa 3 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_1_0.png"
-        },
-        {
-                "id": "sticker_princess3_1_1",
-                "name": "Công Chúa 3 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_1_1.png"
-        },
-        {
-                "id": "sticker_princess3_1_2",
-                "name": "Công Chúa 3 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_1_2.png"
-        },
-        {
-                "id": "sticker_princess3_1_3",
-                "name": "Công Chúa 3 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_1_3.png"
-        },
-        {
-                "id": "sticker_princess3_1_4",
-                "name": "Công Chúa 3 1.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_1_4.png"
-        },
-        {
-                "id": "sticker_princess3_2_0",
-                "name": "Công Chúa 3 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_2_0.png"
-        },
-        {
-                "id": "sticker_princess3_2_1",
-                "name": "Công Chúa 3 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_2_1.png"
-        },
-        {
-                "id": "sticker_princess3_2_2",
-                "name": "Công Chúa 3 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_2_2.png"
-        },
-        {
-                "id": "sticker_princess3_2_3",
-                "name": "Công Chúa 3 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_2_3.png"
-        },
-        {
-                "id": "sticker_princess3_2_4",
-                "name": "Công Chúa 3 2.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_2_4.png"
-        },
-        {
-                "id": "sticker_princess3_3_0",
-                "name": "Công Chúa 3 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_3_0.png"
-        },
-        {
-                "id": "sticker_princess3_3_1",
-                "name": "Công Chúa 3 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_3_1.png"
-        },
-        {
-                "id": "sticker_princess3_3_2",
-                "name": "Công Chúa 3 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_3_2.png"
-        },
-        {
-                "id": "sticker_princess3_3_3",
-                "name": "Công Chúa 3 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_3_3.png"
-        },
-        {
-                "id": "sticker_princess3_3_4",
-                "name": "Công Chúa 3 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess3_3_4.png"
-        },
-        {
-                "id": "sticker_princess4_0_0",
-                "name": "Công Chúa 4 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_0_0.png"
-        },
-        {
-                "id": "sticker_princess4_0_1",
-                "name": "Công Chúa 4 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_0_1.png"
-        },
-        {
-                "id": "sticker_princess4_0_2",
-                "name": "Công Chúa 4 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_0_2.png"
-        },
-        {
-                "id": "sticker_princess4_0_3",
-                "name": "Công Chúa 4 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_0_3.png"
-        },
-        {
-                "id": "sticker_princess4_0_4",
-                "name": "Công Chúa 4 0.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_0_4.png"
-        },
-        {
-                "id": "sticker_princess4_1_0",
-                "name": "Công Chúa 4 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_1_0.png"
-        },
-        {
-                "id": "sticker_princess4_1_1",
-                "name": "Công Chúa 4 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_1_1.png"
-        },
-        {
-                "id": "sticker_princess4_1_2",
-                "name": "Công Chúa 4 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_1_2.png"
-        },
-        {
-                "id": "sticker_princess4_1_3",
-                "name": "Công Chúa 4 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_1_3.png"
-        },
-        {
-                "id": "sticker_princess4_1_4",
-                "name": "Công Chúa 4 1.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_1_4.png"
-        },
-        {
-                "id": "sticker_princess4_2_0",
-                "name": "Công Chúa 4 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_2_0.png"
-        },
-        {
-                "id": "sticker_princess4_2_1",
-                "name": "Công Chúa 4 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_2_1.png"
-        },
-        {
-                "id": "sticker_princess4_2_2",
-                "name": "Công Chúa 4 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_2_2.png"
-        },
-        {
-                "id": "sticker_princess4_2_3",
-                "name": "Công Chúa 4 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_2_3.png"
-        },
-        {
-                "id": "sticker_princess4_2_4",
-                "name": "Công Chúa 4 2.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_2_4.png"
-        },
-        {
-                "id": "sticker_princess4_3_0",
-                "name": "Công Chúa 4 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_3_0.png"
-        },
-        {
-                "id": "sticker_princess4_3_1",
-                "name": "Công Chúa 4 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_3_1.png"
-        },
-        {
-                "id": "sticker_princess4_3_2",
-                "name": "Công Chúa 4 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_3_2.png"
-        },
-        {
-                "id": "sticker_princess4_3_3",
-                "name": "Công Chúa 4 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_3_3.png"
-        },
-        {
-                "id": "sticker_princess4_3_4",
-                "name": "Công Chúa 4 3.4",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_princess4_3_4.png"
-        },
-        {
-                "id": "sticker_superhero_0_0",
-                "name": "Siêu Nhân 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_0_0.png"
-        },
-        {
-                "id": "sticker_superhero_0_1",
-                "name": "Siêu Nhân 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_0_1.png"
-        },
-        {
-                "id": "sticker_superhero_0_2",
-                "name": "Siêu Nhân 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_0_2.png"
-        },
-        {
-                "id": "sticker_superhero_2_0",
-                "name": "Siêu Nhân 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_2_0.png"
-        },
-        {
-                "id": "sticker_superhero_2_1",
-                "name": "Siêu Nhân 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_2_1.png"
-        },
-        {
-                "id": "sticker_superhero_2_2",
-                "name": "Siêu Nhân 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_2_2.png"
-        },
-        {
-                "id": "sticker_superhero_3_0",
-                "name": "Siêu Nhân 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_3_0.png"
-        },
-        {
-                "id": "sticker_superhero_3_1",
-                "name": "Siêu Nhân 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_3_1.png"
-        },
-        {
-                "id": "sticker_superhero_3_2",
-                "name": "Siêu Nhân 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_3_2.png"
-        },
-        {
-                "id": "sticker_superhero_3_3",
-                "name": "Siêu Nhân 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_3_3.png"
-        },
-        {
-                "id": "sticker_superhero_3_4",
-                "name": "Siêu Nhân 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_3_4.png"
-        },
-        {
-                "id": "sticker_superhero_4_0",
-                "name": "Siêu Nhân 4.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_4_0.png"
-        },
-        {
-                "id": "sticker_superhero_4_1",
-                "name": "Siêu Nhân 4.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_4_1.png"
-        },
-        {
-                "id": "sticker_superhero_4_2",
-                "name": "Siêu Nhân 4.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_4_2.png"
-        },
-        {
-                "id": "sticker_superhero_4_3",
-                "name": "Siêu Nhân 4.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_4_3.png"
-        },
-        {
-                "id": "sticker_superhero_4_4",
-                "name": "Siêu Nhân 4.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_superhero_4_4.png"
-        },
-        {
-                "id": "sticker_warrior_0_0",
-                "name": "Chiến Binh 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_0_0.png"
-        },
-        {
-                "id": "sticker_warrior_0_1",
-                "name": "Chiến Binh 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_0_1.png"
-        },
-        {
-                "id": "sticker_warrior_0_2",
-                "name": "Chiến Binh 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_0_2.png"
-        },
-        {
-                "id": "sticker_warrior_0_3",
-                "name": "Chiến Binh 0.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_0_3.png"
-        },
-        {
-                "id": "sticker_warrior_0_4",
-                "name": "Chiến Binh 0.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_0_4.png"
-        },
-        {
-                "id": "sticker_warrior_1_0",
-                "name": "Chiến Binh 1.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_1_0.png"
-        },
-        {
-                "id": "sticker_warrior_1_1",
-                "name": "Chiến Binh 1.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_1_1.png"
-        },
-        {
-                "id": "sticker_warrior_1_2",
-                "name": "Chiến Binh 1.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_1_2.png"
-        },
-        {
-                "id": "sticker_warrior_1_3",
-                "name": "Chiến Binh 1.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_1_3.png"
-        },
-        {
-                "id": "sticker_warrior_1_4",
-                "name": "Chiến Binh 1.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_1_4.png"
-        },
-        {
-                "id": "sticker_warrior_2_0",
-                "name": "Chiến Binh 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_2_0.png"
-        },
-        {
-                "id": "sticker_warrior_2_1",
-                "name": "Chiến Binh 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_2_1.png"
-        },
-        {
-                "id": "sticker_warrior_2_2",
-                "name": "Chiến Binh 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_2_2.png"
-        },
-        {
-                "id": "sticker_warrior_2_3",
-                "name": "Chiến Binh 2.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_2_3.png"
-        },
-        {
-                "id": "sticker_warrior_2_4",
-                "name": "Chiến Binh 2.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_2_4.png"
-        },
-        {
-                "id": "sticker_warrior_3_0",
-                "name": "Chiến Binh 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_3_0.png"
-        },
-        {
-                "id": "sticker_warrior_3_1",
-                "name": "Chiến Binh 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_3_1.png"
-        },
-        {
-                "id": "sticker_warrior_3_2",
-                "name": "Chiến Binh 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_3_2.png"
-        },
-        {
-                "id": "sticker_warrior_3_3",
-                "name": "Chiến Binh 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_3_3.png"
-        },
-        {
-                "id": "sticker_warrior_3_4",
-                "name": "Chiến Binh 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_3_4.png"
-        },
-        {
-                "id": "sticker_warrior_4_0",
-                "name": "Chiến Binh 4.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_4_0.png"
-        },
-        {
-                "id": "sticker_warrior_4_1",
-                "name": "Chiến Binh 4.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_4_1.png"
-        },
-        {
-                "id": "sticker_warrior_4_2",
-                "name": "Chiến Binh 4.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_4_2.png"
-        },
-        {
-                "id": "sticker_warrior_4_3",
-                "name": "Chiến Binh 4.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_4_3.png"
-        },
-        {
-                "id": "sticker_warrior_4_4",
-                "name": "Chiến Binh 4.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_warrior_4_4.png"
-        },
-        {
-                "id": "sticker_weather_0_0",
-                "name": "Thời Tiết 0.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_0_0.png"
-        },
-        {
-                "id": "sticker_weather_0_1",
-                "name": "Thời Tiết 0.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_0_1.png"
-        },
-        {
-                "id": "sticker_weather_0_2",
-                "name": "Thời Tiết 0.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_0_2.png"
-        },
-        {
-                "id": "sticker_weather_1_0",
-                "name": "Thời Tiết 1.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_1_0.png"
-        },
-        {
-                "id": "sticker_weather_1_1",
-                "name": "Thời Tiết 1.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_1_1.png"
-        },
-        {
-                "id": "sticker_weather_1_2",
-                "name": "Thời Tiết 1.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_1_2.png"
-        },
-        {
-                "id": "sticker_weather_1_3",
-                "name": "Thời Tiết 1.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_1_3.png"
-        },
-        {
-                "id": "sticker_weather_2_0",
-                "name": "Thời Tiết 2.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_2_0.png"
-        },
-        {
-                "id": "sticker_weather_2_1",
-                "name": "Thời Tiết 2.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_2_1.png"
-        },
-        {
-                "id": "sticker_weather_2_2",
-                "name": "Thời Tiết 2.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_2_2.png"
-        },
-        {
-                "id": "sticker_weather_2_3",
-                "name": "Thời Tiết 2.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_2_3.png"
-        },
-        {
-                "id": "sticker_weather_3_0",
-                "name": "Thời Tiết 3.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_3_0.png"
-        },
-        {
-                "id": "sticker_weather_3_1",
-                "name": "Thời Tiết 3.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_3_1.png"
-        },
-        {
-                "id": "sticker_weather_3_2",
-                "name": "Thời Tiết 3.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_3_2.png"
-        },
-        {
-                "id": "sticker_weather_3_3",
-                "name": "Thời Tiết 3.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_3_3.png"
-        },
-        {
-                "id": "sticker_weather_4_0",
-                "name": "Thời Tiết 4.0",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_4_0.png"
-        },
-        {
-                "id": "sticker_weather_4_1",
-                "name": "Thời Tiết 4.1",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_4_1.png"
-        },
-        {
-                "id": "sticker_weather_4_2",
-                "name": "Thời Tiết 4.2",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_4_2.png"
-        },
-        {
-                "id": "sticker_weather_4_3",
-                "name": "Thời Tiết 4.3",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_4_3.png"
-        },
-        {
-                "id": "sticker_weather_4_4",
-                "name": "Thời Tiết 4.4",
-                "collection": "nature",
-                "img": "../stickers/sticker_weather_4_4.png"
-        },
-        {
-                "id": "sticker_cute_0_0",
-                "name": "Dễ Thương 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_0_0.png"
-        },
-        {
-                "id": "sticker_cute_0_1",
-                "name": "Dễ Thương 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_0_1.png"
-        },
-        {
-                "id": "sticker_cute_0_2",
-                "name": "Dễ Thương 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_0_2.png"
-        },
-        {
-                "id": "sticker_cute_0_3",
-                "name": "Dễ Thương 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_0_3.png"
-        },
-        {
-                "id": "sticker_cute_2_0",
-                "name": "Dễ Thương 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_2_0.png"
-        },
-        {
-                "id": "sticker_cute_2_1",
-                "name": "Dễ Thương 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_2_1.png"
-        },
-        {
-                "id": "sticker_cute_2_2",
-                "name": "Dễ Thương 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_2_2.png"
-        },
-        {
-                "id": "sticker_cute_2_3",
-                "name": "Dễ Thương 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_2_3.png"
-        },
-        {
-                "id": "sticker_cute_4_0",
-                "name": "Dễ Thương 4.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_4_0.png"
-        },
-        {
-                "id": "sticker_cute_4_1",
-                "name": "Dễ Thương 4.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_4_1.png"
-        },
-        {
-                "id": "sticker_cute_4_2",
-                "name": "Dễ Thương 4.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_4_2.png"
-        },
-        {
-                "id": "sticker_cute_4_3",
-                "name": "Dễ Thương 4.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_4_3.png"
-        },
-        {
-                "id": "sticker_cute_6_0",
-                "name": "Dễ Thương 6.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_6_0.png"
-        },
-        {
-                "id": "sticker_cute_6_1",
-                "name": "Dễ Thương 6.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_6_1.png"
-        },
-        {
-                "id": "sticker_cute_6_3",
-                "name": "Dễ Thương 6.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_6_3.png"
-        },
-        {
-                "id": "sticker_cute_6_5",
-                "name": "Dễ Thương 6.5",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_cute_6_5.png"
-        },
-        {
-                "id": "sticker_dress_0_0",
-                "name": "Váy Đầm 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_0_0.png"
-        },
-        {
-                "id": "sticker_dress_0_1",
-                "name": "Váy Đầm 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_0_1.png"
-        },
-        {
-                "id": "sticker_dress_0_2",
-                "name": "Váy Đầm 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_0_2.png"
-        },
-        {
-                "id": "sticker_dress_0_3",
-                "name": "Váy Đầm 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_0_3.png"
-        },
-        {
-                "id": "sticker_dress_1_0",
-                "name": "Váy Đầm 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_1_0.png"
-        },
-        {
-                "id": "sticker_dress_1_1",
-                "name": "Váy Đầm 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_1_1.png"
-        },
-        {
-                "id": "sticker_dress_1_2",
-                "name": "Váy Đầm 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_1_2.png"
-        },
-        {
-                "id": "sticker_dress_1_3",
-                "name": "Váy Đầm 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_1_3.png"
-        },
-        {
-                "id": "sticker_dress_2_0",
-                "name": "Váy Đầm 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_2_0.png"
-        },
-        {
-                "id": "sticker_dress_2_1",
-                "name": "Váy Đầm 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_2_1.png"
-        },
-        {
-                "id": "sticker_dress_2_2",
-                "name": "Váy Đầm 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_2_2.png"
-        },
-        {
-                "id": "sticker_dress_2_3",
-                "name": "Váy Đầm 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_2_3.png"
-        },
-        {
-                "id": "sticker_dress_3_0",
-                "name": "Váy Đầm 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_3_0.png"
-        },
-        {
-                "id": "sticker_dress_3_1",
-                "name": "Váy Đầm 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_3_1.png"
-        },
-        {
-                "id": "sticker_dress_3_2",
-                "name": "Váy Đầm 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_3_2.png"
-        },
-        {
-                "id": "sticker_dress_3_3",
-                "name": "Váy Đầm 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_3_3.png"
-        },
-        {
-                "id": "sticker_dress_4_0",
-                "name": "Váy Đầm 4.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_4_0.png"
-        },
-        {
-                "id": "sticker_dress_4_1",
-                "name": "Váy Đầm 4.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_4_1.png"
-        },
-        {
-                "id": "sticker_dress_4_2",
-                "name": "Váy Đầm 4.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_4_2.png"
-        },
-        {
-                "id": "sticker_dress_4_3",
-                "name": "Váy Đầm 4.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_dress_4_3.png"
-        },
-        {
-                "id": "sticker_cake_0_0",
-                "name": "Bánh Ngọt 0.0",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_0_0.png"
-        },
-        {
-                "id": "sticker_cake_0_1",
-                "name": "Bánh Ngọt 0.1",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_0_1.png"
-        },
-        {
-                "id": "sticker_cake_0_2",
-                "name": "Bánh Ngọt 0.2",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_0_2.png"
-        },
-        {
-                "id": "sticker_cake_0_3",
-                "name": "Bánh Ngọt 0.3",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_0_3.png"
-        },
-        {
-                "id": "sticker_cake_1_0",
-                "name": "Bánh Ngọt 1.0",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_1_0.png"
-        },
-        {
-                "id": "sticker_cake_1_1",
-                "name": "Bánh Ngọt 1.1",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_1_1.png"
-        },
-        {
-                "id": "sticker_cake_1_2",
-                "name": "Bánh Ngọt 1.2",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_1_2.png"
-        },
-        {
-                "id": "sticker_cake_1_3",
-                "name": "Bánh Ngọt 1.3",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_1_3.png"
-        },
-        {
-                "id": "sticker_cake_2_0",
-                "name": "Bánh Ngọt 2.0",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_2_0.png"
-        },
-        {
-                "id": "sticker_cake_2_1",
-                "name": "Bánh Ngọt 2.1",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_2_1.png"
-        },
-        {
-                "id": "sticker_cake_2_2",
-                "name": "Bánh Ngọt 2.2",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_2_2.png"
-        },
-        {
-                "id": "sticker_cake_2_3",
-                "name": "Bánh Ngọt 2.3",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_2_3.png"
-        },
-        {
-                "id": "sticker_cake_3_0",
-                "name": "Bánh Ngọt 3.0",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_3_0.png"
-        },
-        {
-                "id": "sticker_cake_3_1",
-                "name": "Bánh Ngọt 3.1",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_3_1.png"
-        },
-        {
-                "id": "sticker_cake_3_2",
-                "name": "Bánh Ngọt 3.2",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_3_2.png"
-        },
-        {
-                "id": "sticker_cake_3_3",
-                "name": "Bánh Ngọt 3.3",
-                "collection": "food",
-                "img": "../stickers/sticker_cake_3_3.png"
-        },
-        {
-                "id": "sticker_animal1_0_0",
-                "name": "Thú Rừng 0.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_0_0.png"
-        },
-        {
-                "id": "sticker_animal1_0_1",
-                "name": "Thú Rừng 0.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_0_1.png"
-        },
-        {
-                "id": "sticker_animal1_0_2",
-                "name": "Thú Rừng 0.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_0_2.png"
-        },
-        {
-                "id": "sticker_animal1_0_3",
-                "name": "Thú Rừng 0.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_0_3.png"
-        },
-        {
-                "id": "sticker_animal1_1_0",
-                "name": "Thú Rừng 1.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_1_0.png"
-        },
-        {
-                "id": "sticker_animal1_1_1",
-                "name": "Thú Rừng 1.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_1_1.png"
-        },
-        {
-                "id": "sticker_animal1_1_2",
-                "name": "Thú Rừng 1.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_1_2.png"
-        },
-        {
-                "id": "sticker_animal1_1_3",
-                "name": "Thú Rừng 1.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_1_3.png"
-        },
-        {
-                "id": "sticker_animal1_2_0",
-                "name": "Thú Rừng 2.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_2_0.png"
-        },
-        {
-                "id": "sticker_animal1_2_1",
-                "name": "Thú Rừng 2.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_2_1.png"
-        },
-        {
-                "id": "sticker_animal1_2_2",
-                "name": "Thú Rừng 2.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_2_2.png"
-        },
-        {
-                "id": "sticker_animal1_2_3",
-                "name": "Thú Rừng 2.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_2_3.png"
-        },
-        {
-                "id": "sticker_animal1_3_0",
-                "name": "Thú Rừng 3.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_3_0.png"
-        },
-        {
-                "id": "sticker_animal1_3_1",
-                "name": "Thú Rừng 3.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_3_1.png"
-        },
-        {
-                "id": "sticker_animal1_3_2",
-                "name": "Thú Rừng 3.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_3_2.png"
-        },
-        {
-                "id": "sticker_animal1_3_3",
-                "name": "Thú Rừng 3.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal1_3_3.png"
-        },
-        {
-                "id": "sticker_animal2_0_0",
-                "name": "Thú Nuôi 0.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_0_0.png"
-        },
-        {
-                "id": "sticker_animal2_0_1",
-                "name": "Thú Nuôi 0.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_0_1.png"
-        },
-        {
-                "id": "sticker_animal2_0_2",
-                "name": "Thú Nuôi 0.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_0_2.png"
-        },
-        {
-                "id": "sticker_animal2_0_3",
-                "name": "Thú Nuôi 0.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_0_3.png"
-        },
-        {
-                "id": "sticker_animal2_1_0",
-                "name": "Thú Nuôi 1.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_1_0.png"
-        },
-        {
-                "id": "sticker_animal2_1_1",
-                "name": "Thú Nuôi 1.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_1_1.png"
-        },
-        {
-                "id": "sticker_animal2_1_2",
-                "name": "Thú Nuôi 1.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_1_2.png"
-        },
-        {
-                "id": "sticker_animal2_1_3",
-                "name": "Thú Nuôi 1.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_1_3.png"
-        },
-        {
-                "id": "sticker_animal2_2_0",
-                "name": "Thú Nuôi 2.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_2_0.png"
-        },
-        {
-                "id": "sticker_animal2_2_1",
-                "name": "Thú Nuôi 2.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_2_1.png"
-        },
-        {
-                "id": "sticker_animal2_2_2",
-                "name": "Thú Nuôi 2.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_2_2.png"
-        },
-        {
-                "id": "sticker_animal2_2_3",
-                "name": "Thú Nuôi 2.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_2_3.png"
-        },
-        {
-                "id": "sticker_animal2_3_0",
-                "name": "Thú Nuôi 3.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_3_0.png"
-        },
-        {
-                "id": "sticker_animal2_3_1",
-                "name": "Thú Nuôi 3.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_3_1.png"
-        },
-        {
-                "id": "sticker_animal2_3_2",
-                "name": "Thú Nuôi 3.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_3_2.png"
-        },
-        {
-                "id": "sticker_animal2_3_3",
-                "name": "Thú Nuôi 3.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal2_3_3.png"
-        },
-        {
-                "id": "sticker_animal3_0_0",
-                "name": "Thú Cưng 0.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_0_0.png"
-        },
-        {
-                "id": "sticker_animal3_0_1",
-                "name": "Thú Cưng 0.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_0_1.png"
-        },
-        {
-                "id": "sticker_animal3_0_2",
-                "name": "Thú Cưng 0.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_0_2.png"
-        },
-        {
-                "id": "sticker_animal3_0_3",
-                "name": "Thú Cưng 0.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_0_3.png"
-        },
-        {
-                "id": "sticker_animal3_1_0",
-                "name": "Thú Cưng 1.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_1_0.png"
-        },
-        {
-                "id": "sticker_animal3_1_1",
-                "name": "Thú Cưng 1.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_1_1.png"
-        },
-        {
-                "id": "sticker_animal3_1_2",
-                "name": "Thú Cưng 1.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_1_2.png"
-        },
-        {
-                "id": "sticker_animal3_1_3",
-                "name": "Thú Cưng 1.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_1_3.png"
-        },
-        {
-                "id": "sticker_animal3_2_0",
-                "name": "Thú Cưng 2.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_2_0.png"
-        },
-        {
-                "id": "sticker_animal3_2_1",
-                "name": "Thú Cưng 2.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_2_1.png"
-        },
-        {
-                "id": "sticker_animal3_2_2",
-                "name": "Thú Cưng 2.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_2_2.png"
-        },
-        {
-                "id": "sticker_animal3_2_3",
-                "name": "Thú Cưng 2.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_2_3.png"
-        },
-        {
-                "id": "sticker_animal3_3_0",
-                "name": "Thú Cưng 3.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_3_0.png"
-        },
-        {
-                "id": "sticker_animal3_3_1",
-                "name": "Thú Cưng 3.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_3_1.png"
-        },
-        {
-                "id": "sticker_animal3_3_2",
-                "name": "Thú Cưng 3.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_3_2.png"
-        },
-        {
-                "id": "sticker_animal3_3_3",
-                "name": "Thú Cưng 3.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal3_3_3.png"
-        },
-        {
-                "id": "sticker_animal4_0_0",
-                "name": "Bạn Nhỏ 0.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_0_0.png"
-        },
-        {
-                "id": "sticker_animal4_0_1",
-                "name": "Bạn Nhỏ 0.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_0_1.png"
-        },
-        {
-                "id": "sticker_animal4_0_2",
-                "name": "Bạn Nhỏ 0.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_0_2.png"
-        },
-        {
-                "id": "sticker_animal4_2_0",
-                "name": "Bạn Nhỏ 2.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_2_0.png"
-        },
-        {
-                "id": "sticker_animal4_2_1",
-                "name": "Bạn Nhỏ 2.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_2_1.png"
-        },
-        {
-                "id": "sticker_animal4_2_2",
-                "name": "Bạn Nhỏ 2.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_2_2.png"
-        },
-        {
-                "id": "sticker_animal4_3_0",
-                "name": "Bạn Nhỏ 3.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_3_0.png"
-        },
-        {
-                "id": "sticker_animal4_3_1",
-                "name": "Bạn Nhỏ 3.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_3_1.png"
-        },
-        {
-                "id": "sticker_animal4_3_2",
-                "name": "Bạn Nhỏ 3.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_3_2.png"
-        },
-        {
-                "id": "sticker_animal4_3_3",
-                "name": "Bạn Nhỏ 3.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_3_3.png"
-        },
-        {
-                "id": "sticker_animal4_4_0",
-                "name": "Bạn Nhỏ 4.0",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_4_0.png"
-        },
-        {
-                "id": "sticker_animal4_4_1",
-                "name": "Bạn Nhỏ 4.1",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_4_1.png"
-        },
-        {
-                "id": "sticker_animal4_4_2",
-                "name": "Bạn Nhỏ 4.2",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_4_2.png"
-        },
-        {
-                "id": "sticker_animal4_4_3",
-                "name": "Bạn Nhỏ 4.3",
-                "collection": "animals",
-                "img": "../stickers/sticker_animal4_4_3.png"
-        },
-        {
-                "id": "sticker_vutru_0_0",
-                "name": "Vũ Trụ 0.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_0_0.png"
-        },
-        {
-                "id": "sticker_vutru_0_1",
-                "name": "Vũ Trụ 0.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_0_1.png"
-        },
-        {
-                "id": "sticker_vutru_0_2",
-                "name": "Vũ Trụ 0.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_0_2.png"
-        },
-        {
-                "id": "sticker_vutru_0_3",
-                "name": "Vũ Trụ 0.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_0_3.png"
-        },
-        {
-                "id": "sticker_vutru_1_0",
-                "name": "Vũ Trụ 1.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_1_0.png"
-        },
-        {
-                "id": "sticker_vutru_1_1",
-                "name": "Vũ Trụ 1.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_1_1.png"
-        },
-        {
-                "id": "sticker_vutru_1_2",
-                "name": "Vũ Trụ 1.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_1_2.png"
-        },
-        {
-                "id": "sticker_vutru_1_3",
-                "name": "Vũ Trụ 1.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_1_3.png"
-        },
-        {
-                "id": "sticker_vutru_2_0",
-                "name": "Vũ Trụ 2.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_2_0.png"
-        },
-        {
-                "id": "sticker_vutru_2_1",
-                "name": "Vũ Trụ 2.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_2_1.png"
-        },
-        {
-                "id": "sticker_vutru_2_2",
-                "name": "Vũ Trụ 2.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_2_2.png"
-        },
-        {
-                "id": "sticker_vutru_2_3",
-                "name": "Vũ Trụ 2.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_2_3.png"
-        },
-        {
-                "id": "sticker_vutru_3_0",
-                "name": "Vũ Trụ 3.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_3_0.png"
-        },
-        {
-                "id": "sticker_vutru_3_1",
-                "name": "Vũ Trụ 3.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_3_1.png"
-        },
-        {
-                "id": "sticker_vutru_3_2",
-                "name": "Vũ Trụ 3.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_3_2.png"
-        },
-        {
-                "id": "sticker_vutru_3_3",
-                "name": "Vũ Trụ 3.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru_3_3.png"
-        },
-        {
-                "id": "sticker_vutru2_0_0",
-                "name": "Khám Phá Vũ Trụ 0.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_0_0.png"
-        },
-        {
-                "id": "sticker_vutru2_0_1",
-                "name": "Khám Phá Vũ Trụ 0.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_0_1.png"
-        },
-        {
-                "id": "sticker_vutru2_0_3",
-                "name": "Khám Phá Vũ Trụ 0.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_0_3.png"
-        },
-        {
-                "id": "sticker_vutru2_0_4",
-                "name": "Khám Phá Vũ Trụ 0.4",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_0_4.png"
-        },
-        {
-                "id": "sticker_vutru2_1_0",
-                "name": "Khám Phá Vũ Trụ 1.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_1_0.png"
-        },
-        {
-                "id": "sticker_vutru2_1_1",
-                "name": "Khám Phá Vũ Trụ 1.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_1_1.png"
-        },
-        {
-                "id": "sticker_vutru2_1_2",
-                "name": "Khám Phá Vũ Trụ 1.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_1_2.png"
-        },
-        {
-                "id": "sticker_vutru2_1_3",
-                "name": "Khám Phá Vũ Trụ 1.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_1_3.png"
-        },
-        {
-                "id": "sticker_vutru2_2_0",
-                "name": "Khám Phá Vũ Trụ 2.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_2_0.png"
-        },
-        {
-                "id": "sticker_vutru2_2_1",
-                "name": "Khám Phá Vũ Trụ 2.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_2_1.png"
-        },
-        {
-                "id": "sticker_vutru2_2_2",
-                "name": "Khám Phá Vũ Trụ 2.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_2_2.png"
-        },
-        {
-                "id": "sticker_vutru2_2_3",
-                "name": "Khám Phá Vũ Trụ 2.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_2_3.png"
-        },
-        {
-                "id": "sticker_vutru2_3_0",
-                "name": "Khám Phá Vũ Trụ 3.0",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_3_0.png"
-        },
-        {
-                "id": "sticker_vutru2_3_1",
-                "name": "Khám Phá Vũ Trụ 3.1",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_3_1.png"
-        },
-        {
-                "id": "sticker_vutru2_3_2",
-                "name": "Khám Phá Vũ Trụ 3.2",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_3_2.png"
-        },
-        {
-                "id": "sticker_vutru2_3_3",
-                "name": "Khám Phá Vũ Trụ 3.3",
-                "collection": "space",
-                "img": "../stickers/sticker_vutru2_3_3.png"
-        },
-        {
-                "id": "sticker_bong1_0_0",
-                "name": "Bóng Đá 0.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_bong1_0_0.png"
-        },
-        {
-                "id": "sticker_bong1_1_0",
-                "name": "Bóng Đá 1.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_bong1_1_0.png"
-        },
-        {
-                "id": "sticker_bong1_2_2",
-                "name": "Bóng Đá 2.2",
-                "collection": "sports",
-                "img": "../stickers/sticker_bong1_2_2.png"
-        },
-        {
-                "id": "sticker_thethao_0_0",
-                "name": "Thể Thao 0.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_0_0.png"
-        },
-        {
-                "id": "sticker_thethao_0_1",
-                "name": "Thể Thao 0.1",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_0_1.png"
-        },
-        {
-                "id": "sticker_thethao_0_2",
-                "name": "Thể Thao 0.2",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_0_2.png"
-        },
-        {
-                "id": "sticker_thethao_0_3",
-                "name": "Thể Thao 0.3",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_0_3.png"
-        },
-        {
-                "id": "sticker_thethao_1_0",
-                "name": "Thể Thao 1.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_1_0.png"
-        },
-        {
-                "id": "sticker_thethao_1_1",
-                "name": "Thể Thao 1.1",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_1_1.png"
-        },
-        {
-                "id": "sticker_thethao_1_2",
-                "name": "Thể Thao 1.2",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_1_2.png"
-        },
-        {
-                "id": "sticker_thethao_1_3",
-                "name": "Thể Thao 1.3",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_1_3.png"
-        },
-        {
-                "id": "sticker_thethao_2_0",
-                "name": "Thể Thao 2.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_2_0.png"
-        },
-        {
-                "id": "sticker_thethao_2_1",
-                "name": "Thể Thao 2.1",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_2_1.png"
-        },
-        {
-                "id": "sticker_thethao_2_2",
-                "name": "Thể Thao 2.2",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_2_2.png"
-        },
-        {
-                "id": "sticker_thethao_2_3",
-                "name": "Thể Thao 2.3",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_2_3.png"
-        },
-        {
-                "id": "sticker_thethao_3_0",
-                "name": "Thể Thao 3.0",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_3_0.png"
-        },
-        {
-                "id": "sticker_thethao_3_1",
-                "name": "Thể Thao 3.1",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_3_1.png"
-        },
-        {
-                "id": "sticker_thethao_3_2",
-                "name": "Thể Thao 3.2",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_3_2.png"
-        },
-        {
-                "id": "sticker_thethao_3_3",
-                "name": "Thể Thao 3.3",
-                "collection": "sports",
-                "img": "../stickers/sticker_thethao_3_3.png"
-        },
-        {
-                "id": "sticker_vinhan_0_0",
-                "name": "Vinh An 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_0_0.png"
-        },
-        {
-                "id": "sticker_vinhan_0_1",
-                "name": "Vinh An 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_0_1.png"
-        },
-        {
-                "id": "sticker_vinhan_0_2",
-                "name": "Vinh An 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_0_2.png"
-        },
-        {
-                "id": "sticker_vinhan_0_3",
-                "name": "Vinh An 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_0_3.png"
-        },
-        {
-                "id": "sticker_vinhan_1_0",
-                "name": "Vinh An 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_1_0.png"
-        },
-        {
-                "id": "sticker_vinhan_1_1",
-                "name": "Vinh An 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_1_1.png"
-        },
-        {
-                "id": "sticker_vinhan_1_2",
-                "name": "Vinh An 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_1_2.png"
-        },
-        {
-                "id": "sticker_vinhan_1_3",
-                "name": "Vinh An 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_1_3.png"
-        },
-        {
-                "id": "sticker_vinhan_2_0",
-                "name": "Vinh An 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_2_0.png"
-        },
-        {
-                "id": "sticker_vinhan_2_1",
-                "name": "Vinh An 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_2_1.png"
-        },
-        {
-                "id": "sticker_vinhan_2_2",
-                "name": "Vinh An 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_2_2.png"
-        },
-        {
-                "id": "sticker_vinhan_2_3",
-                "name": "Vinh An 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_2_3.png"
-        },
-        {
-                "id": "sticker_vinhan_3_0",
-                "name": "Vinh An 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_3_0.png"
-        },
-        {
-                "id": "sticker_vinhan_3_1",
-                "name": "Vinh An 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_3_1.png"
-        },
-        {
-                "id": "sticker_vinhan_3_2",
-                "name": "Vinh An 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_3_2.png"
-        },
-        {
-                "id": "sticker_vinhan_3_3",
-                "name": "Vinh An 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan_3_3.png"
-        },
-        {
-                "id": "sticker_vinhan2_0_0",
-                "name": "Vinh An 2 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_0_0.png"
-        },
-        {
-                "id": "sticker_vinhan2_0_1",
-                "name": "Vinh An 2 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_0_1.png"
-        },
-        {
-                "id": "sticker_vinhan2_0_2",
-                "name": "Vinh An 2 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_0_2.png"
-        },
-        {
-                "id": "sticker_vinhan2_0_3",
-                "name": "Vinh An 2 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_0_3.png"
-        },
-        {
-                "id": "sticker_vinhan2_1_0",
-                "name": "Vinh An 2 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_1_0.png"
-        },
-        {
-                "id": "sticker_vinhan2_1_1",
-                "name": "Vinh An 2 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_1_1.png"
-        },
-        {
-                "id": "sticker_vinhan2_1_2",
-                "name": "Vinh An 2 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_1_2.png"
-        },
-        {
-                "id": "sticker_vinhan2_1_3",
-                "name": "Vinh An 2 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_1_3.png"
-        },
-        {
-                "id": "sticker_vinhan2_2_0",
-                "name": "Vinh An 2 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_2_0.png"
-        },
-        {
-                "id": "sticker_vinhan2_2_1",
-                "name": "Vinh An 2 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_2_1.png"
-        },
-        {
-                "id": "sticker_vinhan2_2_2",
-                "name": "Vinh An 2 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_2_2.png"
-        },
-        {
-                "id": "sticker_vinhan2_2_3",
-                "name": "Vinh An 2 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_2_3.png"
-        },
-        {
-                "id": "sticker_vinhan2_3_0",
-                "name": "Vinh An 2 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_3_0.png"
-        },
-        {
-                "id": "sticker_vinhan2_3_1",
-                "name": "Vinh An 2 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_3_1.png"
-        },
-        {
-                "id": "sticker_vinhan2_3_2",
-                "name": "Vinh An 2 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_3_2.png"
-        },
-        {
-                "id": "sticker_vinhan2_3_3",
-                "name": "Vinh An 2 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_vinhan2_3_3.png"
-        },
-        {
-                "id": "sticker_banh1_0_0",
-                "name": "Bánh Kẹo 0.0",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_0_0.png"
-        },
-        {
-                "id": "sticker_banh1_0_1",
-                "name": "Bánh Kẹo 0.1",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_0_1.png"
-        },
-        {
-                "id": "sticker_banh1_0_2",
-                "name": "Bánh Kẹo 0.2",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_0_2.png"
-        },
-        {
-                "id": "sticker_banh1_0_3",
-                "name": "Bánh Kẹo 0.3",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_0_3.png"
-        },
-        {
-                "id": "sticker_banh1_1_0",
-                "name": "Bánh Kẹo 1.0",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_1_0.png"
-        },
-        {
-                "id": "sticker_banh1_1_1",
-                "name": "Bánh Kẹo 1.1",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_1_1.png"
-        },
-        {
-                "id": "sticker_banh1_1_2",
-                "name": "Bánh Kẹo 1.2",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_1_2.png"
-        },
-        {
-                "id": "sticker_banh1_1_3",
-                "name": "Bánh Kẹo 1.3",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_1_3.png"
-        },
-        {
-                "id": "sticker_banh1_2_0",
-                "name": "Bánh Kẹo 2.0",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_2_0.png"
-        },
-        {
-                "id": "sticker_banh1_2_1",
-                "name": "Bánh Kẹo 2.1",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_2_1.png"
-        },
-        {
-                "id": "sticker_banh1_2_2",
-                "name": "Bánh Kẹo 2.2",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_2_2.png"
-        },
-        {
-                "id": "sticker_banh1_2_3",
-                "name": "Bánh Kẹo 2.3",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_2_3.png"
-        },
-        {
-                "id": "sticker_banh1_3_0",
-                "name": "Bánh Kẹo 3.0",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_3_0.png"
-        },
-        {
-                "id": "sticker_banh1_3_1",
-                "name": "Bánh Kẹo 3.1",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_3_1.png"
-        },
-        {
-                "id": "sticker_banh1_3_2",
-                "name": "Bánh Kẹo 3.2",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_3_2.png"
-        },
-        {
-                "id": "sticker_banh1_3_3",
-                "name": "Bánh Kẹo 3.3",
-                "collection": "food",
-                "img": "../stickers/sticker_banh1_3_3.png"
-        },
-        {
-                "id": "sticker_do1_0_0",
-                "name": "Đồ Chơi 0.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_0_0.png"
-        },
-        {
-                "id": "sticker_do1_0_1",
-                "name": "Đồ Chơi 0.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_0_1.png"
-        },
-        {
-                "id": "sticker_do1_0_2",
-                "name": "Đồ Chơi 0.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_0_2.png"
-        },
-        {
-                "id": "sticker_do1_0_3",
-                "name": "Đồ Chơi 0.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_0_3.png"
-        },
-        {
-                "id": "sticker_do1_1_0",
-                "name": "Đồ Chơi 1.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_1_0.png"
-        },
-        {
-                "id": "sticker_do1_1_1",
-                "name": "Đồ Chơi 1.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_1_1.png"
-        },
-        {
-                "id": "sticker_do1_1_2",
-                "name": "Đồ Chơi 1.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_1_2.png"
-        },
-        {
-                "id": "sticker_do1_1_3",
-                "name": "Đồ Chơi 1.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_1_3.png"
-        },
-        {
-                "id": "sticker_do1_2_0",
-                "name": "Đồ Chơi 2.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_2_0.png"
-        },
-        {
-                "id": "sticker_do1_2_1",
-                "name": "Đồ Chơi 2.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_2_1.png"
-        },
-        {
-                "id": "sticker_do1_2_2",
-                "name": "Đồ Chơi 2.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_2_2.png"
-        },
-        {
-                "id": "sticker_do1_2_3",
-                "name": "Đồ Chơi 2.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_2_3.png"
-        },
-        {
-                "id": "sticker_do1_3_0",
-                "name": "Đồ Chơi 3.0",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_3_0.png"
-        },
-        {
-                "id": "sticker_do1_3_1",
-                "name": "Đồ Chơi 3.1",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_3_1.png"
-        },
-        {
-                "id": "sticker_do1_3_2",
-                "name": "Đồ Chơi 3.2",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_3_2.png"
-        },
-        {
-                "id": "sticker_do1_3_3",
-                "name": "Đồ Chơi 3.3",
-                "collection": "cartoon",
-                "img": "../stickers/sticker_do1_3_3.png"
-        },
-        {
-                "id": "sticker_dragonball4_0_0",
-                "name": "Bảy Viên Ngọc Rồng 0.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_0_0.png"
-        },
-        {
-                "id": "sticker_dragonball4_0_1",
-                "name": "Bảy Viên Ngọc Rồng 0.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_0_1.png"
-        },
-        {
-                "id": "sticker_dragonball4_0_2",
-                "name": "Bảy Viên Ngọc Rồng 0.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_0_2.png"
-        },
-        {
-                "id": "sticker_dragonball4_0_3",
-                "name": "Bảy Viên Ngọc Rồng 0.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_0_3.png"
-        },
-        {
-                "id": "sticker_dragonball4_0_4",
-                "name": "Bảy Viên Ngọc Rồng 0.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_0_4.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_0",
-                "name": "Bảy Viên Ngọc Rồng 1.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_0.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_1",
-                "name": "Bảy Viên Ngọc Rồng 1.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_1.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_2",
-                "name": "Bảy Viên Ngọc Rồng 1.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_2.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_3",
-                "name": "Bảy Viên Ngọc Rồng 1.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_3.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_4",
-                "name": "Bảy Viên Ngọc Rồng 1.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_4.png"
-        },
-        {
-                "id": "sticker_dragonball4_1_5",
-                "name": "Bảy Viên Ngọc Rồng 1.5",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_1_5.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_0",
-                "name": "Bảy Viên Ngọc Rồng 2.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_0.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_1",
-                "name": "Bảy Viên Ngọc Rồng 2.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_1.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_2",
-                "name": "Bảy Viên Ngọc Rồng 2.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_2.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_3",
-                "name": "Bảy Viên Ngọc Rồng 2.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_3.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_4",
-                "name": "Bảy Viên Ngọc Rồng 2.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_4.png"
-        },
-        {
-                "id": "sticker_dragonball4_2_5",
-                "name": "Bảy Viên Ngọc Rồng 2.5",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_2_5.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_0",
-                "name": "Bảy Viên Ngọc Rồng 3.0",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_0.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_1",
-                "name": "Bảy Viên Ngọc Rồng 3.1",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_1.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_2",
-                "name": "Bảy Viên Ngọc Rồng 3.2",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_2.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_3",
-                "name": "Bảy Viên Ngọc Rồng 3.3",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_3.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_4",
-                "name": "Bảy Viên Ngọc Rồng 3.4",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_4.png"
-        },
-        {
-                "id": "sticker_dragonball4_3_5",
-                "name": "Bảy Viên Ngọc Rồng 3.5",
-                "collection": "heroes",
-                "img": "../stickers/sticker_dragonball4_3_5.png"
-        },
-        {
-                "id": "sticker_a7",
-                "name": "Thú Cưng 7",
-                "collection": "animals",
-                "img": "../stickers/sticker_a7.png"
-        }
-];
-
-
-
-
-window.STICKER_COLLECTIONS = {
-        animals: { name: 'Động Vật', emoji: '🐾' },
-        food: { name: 'Đồ Ăn', emoji: '🍓' },
-        space: { name: 'Vũ Trụ', emoji: '🚀' },
-        heroes: { name: 'Siêu Anh Hùng', emoji: '🦸' },
-        nature: { name: 'Thiên Nhiên', emoji: '🌸' },
-        magic: { name: 'Pháp Thuật', emoji: '🪄' },
-        cartoon: { name: 'Hoạt Hình', emoji: '🎀' },
-        sports: { name: 'Thể Thao', emoji: '⚽' }
-};
-
-
-// ==========================================
-// STICKER CATALOG - Tự động hóa việc nạp danh sách lớn
-// ==========================================
-const COLLECTIONS_MAP = {
-        animals: { emoji: '🐾', sheets: ['animals', 'panda'] },
-        food: { emoji: '🍓', sheets: ['food', 'fastfood'] },
-        space: { emoji: '🚀', sheets: ['space'] },
-        heroes: { emoji: '🦸', sheets: ['heroes', 'hero', 'dragonball', 'dragonball2', 'warrior', 'superhero'] },
-        nature: { emoji: '🌸', sheets: ['nature', 'flower', 'weather'] },
-        magic: { emoji: '🪄', sheets: ['magic'] },
-        cartoon: { emoji: '🎀', sheets: ['hellokitty', 'koromi', 'princess', 'princess1', 'princess2', 'princess3'] }
-};
+// --- STICKER DATA MOVED TO stickers-data.js ---
 const defaultEmptyData = {
         user: { id: null, name: 'Loading...', level: 1, xp: 0, maxXp: 100, gold: 0, stickers: 0, totalStickers: 0, water: 0, avatar: '' },
         leaderboard: [],
@@ -3889,14 +206,16 @@ class StateManager {
                 // Setup Realtime with Throttling
                 this._syncTimeout = null;
                 this.client.channel('any-change').on('postgres_changes', { event: '*', schema: 'public' }, payload => {
-                        // Tránh lặp vô tận khi chính mình update bot
+                        // 1. Tránh lặp vô tận khi chính mình update bot
                         if (payload.table === 'profiles' && payload.new && payload.new.role === 'bot') return;
 
+                        // 2. Tăng thời gian trì hoãn để gom các thay đổi (Debounce)
+                        // Tăng lên 1000ms để tránh việc re-render liên tục gây lag UI
                         if (this._syncTimeout) clearTimeout(this._syncTimeout);
                         this._syncTimeout = setTimeout(() => {
-                                console.log(`[Realtime] 🔄 Dữ liệu thay đổi tại bàn ${payload.table}, đang cập nhật...`);
+                                console.log(`[Realtime] 🔄 Thay đổi tại ${payload.table}, đang cập nhật...`);
                                 this.syncFromDatabase();
-                        }, 100); // Đợi 100ms để gom các thay đổi (gần như tức thì)
+                        }, 1000);
                 }).subscribe();
         }
 
@@ -3979,29 +298,9 @@ class StateManager {
                 const BOT_CONFIG = {
                         boys: [1, 3, 4, 5, 9, 10, 15, 18, 19, 20, 21, 22, 25, 26, 30],
                         girls: [2, 6, 7, 8, 11, 12, 13, 14, 16, 17, 23, 24, 27, 28, 29],
-                        knownGenders: {
-                                'Hải Đăng': 'boy', 'Gia Bảo': 'boy', 'Tiến Phát': 'boy', 'Đức Minh': 'boy', 'Tuấn Kiệt': 'boy',
-                                'Nhật Minh': 'boy', 'Duy Anh': 'boy', 'Trọng Nhân': 'boy', 'Thành Nam': 'boy', 'Minh Khôi': 'boy',
-                                'Tường Vy': 'girl', 'Linh Đan': 'girl', 'Bé Na': 'girl', 'Minh Anh': 'girl', 'Khánh An': 'girl',
-                                'Phương Thảo': 'girl', 'Kim Ngân': 'girl', 'Quỳnh Chi': 'girl', 'Bảo Ngọc': 'girl', 'Thanh Trúc': 'girl',
-                                'Gia Huy': 'boy', 'Khôi Nguyên': 'boy', 'Bảo Nam': 'boy', 'Đức Anh': 'boy', 'Tùng Lâm': 'boy',
-                                'Anh Quân': 'boy', 'Quang Vinh': 'boy', 'Minh Triết': 'boy', 'Thiên Ân': 'boy', 'Hữu Phước': 'boy',
-                                'Khánh Linh': 'girl', 'Ngọc Diệp': 'girl', 'Trà My': 'girl', 'Hoài An': 'girl', 'Mỹ Tâm': 'girl',
-                                'An Chi': 'girl', 'Tuệ Lâm': 'girl', 'Minh Thư': 'girl', 'Thảo Nguyên': 'girl', 'Hà Phương': 'girl'
-                        },
-                        nicknames: [
-                                { n: 'Sóc Nâu', g: 'boy' }, { n: 'Bi Béo', g: 'boy' }, { n: 'Khoai Tây', g: 'boy' }, { n: 'Bun Bun', g: 'boy' },
-                                { n: 'Gà Chíp', g: 'boy' }, { n: 'Cún Con', g: 'boy' }, { n: 'Tí Quậy', g: 'boy' }, { n: 'Mít Ướt', g: 'boy' },
-                                { n: 'Bé Bống', g: 'girl' }, { n: 'Mây Xinh', g: 'girl' }, { n: 'Kem Dâu', g: 'girl' }, { n: 'Thỏ Ngọc', g: 'girl' },
-                                { n: 'Nấm Lùn', g: 'girl' }, { n: 'Dâu Tây', g: 'girl' }, { n: 'Mèo Lười', g: 'girl' }, { n: 'Na Cute', g: 'girl' },
-                                { n: 'Heo Con', g: 'boy' }, { n: 'Gấu Bự', g: 'boy' }, { n: 'Bơ Ngọt', g: 'boy' }, { n: 'Su Su', g: 'boy' },
-                                { n: 'Ớt Hiểm', g: 'boy' }, { n: 'Đậu Đậu', g: 'boy' }, { n: 'Bắp Cải', g: 'boy' }, { n: 'Cà Rốt', g: 'boy' },
-                                { n: 'Bống Bang', g: 'girl' }, { n: 'Xu Xu', g: 'girl' }, { n: 'Chíp Chíp', g: 'girl' }, { n: 'Búp Bê', g: 'girl' },
-                                { n: 'Cốm Thơm', g: 'girl' }, { n: 'Mít Mật', g: 'girl' }, { n: 'Sapo', g: 'girl' }, { n: 'Chôm Chôm', g: 'girl' },
-                                { n: 'Dưa Hấu', g: 'boy' }, { n: 'Cà Pháo', g: 'boy' }, { n: 'Tôm Tít', g: 'boy' }, { n: 'Bin Bin', g: 'boy' },
-                                { n: 'Kem Bơ', g: 'girl' }, { n: 'Kẹo Ngọt', g: 'girl' }, { n: 'Mây Bồng', g: 'girl' }, { n: 'Nắng Hồng', g: 'girl' }
-                        ],
-                        identityMarkers: ['Lém Lỉnh', 'Thông Thái', 'Siêu Quậy', 'Nhí Nhảnh', 'Dễ Thương', 'Hào Hiệp', 'Nhanh Nhẹn', 'Dũng Cảm', 'Chăm Chỉ', 'Kiên Trì']
+                        boyNames: ['Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Anh Quân', 'Quang Vinh', 'Minh Triết', 'Thiên Ân', 'Hữu Phước', 'Đăng Khoa', 'Minh Nhật', 'Gia Khánh', 'Bảo Long', 'Quốc Bảo', 'Tuấn Minh', 'Hoàng Bách', 'Phúc Lâm', 'Minh Khang', 'Gia Minh', 'Đình Phong', 'Mạnh Hùng', 'Trọng Hiếu', 'Hồng Đăng', 'Minh Vũ', 'Công Vinh', 'Minh Tâm', 'Thái Sơn'],
+                        girlNames: ['Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Minh Thư', 'Thảo Nguyên', 'Hà Phương', 'Bảo Anh', 'Ngọc Anh', 'Khánh Vy', 'Minh Ngọc', 'Tú Anh', 'Lan Khuê', 'Diệp Chi', 'Mỹ Anh', 'Hương Giang', 'Ngọc Huyền', 'Thanh Mai', 'Hà Anh', 'Thục Anh', 'Mai Chi', 'Phương Vy', 'Linh Chi', 'Trang Anh', 'Thanh Tâm', 'Phương Anh', 'Tú Linh'],
+                        nicknames: ['Sóc Nâu', 'Bi Bi', 'Khoai Tây', 'Bun Bun', 'Gà Chíp', 'Cún Con', 'Tí Quậy', 'Heo Con', 'Gấu Bự', 'Sim Ba', 'Bin Bin', 'Bơ Ngọt', 'Đậu Đậu', 'Cà Pháo', 'Tôm Tít', 'Ớt Hiểm', 'Bắp Cải', 'Bé Bống', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc', 'Nấm Lùn', 'Dâu Tây', 'Mèo Lười', 'Na Cute', 'Xuka', 'Bống Bang', 'Xu Xu', 'Chíp Chíp', 'Búp Bê', 'Cốm Thơm', 'Mít Mật', 'Sapo', 'Chôm Chôm', 'Dưa Hấu', 'Bin Bin', 'Kem Bơ', 'Kẹo Ngọt', 'Mây Bồng', 'Nắng Hồng']
                 };
 
                 const usedNames = new Set();
@@ -4010,37 +309,27 @@ class StateManager {
                         let avatar = p.avatar;
 
                         if (p.role === 'bot') {
-                                // 1. Xác định giới tính từ tên
-                                let gender = BOT_CONFIG.knownGenders[name] || (usedNames.has(name) ? null : 'unknown');
+                                // 1. Chọn tên duy nhất từ Pool khổng lồ dựa trên ID
+                                const idHash = p.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                                const isBoy = idHash % 2 === 0;
+                                const pool = isBoy ? [...BOT_CONFIG.boyNames, ...BOT_CONFIG.nicknames] : [...BOT_CONFIG.girlNames, ...BOT_CONFIG.nicknames];
 
-                                // 2. Nếu tên trùng hoặc không rõ giới tính -> Đổi sang biệt danh
-                                if (!gender || gender === 'unknown' || usedNames.has(name)) {
-                                        let hash = 0;
-                                        for (let i = 0; i < p.id.length; i++) hash += p.id.charCodeAt(i);
-                                        const nick = BOT_CONFIG.nicknames[hash % BOT_CONFIG.nicknames.length];
-                                        name = nick.n;
-                                        gender = nick.g;
+                                let nameIdx = idHash % pool.length;
+                                let chosenName = pool[nameIdx];
+
+                                let attempts = 0;
+                                while (usedNames.has(chosenName) && attempts < pool.length) {
+                                        nameIdx = (nameIdx + 1) % pool.length;
+                                        chosenName = pool[nameIdx];
+                                        attempts++;
                                 }
 
-                                // 3. ĐẢM BẢO DUY NHẤT: Nếu trùng, thêm định danh tính cách thay vì số
-                                if (usedNames.has(name)) {
-                                        let idHash = 0;
-                                        for (let i = 0; i < p.id.length; i++) idHash += p.id.charCodeAt(i);
-                                        let marker = BOT_CONFIG.identityMarkers[idHash % BOT_CONFIG.identityMarkers.length];
-                                        let finalUniqueName = `${name} ${marker}`;
-
-                                        if (usedNames.has(finalUniqueName)) {
-                                                finalUniqueName = `✨ ${finalUniqueName}`;
-                                        }
-                                        name = finalUniqueName;
-                                }
+                                name = chosenName;
                                 usedNames.add(name);
 
-                                // 3. Gán Avatar chuẩn giới tính (Hash dựa trên ID để không bị nhảy hình)
-                                let idHash = 0;
-                                for (let i = 0; i < p.id.length; i++) idHash += p.id.charCodeAt(i);
-                                const pool = gender === 'boy' ? BOT_CONFIG.boys : BOT_CONFIG.girls;
-                                const avNum = pool[idHash % pool.length];
+                                // 2. Avatar chuẩn giới tính
+                                const avPool = isBoy ? BOT_CONFIG.boys : BOT_CONFIG.girls;
+                                const avNum = avPool[idHash % avPool.length];
                                 avatar = `../shared/assets/generated_avatars/avatar_${avNum}.png`;
                         } else {
                                 usedNames.add(name);
@@ -4059,7 +348,7 @@ class StateManager {
                                 weeklyXp: p.weekly_xp || 0,
                                 water: p.water || 0,
                                 stickers: p.stickers || 0,
-                                totalStickers: p.total_stickers || 0,
+                                totalStickers: Math.max(p.total_stickers || 0, (p.unlocked_stickers || []).length + (p.stickers || 0)),
                                 actionStreak: p.action_streak || 0,
                                 weeklyStreak: p.weekly_streak || 0,
                                 completionStreak: p.completion_streak || 0,
@@ -4144,7 +433,8 @@ class StateManager {
                 this.data.challenges = (challRes.data || []).map(c => ({
                         id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id, taskType: c.task_type,
                         status: c.status, challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
-                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at
+                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at,
+                        logs: c.logs || [], metadata: c.metadata || {}
                 }));
 
                 // Khôi phục user thiết bị
@@ -4222,10 +512,10 @@ class StateManager {
                                 this.addRewardsToLocalUser(20, 50, 5, 1);
                                 if (window.celebrate) {
                                         window.celebrate({
+                                                type: 'shop',
                                                 title: "QUÀ NGÀY MỚI!",
                                                 subtitle: "Tuyệt vời! Chào mừng con đã quay trở lại. Nhận ngay 20 Vàng và 50 XP nhé!",
-                                                icon: "redeem",
-                                                color: "gold"
+                                                icon: "redeem"
                                         });
                                 }
                                 this.syncLocalUserToDb();
@@ -4241,10 +531,10 @@ class StateManager {
 
                 if (this._lastRank && currentRank < this._lastRank && currentRank <= 5 && this._initialSyncDone) {
                         window.celebrate({
+                                type: 'title',
                                 title: `TOP ${currentRank}!`,
                                 subtitle: `Con vừa thăng hạng vươn lên vị trí số ${currentRank} trên bảng xếp hạng!`,
-                                icon: 'leaderboard',
-                                color: 'gold'
+                                icon: 'leaderboard'
                         });
                 }
                 this._lastRank = currentRank;
@@ -4369,10 +659,10 @@ class StateManager {
                         if (this._lastTreeStage !== undefined && sIdx > this._lastTreeStage) {
                                 const m = window.TREE_MILESTONES[sIdx];
                                 window.celebrate({
+                                        type: 'sticker',
                                         title: m.name.toUpperCase(),
                                         subtitle: `Tuyệt vời! Cây thần kỳ đã lớn thêm một bậc mới!`,
-                                        icon: m.icon,
-                                        color: 'emerald'
+                                        icon: m.icon
                                 });
                         }
                         this._lastTreeStage = sIdx;
@@ -4381,14 +671,39 @@ class StateManager {
                         if (this._lastTitleIdx !== undefined && tIdx > this._lastTitleIdx) {
                                 const m = window.TITLE_MILESTONES[tIdx];
                                 window.celebrate({
+                                        type: 'title',
                                         title: m.name.toUpperCase(),
                                         subtitle: `Thành tích khủng! Con đã đạt được danh hiệu cao quý mới!`,
-                                        icon: m.icon,
-                                        color: 'purple'
+                                        icon: m.icon
                                 });
                         }
                         this._lastTitleIdx = tIdx;
+
+                        // 3. Sticker Collection Completion
+                        if (window.STICKER_COLLECTIONS && window.STICKER_CATALOG) {
+                                if (!this._completedCollections) this._completedCollections = new Set();
+                                const unlocked = user.unlockedStickers || [];
+
+                                Object.keys(window.STICKER_COLLECTIONS).forEach(colId => {
+                                        if (this._completedCollections.has(colId)) return;
+
+                                        const colStickers = window.STICKER_CATALOG.filter(s => s.collection === colId);
+                                        const isDone = colStickers.length > 0 && colStickers.every(s => unlocked.includes(s.id));
+
+                                        if (isDone) {
+                                                this._completedCollections.add(colId);
+                                                const info = window.STICKER_COLLECTIONS[colId];
+                                                window.celebrate({
+                                                        type: 'sticker',
+                                                        title: info.name.toUpperCase(),
+                                                        subtitle: `Tuyệt đỉnh! Con đã sưu tầm trọn bộ sticker ${info.name}!`,
+                                                        icon: 'auto_awesome'
+                                                });
+                                        }
+                                });
+                        }
                 }
+                this._lastTitleIdx = tIdx;
         }
 
         setCurrentUser(id) {
@@ -4649,10 +964,10 @@ class StateManager {
 
                 if (leveledUp && window.celebrate) {
                         window.celebrate({
+                                type: 'level',
                                 title: `CẤP ĐỘ ${u.level}`,
                                 subtitle: `Chúc mừng con đã thăng cấp! Hãy tiếp tục cố gắng nhé!`,
-                                icon: 'military_tech',
-                                color: 'blue'
+                                icon: 'military_tech'
                         });
                 }
 
@@ -5097,6 +1412,21 @@ class StateManager {
                 this.syncFromDatabase();
         }
 
+        async updateGrowthLog(id, title, description) {
+                if (!id) return false;
+                const fullTitle = description ? `${title} | ${description}` : title;
+                const { error } = await this.client.from('requests')
+                        .update({ item_title: fullTitle })
+                        .eq('id', id);
+
+                if (error) {
+                        console.error("[AppState] Error updating growth log:", error);
+                        return false;
+                }
+                await this.syncFromDatabase();
+                return true;
+        }
+
         async unlockSticker(stickerId) {
                 if (!this.data.user) return false;
                 const u = this.data.user;
@@ -5106,32 +1436,36 @@ class StateManager {
                 if (!u.unlockedStickers) u.unlockedStickers = [];
                 if (u.unlockedStickers.includes(stickerId)) return false;
 
-                // --- CẬP NHẬT NGAY LẬP TỨC VÀO DB TRƯỚC ---
-                const newStickers = u.stickers - 1;
-                const newUnlocked = Array.from(new Set([...u.unlockedStickers, stickerId]));
-                const newTotal = newUnlocked.length;
+                // --- 1. OPTIMISTIC UPDATE (Update local immediately) ---
+                const oldStickers = u.stickers;
+                const oldUnlocked = [...u.unlockedStickers];
+                const oldTotal = u.totalStickers;
 
-                // Lưu vào DB trước, nếu lỗi thì không cập nhật UI
-                const { error } = await this.client.from('profiles').update({
-                        stickers: newStickers,
-                        unlocked_stickers: newUnlocked
-                        // LƯU Ý: Không cập nhật total_stickers ở đây vì đó là tích lũy trọn đời, 
-                        // không phải số lượng sticker trong bộ sưu tập.
-                }).eq('id', u.id);
+                u.stickers = u.stickers - 1;
+                u.unlockedStickers = Array.from(new Set([...u.unlockedStickers, stickerId]));
+                u.totalStickers = Math.max(u.totalStickers || 0, u.unlockedStickers.length);
 
-                if (error) {
-                        console.error('Lỗi mở sticker:', error);
+                console.log(`[Sticker] Optimistic unlock: ${stickerId}`);
+                this.notify(); // UI updates instantly!
+
+                // --- 2. DB BACKGROUND SYNC ---
+                try {
+                        const { error } = await this.client.from('profiles').update({
+                                stickers: u.stickers,
+                                unlocked_stickers: u.unlockedStickers
+                        }).eq('id', u.id);
+
+                        if (error) throw error;
+                        return true;
+                } catch (error) {
+                        console.error('Lỗi mở sticker (Rollback):', error);
+                        // Rollback on failure
+                        u.stickers = oldStickers;
+                        u.unlockedStickers = oldUnlocked;
+                        u.totalStickers = oldTotal;
+                        this.notify();
                         return false;
                 }
-
-                // CHỈ sau khi DB thành công mới cập nhập UI local
-                u.stickers = newStickers;
-                u.unlockedStickers = newUnlocked;
-                u.totalStickers = newTotal;
-
-                console.log(`[Sticker] Unlocked ${stickerId}. Lượt còn lại: ${u.stickers}, Tổng đã dán: ${u.totalStickers}`);
-                this.notify();
-                return true;
         }
 
         async updateInstantPerk(id, data) {
@@ -5148,8 +1482,14 @@ class StateManager {
         // --- CHALLENGE SYSTEM ACTIONS ---
 
         getDailyChallengeCount(userId, mode = 'all') {
-                const today = new Date().toISOString().split('T')[0];
-                const challenges = this.data.challenges.filter(c => c.date === today);
+                const now = new Date();
+                const arenaDay = new Date(now.getTime() - (19 * 60 * 60 * 1000)).toISOString().split('T')[0];
+
+                const challenges = this.data.challenges.filter(c => {
+                        const cTime = c.createdAt ? new Date(c.createdAt).getTime() : new Date(c.date + "T12:00:00").getTime();
+                        const cArenaDay = new Date(cTime - (19 * 60 * 60 * 1000)).toISOString().split('T')[0];
+                        return cArenaDay === arenaDay;
+                });
 
                 if (mode === 'active') {
                         // Lượt mình đi thách đấu người khác
@@ -5318,7 +1658,42 @@ class StateManager {
                 const chall = this.data.challenges.find(c => c.id === challengeId);
                 if (!chall) return null;
 
-                // If already completed, build result from existing local data
+                const now = new Date();
+                const currentHour = now.getHours();
+                const todayStr = now.toISOString().split('T')[0];
+                const challengeDateStr = chall.date; // Format ISO YYYY-MM-DD
+
+                // 1. Kiểm tra giờ giới hạn (19:00)
+                // Nếu trận đấu của hôm nay hoặc tương lai, chỉ được mở sau 19:00
+                if (challengeDateStr >= todayStr && currentHour < 19) {
+                        const waitMsg = `Kèo này phải đợi tới sau 19:00 tối nay mới mở hộp được bé ơi! Hiện tại là ${currentHour}:${now.getMinutes().toString().padStart(2, '0')}.`;
+                        window.showFamilyQuestAlert && window.showFamilyQuestAlert("Chưa đến giờ G", waitMsg, "info");
+                        return null;
+                }
+
+                // 2. Kiểm tra giới hạn lượt (3 Tấn công, 3 Phòng thủ)
+                const user = this.data.user;
+                const isChallenger = chall.challengerId === user.id;
+                const roleKey = isChallenger ? 'reveal_attack' : 'reveal_defense';
+
+                let meta = user.metadata || {};
+                const arenaDay = new Date(now.getTime() - (19 * 60 * 60 * 1000)).toISOString().split('T')[0];
+                const lastArenaDay = meta.last_arena_day || "";
+
+                if (lastArenaDay !== arenaDay) {
+                        meta.reveal_attack = 0;
+                        meta.reveal_defense = 0;
+                        meta.last_arena_day = arenaDay;
+                        meta.last_reveal_reset = todayStr;
+                }
+
+                const currentCount = meta[roleKey] || 0;
+                if (currentCount >= 3) {
+                        window.showFamilyQuestAlert && window.showFamilyQuestAlert("Hết lượt", `Con đã hết 3 lượt ${isChallenger ? 'tấn công' : 'phòng thủ'} trong ngày hôm nay rồi! Hãy đợi sau 19:00 lượt sẽ được reset nhé.`, "warning");
+                        return null;
+                }
+
+                // Nếu đã hoàn thành trước đó (đã mở rồi), trả về kết quả cũ
                 if (chall.status === 'completed') {
                         const myId = this.data.user?.id;
                         const iWon = chall.winnerId === myId;
@@ -5326,7 +1701,6 @@ class StateManager {
                         return {
                                 winnerId: chall.winnerId,
                                 draw: isDraw,
-                                // Show generic rewards since we can't recalculate
                                 pointsG_C: iWon ? 50 : (isDraw ? 20 : -20),
                                 pointsXP_C: iWon ? 30 : (isDraw ? 20 : -10),
                                 spins_C: iWon ? 3 : (isDraw ? 1 : 0),
@@ -5337,8 +1711,38 @@ class StateManager {
                         };
                 }
 
+                // Tăng lượt mở và lưu vào metadata
+                meta[roleKey] = currentCount + 1;
+                this.data.user.metadata = meta;
+                await this.syncLocalUserToDb();
+
                 // Not yet completed — finalize now
                 return await this.finalizeChallenge(challengeId);
+        }
+
+        async addChallengeLog(challengeId, text) {
+                const chall = this.data.challenges.find(c => c.id === challengeId);
+                if (!chall) return false;
+
+                const newLog = {
+                        time: new Date().toISOString(),
+                        text: text,
+                        authorId: this.data.user.id,
+                        authorName: this.data.user.name
+                };
+
+                const updatedLogs = [...(chall.logs || []), newLog];
+
+                const { error } = await this.client.from('challenges')
+                        .update({ logs: updatedLogs })
+                        .eq('id', challengeId);
+
+                if (!error) {
+                        chall.logs = updatedLogs;
+                        this.notifyListeners();
+                        return true;
+                }
+                return false;
         }
 
         // Phụ huynh xác nhận/từ chối kết quả (tùy chọn — dùng cho trường hợp cần kiểm tra)
@@ -5391,28 +1795,56 @@ class StateManager {
                         betAmount = parseInt(parts[1]) || 0;
                 }
 
-                let winnerId = null;
-                let pointsG_C = 0, pointsXP_C = 0, spins_C = 0;
-                let pointsG_O = 0, pointsXP_O = 0, spins_O = 0;
+                let flavor = "";
+                const lossPool = [
+                        "Con đã làm rất tốt, nhưng đối thủ hôm nay có một pha bứt phá ngoạn mục! Đừng nản lòng nhé!",
+                        "Nỗ lực tuyệt vời! Hôm nay may mắn hơi nghiêng về phía bạn của con một chút, cố gắng lần sau nhé!",
+                        "Suýt soát quá! Con đã chiến đấu cực kỳ xuất sắc, chỉ thiếu một chút xíu may mắn thôi!",
+                        "Ba mẹ thấy con đã rất cố gắng. Thắng thua không quan trọng bằng việc con đã hoàn thành mục tiêu!",
+                        "Một trận đấu mãn nhãn! Đối thủ đã rất nỗ lực để vượt qua con hôm nay đấy."
+                ];
 
                 if (cSuccess && oSuccess) {
-                        // HÒA: Cùng nỗ lực
-                        spins_C = 1; pointsXP_C = 20; pointsG_C = 20 + betAmount; // Trả lại vốn cược + 20 vàng thưởng
-                        spins_O = 1; pointsXP_O = 20; pointsG_O = 20;
+                        // Tỉ lệ 5% thua ngẫu nhiên dù đã hoàn thành (tăng tính kịch tính)
+                        const cLuck = Math.random();
+                        const oLuck = Math.random();
+
+                        // Nếu cả hai đều rất may mắn (> 0.05) hoặc cả hai đều đen đủi (<= 0.05) -> HÒA
+                        if ((cLuck > 0.05 && oLuck > 0.05) || (cLuck <= 0.05 && oLuck <= 0.05)) {
+                                // HÒA: Cùng nỗ lực
+                                spins_C = 1; pointsXP_C = 20; pointsG_C = 20 + betAmount;
+                                spins_O = 1; pointsXP_O = 20; pointsG_O = 20;
+                                flavor = "Bất phân thắng bại! Cả hai đều đã hoàn thành xuất sắc nhiệm vụ.";
+                        } else if (cLuck > 0.05 && oLuck <= 0.05) {
+                                // Challenger thắng nhờ may mắn (hoặc Opponent đen đủi)
+                                winnerId = freshChall.challenger_id;
+                                spins_C = 3; pointsXP_C = 30; pointsG_C = 50 + (betAmount * 2);
+                                pointsG_O = -20; pointsXP_O = -10;
+                                flavor = lossPool[Math.floor(Math.random() * lossPool.length)];
+                        } else {
+                                // Opponent thắng
+                                winnerId = freshChall.opponent_id;
+                                spins_O = 3; pointsXP_O = 30; pointsG_O = 50;
+                                pointsG_C = -20; pointsXP_C = -10;
+                                flavor = lossPool[Math.floor(Math.random() * lossPool.length)];
+                        }
                 } else if (cSuccess && !oSuccess) {
                         // Challenger thắng
                         winnerId = freshChall.challenger_id;
-                        spins_C = 3; pointsXP_C = 30; pointsG_C = 50 + (betAmount * 2); // Thưởng x2 tiền cược + 50 vàng
+                        spins_C = 3; pointsXP_C = 30; pointsG_C = 50 + (betAmount * 2);
                         pointsG_O = -20; pointsXP_O = -10;
+                        flavor = "Chiến thắng thuyết phục! Con đã hoàn thành xuất sắc trong khi đối thủ chưa kịp về đích.";
                 } else if (!cSuccess && oSuccess) {
                         // Opponent thắng
                         winnerId = freshChall.opponent_id;
                         spins_O = 3; pointsXP_O = 30; pointsG_O = 50;
-                        pointsG_C = -20; pointsXP_C = -10; // Challenger thua mất tiền cược + bị trừ thêm 20 vàng
+                        pointsG_C = -20; pointsXP_C = -10;
+                        flavor = "Cần nỗ lực hơn nữa! Đối thủ đã về đích trước con rồi.";
                 } else {
                         // Cả hai cùng thất bại
                         pointsG_C = -20; pointsXP_C = -10;
                         pointsG_O = -20; pointsXP_O = -10;
+                        flavor = "Cả hai đều lỡ hẹn với chiến thắng. Hãy cùng cố gắng hơn vào ngày mai nhé!";
                 }
 
                 await this.client.from('challenges').update({
@@ -5429,7 +1861,8 @@ class StateManager {
                                 gold: Math.max(0, (pC.gold || 0) + pointsG_C),
                                 xp: Math.max(0, (pC.xp || 0) + pointsXP_C),
                                 weekly_xp: Math.max(0, (pC.weekly_xp || 0) + pointsXP_C),
-                                stickers: (pC.stickers || 0) + spins_C
+                                stickers: (pC.stickers || 0) + spins_C,
+                                metadata: pC.id === this.data.user.id ? this.data.user.metadata : pC.metadata
                         }).eq('id', pC.id);
                 }
 
@@ -5438,7 +1871,8 @@ class StateManager {
                                 gold: Math.max(0, (pO.gold || 0) + pointsG_O),
                                 xp: Math.max(0, (pO.xp || 0) + pointsXP_O),
                                 weekly_xp: Math.max(0, (pO.weekly_xp || 0) + pointsXP_O),
-                                stickers: (pO.stickers || 0) + spins_O
+                                stickers: (pO.stickers || 0) + spins_O,
+                                metadata: pO.id === this.data.user.id ? this.data.user.metadata : pO.metadata
                         }).eq('id', pO.id);
                 }
 
@@ -5448,7 +1882,8 @@ class StateManager {
                         winnerId,
                         draw: (cSuccess && oSuccess) || (!cSuccess && !oSuccess),
                         pointsG_C, pointsXP_C, spins_C,
-                        pointsG_O, pointsXP_O, spins_O
+                        pointsG_O, pointsXP_O, spins_O,
+                        flavor
                 };
         }
 
@@ -5539,11 +1974,12 @@ class StateManager {
                 let newWater = luckyBot.water || 0;
                 let newWeeklyStreak = luckyBot.weekly_streak || 0;
 
-                // 60% cơ hội bot phát triển đáng kể để bám đuổi BXH
-                if (Math.random() < 0.6) {
-                        newStickers += Math.floor(Math.random() * 2) + 1;
-                        newGold += Math.floor(Math.random() * 50) + 20;
-                        newWater += Math.floor(Math.random() * 3) + 1;
+                // 30% cơ hội bot phát triển nhẹ. 
+                // Giới hạn để Bot không bao giờ vượt quá 30 stickers (để user dễ leo top hơn)
+                if (Math.random() < 0.3 && (luckyBot.total_stickers || 0) < 30) {
+                        newStickers += 1;
+                        newGold += Math.floor(Math.random() * 20) + 10;
+                        newWater += 1;
                 }
 
                 const limitXp = Math.floor(100 * Math.pow(newLvl, 1.5));

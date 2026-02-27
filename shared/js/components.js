@@ -60,17 +60,85 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
  */
 window.celebrate = (config = {}) => {
     const {
+        type = 'task', // task, level, title, challenge, sticker, shop
         title = "Chúc mừng con!",
         subtitle = "Con đã đạt được một cột mốc mới",
-        icon = "stars",
+        icon = null,
         image = null,
-        color = "primary",
+        color = null, // fallback
         sound = true
     } = config;
 
+    // Define Theme Configs
+    const themes = {
+        task: {
+            announcement: "NHIỆM VỤ HOÀN THÀNH",
+            gradient: "from-emerald-600/30 to-teal-500/30",
+            glow: "bg-emerald-400/20",
+            accent: "emerald",
+            btn: "bg-emerald-500 shadow-emerald-200",
+            defaultIcon: "check_circle",
+            sound: "https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3",
+            confetti: { colors: ['#10b981', '#34d399', '#ffffff'] }
+        },
+        level: {
+            announcement: "LÊN CẤP MỚI!",
+            gradient: "from-purple-600/40 to-pink-600/40",
+            glow: "bg-purple-400/30",
+            accent: "purple",
+            btn: "bg-purple-600 shadow-purple-200",
+            defaultIcon: "trending_up",
+            sound: "https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3",
+            confetti: { colors: ['#a855f7', '#ec4899', '#ffffff'], shapes: ['star'] }
+        },
+        title: {
+            announcement: "DANH HIỆU CAO QUÝ",
+            gradient: "from-amber-600/40 to-yellow-500/40",
+            glow: "bg-amber-400/40",
+            accent: "amber",
+            btn: "bg-amber-500 shadow-amber-200",
+            defaultIcon: "workspace_premium",
+            sound: "https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3",
+            confetti: { colors: ['#f59e0b', '#fbbf24', '#ffffff'], particleCount: 200 }
+        },
+        challenge: {
+            announcement: "CHIẾN THẮNG ĐẤU TRƯỜNG",
+            gradient: "from-rose-600/40 to-blue-600/40",
+            glow: "bg-rose-400/20",
+            accent: "rose",
+            btn: "bg-indigo-600 shadow-indigo-200",
+            defaultIcon: "swords",
+            sound: "https://assets.mixkit.co/active_storage/sfx/1433/1433-preview.mp3",
+            confetti: { colors: ['#e11d48', '#2563eb', '#ffffff'] }
+        },
+        sticker: {
+            announcement: "PHÁ ĐẢO BỘ SƯU TẬP",
+            gradient: "from-yellow-500/30 to-orange-500/30",
+            glow: "bg-yellow-400/20",
+            accent: "yellow",
+            btn: "bg-orange-500 shadow-orange-200",
+            defaultIcon: "auto_awesome",
+            sound: "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3",
+            confetti: { colors: ['#fbbf24', '#f97316', '#ffffff'] }
+        },
+        shop: {
+            announcement: "PHẦN THƯỞNG ĐÃ NHẬN",
+            gradient: "from-blue-600/30 to-indigo-600/30",
+            glow: "bg-blue-400/20",
+            accent: "blue",
+            btn: "bg-blue-600 shadow-blue-200",
+            defaultIcon: "redeem",
+            sound: "https://assets.mixkit.co/active_storage/sfx/1997/1997-preview.mp3",
+            confetti: { colors: ['#2563eb', '#4f46e5', '#ffffff'] }
+        }
+    };
+
+    const theme = themes[type] || themes.task;
+    const activeIcon = icon || theme.defaultIcon;
+
     // 1. Play Sound
     if (sound) {
-        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+        const audio = new Audio(theme.sound);
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play blocked"));
     }
@@ -82,57 +150,50 @@ window.celebrate = (config = {}) => {
     // 3. Create Container
     const container = document.createElement('div');
     container.id = 'global-celebration';
-    container.className = 'fixed inset-0 z-[20000] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-xl animate-in fade-in duration-700';
-
-    // Color mapping
-    const colors = {
-        primary: 'from-primary/20 to-orange-500/20',
-        emerald: 'from-emerald-500/20 to-teal-500/20',
-        blue: 'from-blue-500/20 to-indigo-500/20',
-        purple: 'from-purple-500/20 to-pink-500/20',
-        gold: 'from-yellow-400/20 to-amber-600/20'
-    };
-    const activeColor = colors[color] || colors.primary;
+    container.className = 'fixed inset-0 z-[20000] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-3xl animate-in fade-in duration-700';
 
     container.innerHTML = `
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br ${activeColor} rounded-full blur-[120px] opacity-50 animate-pulse"></div>
-            <div id="celebration-confetti-canvas" class="absolute inset-0"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-br ${theme.gradient} rounded-full blur-[150px] opacity-60 animate-pulse"></div>
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 24px 24px;"></div>
         </div>
 
-        <div class="relative w-full max-w-lg p-8 text-center animate-in zoom-in-90 slide-in-from-bottom-12 duration-700 delay-200">
-            <div class="mb-8 relative inline-block">
-                <div class="absolute inset-0 bg-white/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="relative w-full max-w-xl p-8 text-center animate-in zoom-in-90 slide-in-from-bottom-24 duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)">
+            <div class="mb-12 relative inline-block">
+                <div class="absolute inset-0 ${theme.glow} rounded-full blur-[60px] animate-pulse"></div>
                 ${image ?
-            `<img src="${image}" class="size-48 object-contain drop-shadow-[0_20px_50px_rgba(255,255,255,0.3)] relative z-10 mx-auto transform hover:rotate-6 transition-transform">` :
-            `<div class="size-32 bg-white/10 backdrop-blur-md rounded-[2.5rem] flex items-center justify-center mx-auto border border-white/20 relative z-10 shadow-2xl">
-                        <span class="material-symbols-outlined text-7xl text-white drop-shadow-md" style="font-variation-settings:'FILL' 1">${icon}</span>
+            `<div class="relative z-10 p-2 bg-white/10 backdrop-blur-xl rounded-[3.5rem] border border-white/20 shadow-2xl">
+                        <img src="${image}" class="size-56 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform hover:rotate-6 transition-transform">
+                    </div>` :
+            `<div class="size-44 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl rounded-[3rem] flex items-center justify-center mx-auto border border-white/30 relative z-10 shadow-2xl ring-1 ring-white/20">
+                        <span class="material-symbols-outlined text-[100px] text-white drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]" style="font-variation-settings:'FILL' 1">${activeIcon}</span>
                     </div>`
         }
-                <!-- Floating Orbs -->
-                <div class="absolute -top-4 -left-4 size-8 bg-blue-400 rounded-full blur-xl animate-bounce"></div>
-                <div class="absolute -bottom-4 -right-4 size-10 bg-purple-400 rounded-full blur-xl animate-bounce" style="animation-delay: 1s"></div>
+                <!-- Floating Elements - Type Specific -->
+                <div class="absolute -top-10 -left-10 size-16 bg-${theme.accent}-400/40 rounded-full blur-2xl animate-bounce"></div>
+                <div class="absolute -bottom-10 -right-10 size-20 bg-${theme.accent}-300/30 rounded-full blur-3xl animate-bounce" style="animation-delay: 1.5s"></div>
             </div>
 
-            <div class="space-y-4">
-                <h4 class="text-primary font-black uppercase tracking-[0.3em] text-sm md:text-base animate-in slide-in-from-top-4 duration-500 delay-500">Thành tích tuyệt vời!</h4>
-                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-lg animate-in slide-in-from-bottom-4 duration-700 delay-700">${title}</h2>
-                <p class="text-slate-400 text-lg md:text-xl font-medium max-w-md mx-auto animate-in fade-in duration-1000 delay-1000">${subtitle}</p>
+            <div class="space-y-6 relative">
+                <div class="inline-flex items-center gap-2 px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-2">
+                    <span class="size-2 bg-${theme.accent}-400 rounded-full animate-ping"></span>
+                    <h4 class="text-white font-black uppercase tracking-[0.4em] text-xs md:text-sm pt-0.5">${theme.announcement}</h4>
+                </div>
+                <h2 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 leading-tight drop-shadow-2xl animate-in slide-in-from-bottom-8 duration-700 delay-300">${title}</h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent mx-auto"></div>
+                <p class="text-blue-100/80 text-xl md:text-2xl font-bold max-w-lg mx-auto leading-relaxed animate-in fade-in duration-1000 delay-700">${subtitle}</p>
             </div>
 
-            <div class="mt-12 animate-in fade-in zoom-in-50 duration-500 delay-[1.5s]">
-                <button id="close-celebration" class="group relative px-12 py-5 bg-white text-slate-900 font-extrabold rounded-[2rem] text-lg uppercase tracking-widest shadow-[0_20px_50px_-10px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all">
-                    <span class="relative z-10">TIẾP TỤC HÀNH TRÌNH</span>
+            <div class="mt-16 animate-in fade-in zoom-in-50 duration-700 delay-[1.2s]">
+                <button id="close-celebration" class="group relative px-14 py-6 ${theme.btn} text-white font-black rounded-3xl text-lg uppercase tracking-widest shadow-2xl hover:scale-110 active:scale-95 transition-all ring-1 ring-white/30">
+                    <span class="relative z-10 flex items-center gap-3">
+                        TIẾP TỤC HÀNH TRÌNH
+                        <span class="material-symbols-outlined font-black">arrow_forward</span>
+                    </span>
+                    <div class="absolute inset-0 bg-white/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </button>
             </div>
         </div>
-
-        <style>
-            @keyframes float-celebration {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-20px); }
-            }
-        </style>
     `;
 
     document.body.appendChild(container);
@@ -150,9 +211,9 @@ window.celebrate = (config = {}) => {
     };
 
     const runFireworks = () => {
-        const duration = 5 * 1000;
+        const duration = 6 * 1000;
         const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 20001 };
+        const defaults = { startVelocity: 45, spread: 360, ticks: 100, zIndex: 20001, ...theme.confetti };
 
         const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
@@ -163,17 +224,19 @@ window.celebrate = (config = {}) => {
                 return clearInterval(interval);
             }
 
-            const particleCount = 50 * (timeLeft / duration);
+            const particleCount = 60 * (timeLeft / duration);
             confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
             confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-        }, 250);
+        }, 300);
 
-        // Single heavy burst
+        // Core burst
         confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            zIndex: 20001
+            ...defaults,
+            particleCount: 200,
+            spread: 90,
+            origin: { y: 0.65 },
+            gravity: 1.2,
+            scalar: 1.2
         });
     };
 
@@ -181,8 +244,10 @@ window.celebrate = (config = {}) => {
 
     // 5. Cleanup
     container.querySelector('#close-celebration').onclick = () => {
-        container.classList.add('fade-out');
-        setTimeout(() => container.remove(), 700);
+        container.style.opacity = '0';
+        container.style.transform = 'scale(1.1)';
+        container.style.transition = 'all 0.6s cubic-bezier(0.19, 1, 0.22, 1)';
+        setTimeout(() => container.remove(), 600);
     };
 };
 
@@ -459,6 +524,7 @@ class QuestCard extends HTMLElement {
 
                 if (currentReward >= 50 || currentXp >= 50 || currentSticker >= 1) {
                     window.celebrate({
+                        type: 'task',
                         title: title,
                         subtitle: desc || "Con đã hoàn thành một nhiệm vụ lớn!",
                         icon: icon,
@@ -1056,7 +1122,7 @@ class LeaderboardPodium extends HTMLElement {
 
         const mode = this.getAttribute('mode') || 'xp';
 
-        let sorted = data.leaderboard.filter(u => u.role !== 'parent' && !u.name.toLowerCase().includes('bố') && !u.name.toLowerCase().includes('mẹ'));
+        let sorted = data.leaderboard.filter(u => u.role === 'child' || u.role === 'bot');
 
         // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
         const userStatsMap = new Map();
@@ -1258,7 +1324,7 @@ class LeaderboardTable extends HTMLElement {
             this.lastMode = mode;
         }
 
-        let sorted = data.leaderboard.filter(u => u.role !== 'parent' && !u.name.toLowerCase().includes('bố') && !u.name.toLowerCase().includes('mẹ'));
+        let sorted = data.leaderboard.filter(u => u.role === 'child' || u.role === 'bot');
 
         // --- PRE-CALCULATE STATS FOR OPTIMIZATION ---
         const userStatsMap = new Map();
@@ -1467,6 +1533,57 @@ class LeaderboardTable extends HTMLElement {
                         </button>
                     </div>
                 ` : ''}
+
+                ${(() => {
+                const myId = window.AppState.data.user?.id;
+                const myUser = sorted.find(u => u.id === myId);
+                const isInCurrentPage = displayList.some(u => u.id === myId);
+
+                if (myUser && !isInCurrentPage) {
+                    const myRank = sorted.indexOf(myUser) + 1;
+                    const indicators = {
+                        rank: myRank,
+                        user: myUser,
+                        value: getValue(myUser),
+                        label: getLabel(),
+                        icon: getIcon(),
+                        color: getIconColor(),
+                        sub: getSubLabel(myUser)
+                    };
+
+                    return `
+                            <div class="mt-8 pt-6 border-t-2 border-dashed border-slate-100 dark:border-slate-800">
+                                <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center mb-4">Vị trí của bạn</p>
+                                <div class="bg-primary/10 dark:bg-primary/5 p-4 rounded-3xl border-2 border-primary/20 flex items-center justify-between group transition-all duration-300 ring-4 ring-primary/5 hover:scale-[1.02] cursor-pointer" onclick="this.scrollIntoView({behavior:'smooth'})">
+                                    <div class="flex items-center gap-4 sm:gap-6 flex-1">
+                                        <div class="size-12 sm:size-14 relative flex-shrink-0">
+                                            <div class="absolute -top-3 -left-3 size-8 sm:size-10 bg-gradient-to-br from-primary to-[#ff6b00] text-white rounded-2xl flex items-center justify-center font-black text-sm sm:text-base shadow-lg shadow-primary/30 z-10 border-2 border-white dark:border-[#221a10]">
+                                                ${myRank}
+                                            </div>
+                                            <div class="size-full rounded-2xl bg-white dark:bg-slate-800 p-1 shadow-inner relative overflow-hidden ring-2 ring-primary">
+                                                <img src="${myUser.avatar}" class="size-full object-cover rounded-xl" />
+                                            </div>
+                                        </div>
+                                        <div class="min-w-0 pr-4">
+                                            <div class="flex items-center gap-1.5 mb-0.5">
+                                                <h3 class="font-black text-slate-800 dark:text-white truncate text-base sm:text-lg tracking-tight">${myUser.name} <span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] ml-1">BẠN</span></h3>
+                                            </div>
+                                            <p class="text-[11px] sm:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[14px] ${indicators.color}">${indicators.icon}</span>
+                                                ${indicators.sub}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right flex-shrink-0 min-w-[80px]">
+                                        <div class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white leading-none mb-1">${indicators.value}</div>
+                                        <div class="text-[10px] sm:text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">${indicators.label}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                }
+                return '';
+            })()}
 
                 ${this.currentPage === totalPages - 1 && totalPages > 1 ? `
                     <div class="py-10 text-center opacity-40">
@@ -2815,57 +2932,107 @@ class GrowthDiaryView extends HTMLElement {
         window.showGrowthDetail = (logId) => {
             const log = logs.find(l => l.id === logId);
             if (!log) return;
-            const [title, description] = log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ') : [log.itemTitle, ''];
+            const [initialTitle, initialDesc] = log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ') : [log.itemTitle, ''];
             const isBad = log.type === 'behavior_bad';
             const isResolved = log.itemTitle.includes('Đã chuộc lỗi ✨');
+            const isReflection = log.type === 'reflection' || log.type === 'behavior_reflection';
 
             const modal = document.createElement('div');
             modal.id = 'diary-detail-modal';
             modal.className = 'fixed inset-0 z-[5000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300';
-            modal.innerHTML = `
-                <div class="bg-white w-full max-w-md rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-100">
-                    <!-- Decor Top -->
-                    <div class="h-24 bg-gradient-to-r ${isBad ? 'from-rose-400 to-rose-500' : 'from-emerald-400 to-emerald-500'} flex items-center justify-center">
-                        <div class="size-20 bg-white rounded-[2rem] shadow-lg flex items-center justify-center text-4xl transform translate-y-8">
-                            ${isBad ? (isResolved ? '✅' : '🌱') : '✨'}
-                        </div>
-                    </div>
 
-                    <div class="p-10 pt-12 text-center space-y-6">
-                        <div>
-                            <h3 class="text-2xl font-black text-slate-800">${title}</h3>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-2">${log.time}</p>
-                        </div>
+            const renderContent = (isEditing = false) => {
+                const title = isEditing ? `<input id="edit-title" type="text" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 rounded-xl px-4 py-2 text-center text-xl font-black text-slate-800" value="${initialTitle}">` : `<h3 class="text-2xl font-black text-slate-800">${initialTitle}</h3>`;
 
-                        <div class="space-y-2">
-                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left px-2">Lời nhắn từ Ba Mẹ</p>
-                             <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 text-slate-600 font-medium leading-relaxed italic text-sm text-left relative overflow-hidden">
-                                <span class="material-symbols-outlined absolute -right-2 -bottom-2 text-slate-100 text-6xl opacity-50">format_quote</span>
-                                "${description || (isBad ? 'Con hãy cố gắng sửa đổi để tốt hơn nhé!' : 'Ba mẹ rất tự hào về con!')}"
+                const descContent = isEditing ?
+                    `<textarea id="edit-desc" class="w-full h-32 bg-slate-50 border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 rounded-[2rem] p-6 text-sm font-medium text-slate-600 transition-all resize-none shadow-inner">${initialDesc}</textarea>` :
+                    `"${initialDesc || (isBad ? 'Con hãy cố gắng sửa đổi để tốt hơn nhé!' : 'Ba mẹ rất tự hào về con!')}"`;
+
+                modal.innerHTML = `
+                    <div class="bg-white w-full max-w-md rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-100">
+                        <!-- Decor Top -->
+                        <div class="h-24 bg-gradient-to-r ${isBad ? 'from-rose-400 to-rose-500' : 'from-emerald-400 to-emerald-500'} flex items-center justify-center">
+                            <div class="size-20 bg-white rounded-[2rem] shadow-lg flex items-center justify-center text-4xl transform translate-y-8">
+                                ${isBad ? (isResolved ? '✅' : '🌱') : '✨'}
                             </div>
                         </div>
 
-                        <div class="flex justify-center gap-6 py-2">
-                            ${log.reward !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-orange-400 text-2xl" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-xs font-black ${log.reward > 0 ? 'text-orange-600' : 'text-rose-500'}">${log.reward > 0 ? '+' : ''}${log.reward}</span></div>` : ''}
-                            ${log.xp !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-amber-500 text-2xl">military_tech</span><span class="text-xs font-black ${log.xp > 0 ? 'text-amber-600' : 'text-rose-500'}">${log.xp > 0 ? '+' : ''}${log.xp}</span></div>` : ''}
-                            ${log.sticker !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-pink-500 text-2xl rotate-12" style="font-variation-settings:'FILL' 1">sell</span><span class="text-xs font-black ${log.sticker > 0 ? 'text-pink-600' : 'text-rose-500'}">${log.sticker > 0 ? '+' : ''}${log.sticker}</span></div>` : ''}
-                            ${log.water !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-blue-500 text-2xl" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-xs font-black ${log.water > 0 ? 'text-blue-600' : 'text-rose-500'}">${log.water > 0 ? '+' : ''}${log.water}</span></div>` : ''}
-                        </div>
+                        <div class="p-10 pt-12 text-center space-y-6">
+                            <div>
+                                ${title}
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-2">${log.time}</p>
+                            </div>
 
-                        <div class="grid grid-cols-1 gap-3">
-                            ${isBad && !isResolved ? `
-                                <button onclick="window.handleAtonement('${log.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-emerald-100 flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined">auto_awesome</span>
-                                    CON HỨA SẼ SỬA SAI
-                                </button>
-                            ` : ''}
-                            <button onclick="document.getElementById('diary-detail-modal').remove()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-black py-4 rounded-2xl transition-all">
-                                ĐÓNG
-                            </button>
+                            <div class="space-y-2">
+                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left px-2">${isReflection ? 'Nội dung nhật ký' : 'Lời nhắn từ Ba Mẹ'}</p>
+                                 <div class="bg-slate-50 ${isEditing ? 'p-2' : 'p-6'} rounded-[2rem] border border-slate-100 text-slate-600 font-medium leading-relaxed italic text-sm text-left relative overflow-hidden">
+                                    ${!isEditing ? '<span class="material-symbols-outlined absolute -right-2 -bottom-2 text-slate-100 text-6xl opacity-50">format_quote</span>' : ''}
+                                    ${descContent}
+                                </div>
+                            </div>
+
+                            <div class="flex justify-center gap-6 py-2">
+                                ${log.reward !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-orange-400 text-2xl" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-xs font-black ${log.reward > 0 ? 'text-orange-600' : 'text-rose-500'}">${log.reward > 0 ? '+' : ''}${log.reward}</span></div>` : ''}
+                                ${log.xp !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-amber-500 text-2xl">military_tech</span><span class="text-xs font-black ${log.xp > 0 ? 'text-amber-600' : 'text-rose-500'}">${log.xp > 0 ? '+' : ''}${log.xp}</span></div>` : ''}
+                                ${log.sticker !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-pink-500 text-2xl rotate-12" style="font-variation-settings:'FILL' 1">sell</span><span class="text-xs font-black ${log.sticker > 0 ? 'text-pink-600' : 'text-rose-500'}">${log.sticker > 0 ? '+' : ''}${log.sticker}</span></div>` : ''}
+                                ${log.water !== 0 ? `<div class="flex flex-col items-center gap-1"><span class="material-symbols-outlined text-blue-500 text-2xl" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-xs font-black ${log.water > 0 ? 'text-blue-600' : 'text-rose-500'}">${log.water > 0 ? '+' : ''}${log.water}</span></div>` : ''}
+                            </div>
+
+                            <div class="grid grid-cols-1 gap-3">
+                                ${isEditing ? `
+                                    <button id="btn-save-edit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-emerald-100 flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined">save</span> LƯU THAY ĐỔI
+                                    </button>
+                                    <button id="btn-cancel-edit" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-black py-4 rounded-2xl transition-all">
+                                        HỦY
+                                    </button>
+                                ` : `
+                                    ${isBad && !isResolved ? `
+                                        <button onclick="window.handleAtonement('${log.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-emerald-100 flex items-center justify-center gap-2">
+                                            <span class="material-symbols-outlined">auto_awesome</span>
+                                            CON HỨA SẼ SỬA SAI
+                                        </button>
+                                    ` : ''}
+                                    <div class="flex gap-3">
+                                        <button id="btn-edit-mode" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-amber-100 flex items-center justify-center gap-2">
+                                            <span class="material-symbols-outlined">edit</span> SỬA
+                                        </button>
+                                        <button onclick="document.getElementById('diary-detail-modal').remove()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-500 font-black py-4 rounded-2xl transition-all">
+                                            ĐÓNG
+                                        </button>
+                                    </div>
+                                `}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
+
+                if (isEditing) {
+                    modal.querySelector('#btn-save-edit').onclick = async () => {
+                        const newTitle = modal.querySelector('#edit-title').value.trim();
+                        const newDesc = modal.querySelector('#edit-desc').value.trim();
+                        if (!newTitle) return alert("Tiêu đề không được để trống!");
+
+                        modal.querySelector('#btn-save-edit').disabled = true;
+                        modal.querySelector('#btn-save-edit').innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> ĐANG LƯU...';
+
+                        const success = await window.AppState.updateGrowthLog(logId, newTitle, newDesc);
+                        if (success) {
+                            window.showFamilyQuestAlert && window.showFamilyQuestAlert("Thành công", "Đã cập nhật nhật ký của con!", "success");
+                            modal.remove();
+                        } else {
+                            modal.querySelector('#btn-save-edit').disabled = false;
+                            modal.querySelector('#btn-save-edit').innerHTML = '<span class="material-symbols-outlined">save</span> LƯU THAY ĐỔI';
+                        }
+                    };
+                    modal.querySelector('#btn-cancel-edit').onclick = () => renderContent(false);
+                } else {
+                    const editBtn = modal.querySelector('#btn-edit-mode');
+                    if (editBtn) editBtn.onclick = () => renderContent(true);
+                }
+            };
+
+            renderContent(false);
             modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
             document.body.appendChild(modal);
         };

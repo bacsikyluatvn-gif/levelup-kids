@@ -7,7 +7,8 @@
     <title>Cuốn Sổ Sticker - LevelUp Kids</title>
     <link rel="stylesheet" href="../shared/css/global.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../shared/js/state.js?v=sticker_v25_persist_fix"></script>
+    <script src="../shared/js/stickers-data.js?v=2"></script>
+    <script src="../shared/js/state.js?v=sticker_v26_optimistic"></script>
     <script src="../shared/js/components.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
@@ -400,7 +401,7 @@
                 if (size === 'modal') {
                     return `<img src="${sticker.img}" alt="${sticker.name}" class="w-full h-full object-contain" />`;
                 }
-                return `<img src="${sticker.img}" alt="${sticker.name}" class="w-full h-full object-contain p-0.5" />`;
+                return `<img src="${sticker.img}" alt="${sticker.name}" class="w-full h-full object-contain p-0.5" loading="lazy" />`;
             }
             // Emoji fallback với background màu pastel
             const bg = EMOJI_BG[sticker.collection] || 'from-slate-100 to-slate-200';
@@ -409,6 +410,8 @@
                         <span class="${emojiSize}">${sticker.emoji}</span>
                     </div>`;
         }
+
+        let currentRenderId = 0;
 
         function renderGrid(data) {
             if (!data || !window.STICKER_CATALOG) return;
@@ -472,24 +475,34 @@
                 return;
             }
 
-            grid.innerHTML = stickers.map((s, idx) => {
-                const isUnlocked = unlocked.includes(s.id);
-                const content = getStickerContent(s, 'grid');
-                const delay = idx * 0.04;
+            // --- BATCH RENDERING ---
+            const renderId = ++currentRenderId;
+            const CHUNK_SIZE = 40;
+            grid.innerHTML = '';
 
-                if (isUnlocked) {
-                    const isNew = pendingStickerId === s.id;
-                    return `
+            const renderBatch = (startIndex) => {
+                if (renderId !== currentRenderId) return;
+
+                const endIndex = Math.min(startIndex + CHUNK_SIZE, stickers.length);
+                const chunk = stickers.slice(startIndex, endIndex);
+
+                const html = chunk.map((s, idx) => {
+                    const isUnlocked = unlocked.includes(s.id);
+                    const content = getStickerContent(s, 'grid');
+                    const delay = idx * 0.02;
+
+                    if (isUnlocked) {
+                        const isNew = pendingStickerId === s.id;
+                        return `
                         <div class="sticker-card sticker-unlocked group relative ${isNew ? 'sticker-pop-animation' : ''}" style="animation-delay:${delay}s" title="${s.name}">
                             <div class="aspect-square rounded-2xl shadow-md border-2 border-white overflow-hidden bg-white ring-4 ring-yellow-400/0 group-hover:ring-yellow-400/50 transition-all">${content}</div>
                             <div class="absolute -top-1.5 -right-1.5 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-10">
                                 <span class="material-symbols-outlined text-white text-[14px] font-black" style="font-variation-settings:'FILL' 1">check</span>
                             </div>
                             <p class="text-[9px] text-center font-bold text-slate-600 dark:text-slate-300 mt-1.5 leading-tight line-clamp-2">${s.name}</p>
-                        </div>
-                    `;
-                } else {
-                    return `
+                        </div>`;
+                    } else {
+                        return `
                         <div class="sticker-card sticker-locked group relative" style="animation-delay:${delay}s" data-id="${s.id}" onclick="openModal('${s.id}')" title="Click để dán: ${s.name}">
                             <div class="aspect-square rounded-2xl shadow-sm border-2 border-slate-200 dark:border-slate-700 overflow-hidden relative bg-white">
                                 ${content}
@@ -502,12 +515,21 @@
                                 </div>
                             </div>
                             <p class="text-[9px] text-center font-bold text-slate-400 mt-1.5 leading-tight line-clamp-2">${s.name}</p>
-                        </div>
-                    `;
-                }
-            }).join('');
+                        </div>`;
+                    }
+                }).join('');
 
-            // Check for completed collections
+                grid.insertAdjacentHTML('beforeend', html);
+
+                if (endIndex < stickers.length) {
+                    if (window.requestIdleCallback) {
+                        window.requestIdleCallback(() => renderBatch(endIndex), { timeout: 100 });
+                    } else {
+                        setTimeout(() => renderBatch(endIndex), 10);
+                    }
+                }
+            };
+            renderBatch(0);
             renderCompleteBanners(unlocked);
         }
 

@@ -5,7 +5,7 @@ from scipy.ndimage import label, binary_fill_holes, binary_opening, binary_dilat
 import json
 
 D = "stickers/"
-STATE_FILE = "shared/js/state.js"
+STICKERS_DATA_FILE = "shared/js/stickers-data.js"
 
 # Collection and Name Mapping
 CONFIG = {
@@ -225,7 +225,7 @@ new_catalog.extend(process_grid_sheet("food.png", "f", 4))
 
 # 3. Inject into state.js
 print("💉 Injecting catalog into state.js...")
-with open(STATE_FILE, "r") as f:
+with open(STICKERS_DATA_FILE, "r") as f:
     content = f.read()
 
 start_marker = "window.STICKER_CATALOG = ["
@@ -239,9 +239,9 @@ if start_idx != -1 and end_idx != -1:
     # Adjust formatting to match JS style a bit better
     catalog_json = catalog_json.lstrip(" ") # remove first line indents from json.dumps
     
-    new_content = content[:start_idx + len(start_marker)] + "\n" + catalog_json[1:-1] + "\n    " + content[end_idx:]
-    with open(STATE_FILE, "w") as f:
+    new_content = content[:start_idx + len(start_marker)] + "\n" + catalog_json[1:-1] + "\n" + content[end_idx:]
+    with open(STICKERS_DATA_FILE, "w") as f:
         f.write(new_content)
-    print("✅ Successfully updated state.js with " + str(len(new_catalog)) + " stickers!")
+    print("✅ Successfully updated stickers-data.js with " + str(len(new_catalog)) + " stickers!")
 else:
     print("❌ Could not find STICKER_CATALOG block in state.js")
