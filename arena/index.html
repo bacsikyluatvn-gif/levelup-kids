@@ -690,7 +690,7 @@
             class="bg-white dark:bg-[#2c2215] w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl transform scale-90 transition-all duration-300 text-center">
 
             <div id="report-task-emoji" class="text-6xl mb-4">🌅</div>
-            <h3 class="text-2xl font-black mb-1">KẾT QUẢ THẾ NÀO?</h3>
+            <h3 class="text-2xl font-black mb-1 text-slate-800 dark:text-white">KẾT QUẢ THẾ NÀO?</h3>
             <p class="text-slate-500 mb-8 font-medium">Bé hãy trung thực chọn kết quả thực tế của mình nhé!</p>
 
             <div class="space-y-3">
@@ -709,6 +709,38 @@
             <button onclick="closeReportModal()"
                 class="mt-6 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600">Để
                 sau</button>
+        </div>
+    </div>
+
+    <!-- ================ JOURNEY UPDATE MODAL (NEW) ================ -->
+    <div id="journey-log-modal"
+        class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="journey-log-modal-content"
+            class="bg-white dark:bg-[#1a1611] w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl transform scale-90 transition-all duration-300 border border-white/20">
+
+            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6">
+                <span class="material-symbols-outlined text-4xl">history_edu</span>
+            </div>
+
+            <h3 class="text-2xl font-black mb-2 text-center text-slate-800 dark:text-white uppercase italic">CẬP NHẬT
+                HÀNH TRÌNH</h3>
+            <p class="text-slate-400 text-[11px] font-bold text-center uppercase tracking-widest mb-6">Con đã làm được
+                gì rồi? Chia sẻ ngay nào!</p>
+
+            <textarea id="journey-log-input"
+                class="w-full h-32 p-4 bg-slate-50 dark:bg-black/40 border-2 border-slate-100 dark:border-white/5 rounded-2xl text-slate-700 dark:text-white font-bold text-sm focus:border-primary focus:outline-none transition-all placeholder:text-slate-300"
+                placeholder="Ví dụ: Con đã giúp mẹ quét nhà và tưới cây..."></textarea>
+
+            <div class="grid grid-cols-2 gap-3 mt-6">
+                <button onclick="closeJourneyLogModal()"
+                    class="py-4 bg-slate-100 dark:bg-white/5 text-slate-400 font-black rounded-2xl hover:bg-slate-200 transition-all">
+                    HỦY
+                </button>
+                <button id="btn-submit-journey" onclick="submitJourneyLog()"
+                    class="py-4 bg-primary text-white font-black rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                    LƯU LẠI
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1518,8 +1550,19 @@
             const currentUserId = String(data.user.id);
             if (!currentUserId) return;
 
-            // Generate a simpler hash
-            const currentHash = `${data.challenges?.length || 0}-${data.user.gold}-${data.user.xp}`;
+            // Generate a more comprehensive hash to avoid blocking actual updates
+            const challenges = data.challenges || [];
+            const logsHash = challenges.reduce((acc, c) => acc + (c.logs?.length || 0), 0);
+            const confirmedHash = challenges.reduce((acc, c) => acc + (c.challengerConfirmed ? 1 : 0) + (c.opponentConfirmed ? 1 : 0), 0);
+
+            // Local "started" states also need to be part of the hash
+            let startedHash = 0;
+            challenges.forEach(c => {
+                if (localStorage.getItem(`started_challenge_${c.id}`) === 'true') startedHash++;
+            });
+
+            const currentHash = `${challenges.length}-${data.user.gold}-${data.user.xp}-${logsHash}-${confirmedHash}-${startedHash}`;
+
             if (currentHash === lastDataHash) return;
             lastDataHash = currentHash;
 
@@ -1528,8 +1571,6 @@
             const newsGrid = document.getElementById('arena-news-list');
             const completedSection = document.getElementById('completed-section');
             const activeCount = document.getElementById('active-count');
-
-            const challenges = data.challenges || [];
 
             // Render everything in one go to prevent flickering
             requestAnimationFrame(() => {
@@ -2149,23 +2190,61 @@
             }
         }
 
-        async function addLogPrompt(challengeId) {
-            event.stopPropagation();
-            const text = prompt("Con đã làm được gì rồi? Hãy ghi lại để mọi người cùng biết nhé (VD: Giúp mẹ quét nhà):");
-            if (!text || text.trim() === "") return;
+        // ================ JOURNEY LOG MODAL LOGIC ================
+        let activeChallengeIdForLog = null;
 
-            showLoading(true);
+        function addLogPrompt(challengeId) {
+            event.stopPropagation();
+            activeChallengeIdForLog = challengeId;
+
+            const modal = document.getElementById('journey-log-modal');
+            const content = document.getElementById('journey-log-modal-content');
+            const input = document.getElementById('journey-log-input');
+
+            input.value = "";
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => content.classList.remove('scale-90'), 10);
+            setTimeout(() => input.focus(), 300);
+        }
+
+        function closeJourneyLogModal() {
+            const modal = document.getElementById('journey-log-modal');
+            const content = document.getElementById('journey-log-modal-content');
+
+            content.classList.add('scale-90');
+            setTimeout(() => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                activeChallengeIdForLog = null;
+            }, 200);
+        }
+
+        async function submitJourneyLog() {
+            const input = document.getElementById('journey-log-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const btn = document.getElementById('btn-submit-journey');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span>';
+
             try {
-                const ok = await window.AppState.addChallengeLog(challengeId, text.trim());
+                if (!window.AppState) return;
+                const ok = await window.AppState.addChallengeLog(activeChallengeIdForLog, text);
+
                 if (ok) {
+                    playSound('snd-click');
+                    closeJourneyLogModal();
+                    // Sync immediately to show new log
                     await window.AppState.syncFromDatabase();
                 } else {
-                    window.showLevelUpAlert && window.showLevelUpAlert('Lỗi cập nhật', 'Đã có lỗi xảy ra khi lưu nhật ký hành trình.', 'error');
+                    window.showLevelUpAlert && window.showLevelUpAlert('Lỗi', 'Không thể lưu nhật ký. Vui lòng thử lại!', 'error');
                 }
             } catch (err) {
-                console.error('[Arena] addLog error:', err);
+                console.error('[Arena] submitLog error:', err);
             } finally {
-                showLoading(false);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
             }
         }
 
