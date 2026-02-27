@@ -112,7 +112,9 @@ class StateManager {
                         const cached = localStorage.getItem(cacheKey);
                         if (cached) {
                                 const parsed = JSON.parse(cached);
-                                if (parsed.user) delete parsed.user.unlockedStickers; // Luôn xóa để sync từ DB
+                                if (parsed.user) {
+                                        // KHÔNG xóa unlockedStickers nữa để có thể gộp khi load lại trang
+                                }
                                 // Merge with default to be safe
                                 this.data = { ...this.data, ...parsed };
                                 console.log(`[State] 🚀 Đã nạp dữ liệu cache riêng cho profile: ${profileId}`);
@@ -128,13 +130,9 @@ class StateManager {
                         if (!profileId) return;
 
                         const cacheKey = `family_quest_state_v3_cache_${profileId}`;
-                        // XÓA stickers khỏi cache để tránh rò rỉ dữ liệu giữa các lần load
-                        const userCopy = { ...(this.data.user || {}) };
-                        delete userCopy.unlockedStickers;
-
                         // Chỉ lưu những phần cần thiết của profile hiện tại
                         const toSave = {
-                                user: userCopy,
+                                user: this.data.user || {},
                                 tree: this.data.tree,
                                 title: this.data.title,
                                 treePoints: this.data.treePoints
@@ -463,9 +461,9 @@ class StateManager {
                                 const oldUser = this.data.user || {};
                                 const newUser = { ...activeUser, isCurrentUser: true };
 
-                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng VÀ đã qua lần sync đầu tiên
-                                // Nếu là lần đầu tiên (ngay sau load hoặc đổi profile): Trust DB hoàn toàn để xóa sạch rác cache.
-                                if (oldUser.id === newUser.id && this._initialSyncDone) {
+                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
+                                // Tháo bỏ check this._initialSyncDone để cho phép gộp cả khi vừa F5 trang từ Cache
+                                if (oldUser.id === newUser.id) {
                                         // 1. Gộp danh sách Sticker (Union) - chỉ dành cho chính người đó
                                         const mergedUnlocked = Array.from(new Set([
                                                 ...(oldUser.unlockedStickers || []),
@@ -473,14 +471,23 @@ class StateManager {
                                         ]));
                                         newUser.unlockedStickers = mergedUnlocked;
 
-                                        // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ
-                                        const localCount = (oldUser.unlockedStickers || []).length;
-                                        const dbCount = (activeUser.unlockedStickers || []).length;
-                                        if (localCount > dbCount && oldUser.stickers !== undefined) {
-                                                if (oldUser.stickers < newUser.stickers) {
-                                                        newUser.stickers = oldUser.stickers;
-                                                }
+                                        // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ (Sử dụng delta)
+                                        const localUnlockedCount = (oldUser.unlockedStickers || []).length;
+                                        const dbUnlockedCount = (activeUser.unlockedStickers || []).length;
+
+                                        if (localUnlockedCount > dbUnlockedCount) {
+                                                const delta = localUnlockedCount - dbUnlockedCount;
+                                                // Nếu local đã mở nhiều hơn DB, ta trừ đi delta từ số dư mới của DB
+                                                // Điều này giúp bảo vệ cả các phần thưởng mới nhận từ Parent
+                                                newUser.stickers = Math.max(0, (newUser.stickers || 0) - delta);
+                                                console.log(`[Sync] 🛡️ Bảo vệ sticker: Local mở ${localUnlockedCount}, DB mở ${dbUnlockedCount}. Trừ delta ${delta}. Còn lại: ${newUser.stickers}`);
                                         }
+
+                                        // 3. Tính lại totalStickers
+                                        newUser.totalStickers = Math.max(
+                                                newUser.totalStickers || 0,
+                                                newUser.unlockedStickers.length + (newUser.stickers || 0)
+                                        );
                                 } else {
                                         // Nếu chuyển đổi sang profile khác hoàn toàn: 
                                         // 1. Reset các trạng thái milestone để không hiện popup cũ cho người mới
