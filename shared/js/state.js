@@ -328,28 +328,30 @@ class StateManager {
 
                         if (p.role === 'bot') {
                                 const isBoy = idHash % 2 === 0;
-                                // Mở rộng danh sách tên Bot để tránh trùng lặp trên nhiều trang BXH
-                                const boyPool = [
-                                        'Thành Nam', 'Minh Khôi', 'Gia Huy', 'Khôi Nguyên', 'Bảo Nam', 'Đức Anh', 'Tùng Lâm', 'Sóc Nâu', 'Bi Bi', 'Khoai Tây',
-                                        'Nhật Minh', 'Tuấn Kiệt', 'Hữu Phước', 'Anh Khôi', 'Tuấn Minh', 'Thế Vinh', 'Minh Phát', 'Đăng Khoa', 'Đức Duy', 'Duy Nam',
-                                        'Quang Vinh', 'Quốc Bảo', 'Trung Kiên', 'Hoàng Long', 'Việt Anh', 'Bách Khoa', 'Cà Rốt', 'Su Su', 'Tí Quậy', 'Cún Con',
-                                        'Gấu Nhỏ', 'Sư Tử', 'Tèo', 'Bin', 'Bo', 'Ken', 'Kid', 'Tin Tin', 'Zin', 'Ben',
-                                        'Gấu', 'Nghé', 'Cu Bin', 'Cu Bo', 'Mì Tôm', 'Bánh Mì', 'Phô Mai', 'Xúc Xích', 'Bắp', 'Đậu Đỏ'
-                                ];
-                                const girlPool = [
-                                        'Khánh Linh', 'Ngọc Diệp', 'Trà My', 'Hoài An', 'Mỹ Tâm', 'An Chi', 'Tuệ Lâm', 'Mây Xinh', 'Kem Dâu', 'Thỏ Ngọc',
-                                        'Bảo Anh', 'Thùy Chi', 'Diễm My', 'Lan Hương', 'Tuyết Mai', 'Phương Thảo', 'Minh Anh', 'Linh Đan', 'Phương Vy', 'Kim Ngân',
-                                        'Quỳnh Chi', 'Thảo Nguyên', 'Thanh Hằng', 'Mai Phương', 'Diệu Anh', 'Hà My', 'Bánh Gạo', 'Su Kem', 'Luna', 'Sunny',
-                                        'Bella', 'Mi Mi', 'Na Na', 'Xu Xu', 'Bông', 'Bống', 'Tép', 'Mận', 'Sơ Ri', 'Dâu Tây',
-                                        'Đào', 'Mít', 'Cam', 'Quýt', 'Na', 'Ổi', 'Sâu', 'Nhím', 'Sóc', 'Chít Chít'
-                                ];
 
-                                const pool = isBoy ? boyPool : girlPool;
-                                // Sử dụng idHash kết hợp để đảo vị trí tốt hơn
-                                name = pool[idHash % pool.length];
+                                // Hệ thống tạo tên tổ hợp để đảm bảo tính duy nhất (Unique)
+                                const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương'];
 
+                                const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy'];
+                                const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh'];
+
+                                const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh'];
+                                const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên'];
+
+                                const sIdx = idHash % surnames.length;
+                                const mIdx = (idHash + 7) % 15;
+                                const nIdx = (idHash + 13) % 20;
+
+                                if (isBoy) {
+                                        name = `${surnames[sIdx]} ${boyMiddles[mIdx]} ${boyNames[nIdx]}`;
+                                } else {
+                                        name = `${surnames[sIdx]} ${girlMiddles[mIdx]} ${girlNames[nIdx]}`;
+                                }
+
+                                // Avatar: Dùng thuật toán băm khác để tránh trùng lặp với tên
+                                const avHash = p.id.split('').reduce((acc, char, i) => acc + (char.charCodeAt(0) * (i + 1)), 0);
                                 const avPool = isBoy ? [1, 3, 4, 5, 9, 10, 15, 18, 19, 20] : [2, 6, 7, 8, 11, 12, 13, 14, 16, 17];
-                                avatar = `../shared/assets/generated_avatars/avatar_${avPool[idHash % avPool.length]}.png`;
+                                avatar = `../shared/assets/generated_avatars/avatar_${avPool[avHash % avPool.length]}.png`;
                         }
 
                         return {
