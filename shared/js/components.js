@@ -59,6 +59,8 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
  * Triggers full screen fireworks and celebratory UI
  */
 let activeCelebrationAudio = null;
+let lastCelebrationSoundTime = 0;
+const SOUND_COOLDOWN = 5000; // 5 seconds cooldown between sounds
 
 window.celebrate = (config = {}) => {
     const {
@@ -140,15 +142,23 @@ window.celebrate = (config = {}) => {
 
     // 1. Play Sound
     if (sound) {
-        // Stop any previous celebration sound
-        if (activeCelebrationAudio) {
-            activeCelebrationAudio.pause();
-            activeCelebrationAudio.currentTime = 0;
-        }
+        const now = Date.now();
+        const skipSound = now - lastCelebrationSoundTime < SOUND_COOLDOWN;
 
-        activeCelebrationAudio = new Audio(theme.sound);
-        activeCelebrationAudio.volume = 0.5;
-        activeCelebrationAudio.play().catch(e => console.log("Audio play blocked"));
+        if (!skipSound) {
+            // Stop any previous celebration sound
+            if (activeCelebrationAudio) {
+                activeCelebrationAudio.pause();
+                activeCelebrationAudio.currentTime = 0;
+            }
+
+            activeCelebrationAudio = new Audio(theme.sound);
+            activeCelebrationAudio.volume = 0.5;
+            activeCelebrationAudio.play().catch(e => console.log("Audio play blocked"));
+            lastCelebrationSoundTime = now;
+        } else {
+            console.log("[Celebrate] Sound skipped due to cooldown to avoid 'messy' sequence");
+        }
     }
 
     // 2. Clear existing
@@ -255,7 +265,15 @@ window.celebrate = (config = {}) => {
     fireConfetti();
 
     // 5. Cleanup
-    container.querySelector('#close-celebration').onclick = () => {
+    const closeBtn = container.querySelector('#close-celebration');
+    closeBtn.onclick = () => {
+        // Tắt âm thanh ngay lập tức khi tắt popup
+        if (activeCelebrationAudio) {
+            activeCelebrationAudio.pause();
+            activeCelebrationAudio.currentTime = 0;
+            activeCelebrationAudio = null;
+        }
+
         container.style.opacity = '0';
         container.style.transform = 'scale(1.1)';
         container.style.transition = 'all 0.6s cubic-bezier(0.19, 1, 0.22, 1)';

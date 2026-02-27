@@ -523,8 +523,8 @@ class StateManager {
                         setTimeout(() => {
                                 window.celebrate({
                                         type: 'title',
-                                        title: `TOP ${currentRank}!`,
-                                        subtitle: `Xuất sắc! Con đã vượt qua thử thách và vươn lên vị trí số ${currentRank} trên Bảng Xếp Hạng Sticker toàn gia đình!`,
+                                        title: `HẠNG ${currentRank} TOÀN BỘ SƯU TẬP!`,
+                                        subtitle: `Thật kinh ngạc! Con vừa vươn lên vị trí TOP ${currentRank} về số lượng Sticker trong cả gia đình! Hãy tiếp tục sưu tầm để chinh phục ngôi đầu nhé!`,
                                         icon: 'leaderboard'
                                 });
                         }, 2000);
