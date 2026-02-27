@@ -105,7 +105,32 @@
     animation-delay: 500ms;
 }
 
-/* Existing Scrollbar */
+/* Premium Visual Utilities */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark .glass-card {
+    background: rgba(30, 26, 19, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.glow-primary {
+    filter: drop-shadow(0 0 15px rgba(238, 157, 43, 0.4));
+}
+
+.glow-rose {
+    filter: drop-shadow(0 0 15px rgba(244, 63, 94, 0.4));
+}
+
+.glow-blue {
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
