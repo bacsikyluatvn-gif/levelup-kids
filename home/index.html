@@ -18,8 +18,8 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-25..0"
         rel="stylesheet" />
     <!-- Shared Scripts -->
-    <script src="../shared/js/state.js?v=1.0.8_ULTRA_POWER"></script>
-    <script src="../shared/js/components.js?v=1.0.8" defer></script>
+    <script src="../shared/js/state.js?v=1.0.9_STRUCTURED_V2"></script>
+    <script src="../shared/js/components.js?v=1.0.9" defer></script>
     <!-- Theme Config -->
     <script>
         tailwind.config = {
@@ -34,6 +34,7 @@
                     animation: {
                         'shine': 'shine 3s infinite linear',
                         'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'scroll': 'scroll linear infinite',
                     },
                     keyframes: {
                         shine: {
@@ -43,6 +44,10 @@
                         wiggle: {
                             '0%, 100%': { transform: 'rotate(-3deg)' },
                             '50%': { transform: 'rotate(3deg)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
                         }
                     }
                 },
@@ -79,49 +84,60 @@
             }
         }
 
-        .victory-ticker {
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        .victory-ticker-container {
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
 
-        .glow-node {
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        .animate-scroll {
+            display: flex;
+            width: max-content;
         }
 
         .hero-glow-bg {
-            background: radial-gradient(circle at center, rgba(238, 157, 43, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(238, 157, 43, 0.1) 0%, transparent 70%);
+        }
+
+        .module-card {
+            @apply flex flex-col items-center text-center p-8 rounded-[3rem] transition-all duration-300;
         }
     </style>
 </head>
 
 <body
-    class="bg-slate-50 dark:bg-[#120f0a] min-h-screen text-slate-800 dark:text-slate-200 font-['Montserrat'] selection:bg-primary selection:text-white transition-colors duration-300">
+    class="bg-slate-50 dark:bg-[#0c0a08] min-h-screen text-slate-800 dark:text-slate-200 font-['Montserrat'] selection:bg-primary selection:text-white transition-colors duration-300">
 
     <!-- App Header -->
     <app-header></app-header>
 
     <!-- 1. VICTORY TICKER (BẢN TIN CHIẾN THẮNG) -->
     <div
-        class="fixed top-[70px] left-0 w-full z-40 bg-slate-900/80 backdrop-blur-md border-y border-white/5 py-2 overflow-hidden victory-ticker shadow-lg">
-        <div class="flex whitespace-nowrap animate-scroll items-center gap-12 text-blue-400 font-black text-xs uppercase tracking-widest"
-            style="animation-duration: 40s">
-            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-sm">auto_awesome</span>
+        class="fixed top-[70px] left-0 w-full z-40 bg-slate-900/95 backdrop-blur-xl border-y border-white/5 h-10 flex items-center overflow-hidden victory-ticker-container shadow-2xl">
+        <div class="animate-scroll whitespace-nowrap gap-16 text-blue-400 font-black text-[10px] uppercase tracking-widest px-8"
+            style="animation-duration: 30s">
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">auto_awesome</span>
                 <span id="news-1">Đang tải bản tin chiến thắng...</span></div>
-            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-sm">history_edu</span>
-                <span id="news-2">Alex vừa viết nhật ký SOI CHIẾU rất sâu sắc!</span></div>
-            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-sm">military_tech</span>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">history_edu</span>
+                <span id="news-2">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span></div>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">military_tech</span>
                 <span id="news-3">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span></div>
-            <!-- Duplicates for loop -->
-            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-sm">auto_awesome</span>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">verified</span>
+                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span></div>
+            <!-- Duplicates for seamless loop -->
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">auto_awesome</span>
                 <span id="news-1-dup">Đang tải bản tin chiến thắng...</span></div>
-            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-sm">history_edu</span>
-                <span id="news-2-dup">Alex vừa viết nhật ký SOI CHIẾU rất sâu sắc!</span></div>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">history_edu</span>
+                <span id="news-2-dup">Alex vừa nạp năng lượng từ Nhật ký Soi Chiếu!</span></div>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">military_tech</span>
+                <span id="news-3-dup">Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!</span></div>
+            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-sm">verified</span>
+                <span>Tiến hóa lên Danh hiệu mới: THỦ LĨNH Elite!</span></div>
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 pt-40 pb-32 space-y-16">
+    <main class="max-w-7xl mx-auto px-4 pt-44 pb-32 space-y-24">
 
         <!-- 2. POWER CORE (TRUNG TÂM NĂNG LƯỢNG) -->
-        <section class="relative flex flex-col items-center justify-center min-h-[500px] py-10 animate-fade-in-up">
+        <section class="relative flex flex-col items-center justify-center py-10 animate-fade-in-up">
             <div class="hero-glow-bg absolute inset-0 -z-10 animate-pulse"></div>
 
             <!-- Orbits -->
@@ -132,165 +148,210 @@
                 <div class="size-4 bg-blue-500 rounded-full blur-[2px] translate-x-[225px]"></div>
             </div>
 
-            <!-- Central Avatar with Aura -->
+            <!-- Avatar -->
             <div class="relative group cursor-pointer" onclick="window.location.href='../dashboard/index.html'">
                 <div
-                    class="absolute -inset-8 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-30 group-hover:opacity-60 transition-opacity animate-aura">
+                    class="absolute -inset-10 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-20 group-hover:opacity-50 transition-opacity animate-aura">
                 </div>
                 <div id="hero-avatar"
-                    class="size-48 md:size-64 rounded-[4rem] bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-2xl relative z-20 group-hover:scale-105 transition-transform duration-500 group-hover:rotate-2">
-                    <div class="absolute -bottom-4 -right-4 bg-primary text-white size-16 rounded-3xl flex items-center justify-center font-black text-2xl border-4 border-white dark:border-slate-800 shadow-xl"
+                    class="size-52 md:size-72 rounded-[4.5rem] bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-2xl relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-3">
+                    <div class="absolute -bottom-4 -right-4 bg-primary text-white size-16 md:size-20 rounded-[2rem] md:rounded-[2.5rem] flex items-center justify-center font-black text-2xl md:text-3xl border-4 border-white dark:border-slate-800 shadow-xl"
                         id="hero-level">1</div>
                 </div>
             </div>
 
-            <!-- Identity info underneath -->
-            <div class="mt-12 text-center relative z-10">
-                <h1 class="text-5xl md:text-7xl font-[1000] tracking-tighter uppercase italic text-slate-900 dark:text-white mb-2 drop-shadow-sm"
+            <!-- Identity -->
+            <div class="mt-14 text-center relative z-10">
+                <h1 class="text-6xl md:text-8xl font-[1000] tracking-tighter uppercase italic text-slate-900 dark:text-white mb-4 drop-shadow-md"
                     id="hero-name">ALEX</h1>
                 <div
-                    class="inline-flex items-center gap-3 bg-white/40 dark:bg-black/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/20">
-                    <span class="material-symbols-outlined text-primary text-2xl"
+                    class="inline-flex items-center gap-4 bg-white/60 dark:bg-black/40 backdrop-blur-xl px-8 py-3 rounded-full border border-white/20 shadow-lg">
+                    <span class="material-symbols-outlined text-primary text-3xl"
                         style="font-variation-settings:'FILL' 1">stars</span>
-                    <span class="font-[900] tracking-widest text-sm uppercase opacity-80" id="hero-title">DANH HIỆU:
-                        ĐANG QUÉT...</span>
+                    <span
+                        class="font-[1000] tracking-[0.2em] text-xs md:text-sm uppercase text-slate-600 dark:text-slate-300"
+                        id="hero-title">ĐANG QUÉT DANH HIỆU...</span>
                 </div>
             </div>
 
-            <!-- Aura Bar -->
-            <div class="mt-10 w-full max-w-md space-y-4">
-                <div class="flex justify-between items-end px-2">
-                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.5em]">Hào Quang Elite</span>
-                    <span class="text-sm font-black text-slate-400" id="hero-xp-text">0 / 100 XP</span>
+            <!-- Status Bar -->
+            <div class="mt-12 w-full max-w-lg space-y-5">
+                <div class="flex justify-between items-end px-4">
+                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.5em] glow-text">Hào Quang Thủ
+                        Lĩnh</span>
+                    <span class="text-sm font-black text-slate-500" id="hero-xp-text">0 / 100 XP</span>
                 </div>
-                <div class="h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-1">
+                <div class="h-5 bg-slate-200 dark:bg-slate-800/50 rounded-full overflow-hidden p-1.5 shadow-inner">
                     <div id="hero-xp-bar"
-                        class="h-full bg-gradient-to-r from-primary to-amber-300 rounded-full shadow-[0_0_15px_rgba(238,157,43,0.5)] transition-all duration-[2s]"
+                        class="h-full bg-gradient-to-r from-primary via-amber-400 to-amber-200 rounded-full shadow-[0_0_20px_rgba(238,157,43,0.5)] transition-all duration-[2s]"
                         style="width: 0%"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. MYSTERY & MISSION (BÍ MẬT & THỬ THÁCH) -->
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up delay-100">
-            <!-- Mystery Box Card -->
-            <div class="group relative bg-slate-900 rounded-[3.5rem] p-10 overflow-hidden cursor-pointer shadow-2xl hover:scale-[1.02] transition-all"
-                onclick="window.location.href='../dashboard/index.html'">
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/50 to-purple-900/50 opacity-50"></div>
-                <!-- Animated background mesh -->
-                <div class="absolute -top-20 -right-20 size-80 bg-primary/20 rounded-full blur-[100px] animate-pulse">
-                </div>
-
-                <div class="relative z-10 h-full flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <span
-                                class="bg-primary text-black px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.3em]">BÍ
-                                MẬT HÔM NAY</span>
-                            <div class="h-px flex-1 bg-white/10"></div>
-                        </div>
-                        <h2
-                            class="text-4xl font-[1000] text-white tracking-tighter uppercase italic leading-tight mb-4">
-                            Hộp Quà <br><span class="text-primary italic">Huyền Bí</span></h2>
-                    </div>
-
-                    <div class="flex items-center gap-8 py-4">
-                        <img src="../shared/assets/mystery_chest.png"
-                            onerror="this.src='https://api.iconify.design/noto:wrapped-gift.svg'"
-                            class="size-40 animate-float drop-shadow-[0_0_30px_rgba(238,157,43,0.4)]" alt="Chest">
-                        <p class="text-slate-400 font-bold text-lg leading-relaxed">Đang có <span class="text-white"
-                                id="pending-count">0</span> nhiệm vụ đang chờ con phá giải để mở hộp!</p>
-                    </div>
-
-                    <button
-                        class="w-fit bg-primary hover:bg-white hover:text-primary text-black px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all">KHÁM
-                        PHÁ NGAY</button>
-                </div>
+        <!-- CATEGORY 1: HÀNH ĐỘNG KIẾM VẬT PHẨM (ACTION) -->
+        <section class="animate-fade-in-up delay-100">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="text-3xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tighter italic">HÀNH
+                    ĐỘNG <span class="text-primary italic">ANH HÙNG</span></h2>
+                <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                <span class="text-[10px] font-bold text-slate-400 tracking-[0.3em]">KIẾM VẬT PHẨM</span>
             </div>
-
-            <!-- Spotlight Achievement -->
-            <div
-                class="glass-card rounded-[3.5rem] p-10 flex flex-col justify-between shadow-xl group hover:border-primary/50 transition-colors">
-                <div>
-                    <div class="flex items-center justify-between mb-8">
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Hệ Vinh
-                            Quang</span>
-                        <div class="size-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
-                            <span class="material-symbols-outlined text-2xl">verified_user</span>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Mission -->
+                <a href="../dashboard/index.html"
+                    class="glass-card group p-10 rounded-[3.5rem] hover:-translate-y-4 shadow-xl transition-all border-b-4 border-amber-500/50 relative overflow-hidden">
+                    <div
+                        class="absolute -right-8 -top-8 size-40 bg-amber-500/5 rounded-full group-hover:scale-150 transition-transform duration-700">
                     </div>
-                    <h3 class="text-3xl font-[950] text-slate-800 dark:text-white uppercase tracking-tight mb-4">Danh
-                        Hiệu <span class="text-blue-500">Spotlight</span></h3>
-                    <p class="text-slate-400 font-bold leading-relaxed mb-8">Con đang đứng ở hạng <span
-                            class="text-slate-900 dark:text-white" id="rank-val">--</span>. Hãy vươn lên Top 3 để được
-                        lên "Ti vi" toàn hệ thống!</p>
-                </div>
+                    <div
+                        class="size-24 bg-amber-500/10 rounded-[2.5rem] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform glow-primary">
+                        <span class="material-symbols-outlined text-6xl text-amber-500"
+                            style="font-variation-settings:'FILL' 1">target</span>
+                    </div>
+                    <h3 class="text-2xl font-[1000] mb-3 text-slate-800 dark:text-white uppercase tracking-tight">NHIỆM
+                        VỤ</h3>
+                    <p class="text-sm font-bold text-slate-400 dark:text-slate-500 italic">"Làm việc tốt để tích lũy
+                        Vàng & năng lượng."</p>
+                    <div class="mt-8 flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span class="text-[10px] font-black uppercase text-amber-500 tracking-widest"
+                            id="pending-count">0 ĐANG CHỜ</span>
+                    </div>
+                </a>
+                <!-- Growth Diary -->
+                <a href="../personality/index.html"
+                    class="glass-card group p-10 rounded-[3.5rem] hover:-translate-y-4 shadow-xl transition-all border-b-4 border-rose-500/50 relative overflow-hidden">
+                    <div
+                        class="absolute -right-8 -top-8 size-40 bg-rose-500/5 rounded-full group-hover:scale-150 transition-transform duration-700">
+                    </div>
+                    <div
+                        class="size-24 bg-rose-500/10 rounded-[2.5rem] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform glow-rose">
+                        <span class="material-symbols-outlined text-6xl text-rose-500"
+                            style="font-variation-settings:'FILL' 1">auto_stories</span>
+                    </div>
+                    <h3 class="text-2xl font-[1000] mb-3 text-slate-800 dark:text-white uppercase tracking-tight">NHẬT
+                        KÝ</h3>
+                    <p class="text-sm font-bold text-slate-400 dark:text-slate-500 italic">"Soi chiếu tâm hồn, nhận Điểm
+                        Nhân Cách."</p>
+                    <div class="mt-8">
+                        <span
+                            class="bg-rose-500/10 text-rose-500 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">SO
+                            QUANG TÂM</span>
+                    </div>
+                </a>
+                <!-- Arena -->
+                <a href="../arena/index.html"
+                    class="glass-card group p-10 rounded-[3.5rem] hover:-translate-y-4 shadow-xl transition-all border-b-4 border-blue-500/50 relative overflow-hidden">
+                    <div
+                        class="absolute -right-8 -top-8 size-40 bg-blue-500/5 rounded-full group-hover:scale-150 transition-transform duration-700">
+                    </div>
+                    <div
+                        class="size-24 bg-blue-500/10 rounded-[2.5rem] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform glow-blue">
+                        <span class="material-symbols-outlined text-6xl text-blue-500"
+                            style="font-variation-settings:'FILL' 1">swords</span>
+                    </div>
+                    <h3 class="text-2xl font-[1000] mb-3 text-slate-800 dark:text-white uppercase tracking-tight">ĐẤU
+                        TRƯỜNG</h3>
+                    <p class="text-sm font-bold text-slate-400 dark:text-slate-500 italic">"Giao lưu bản lĩnh, thăng cấp
+                        kỹ năng."</p>
+                    <div class="mt-8">
+                        <span class="text-xl font-black text-slate-800 dark:text-white uppercase italic"
+                            id="arena-status">...</span>
+                    </div>
+                </a>
+            </div>
+        </section>
 
-                <div class="bg-slate-100 dark:bg-black/20 rounded-3xl p-6 border border-slate-200 dark:border-white/5">
-                    <div class="flex items-center gap-6">
-                        <div
-                            class="size-20 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
-                            <span class="material-symbols-outlined text-4xl"
-                                style="font-variation-settings:'FILL' 1">emoji_events</span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] font-black text-slate-400 block mb-1">TRẠNG THÁI HIỆN TẠI</span>
-                            <span class="text-xl font-black text-slate-800 dark:text-white uppercase italic"
-                                id="arena-status">Đang đợi kèo đấu...</span>
-                        </div>
+        <!-- CATEGORY 2: TRƯNG BÀY VINH QUANG (SHOWCASE) -->
+        <section class="animate-fade-in-up delay-200">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="text-3xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tighter italic">BẢNG
+                    VÀNG <span class="text-blue-500 italic">VINH QUY</span></h2>
+                <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                <span class="text-[10px] font-bold text-slate-400 tracking-[0.3em]">VINH DANH</span>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Stickers -->
+                <a href="../sticker-book/index.html"
+                    class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-8 rounded-[3rem] group hover:bg-primary hover:border-primary transition-all duration-500 flex flex-col items-center">
+                    <div
+                        class="size-20 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                        <span
+                            class="material-symbols-outlined text-4xl text-purple-600 group-hover:text-white transition-colors"
+                            style="font-variation-settings:'FILL' 1">sell</span>
+                    </div>
+                    <span class="text-lg font-[1000] group-hover:text-white uppercase transition-colors">Sticker</span>
+                    <span
+                        class="text-[10px] font-bold text-slate-400 group-hover:text-white/80 uppercase tracking-widest mt-2"
+                        id="stickers-stat">0 ĐÃ MỞ</span>
+                </a>
+                <!-- Leaderboard -->
+                <a href="../leaderboard/index.html"
+                    class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-8 rounded-[3rem] group hover:bg-blue-600 hover:border-blue-600 transition-all duration-500 flex flex-col items-center">
+                    <div
+                        class="size-20 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                        <span
+                            class="material-symbols-outlined text-4xl text-blue-600 group-hover:text-white transition-colors"
+                            style="font-variation-settings:'FILL' 1">emoji_events</span>
+                    </div>
+                    <span class="text-lg font-[1000] group-hover:text-white uppercase transition-colors">Hạng: <span
+                            id="rank-val">--</span></span>
+                    <span
+                        class="text-[10px] font-bold text-slate-400 group-hover:text-white/80 uppercase tracking-widest mt-2">XEM
+                        BẢNG XẾP HẠNG</span>
+                </a>
+                <!-- Achievements (Spotlight) -->
+                <div
+                    class="col-span-2 lg:col-span-1 bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-[3rem] flex items-center gap-6 shadow-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 bg-white/5 animate-shine opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="size-24 bg-white/10 rounded-[2rem] flex items-center justify-center shrink-0 border border-white/10 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-5xl text-blue-400"
+                            id="latest-title-icon">auto_awesome</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1 block">TỰ hào
+                            Mới nhất</span>
+                        <h4 class="text-xl font-[1000] text-white uppercase italic leading-tight"
+                            id="latest-achievement">...</h4>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 4. QUICK MODULES (MODULE QUYỀN NĂNG) -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up delay-200">
-            <!-- Stickers -->
-            <a href="../sticker-book/index.html"
-                class="glass-card rounded-[2.5rem] p-8 group hover:-translate-y-3 transition-all flex flex-col items-center text-center">
-                <div
-                    class="size-20 bg-purple-500/10 text-purple-600 rounded-3xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform glow-blue">
-                    <span class="material-symbols-outlined text-5xl"
-                        style="font-variation-settings:'FILL' 1">sell</span>
-                </div>
-                <span class="font-black text-slate-800 dark:text-white text-lg">STICKER</span>
-                <span class="mt-2 text-[10px] font-black text-slate-400 uppercase tracking-widest"
-                    id="stickers-stat">Đang khóa</span>
-            </a>
-            <!-- Tree -->
-            <a href="../tree-growth/index.html"
-                class="glass-card rounded-[2.5rem] p-8 group hover:-translate-y-3 transition-all flex flex-col items-center text-center">
-                <div
-                    class="size-20 bg-emerald-500/10 text-emerald-600 rounded-3xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform glow-blue">
-                    <span class="material-symbols-outlined text-5xl"
-                        style="font-variation-settings:'FILL' 1">park</span>
-                </div>
-                <span class="font-black text-slate-800 dark:text-white text-lg">CÂY THẦN</span>
-                <span class="mt-2 text-[10px] font-black text-slate-400 uppercase tracking-widest" id="tree-stat">Sinh
-                    trưởng</span>
-            </a>
-            <!-- Shop -->
+        <!-- CATEGORY 3: QUY ĐỔI (REDEEM) -->
+        <section class="animate-fade-in-up delay-300">
             <a href="../shop/index.html"
-                class="glass-card rounded-[2.5rem] p-8 group hover:-translate-y-3 transition-all flex flex-col items-center text-center">
+                class="relative block bg-gradient-to-r from-primary to-amber-600 rounded-[4rem] p-12 text-white overflow-hidden shadow-2xl group hover:scale-[1.01] transition-transform">
                 <div
-                    class="size-20 bg-amber-500/10 text-amber-600 rounded-3xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform glow-primary">
-                    <span class="material-symbols-outlined text-5xl"
-                        style="font-variation-settings:'FILL' 1">storefront</span>
+                    class="absolute right-0 top-0 h-full w-1/3 opacity-20 pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+                    <span class="material-symbols-outlined text-[300px] -translate-y-10 translate-x-10">redeem</span>
                 </div>
-                <span class="font-black text-slate-800 dark:text-white text-lg">KHO QUÀ</span>
-                <span class="mt-2 text-[10px] font-black text-slate-400 uppercase tracking-widest" id="gold-stat">0
-                    VÀNG</span>
-            </a>
-            <!-- Battle -->
-            <a href="../arena/index.html"
-                class="glass-card rounded-[2.5rem] p-8 group hover:-translate-y-3 transition-all flex flex-col items-center text-center border-rose-500/20">
-                <div
-                    class="size-20 bg-rose-500/10 text-rose-600 rounded-3xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform glow-rose">
-                    <span class="material-symbols-outlined text-5xl"
-                        style="font-variation-settings:'FILL' 1">swords</span>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div class="max-w-md">
+                        <span
+                            class="bg-white/30 px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-6 inline-block">KHO
+                            BÁU ELITE</span>
+                        <h2 class="text-5xl font-[1000] tracking-tighter uppercase italic mb-4">CỬA HÀNG <br><span
+                                class="opacity-80">WINNER</span></h2>
+                        <p class="text-lg font-bold text-white/90 italic">"Quy đổi công sức làm việc tốt của con thành
+                            những món quà thần kỳ!"</p>
+                    </div>
+                    <div class="flex flex-col items-center md:items-end gap-6 shrink-0">
+                        <div
+                            class="bg-white/20 backdrop-blur-md px-10 py-6 rounded-3xl border border-white/30 text-center">
+                            <span class="block text-[10px] font-black uppercase tracking-widest mb-2 opacity-80">QUỸ
+                                VÀNG CỦA CON</span>
+                            <span class="text-5xl font-[1000] italic" id="gold-stat">0 VÀNG</span>
+                        </div>
+                        <button
+                            class="bg-white text-primary px-10 py-5 rounded-[2rem] font-[1000] uppercase tracking-widest shadow-xl hover:bg-slate-900 hover:text-white transition-all transform hover:-translate-y-1">VÀO
+                            KHO QUÀ BIẾN HÌNH</button>
+                    </div>
                 </div>
-                <span class="font-black text-slate-800 dark:text-white text-lg">ARENA</span>
-                <span class="mt-2 text-[10px] font-black text-rose-500 uppercase tracking-widest">Chiến đấu!</span>
             </a>
         </section>
 
@@ -303,52 +364,58 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.AppState) return;
 
-            const renderPowerDashboard = (data) => {
+            const renderStructuredDashboard = (data) => {
                 const user = data.user;
                 if (!user) return;
 
-                // 1. Aura & Hero Section
+                // 1. Hero
                 const heroAvatar = document.getElementById('hero-avatar');
                 if (heroAvatar) heroAvatar.style.backgroundImage = `url('${user.avatar || "../shared/assets/avatar_1.png"}')`;
-
-                document.getElementById('hero-name').innerText = user.name || "Alex";
+                document.getElementById('hero-name').innerText = user.name || "ALEX";
                 document.getElementById('hero-level').innerText = user.level || "1";
-                document.getElementById('hero-title').innerText = `DANH HIỆU: ${data.title?.currentTitleName || "Tân binh"}`;
+                document.getElementById('hero-title').innerText = `${data.title?.currentTitleName || "TÂN BINH KHỞI ĐẦU"}`;
 
                 const xpPercent = Math.min(100, Math.floor(((user.xp || 0) / (user.maxXp || 100)) * 100));
                 document.getElementById('hero-xp-text').innerText = `${user.xp || 0} / ${user.maxXp || 100} XP`;
                 const xpBar = document.getElementById('hero-xp-bar');
                 if (xpBar) xpBar.style.width = `${xpPercent}%`;
 
-                // 2. Victory Ticker logic (Randomized based on data)
-                const verbs = ["vừa thắng lớn", "đã hoàn thành", "vừa nạp năng lượng", "vừa thu hoạch"];
-                const nouns = ["nhiệm vụ", "Cây Thần", "Sticker mới", "trận đấu Arena"];
-                if (user.name) {
-                    document.getElementById('news-1').innerText = `${user.name} ${verbs[Math.floor(Math.random() * verbs.length)]} ${nouns[Math.floor(Math.random() * nouns.length)]}!`;
-                    document.getElementById('news-1-dup').innerText = document.getElementById('news-1').innerText;
-                }
+                // 2. Victory Ticker logic
+                const tickers = [
+                    `${user.name} vừa nạp năng lượng từ Nhật ký Soi Chiếu!`,
+                    `Hạng #1 BXH hiện đang thuộc về Sóc Siêu Phàm!`,
+                    `Hệ thống vừa cập nhật 5 nhiệm vụ mới siêu ngầu!`,
+                    `${user.name} đang tiến gần đến Danh hiệu mới!`,
+                    `Chúc mừng ${user.name} đã thăng cấp Hào Quang Elite!`
+                ];
+                document.getElementById('news-1').innerText = tickers[Math.floor(Math.random() * tickers.length)];
+                document.getElementById('news-2').innerText = tickers[Math.floor(Math.random() * tickers.length)];
+                document.getElementById('news-1-dup').innerText = document.getElementById('news-1').innerText;
+                document.getElementById('news-2-dup').innerText = document.getElementById('news-2').innerText;
 
-                // 3. Mystery Box Pending count
+                // 3. Category: Action
                 const pending = data.missions?.filter(m => m.status === 'pending').length || 0;
-                document.getElementById('pending-count').innerText = pending;
+                document.getElementById('pending-count').innerText = `${pending} ĐANG CHỜ`;
+                document.getElementById('arena-status').innerText = user.challengesReceived?.length > 0 ? "BỊ THÁCH ĐẤU!" : "ĐANG CHỜ KÈO...";
 
-                // 4. Ranking Spotlight
+                // 4. Category: Showcase
+                document.getElementById('stickers-stat').innerText = `${user.unlockedStickers?.length || 0} ĐÃ MỞ`;
                 if (data.leaderboard) {
                     const sorted = [...data.leaderboard].sort((a, b) => b.xp - a.xp);
                     const myRank = sorted.findIndex(p => p.id === user.id) + 1;
                     document.getElementById('rank-val').innerText = myRank > 0 ? `#${myRank}` : '--';
                 }
 
-                // 5. Quick Stats
-                document.getElementById('stickers-stat').innerText = `${user.unlockedStickers?.length || 0} ĐÃ MỞ`;
-                document.getElementById('tree-stat').innerText = data.tree?.stageName || 'HẠT MẦM';
+                // Latest Achievement logic
+                const latestTitle = data.title?.currentTitleName || "Tân Binh";
+                document.getElementById('latest-achievement').innerText = `Đạt danh hiệu: ${latestTitle}`;
+
+                // 5. Category: Redeem
                 document.getElementById('gold-stat').innerText = `${user.gold || 0} VÀNG`;
-                document.getElementById('arena-status').innerText = user.challengesReceived?.length > 0 ? "BỊ THÁCH ĐẤU!" : "ĐANG ĐỢI KÈO ĐẤU...";
             };
 
-            // Initial and sub
-            renderPowerDashboard(window.AppState);
-            window.AppState.subscribe(renderPowerDashboard);
+            renderStructuredDashboard(window.AppState);
+            window.AppState.subscribe(renderStructuredDashboard);
         });
     </script>
 </body>
