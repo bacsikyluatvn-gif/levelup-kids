@@ -101,12 +101,17 @@ class StateManager {
 
         loadFromCache() {
                 try {
-                        const cached = localStorage.getItem('family_quest_state_cache');
+                        // CỐ LẬP CACHE THEO PROFILE: Sử dụng ID profile trong key để tránh rò rỉ sticker giữa các trẻ
+                        const profileId = localStorage.getItem('family_quest_active_profile');
+                        if (!profileId) return;
+
+                        const cacheKey = `family_quest_state_cache_${profileId}`;
+                        const cached = localStorage.getItem(cacheKey);
                         if (cached) {
                                 const parsed = JSON.parse(cached);
                                 // Merge with default to be safe
                                 this.data = { ...this.data, ...parsed };
-                                console.log("[State] 🚀 Đã nạp dữ liệu từ bộ nhớ đệm.");
+                                console.log(`[State] 🚀 Đã nạp dữ liệu cache riêng cho profile: ${profileId}`);
                         }
                 } catch (e) {
                         console.error("[State] Cache load error:", e);
@@ -115,15 +120,18 @@ class StateManager {
 
         saveToCache() {
                 try {
-                        // Chỉ lưu những phần cần thiết để tránh tràn bộ nhớ
+                        const profileId = localStorage.getItem('family_quest_active_profile');
+                        if (!profileId) return;
+
+                        const cacheKey = `family_quest_state_cache_${profileId}`;
+                        // Chỉ lưu những phần cần thiết của profile hiện tại
                         const toSave = {
                                 user: this.data.user,
-                                leaderboard: this.data.leaderboard,
                                 tree: this.data.tree,
                                 title: this.data.title,
                                 treePoints: this.data.treePoints
                         };
-                        localStorage.setItem('family_quest_state_cache', JSON.stringify(toSave));
+                        localStorage.setItem(cacheKey, JSON.stringify(toSave));
                 } catch (e) {
                         console.error("[State] Cache save error:", e);
                 }
