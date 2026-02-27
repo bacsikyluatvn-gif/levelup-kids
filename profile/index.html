@@ -153,24 +153,7 @@
             </div>
 
             <script>
-                const AVATARS = [
-                    ...Array.from({ length: 30 }, (_, i) => `../shared/assets/generated_avatars/avatar_${i + 1}.png`),
-                    // Bổ sung thêm các Sticker chất lượng cao làm Avatar "Premium"
-                    '../stickers/sticker_vutru2_0_0.png',
-                    '../stickers/sticker_vutru2_0_1.png',
-                    '../stickers/sticker_vutru2_2_0.png',
-                    '../stickers/sticker_vutru2_2_1.png',
-                    '../stickers/sticker_cute_0_0.png',
-                    '../stickers/sticker_cute_0_3.png',
-                    '../stickers/sticker_cute_2_2.png',
-                    '../stickers/sticker_cute_4_2.png',
-                    '../stickers/sticker_dragonball4_1_0.png',
-                    '../stickers/sticker_dragonball4_1_5.png',
-                    '../stickers/sticker_dragonball4_2_5.png',
-                    '../stickers/sticker_dragonball_0_3.png',
-                    '../stickers/sticker_princess3_0_4.png',
-                    '../stickers/sticker_princess3_1_4.png'
-                ];
+                const AVATARS = Array.from({ length: 20 }, (_, i) => `../shared/assets/generated_avatars/avatar_${i + 1}.png`);
 
                 let selectedAvatar = '';
                 let hasInitialized = false;
