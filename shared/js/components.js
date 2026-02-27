@@ -300,7 +300,7 @@ class AppHeader extends HTMLElement {
 
         this.innerHTML = `
             <header class="sticky top-0 z-50 bg-white/80 dark:bg-[#1a140c]/80 backdrop-blur-xl border-b border-[#e6e1db] dark:border-[#3a2e22] shadow-sm transition-all duration-300">
-                <div class="max-w-[1280px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+                <div class="max-w-[1200px] mx-auto px-6 md:px-8 py-3 flex items-center justify-between gap-4">
                     <!-- Brand Section -->
                     <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateWithTransition('../index.html')">
                         <div class="bg-primary/20 p-2.5 rounded-2xl text-primary group-hover:scale-110 group-active:scale-95 transition-all shadow-sm">
@@ -354,7 +354,7 @@ class AppHeader extends HTMLElement {
                         <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
                         <span class="text-sm tabular-nums">${user.stickers || 0}</span>
                     </div>
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
                         <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
                         <span class="text-sm tabular-nums">${user.water || 0}</span>
                     </div>
@@ -364,9 +364,9 @@ class AppHeader extends HTMLElement {
             <!-- Profile & System (Right) -->
             <div class="flex items-center gap-2 md:gap-4 ml-auto">
                 <!-- Theme Toggle -->
-                <button onclick="window.toggleDarkMode()" class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm border border-transparent hover:border-primary/20">
-                    <span class="material-symbols-outlined dark:hidden text-xl">dark_mode</span>
-                    <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-xl">light_mode</span>
+                <button onclick="window.toggleDarkMode()" class="size-9 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm border border-transparent">
+                    <span class="material-symbols-outlined dark:hidden text-lg">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-lg">light_mode</span>
                 </button>
 
                 <!-- Profile Card -->
@@ -377,20 +377,20 @@ class AppHeader extends HTMLElement {
                     </div>
                     
                     <div class="relative cursor-pointer group/avatar" id="header-avatar-child">
-                        <div class="size-11 rounded-2xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md group-hover/avatar:ring-primary group-hover/avatar:scale-105 transition-all overflow-hidden" 
+                        <div class="size-10 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md group-hover/avatar:ring-primary group-hover/avatar:scale-105 transition-all overflow-hidden" 
                              style="background-image: url('${user.avatar}')">
                         </div>
-                        <div class="absolute -top-1 -right-1 size-4 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
+                        <div class="absolute -top-1 -right-1 size-3 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
                     </div>
 
                     <!-- Compact Menu Actions -->
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1 ml-1">
                         <button onclick="window.location.href='../portal/index.html'" 
-                                class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-90 border border-transparent hover:border-primary/30 group" title="Đổi Bé">
-                            <span class="material-symbols-outlined text-[20px]">person_switch</span>
+                                class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Đổi Bé">
+                            <span class="material-symbols-outlined text-[22px]">group</span>
                         </button>
                         <button onclick="window.AppState.logout()" 
-                                class="size-10 flex items-center justify-center bg-rose-50 dark:bg-rose-500/10 rounded-2xl text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 border border-rose-100 dark:border-rose-500/20" title="Đăng xuất">
+                                class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất">
                             <span class="material-symbols-outlined text-[20px]">logout</span>
                         </button>
                     </div>
@@ -441,17 +441,17 @@ class AppHeader extends HTMLElement {
                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Family Manager</p>
                     </div>
                     
-                    <div class="size-11 rounded-2xl bg-gradient-to-br from-primary to-orange-500 flex items-center justify-center text-white shadow-lg overflow-hidden">
+                    <div class="size-10 rounded-xl bg-gradient-to-br from-primary to-orange-500 flex items-center justify-center text-white shadow-lg overflow-hidden">
                         <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">person</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 ml-1">
+                    <div class="flex items-center gap-1 ml-1">
                         <button onclick="window.location.href='../portal/index.html'" 
-                                class="size-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-90 border border-transparent hover:border-primary/30" title="Quản lý Family">
+                                class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Quản lý Family">
                             <span class="material-symbols-outlined text-[20px]">home_info</span>
                         </button>
                         <button onclick="window.AppState.logout()" 
-                                class="size-10 flex items-center justify-center bg-rose-50 dark:bg-rose-500/10 rounded-2xl text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 border border-rose-100 dark:border-rose-500/20" title="Đăng xuất hoàn toàn">
+                                class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất hoàn toàn">
                             <span class="material-symbols-outlined text-[20px]">logout</span>
                         </button>
                     </div>
