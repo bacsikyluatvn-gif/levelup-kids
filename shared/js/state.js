@@ -895,8 +895,9 @@ class StateManager {
         addRewards(g, x, w, s) { this.addRewardsToLocalUser(g, x, w, s); }
 
         async syncLocalUserToDb() {
-                if (!this.data.user || !this.data.user.id) return;
+                if (!this.data.user || !this.data.user.id || this._isSyncing) return;
                 this._syncingProfile = true;
+                this._isSyncing = true; // Chặn syncFromDatabase để tránh ghi đè dữ liệu cũ trong lúc đang update
                 try {
                         await this.client.from('profiles').update({
                                 gold: this.data.user.gold,
@@ -916,6 +917,7 @@ class StateManager {
                         }).eq('id', this.data.user.id);
                 } finally {
                         this._syncingProfile = false;
+                        this._isSyncing = false;
                 }
         }
 
@@ -1350,7 +1352,7 @@ class StateManager {
         }
 
         async unlockSticker(stickerId) {
-                if (!this.data.user) return false;
+                if (!this.data.user || this._isSyncing) return false;
                 const u = this.data.user;
                 if ((u.stickers || 0) <= 0) return false;
 
@@ -1365,16 +1367,19 @@ class StateManager {
 
                 u.stickers = u.stickers - 1;
                 u.unlockedStickers = Array.from(new Set([...u.unlockedStickers, stickerId]));
-                u.totalStickers = Math.max(u.totalStickers || 0, u.unlockedStickers.length);
+                // totalStickers là tích lũy: đã mở + chưa mở
+                u.totalStickers = Math.max(u.totalStickers || 0, u.unlockedStickers.length + u.stickers);
 
-                console.log(`[Sticker] Optimistic unlock: ${stickerId}`);
+                console.log(`[Sticker] Optimistic unlock: ${stickerId} (Remaining: ${u.stickers})`);
                 this.notify(); // UI updates instantly!
 
                 // --- 2. DB BACKGROUND SYNC ---
+                this._isSyncing = true; // Khóa đồng bộ ngược để tránh bị ghi đè dữ liệu cũ
                 try {
                         const { error } = await this.client.from('profiles').update({
                                 stickers: u.stickers,
-                                unlocked_stickers: u.unlockedStickers
+                                unlocked_stickers: u.unlockedStickers,
+                                total_stickers: u.totalStickers
                         }).eq('id', u.id);
 
                         if (error) throw error;
@@ -1387,6 +1392,10 @@ class StateManager {
                         u.totalStickers = oldTotal;
                         this.notify();
                         return false;
+                } finally {
+                        this._isSyncing = false;
+                        // Kích hoạt đồng bộ lại sau một khoảng trễ ngắn để đảm bảo DB đã cập nhật xong
+                        setTimeout(() => this.syncFromDatabase(true), 200);
                 }
         }
 
