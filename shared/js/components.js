@@ -2205,7 +2205,7 @@ class ChildNav extends HTMLElement {
                 <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
                     ${this.navItem('home', 'Tổng quan', 'home/index.html', active === 'home' || active === '')}
                     ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
-                    ${this.navItem('book_5', 'Nhật Ký', 'diary/index.html', active === 'diary')}
+                    ${this.navItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
                     ${this.navItem('sports_kabaddi', 'Đấu trường', 'arena/index.html', active === 'arena')}
                     ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
                     ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
