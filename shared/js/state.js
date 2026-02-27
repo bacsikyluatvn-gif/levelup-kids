@@ -109,6 +109,7 @@ class StateManager {
                         const cached = localStorage.getItem(cacheKey);
                         if (cached) {
                                 const parsed = JSON.parse(cached);
+                                if (parsed.user) delete parsed.user.unlockedStickers; // Luôn xóa để sync từ DB
                                 // Merge with default to be safe
                                 this.data = { ...this.data, ...parsed };
                                 console.log(`[State] 🚀 Đã nạp dữ liệu cache riêng cho profile: ${profileId}`);
@@ -124,9 +125,13 @@ class StateManager {
                         if (!profileId) return;
 
                         const cacheKey = `family_quest_state_cache_${profileId}`;
+                        // XÓA stickers khỏi cache để tránh rò rỉ dữ liệu giữa các lần load
+                        const userCopy = { ...(this.data.user || {}) };
+                        delete userCopy.unlockedStickers;
+
                         // Chỉ lưu những phần cần thiết của profile hiện tại
                         const toSave = {
-                                user: this.data.user,
+                                user: userCopy,
                                 tree: this.data.tree,
                                 title: this.data.title,
                                 treePoints: this.data.treePoints
@@ -980,6 +985,11 @@ class StateManager {
 
         async syncLocalUserToDb() {
                 if (!this.data.user || !this.data.user.id) return;
+                // NGẮN CHẶN POLLUTION: Nếu chưa sync xong từ DB lần đầu, tuyệt đối không được push local lên DB
+                if (!this._initialSyncDone) {
+                        console.warn("[State] Blocked syncLocalUserToDb: Initial sync not yet complete.");
+                        return;
+                }
                 this._isUpdatingProfile = true;
                 try {
                         await this.client.from('profiles').update({
