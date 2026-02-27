@@ -1804,7 +1804,6 @@
                                 `).join('') || '<p class="text-[10px] text-slate-400 font-bold italic text-center py-2 opacity-60">Chưa có cập nhật nào...</p>'}
                             </div>
                         </div>
-                    </div>
                 </div>
                 <!-- Bottom Commentary Ticker -->
                 <div class="relative z-10 bg-slate-900/5 dark:bg-black/40 py-2 overflow-hidden whitespace-nowrap border-t border-slate-100 dark:border-white/5">
@@ -2524,11 +2523,11 @@
                     }
 
                     list.innerHTML = `
-                < div class="flex flex-col items-center justify-center w-full py-6 opacity-40 animate-pulse" >
+                        <div class="flex flex-col items-center justify-center w-full py-6 opacity-40 animate-pulse">
                             <span class="material-symbols-outlined text-4xl mb-2 text-primary">search</span>
                             <p class="text-[9px] font-black uppercase tracking-widest text-center">Đang nạp danh sách võ sĩ...</p>
-                        </div >
-                `;
+                        </div>
+                    `;
                     return;
                 }
 
@@ -2553,7 +2552,7 @@
                     const avatar = p.avatar || "../shared/assets/generated_avatars/avatar_1.png";
 
                     return `
-                < button onclick = "selectOpponent('${p.id}', this)" class="opponent-btn flex flex-col items-center gap-3 p-4 rounded-[2rem] border-2 border-slate-100 dark:border-white/5 transition-all hover:border-primary relative overflow-hidden group shrink-0 w-28 snap-center bg-white dark:bg-slate-900/50 shadow-sm" >
+                    <button onclick="selectOpponent('${p.id}', this)" class="opponent-btn flex flex-col items-center gap-3 p-4 rounded-[2rem] border-2 border-slate-100 dark:border-white/5 transition-all hover:border-primary relative overflow-hidden group shrink-0 w-28 snap-center bg-white dark:bg-slate-900/50 shadow-sm">
                         <div class="relative">
                             <img src="${avatar}" class="w-14 h-14 rounded-full border-2 border-slate-100 dark:border-white/10 shadow-sm group-hover:scale-110 transition-transform">
                             <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary/10 border-2 border-white dark:border-slate-800 rounded-full flex items-center justify-center">
@@ -2568,12 +2567,12 @@
                                 <span class="text-[7px] font-black text-rose-400">${losses}L</span>
                             </div>
                         </div>
-                    </button > `;
+                    </button>`;
                 }).join('');
 
             } catch (err) {
                 console.error("Render error:", err);
-                list.innerHTML = `< div class="p-4 text-rose-500 text-[10px] font-bold" > Lỗi nạp dữ liệu: ${err.message}</div >`;
+                list.innerHTML = `<div class="p-4 text-rose-500 text-[10px] font-bold">Lỗi nạp dữ liệu: ${err.message}</div>`;
             }
         }
     </script>
