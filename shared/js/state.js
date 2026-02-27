@@ -89,6 +89,8 @@ class StateManager {
                 this.familyId = null;
                 this.client = null;
                 this._botMatchesGenerated = false;
+                this._isSyncingFromDb = false;
+                this._isUpdatingProfile = false;
 
                 // Load immediate cache for faster UI
                 this.loadFromCache();
@@ -241,6 +243,7 @@ class StateManager {
                 // Setup Realtime with Throttling
                 this._syncTimeout = null;
                 this.client.channel('any-change').on('postgres_changes', { event: '*', schema: 'public' }, payload => {
+                        if (this._isUpdatingProfile) return; // Đừng sync nếu đang bận update
                         // 1. Tránh lặp vô tận khi chính mình update bot
                         if (payload.table === 'profiles' && payload.new && payload.new.role === 'bot') return;
 
@@ -276,8 +279,8 @@ class StateManager {
 
         async syncFromDatabase(priorityOnly = false) {
                 if (!this.client || !this.familyId) return;
-                if (this._isSyncing) return;
-                this._isSyncing = true;
+                if (this._isSyncingFromDb) return;
+                this._isSyncingFromDb = true;
 
                 const challengeLimit = 3000;
                 const requestLimit = 2000;
@@ -316,13 +319,27 @@ class StateManager {
                         }
 
                         return {
-                                id: p.id, name, role: p.role, avatar, pinCode: p.pin_code,
-                                level: p.level || 1, gold: p.gold || 0, xp: p.xp || 0,
-                                personalityPoints: p.personality_points || 0, weeklyXp: p.weekly_xp || 0,
-                                water: p.water || 0, stickers: p.stickers || 0,
-                                totalStickers: Math.max(p.total_stickers || 0, (p.unlocked_stickers || []).length + (p.stickers || 0)),
-                                actionStreak: p.action_streak || 0, weeklyStreak: p.weekly_streak || 0, completionStreak: p.completion_streak || 0,
-                                unlockedStickers: p.unlocked_stickers || [],
+                                id: p.id,
+                                name,
+                                role: p.role,
+                                avatar,
+                                pinCode: p.pin_code,
+                                level: p.level || 1,
+                                gold: p.gold || 0,
+                                xp: p.xp || 0,
+                                personalityPoints: p.personality_points || 0,
+                                weeklyXp: p.weekly_xp || 0,
+                                water: p.water || 0,
+                                stickers: p.stickers || 0,
+                                // totalStickers: Ensure we use the best available number
+                                totalStickers: Math.max(
+                                        p.total_stickers || 0,
+                                        (Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers.length : 0) + (p.stickers || 0)
+                                ),
+                                actionStreak: p.action_streak || 0,
+                                weeklyStreak: p.weekly_streak || 0,
+                                completionStreak: p.completion_streak || 0,
+                                unlockedStickers: Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers : [],
                                 metadata: p.metadata || {}
                         };
                 });
@@ -404,14 +421,19 @@ class StateManager {
 
                 if (activeUser) {
                         this.currentProfileId = activeUser.id;
-                        this.data.user = { ...activeUser, isCurrentUser: true };
+                        // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu
+                        if (!this._isUpdatingProfile) {
+                                this.data.user = { ...activeUser, isCurrentUser: true };
+                        } else {
+                                console.log("[State] 🛡️ Bảo vệ dữ liệu user local khỏi việc ghi đè bởi dữ liệu DB cũ.");
+                        }
                 }
 
                 this.calculateStreaks();
                 this.recalculateDerivedStats();
 
                 this._initialSyncDone = true;
-                this._isSyncing = false;
+                this._isSyncingFromDb = false;
                 this.notify();
                 this.checkRankChange();
         }
@@ -895,9 +917,8 @@ class StateManager {
         addRewards(g, x, w, s) { this.addRewardsToLocalUser(g, x, w, s); }
 
         async syncLocalUserToDb() {
-                if (!this.data.user || !this.data.user.id || this._isSyncing) return;
-                this._syncingProfile = true;
-                this._isSyncing = true; // Chặn syncFromDatabase để tránh ghi đè dữ liệu cũ trong lúc đang update
+                if (!this.data.user || !this.data.user.id) return;
+                this._isUpdatingProfile = true;
                 try {
                         await this.client.from('profiles').update({
                                 gold: this.data.user.gold,
@@ -915,9 +936,12 @@ class StateManager {
                                 unlocked_stickers: this.data.user.unlockedStickers || [],
                                 personality_points: this.data.user.personalityPoints || 0
                         }).eq('id', this.data.user.id);
+                } catch (e) {
+                        console.error("[State] syncLocalUserToDb error:", e);
                 } finally {
-                        this._syncingProfile = false;
-                        this._isSyncing = false;
+                        this._isUpdatingProfile = false;
+                        // Chỉ trigger sync sau khi update xong một lát để server kịp ghi dữ liệu
+                        setTimeout(() => this.syncFromDatabase(true), 1200);
                 }
         }
 
@@ -1352,13 +1376,16 @@ class StateManager {
         }
 
         async unlockSticker(stickerId) {
-                if (!this.data.user || this._isSyncing) return false;
+                if (!this.data.user) return false;
                 const u = this.data.user;
                 if ((u.stickers || 0) <= 0) return false;
 
                 // Đảm bảo unlockedStickers được khởi tạo
                 if (!u.unlockedStickers) u.unlockedStickers = [];
-                if (u.unlockedStickers.includes(stickerId)) return false;
+                if (u.unlockedStickers.includes(stickerId)) {
+                        console.warn("[Sticker] Đã mở sticker này rồi:", stickerId);
+                        return false;
+                }
 
                 // --- 1. OPTIMISTIC UPDATE (Update local immediately) ---
                 const oldStickers = u.stickers;
@@ -1367,15 +1394,17 @@ class StateManager {
 
                 u.stickers = u.stickers - 1;
                 u.unlockedStickers = Array.from(new Set([...u.unlockedStickers, stickerId]));
-                // totalStickers là tích lũy: đã mở + chưa mở
+                // totalStickers: số đã mở + số chưa mở (vẫn giữ nguyên vì 1 cái chuyển từ chưa mở sang đã mở)
                 u.totalStickers = Math.max(u.totalStickers || 0, u.unlockedStickers.length + u.stickers);
 
-                console.log(`[Sticker] Optimistic unlock: ${stickerId} (Remaining: ${u.stickers})`);
-                this.notify(); // UI updates instantly!
+                console.log(`[Sticker] Optimistic unlock: ${stickerId}. Lượt còn lại: ${u.stickers}`);
+                this.notify(); // Cập nhật UI ngay lập tức
 
                 // --- 2. DB BACKGROUND SYNC ---
-                this._isSyncing = true; // Khóa đồng bộ ngược để tránh bị ghi đè dữ liệu cũ
+                this._isUpdatingProfile = true;
                 try {
+                        console.log("[Sticker] 📤 Đang lưu vào database...");
+
                         const { error } = await this.client.from('profiles').update({
                                 stickers: u.stickers,
                                 unlocked_stickers: u.unlockedStickers,
@@ -1383,19 +1412,23 @@ class StateManager {
                         }).eq('id', u.id);
 
                         if (error) throw error;
+
+                        console.log("[Sticker] ✅ Database đã cập nhật xong.");
                         return true;
                 } catch (error) {
-                        console.error('Lỗi mở sticker (Rollback):', error);
-                        // Rollback on failure
+                        console.error('Lỗi nghiêm trọng khi mở sticker (Rollback):', error);
+                        // Hoàn tác nếu lỗi
                         u.stickers = oldStickers;
                         u.unlockedStickers = oldUnlocked;
                         u.totalStickers = oldTotal;
                         this.notify();
+
+                        alert("Lỗi kết nối: Không thể lưu Sticker. Vui lòng kiểm tra mạng!");
                         return false;
                 } finally {
-                        this._isSyncing = false;
-                        // Kích hoạt đồng bộ lại sau một khoảng trễ ngắn để đảm bảo DB đã cập nhật xong
-                        setTimeout(() => this.syncFromDatabase(true), 200);
+                        this._isUpdatingProfile = false;
+                        // Đợi lâu hơn một chút (3s) để đảm bảo server đã thực sự hoàn tất mọi trigger/index
+                        setTimeout(() => this.syncFromDatabase(true), 3000);
                 }
         }
 
