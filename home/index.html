@@ -279,27 +279,18 @@
                     </div>
                 </div>
 
-                <!-- HYDRATION SCRIPT: Run immediately after elements exist -->
+                <!-- Inner Hydration: Extra safety to catch elements during parse -->
                 <script>
                     (function () {
-                        const pid = localStorage.getItem('family_quest_active_profile');
-                        if (!pid) return;
-                        const cache = localStorage.getItem('family_quest_state_v3_cache_' + pid);
-                        if (!cache) return;
-                        try {
-                            const data = JSON.parse(cache);
-                            const user = data.user;
-                            if (!user) return;
-                            const nameEl = document.getElementById('hero-name');
-                            const levelEl = document.getElementById('hero-level');
-                            const avatarEl = document.getElementById('hero-avatar');
-                            if (nameEl && user.name) nameEl.innerText = user.name;
-                            if (levelEl && user.level) levelEl.innerText = user.level;
-                            if (avatarEl && user.avatar) {
-                                avatarEl.style.backgroundImage = 'url("' + user.avatar + '")';
-                                avatarEl.classList.remove('animate-pulse'); // Stop pulsing once image is set
-                            }
-                        } catch (e) { }
+                        const user = window._initialHydration;
+                        if (!user) return;
+                        const avatarEl = document.getElementById('hero-avatar');
+                        const levelEl = document.getElementById('hero-level');
+                        if (avatarEl && user.avatar) {
+                            avatarEl.style.backgroundImage = 'url("' + user.avatar + '")';
+                            avatarEl.classList.remove('animate-pulse');
+                        }
+                        if (levelEl && user.level) levelEl.innerText = user.level;
                     })();
                 </script>
             </div>
@@ -603,10 +594,10 @@
 
                 // 1. Hero
                 const heroAvatar = document.getElementById('hero-avatar');
-                if (heroAvatar) heroAvatar.style.backgroundImage = `url('${user.avatar || "../shared/assets/avatar_1.png"}')`;
-                document.getElementById('hero-name').innerText = user.name || "ALEX";
-                document.getElementById('hero-level').innerText = user.level || "1";
-                document.getElementById('hero-title').innerText = `${data.title?.currentTitleName || "TÂN BINH KHỞI ĐẦU"}`;
+                if (heroAvatar) heroAvatar.style.backgroundImage = `url('${user.avatar || ""}')`;
+                document.getElementById('hero-name').innerText = user.name || "";
+                document.getElementById('hero-level').innerText = user.level || "";
+                document.getElementById('hero-title').innerText = `${data.title?.currentTitleName || ""}`;
 
                 const xpPercent = Math.min(100, Math.floor(((user.xp || 0) / (user.maxXp || 100)) * 100));
                 document.getElementById('hero-xp-text').innerText = `${user.xp || 0} / ${user.maxXp || 100} XP`;
