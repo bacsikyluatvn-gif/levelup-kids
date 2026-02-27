@@ -315,225 +315,247 @@ class StateManager {
                         this.client.from('requests').select('profile_id', { count: 'exact' }).eq('family_id', this.familyId).eq('type', 'tree_watering').limit(5000)
                 ];
 
-                const results = await Promise.all(queries);
-                const profRes = results[0];
-                const profiles = profRes.data || [];
-                this._lastRawProfiles = profiles;
+                try {
+                        const results = await Promise.all(queries);
+                        const profRes = results[0];
+                        const profiles = profRes.data || [];
+                        this._lastRawProfiles = profiles;
 
-                // Lưu lại điểm cũ để tránh bị reset về 0 khi đang map dở
-                const oldPointsMap = new Map((this.data.leaderboard || []).map(p => [p.id, p.treePoints]));
+                        // Lưu lại điểm cũ để tránh bị reset về 0 khi đang map dở
+                        const oldPointsMap = new Map((this.data.leaderboard || []).map(p => [p.id, p.treePoints]));
 
-                // --- PROCESS PROFILES (ALWAYS) ---
-                this.data.leaderboard = profiles.map(p => {
-                        // Robust hash for components based on position (similar to Java's hashCode)
-                        const getHashCode = (str) => {
-                                let hash = 0;
-                                for (let i = 0; i < str.length; i++) {
-                                        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                                        hash |= 0; // Convert to 32bit integer
-                                }
-                                return Math.abs(hash);
-                        };
+                        // --- PROCESS PROFILES (ALWAYS) ---
+                        this.data.leaderboard = profiles.map(p => {
+                                // Robust hash for components based on position (similar to Java's hashCode)
+                                const getHashCode = (str) => {
+                                        if (typeof str !== 'string') str = String(str || '');
+                                        let hash = 0;
+                                        for (let i = 0; i < str.length; i++) {
+                                                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                                                hash |= 0; // Convert to 32bit integer
+                                        }
+                                        return Math.abs(hash);
+                                };
 
-                        const idHash = getHashCode(p.id);
-                        let name = (p.name || "Bé").replace(' (Bot)', '').trim();
-                        let avatar = p.avatar;
+                                const idHash = getHashCode(p.id);
+                                let name = (p.name || "Bé").replace(' (Bot)', '').trim();
 
-                        if (p.role === 'bot') {
-                                const isBoy = idHash % 2 === 0;
-
-                                // Expanded Name Pools (Hàng nghìn tổ hợp)
-                                const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương', 'Đinh', 'Trịnh', 'Mai', 'Lâm', 'Đoàn'];
-
-                                const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy', 'Khắc', 'Thanh', 'Khải', 'Mạnh', 'Hùng'];
-                                const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh', 'Trí', 'Tâm', 'Hải', 'Phong', 'Việt'];
-
-                                const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh', 'Thanh', 'Hải', 'Mai', 'Lan', 'Kim'];
-                                const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên', 'Huệ', 'Cúc', 'Trúc', 'Mây', 'Nắng'];
-
-                                const nicknames = ['Sóc con', 'Thỏ béo', 'Gấu nhỏ', 'Ỉn con', 'Mèo lười', 'Bống xinh', 'Voi con', 'Cún yêu', 'Sâu nhỏ', 'Tít', 'Bin Bin', 'Zôn', 'Mít', 'Bơ', 'Táo', 'Dâu', 'Kem', 'Su Su', 'Bánh bao', 'Xúc xắc'];
-
-                                // Use different multiplication factors for each index to maximize variation
-                                const sIdx = idHash % surnames.length;
-                                const mIdx = (idHash * 3 + 7) % 20;
-                                const nIdx = (idHash * 7 + 13) % 25;
-                                const nickIdx = (idHash * 11 + 3) % nicknames.length;
-
-                                if (isBoy) {
-                                        name = `${surnames[sIdx]} ${boyMiddles[mIdx]} ${boyNames[nIdx]}`;
-                                } else {
-                                        name = `${surnames[sIdx]} ${girlMiddles[mIdx]} ${girlNames[nIdx]}`;
+                                // Làm sạch tên ngay từ bước map: Ưu tiên Nickname hoặc rút gọn nếu quá dài
+                                if (name.includes('(') && name.includes(')')) {
+                                        name = name.split('(')[1].split(')')[0].trim();
+                                } else if (name.length > 15) {
+                                        const names = name.split(' ');
+                                        if (names.length > 1) {
+                                                name = names.slice(-2).join(' ');
+                                        }
                                 }
 
-                                // Randomly use nicknames as requested by user (20% chance)
-                                if (idHash % 5 === 0) {
-                                        name = nicknames[nickIdx];
-                                } else if (idHash % 3 === 0) {
-                                        // Combine name and nickname (1/3 chance)
-                                        name += ` (${nicknames[nickIdx]})`;
-                                }
+                                let avatar = p.avatar;
 
-                                // Avatar: Dùng thuật toán băm khác để tránh trùng lặp với tên
-                                const avHash = getHashCode(p.id + "_avatar");
-                                const avPool = isBoy ? [1, 3, 4, 5, 9, 10, 15, 18, 19, 20] : [2, 6, 7, 8, 11, 12, 13, 14, 16, 17];
-                                avatar = `../shared/assets/generated_avatars/avatar_${avPool[avHash % avPool.length]}.png`;
-                        }
+                                if (p.role === 'bot') {
+                                        const isBoy = idHash % 2 === 0;
 
-                        return {
-                                id: p.id,
-                                name,
-                                role: p.role,
-                                avatar,
-                                pinCode: p.pin_code,
-                                level: p.level || 1,
-                                gold: p.gold || 0,
-                                xp: p.xp || 0,
-                                personalityPoints: p.personality_points || 0,
-                                weeklyXp: p.weekly_xp || 0,
-                                water: p.water || 0,
-                                stickers: p.stickers || 0,
-                                // totalStickers: Ensure we use the best available number
-                                totalStickers: Math.max(
-                                        p.total_stickers || 0,
-                                        (Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers.length : 0) + (p.stickers || 0)
-                                ),
-                                actionStreak: p.action_streak || 0,
-                                weeklyStreak: p.weekly_streak || 0,
-                                completionStreak: p.completion_streak || 0,
-                                unlockedStickers: Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers : [],
-                                metadata: p.metadata || {}
-                        };
-                });
+                                        // Expanded Name Pools (Hàng nghìn tổ hợp)
+                                        const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý', 'Vương', 'Đinh', 'Trịnh', 'Mai', 'Lâm', 'Đoàn'];
 
-                // --- PROCESS OTHERS (ONLY IF FULL SYNC) ---
-                if (!priorityOnly && results.length > 1) {
-                        const questRes = results[1];
-                        const reqRes = results[2];
-                        const shopRes = results[3];
-                        const challRes = results[4];
+                                        const boyMiddles = ['Minh', 'Đức', 'Gia', 'Hữu', 'Quốc', 'Thành', 'Văn', 'Quang', 'Tuấn', 'Anh', 'Nhật', 'Bảo', 'Trọng', 'Thế', 'Duy', 'Khắc', 'Thanh', 'Khải', 'Mạnh', 'Hùng'];
+                                        const boyNames = ['Nam', 'Khôi', 'Huy', 'Nguyên', 'Lâm', 'Anh', 'Bách', 'Khoa', 'Phát', 'Lộc', 'Quân', 'Kiệt', 'Thịnh', 'Vinh', 'Sơn', 'Tùng', 'Phúc', 'An', 'Bình', 'Minh', 'Trí', 'Tâm', 'Hải', 'Phong', 'Việt'];
 
-                        if (reqRes && reqRes.data) {
-                                this.data.requests = reqRes.data.map(r => ({
-                                        id: r.id, profileId: r.profile_id, user: this.getProfileName(r.profile_id, profiles),
-                                        itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
-                                        taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
-                                        sticker: r.reward_sticker, price: r.price_gold, stickerPrice: r.price_sticker,
-                                        image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
-                                }));
-                                // Growth Logs
-                                this.data.growthLogs = this.data.requests.filter(r => ['behavior_good', 'behavior_bad', 'reflection', 'atonement'].includes(r.type));
-                        }
+                                        const girlMiddles = ['Thị', 'Ngọc', 'Phương', 'Bảo', 'Khánh', 'Tuyết', 'Minh', 'Quỳnh', 'Thùy', 'Diệu', 'Huyền', 'Mỹ', 'Tú', 'Gia', 'Anh', 'Thanh', 'Hải', 'Mai', 'Lan', 'Kim'];
+                                        const girlNames = ['Linh', 'Diệp', 'My', 'An', 'Tâm', 'Chi', 'Lâm', 'Xinh', 'Ngọc', 'Anh', 'Vy', 'Ngân', 'Hằng', 'Phương', 'Hà', 'Thảo', 'Đan', 'Châu', 'Trà', 'Tiên', 'Huệ', 'Cúc', 'Trúc', 'Mây', 'Nắng'];
 
-                        if (questRes && questRes.data) {
-                                const todayStr = new Date().toISOString().split('T')[0];
-                                this.data.quests = questRes.data.map(q => ({
-                                        id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
-                                        water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
-                                        category: q.category, type: q.type,
-                                        completedBy: this.data.requests.filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && r.createdAt.startsWith(todayStr)).map(r => r.profileId)
-                                }));
-                        }
+                                        const nicknames = ['Sóc con', 'Thỏ béo', 'Gấu nhỏ', 'Ỉn con', 'Mèo lười', 'Bống xinh', 'Voi con', 'Cún yêu', 'Sâu nhỏ', 'Tít', 'Bin Bin', 'Zôn', 'Mít', 'Bơ', 'Táo', 'Dâu', 'Kem', 'Su Su', 'Bánh bao', 'Xúc xắc'];
 
-                        if (shopRes && shopRes.data) {
-                                this.data.shopItems = shopRes.data.filter(s => s.item_type === 'premium').map(s => ({
-                                        id: s.id, title: s.title, desc: s.description, price: s.price, image: s.image, emoji: s.emoji, category: s.category, color: s.color
-                                }));
-                                this.data.instantPerks = shopRes.data.filter(s => s.item_type === 'perk').map(s => ({
-                                        id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
-                                }));
-                        }
+                                        // Use different multiplication factors for each index to maximize variation
+                                        const sIdx = idHash % surnames.length;
+                                        const mIdx = (idHash * 3 + 7) % 20;
+                                        const nIdx = (idHash * 7 + 13) % 25;
+                                        const nickIdx = (idHash * 11 + 3) % nicknames.length;
 
-                        if (challRes && challRes.data) {
-                                this.data.challenges = challRes.data.map(c => ({
-                                        id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id,
-                                        taskType: c.task_type, status: c.status,
-                                        challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
-                                        winnerId: c.winner_id, date: c.date, createdAt: c.created_at,
-                                        logs: c.logs || [], metadata: c.metadata || {}
-                                }));
-                        }
-
-                        if (!this._botMatchesGenerated) {
-                                setTimeout(() => this.generateBotMatches(), 5000);
-                        }
-                }
-
-                // Finalize active profile
-                // Streaks & Points - Phải tính Points trước rồi mới tính Streaks/Tree
-                const wateringCounts = results[5]?.data || [];
-
-                this.data.leaderboard.forEach(p => {
-                        const dbCount = wateringCounts.filter(r => r.profile_id === p.id).length;
-                        const oldPoints = oldPointsMap.get(p.id) || 0;
-
-                        if (!priorityOnly && wateringCounts.length > 0) {
-                                // Nếu là Full Sync, dùng dữ liệu DB chuẩn xác nhất
-                                p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : dbCount;
-                        } else {
-                                // Nếu sync nhanh (Priority), dùng Math.max để giữ feedback tức thì
-                                p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : Math.max(dbCount, oldPoints);
-                        }
-                });
-
-                // Finalize active profile - Phải làm SAO khi đã có treePoints
-                let savedId = localStorage.getItem('family_quest_active_profile');
-                let activeUser = this.data.leaderboard.find(p => p.id === savedId);
-                if (!activeUser && this.data.leaderboard.length > 0) activeUser = this.data.leaderboard.find(p => p.role === 'child') || this.data.leaderboard[0];
-
-                if (activeUser) {
-                        this.currentProfileId = activeUser.id;
-
-                        // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu (Tránh race condition khi đang Save)
-                        if (!this._isUpdatingProfile) {
-                                // Lấy dữ liệu từ cache HOẶC state hiện tại để gộp
-                                const localUser = this.data.user && this.data.user.id === activeUser.id
-                                        ? this.data.user
-                                        : (this._initialUserCache || {});
-
-                                const newUser = { ...activeUser, isCurrentUser: true };
-
-                                // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
-                                if (localUser.id === newUser.id) {
-                                        // 1. Gộp danh sách Sticker (Union)
-                                        const mergedUnlocked = Array.from(new Set([
-                                                ...(localUser.unlockedStickers || []),
-                                                ...(newUser.unlockedStickers || [])
-                                        ]));
-                                        newUser.unlockedStickers = mergedUnlocked;
-
-                                        // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ (Sử dụng delta)
-                                        const localUnlockedCount = (localUser.unlockedStickers || []).length;
-                                        const dbUnlockedCount = (activeUser.unlockedStickers || []).length;
-
-                                        // Nếu local đã mở nhiều hơn DB, ta cần "bù" vào stickers để số tổng không đổi
-                                        if (localUnlockedCount > dbUnlockedCount) {
-                                                const delta = localUnlockedCount - dbUnlockedCount;
-                                                // newUser.stickers lúc này là giá trị từ DB (ví dụ 5)
-                                                // Ta trừ delta (ví dụ 1) để ra đúng số lượt còn lại (4)
-                                                newUser.stickers = Math.max(0, (newUser.stickers || 0) - delta);
-                                                console.log(`[Sync] 🛡️ Bảo vệ sticker: Local(${localUnlockedCount}) > DB(${dbUnlockedCount}). Delta=${delta}. Stickers=${newUser.stickers}`);
+                                        if (isBoy) {
+                                                name = `${surnames[sIdx]} ${boyMiddles[mIdx]} ${boyNames[nIdx]}`;
+                                        } else {
+                                                name = `${surnames[sIdx]} ${girlMiddles[mIdx]} ${girlNames[nIdx]}`;
                                         }
 
-                                        // 3. Bảo vệ các chỉ số quan trọng khác nếu DB bị trễ (XP, Gold)
-                                        // Chỉ gộp nếu local cao hơn DB (tránh rollback do delay)
-                                        newUser.gold = Math.max(newUser.gold || 0, localUser.gold || 0);
-                                        newUser.xp = Math.max(newUser.xp || 0, localUser.xp || 0);
-                                        newUser.level = Math.max(newUser.level || 0, localUser.level || 1);
+                                        // 40% chance: Only Nickname (for extra shortness as requested)
+                                        if (idHash % 10 < 4) {
+                                                name = nicknames[nickIdx];
+                                        } else if (idHash % 10 < 7) {
+                                                // 30% chance: Shortened Full Name (Last 2 parts)
+                                                const names = name.split(' ');
+                                                name = names.slice(-2).join(' ');
+                                        }
+                                        // Remaining 30% kept as full name (already generated)
+
+                                        // Avatar: Dùng thuật toán băm khác để tránh trùng lặp với tên
+                                        const avHash = getHashCode(p.id + "_avatar");
+                                        // Bể chứa avatar bot (tránh các avatar 15-30 theo yêu cầu người dùng vì mờ)
+                                        const boyAvs = [1, 3, 4, 5, 9, 10, 31, 33, 35, 37];
+                                        const girlAvs = [2, 6, 7, 8, 11, 12, 13, 14, 32, 34, 36];
+                                        const avPool = isBoy ? boyAvs : girlAvs;
+                                        avatar = `../shared/assets/generated_avatars/avatar_${avPool[avHash % avPool.length]}.png`;
                                 }
 
-                                this.data.user = newUser;
-                        } else {
-                                console.log("[State] 🛡️ Đang cập nhật dữ liệu... Bảo vệ profile local khỏi việc ghi đè.");
+                                return {
+                                        id: p.id,
+                                        name,
+                                        role: p.role,
+                                        avatar,
+                                        pinCode: p.pin_code,
+                                        level: p.level || 1,
+                                        gold: p.gold || 0,
+                                        xp: p.xp || 0,
+                                        personalityPoints: p.personality_points || 0,
+                                        weeklyXp: p.weekly_xp || 0,
+                                        water: p.water || 0,
+                                        stickers: p.stickers || 0,
+                                        // totalStickers: Ensure we use the best available number
+                                        totalStickers: Math.max(
+                                                p.total_stickers || 0,
+                                                (Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers.length : 0) + (p.stickers || 0)
+                                        ),
+                                        actionStreak: p.action_streak || 0,
+                                        weeklyStreak: p.weekly_streak || 0,
+                                        completionStreak: p.completion_streak || 0,
+                                        unlockedStickers: Array.isArray(p.unlocked_stickers) ? p.unlocked_stickers : [],
+                                        metadata: p.metadata || {}
+                                };
+                        });
+
+                        // --- PROCESS OTHERS (ONLY IF FULL SYNC) ---
+                        if (!priorityOnly && results.length > 1) {
+                                const questRes = results[1];
+                                const reqRes = results[2];
+                                const shopRes = results[3];
+                                const challRes = results[4];
+
+                                if (reqRes && reqRes.data) {
+                                        this.data.requests = reqRes.data.map(r => ({
+                                                id: r.id, profileId: r.profile_id, user: this.getProfileName(r.profile_id, profiles),
+                                                itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
+                                                taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
+                                                sticker: r.reward_sticker, price: r.price_gold, stickerPrice: r.price_sticker,
+                                                image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
+                                        }));
+                                        // Growth Logs
+                                        this.data.growthLogs = this.data.requests.filter(r => ['behavior_good', 'behavior_bad', 'reflection', 'atonement'].includes(r.type));
+                                }
+
+                                if (questRes && questRes.data) {
+                                        const todayStr = new Date().toISOString().split('T')[0];
+                                        this.data.quests = questRes.data.map(q => ({
+                                                id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
+                                                water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
+                                                category: q.category, type: q.type,
+                                                completedBy: this.data.requests.filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && r.createdAt.startsWith(todayStr)).map(r => r.profileId)
+                                        }));
+                                }
+
+                                if (shopRes && shopRes.data) {
+                                        this.data.shopItems = shopRes.data.filter(s => s.item_type === 'premium').map(s => ({
+                                                id: s.id, title: s.title, desc: s.description, price: s.price, image: s.image, emoji: s.emoji, category: s.category, color: s.color
+                                        }));
+                                        this.data.instantPerks = shopRes.data.filter(s => s.item_type === 'perk').map(s => ({
+                                                id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
+                                        }));
+                                }
+
+                                if (challRes && challRes.data) {
+                                        this.data.challenges = challRes.data.map(c => ({
+                                                id: c.id, challengerId: c.challenger_id, opponentId: c.opponent_id,
+                                                taskType: c.task_type, status: c.status,
+                                                challengerConfirmed: c.challenger_confirmed, opponentConfirmed: c.opponent_confirmed,
+                                                winnerId: c.winner_id, date: c.date, createdAt: c.created_at,
+                                                logs: c.logs || [], metadata: c.metadata || {}
+                                        }));
+                                }
+
+                                if (!this._botMatchesGenerated) {
+                                        setTimeout(() => this.generateBotMatches(), 5000);
+                                }
                         }
+
+                        // Finalize active profile
+                        // Streaks & Points - Phải tính Points trước rồi mới tính Streaks/Tree
+                        const wateringCounts = results[5]?.data || [];
+
+                        this.data.leaderboard.forEach(p => {
+                                const dbCount = wateringCounts.filter(r => r.profile_id === p.id).length;
+                                const oldPoints = oldPointsMap.get(p.id) || 0;
+
+                                if (!priorityOnly && wateringCounts.length > 0) {
+                                        // Nếu là Full Sync, dùng dữ liệu DB chuẩn xác nhất
+                                        p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : dbCount;
+                                } else {
+                                        // Nếu sync nhanh (Priority), dùng Math.max để giữ feedback tức thì
+                                        p.treePoints = p.role === 'bot' ? (p.actionStreak || 0) : Math.max(dbCount, oldPoints);
+                                }
+                        });
+
+                        // Finalize active profile - Phải làm SAO khi đã có treePoints
+                        let savedId = localStorage.getItem('family_quest_active_profile');
+                        let activeUser = this.data.leaderboard.find(p => p.id === savedId);
+                        if (!activeUser && this.data.leaderboard.length > 0) activeUser = this.data.leaderboard.find(p => p.role === 'child') || this.data.leaderboard[0];
+
+                        if (activeUser) {
+                                this.currentProfileId = activeUser.id;
+
+                                // CHỈ ghi đè user local nếu CHƯA có thay đổi mới chưa kịp lưu (Tránh race condition khi đang Save)
+                                if (!this._isUpdatingProfile) {
+                                        // Lấy dữ liệu từ cache HOẶC state hiện tại để gộp
+                                        const localUser = this.data.user && this.data.user.id === activeUser.id
+                                                ? this.data.user
+                                                : (this._initialUserCache || {});
+
+                                        const newUser = { ...activeUser, isCurrentUser: true };
+
+                                        // KIỂM TRA QUAN TRỌNG: Chỉ gộp local + db nếu là CÙNG một người dùng
+                                        if (localUser.id === newUser.id) {
+                                                // 1. Gộp danh sách Sticker (Union)
+                                                const mergedUnlocked = Array.from(new Set([
+                                                        ...(localUser.unlockedStickers || []),
+                                                        ...(newUser.unlockedStickers || [])
+                                                ]));
+                                                newUser.unlockedStickers = mergedUnlocked;
+
+                                                // 2. Bảo vệ số dư Sticker balance local nếu DB bị cũ (Sử dụng delta)
+                                                const localUnlockedCount = (localUser.unlockedStickers || []).length;
+                                                const dbUnlockedCount = (activeUser.unlockedStickers || []).length;
+
+                                                // Nếu local đã mở nhiều hơn DB, ta cần "bù" vào stickers để số tổng không đổi
+                                                if (localUnlockedCount > dbUnlockedCount) {
+                                                        const delta = localUnlockedCount - dbUnlockedCount;
+                                                        // newUser.stickers lúc này là giá trị từ DB (ví dụ 5)
+                                                        // Ta trừ delta (ví dụ 1) để ra đúng số lượt còn lại (4)
+                                                        newUser.stickers = Math.max(0, (newUser.stickers || 0) - delta);
+                                                        console.log(`[Sync] 🛡️ Bảo vệ sticker: Local(${localUnlockedCount}) > DB(${dbUnlockedCount}). Delta=${delta}. Stickers=${newUser.stickers}`);
+                                                }
+
+                                                // 3. Bảo vệ các chỉ số quan trọng khác nếu DB bị trễ (XP, Gold)
+                                                // Chỉ gộp nếu local cao hơn DB (tránh rollback do delay)
+                                                newUser.gold = Math.max(newUser.gold || 0, localUser.gold || 0);
+                                                newUser.xp = Math.max(newUser.xp || 0, localUser.xp || 0);
+                                                newUser.level = Math.max(newUser.level || 0, localUser.level || 1);
+                                        }
+
+                                        this.data.user = newUser;
+                                } else {
+                                        console.log("[State] 🛡️ Đang cập nhật dữ liệu... Bảo vệ profile local khỏi việc ghi đè.");
+                                }
+                        }
+
+                        this.calculateStreaks();
+                        this.recalculateDerivedStats();
+
+                        this._initialSyncDone = true;
+                        this.notify();
+                        this.checkRankChange();
+                } catch (error) {
+                        console.error("[State] Sync Error:", error);
+                } finally {
+                        this._isSyncingFromDb = false;
                 }
-
-                this.calculateStreaks();
-                this.recalculateDerivedStats();
-
-                this._initialSyncDone = true;
-                this._isSyncingFromDb = false;
-                this.notify();
-                this.checkRankChange();
         }
 
 
@@ -670,10 +692,39 @@ class StateManager {
                 this.data.user.weeklyLog = streaks.weeklyLog;
         }
 
-        getProfileName(id, profiles) {
+        getProfileName(id, profilesInput = null) {
+                const profiles = profilesInput || this.data.leaderboard || [];
                 let p = profiles.find(x => x.id === id);
+                if (!p && this._lastRawProfiles) {
+                        p = this._lastRawProfiles.find(x => x.id === id);
+                }
                 if (!p) return 'Nhà thám hiểm';
-                return p.role === 'bot' ? p.name.replace(' (Bot)', '').trim() : p.name;
+
+                // Trích xuất nickname nếu có dạng "Tên (Nickname)"
+                let nickname = '';
+                const nameStr = p.name || "";
+                if (nameStr.includes('(') && nameStr.includes(')')) {
+                        nickname = nameStr.split('(')[1].split(')')[0].trim();
+                }
+
+                // Nếu có nickname, ưu tiên dùng nickname
+                if (nickname) return nickname;
+
+                // Nếu là bot, đã được xử lý format ở bước syncFromDatabase 
+                // Tuy nhiên nếu dữ liệu thô chưa đổi, ta xử lý nhanh ở đây
+                if (p.role === 'bot' && nameStr.includes(' (Bot)')) {
+                        return nameStr.replace(' (Bot)', '').trim();
+                }
+
+                // Với người thật: Nếu tên quá dài (> 15 ký tự), rút gọn thành "Tên đệm + Tên" 
+                if (nameStr.length > 15) {
+                        const parts = nameStr.split(' ');
+                        if (parts.length > 1) {
+                                return parts.slice(-2).join(' '); // Lấy 2 từ cuối
+                        }
+                }
+
+                return nameStr;
         }
 
         recalculateDerivedStats() {

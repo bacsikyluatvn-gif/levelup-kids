@@ -372,8 +372,23 @@ class AppHeader extends HTMLElement {
                 <!-- Profile Card -->
                 <div class="flex items-center gap-3 pl-3 md:pl-4 border-l border-slate-200 dark:border-white/10 group relative">
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">${user.name || 'Alex'}</p>
-                        <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] opacity-80">${data.title.currentTitleName || 'Tân Binh'}</p>
+                        <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">
+                            ${(() => {
+                if (!user || !user.name) return 'Alex';
+                const rawName = user.name;
+                // Extract nickname if formatted like "Name (Nickname)"
+                if (rawName.includes('(') && rawName.includes(')')) {
+                    return rawName.split('(')[1].split(')')[0].trim();
+                }
+                // Shorten if too long
+                if (rawName.length > 15) {
+                    const parts = rawName.split(' ');
+                    return parts.length > 1 ? parts.slice(-2).join(' ') : rawName;
+                }
+                return rawName;
+            })()}
+                        </p>
+                        <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] opacity-80">${(data.title && data.title.currentTitleName) || 'Tân Binh'}</p>
                     </div>
                     
                     <div class="relative cursor-pointer group/avatar" id="header-avatar-child">
@@ -1663,7 +1678,21 @@ class LeaderboardTable extends HTMLElement {
                                         </div>
                                         <div class="min-w-0 pr-4">
                                             <div class="flex items-center gap-1.5 mb-0.5">
-                                                <h3 class="font-black text-slate-800 dark:text-white truncate text-base sm:text-lg tracking-tight">${myUser.name} <span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] ml-1">BẠN</span></h3>
+                                                <h3 class="font-black text-slate-800 dark:text-white truncate text-base sm:text-lg tracking-tight">
+                                                    ${(() => {
+                            if (!myUser || !myUser.name) return '';
+                            const rawName = myUser.name;
+                            if (rawName.includes('(') && rawName.includes(')')) {
+                                return rawName.split('(')[1].split(')')[0].trim();
+                            }
+                            if (rawName.length > 12) {
+                                const parts = rawName.split(' ');
+                                return parts.length > 1 ? parts.slice(-2).join(' ') : rawName;
+                            }
+                            return rawName;
+                        })()} 
+                                                    <span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] ml-1">BẠN</span>
+                                                </h3>
                                             </div>
                                             <p class="text-[11px] sm:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
                                                 <span class="material-symbols-outlined text-[14px] ${indicators.color}">${indicators.icon}</span>
