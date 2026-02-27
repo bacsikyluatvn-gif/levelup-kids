@@ -1856,7 +1856,7 @@ class ActivityFeed extends HTMLElement {
 }
 
 // Register components
-console.log("%c [Components] VERSION 1.0.6 - HEADER UPDATED ", "background: #2bcee3; color: white; font-weight: bold; padding: 4px; border-radius: 4px;");
+console.log("%c [Components] VERSION 1.0.7 - HEADER UPDATED ", "background: #2bcee3; color: white; font-weight: bold; padding: 4px; border-radius: 4px;");
 customElements.define('app-header', AppHeader);
 customElements.define('quest-card', QuestCard);
 customElements.define('shop-item', ShopItem);
