@@ -289,7 +289,7 @@
                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
                 <span class="text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">KIẾM VẬT PHẨM</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <!-- Mission -->
                 <a href="../dashboard/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
@@ -361,30 +361,56 @@
                         ĐANG CHỜ KÈO...
                     </div>
                 </a>
-                <!-- Tree Care -->
-                <a href="../tree-growth/index.html"
-                    class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
-                        <div
-                            class="absolute inset-0 bg-emerald-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
-                        </div>
-                        <div class="icon-bloom bg-gradient-to-br from-emerald-400 to-teal-600 shadow-emerald-500/30">
-                            <span class="material-symbols-outlined text-5xl"
-                                style="font-variation-settings:'FILL' 1">park</span>
-                            <div
-                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent">
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">CÂY
-                        ĐẠI THỤ</h3>
-                    <p class="text-sm font-bold text-slate-500 dark:text-slate-400 italic">"Tưới nước mỗi ngày, nuôi
-                        dưỡng mầm xanh kiên trì."</p>
-                    <div class="btn-glass bg-emerald-500/10 text-emerald-600 border-emerald-500/20" id="water-status">
-                        TƯỚI NƯỚC NGAY
-                    </div>
-                </a>
             </div>
+        </section>
+
+        <!-- CATEGORY: HÀNH TRÌNH KIÊN TRÌ (PERSISTENCE) -->
+        <section class="animate-fade-in-up delay-150">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="section-title">HÀNH TRÌNH <span class="text-emerald-500 italic">KIÊN TRÌ</span></h2>
+                <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                <span class="text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">NUÔI DƯỠNG</span>
+            </div>
+
+            <a href="../tree-growth/index.html"
+                class="relative block bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[4.5rem] p-12 overflow-hidden shadow-2xl group hover:scale-[1.01] transition-all">
+                <div
+                    class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none">
+                </div>
+
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-10">
+                    <div class="relative shrink-0">
+                        <div
+                            class="absolute inset-0 bg-emerald-500/20 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700">
+                        </div>
+                        <div
+                            class="icon-bloom bg-gradient-to-br from-emerald-400 to-teal-600 shadow-emerald-500/30 size-32 md:size-40 rounded-[3rem] md:rounded-[4rem]">
+                            <span class="material-symbols-outlined text-6xl md:text-8xl"
+                                style="font-variation-settings:'FILL' 1">park</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 text-center md:text-left">
+                        <div
+                            class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-1.5 rounded-full text-emerald-600 dark:text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-4">
+                            <span class="size-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                            Dự án lớn của con
+                        </div>
+                        <h3
+                            class="text-4xl md:text-5xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight mb-4 italic">
+                            CÂY ĐẠI THỤ KIÊN TRÌ</h3>
+                        <p class="text-lg font-bold text-slate-500 dark:text-slate-400 italic leading-relaxed max-w-xl">
+                            "Sức mạnh không nằm ở hành động một lần, mà ở sự bền bỉ tưới nước mỗi ngày."</p>
+                    </div>
+
+                    <div class="shrink-0 w-full md:w-auto">
+                        <div class="btn-glass bg-emerald-500 text-white shadow-emerald-500/40 border-none scale-110 !mt-0 h-16 px-12 text-sm"
+                            id="water-status">
+                            0 GIỌT NƯỚC
+                        </div>
+                    </div>
+                </div>
+            </a>
         </section>
 
         <!-- CATEGORY 2: TRƯNG BÀY VINH QUANG (SHOWCASE) -->
