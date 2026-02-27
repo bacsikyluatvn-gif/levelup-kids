@@ -228,7 +228,32 @@
 </head>
 
 <body
-    class="bg-slate-50 dark:bg-[#0c0a08] min-h-screen text-slate-800 dark:text-slate-200 font-['Montserrat'] selection:bg-primary selection:text-white transition-colors duration-300">
+    class="bg-slate-50 dark:bg-[#0f172a] font-['Montserrat'] text-slate-900 transition-colors duration-500 overflow-x-hidden">
+    <!-- CRITICAL: Instant UI Hydration (Run before anything else) -->
+    <script>
+        (function () {
+            const pid = localStorage.getItem('family_quest_active_profile');
+            if (!pid) return;
+            const cache = localStorage.getItem('family_quest_state_v3_cache_' + pid);
+            if (!cache) return;
+            try {
+                const data = JSON.parse(cache);
+                const user = data.user;
+                if (!user) return;
+
+                // Cập nhật DOM ngay lập tức bằng JS thuần để tránh "LOADING..." flash
+                document.addEventListener('DOMContentLoaded', () => {
+                    const nameEl = document.getElementById('hero-name');
+                    const levelEl = document.getElementById('hero-level');
+                    const avatarEl = document.getElementById('hero-avatar');
+
+                    if (nameEl && user.name) nameEl.innerText = user.name;
+                    if (levelEl && user.level) levelEl.innerText = user.level;
+                    if (avatarEl && user.avatar) avatarEl.style.backgroundImage = 'url("' + user.avatar + '")';
+                });
+            } catch (e) { }
+        })();
+    </script>
 
     <!-- App Header -->
     <app-header></app-header>
