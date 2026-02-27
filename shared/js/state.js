@@ -92,6 +92,8 @@ class StateManager {
                 this._isSyncingFromDb = false;
                 this._isUpdatingProfile = false;
 
+                console.log("%c [State] VERSION 1.0.5 - FIXED ISOLATION ACTIVE ", "background: #ee9d2b; color: white; font-weight: bold; padding: 4px; border-radius: 4px;");
+
                 // Load immediate cache for faster UI
                 this.loadFromCache();
 
@@ -105,7 +107,8 @@ class StateManager {
                         const profileId = localStorage.getItem('family_quest_active_profile');
                         if (!profileId) return;
 
-                        const cacheKey = `family_quest_state_cache_${profileId}`;
+                        // ĐỔI KEY ĐỂ FORCE RESET MỌI CACHE CŨ BỊ NHIỄM BẨN
+                        const cacheKey = `family_quest_state_v3_cache_${profileId}`;
                         const cached = localStorage.getItem(cacheKey);
                         if (cached) {
                                 const parsed = JSON.parse(cached);
@@ -124,7 +127,7 @@ class StateManager {
                         const profileId = localStorage.getItem('family_quest_active_profile');
                         if (!profileId) return;
 
-                        const cacheKey = `family_quest_state_cache_${profileId}`;
+                        const cacheKey = `family_quest_state_v3_cache_${profileId}`;
                         // XÓA stickers khỏi cache để tránh rò rỉ dữ liệu giữa các lần load
                         const userCopy = { ...(this.data.user || {}) };
                         delete userCopy.unlockedStickers;
