@@ -1,4 +1,12 @@
 {
+  "name": "levelup-kids",
+  "version": "1.0.0",
+  "description": "LevelUp Kids - Family Quest and Goal Tracking",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "dev": "static-server"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.97.0",
     "dotenv": "^17.3.1"
