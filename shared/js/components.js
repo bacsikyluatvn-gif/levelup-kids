@@ -424,117 +424,12 @@ class AppHeader extends HTMLElement {
                 </div>
             </div>
 
-            <!-- Avatar (→ Profile) + Hamburger Menu -->
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="../profile/index.html" class="relative cursor-pointer" id="header-avatar-child">
-                    <div class="size-9 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
-                         style="background-image: url('${user.avatar}')"></div>
-                    <div class="absolute -top-1 -right-1 size-2.5 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full"></div>
-                </a>
-                <button onclick="document.getElementById('mobile-nav-drawer').classList.remove('translate-x-full')" 
-                        class="size-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all active:scale-90 shadow-sm" id="menu-hamburger">
-                    <span class="material-symbols-outlined text-2xl">menu</span>
-                </button>
-            </div>
-
-            <!-- MOBILE NAV DRAWER (Fullscreen overlay) -->
-            <div id="mobile-nav-drawer" class="fixed inset-0 z-[99999] translate-x-full transition-transform duration-300 ease-out" style="will-change:transform;">
-                <div class="absolute inset-0 bg-gradient-to-br from-[#0f0c1a] via-[#1a1030] to-[#0d0a14]"></div>
-                <div class="relative z-10 h-full flex flex-col" style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);">
-                    <!-- Compact Header: Avatar + Name + Close -->
-                    <div class="flex items-center justify-between px-4 pt-4 pb-2">
-                        <a href="../profile/index.html" class="flex items-center gap-2.5 active:opacity-70">
-                            <div class="size-10 rounded-xl bg-slate-200 ring-2 ring-primary/30 bg-cover bg-center shadow-lg overflow-hidden" 
-                                 style="background-image: url('${user.avatar}')"></div>
-                            <div>
-                                <p class="text-sm font-black text-white uppercase tracking-tight leading-tight">${displayName}</p>
-                                <p class="text-[9px] font-bold text-primary uppercase tracking-widest">${titleName} · Lv.${user.level}</p>
-                            </div>
-                        </a>
-                        <button onclick="document.getElementById('mobile-nav-drawer').classList.add('translate-x-full')" 
-                                class="size-9 flex items-center justify-center rounded-xl bg-white/10 text-white/70 hover:bg-white/20 transition-all active:scale-90">
-                            <span class="material-symbols-outlined text-xl">close</span>
-                        </button>
-                    </div>
-
-                    <!-- NAVIGATION GRID (Primary - fills most of screen) -->
-                    <div class="flex-1 px-4 py-3 grid grid-cols-3 grid-rows-4 gap-2 content-start">
-                        <a href="../home/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-primary" style="font-variation-settings:'FILL' 1">home</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Chương</span>
-                        </a>
-                        <a href="../dashboard/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500/20 hover:border-amber-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-amber-400" style="font-variation-settings:'FILL' 1">target</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhiệm vụ</span>
-                        </a>
-                        <a href="../personality/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-rose-500/20 hover:border-rose-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-rose-400" style="font-variation-settings:'FILL' 1">auto_stories</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhật Ký</span>
-                        </a>
-                        <a href="../arena/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-blue-400" style="font-variation-settings:'FILL' 1">swords</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Arena</span>
-                        </a>
-                        <a href="../sticker-book/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-purple-500/20 hover:border-purple-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-purple-400" style="font-variation-settings:'FILL' 1">sell</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Sticker</span>
-                        </a>
-                        <a href="../tree-growth/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-emerald-400" style="font-variation-settings:'FILL' 1">park</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Vườn</span>
-                        </a>
-                        <a href="../shop/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-orange-500/20 hover:border-orange-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-orange-400" style="font-variation-settings:'FILL' 1">storefront</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Quà</span>
-                        </a>
-                        <a href="../leaderboard/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-sky-400" style="font-variation-settings:'FILL' 1">leaderboard</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Top</span>
-                        </a>
-                        <a href="../profile/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-teal-500/20 hover:border-teal-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-teal-400" style="font-variation-settings:'FILL' 1">person</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Tôi</span>
-                        </a>
-                        <a href="../titles/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-yellow-400" style="font-variation-settings:'FILL' 1">military_tech</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Danh hiệu</span>
-                        </a>
-                        <a href="../settings/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-slate-500/20 hover:border-slate-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-slate-400" style="font-variation-settings:'FILL' 1">settings</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Cài đặt</span>
-                        </a>
-                        <button onclick="window.toggleDarkMode()" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[32px] text-yellow-300">light_mode</span>
-                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Sáng/Tối</span>
-                        </button>
-                    </div>
-
-                    <!-- Stats Bar (Compact) -->
-                    <div class="mx-4 mb-2 p-2 rounded-xl bg-white/5 border border-white/10">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="flex items-center gap-1 text-amber-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-[11px] font-black">${user.gold}</span></div>
-                                <div class="flex items-center gap-1 text-purple-400"><span class="material-symbols-outlined text-[15px]">sell</span><span class="text-[11px] font-black">${user.stickers || 0}</span></div>
-                                <div class="flex items-center gap-1 text-blue-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-[11px] font-black">${user.water || 0}</span></div>
-                                <div class="flex items-center gap-1 text-rose-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">favorite</span><span class="text-[11px] font-black">${user.personalityPoints || 0}</span></div>
-                            </div>
-                            <span class="text-[9px] font-black text-primary tabular-nums">${user.xp}/${user.maxXp} XP</span>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Actions -->
-                    <div class="px-4 pb-4 flex gap-2">
-                        <button onclick="window.location.href='../portal/index.html'" class="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-lg text-slate-400">group</span>
-                            <span class="text-xs font-bold text-white/70">Đổi bé</span>
-                        </button>
-                        <button onclick="window.AppState.logout()" class="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-lg text-rose-400">logout</span>
-                            <span class="text-xs font-bold text-rose-400">Đăng xuất</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <!-- Avatar (→ Profile) -->
+            <a href="../profile/index.html" class="relative cursor-pointer shrink-0" id="header-avatar-child">
+                <div class="size-9 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
+                     style="background-image: url('${user.avatar}')"></div>
+                <div class="absolute -top-1 -right-1 size-2.5 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full"></div>
+            </a>
         `;
     }
 
@@ -2393,18 +2288,26 @@ class ChildNav extends HTMLElement {
 
     render(active) {
         this.innerHTML = `
-            <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-[9999] shadow-[0_-8px_30px_rgba(0,0,0,0.12)] overflow-x-auto no-scrollbar" style="padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);">
-                <nav class="max-w-2xl mx-auto px-1 py-1 flex justify-between items-end relative gap-0.5">
-                    ${this.navItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
-                    ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
-                    ${this.navItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
-                    ${this.navItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena')}
-                    ${this.navStickerItem(active === 'stickers')}
-                    ${this.navItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth')}
-                    ${this.navItem('storefront', 'Qùa', 'shop/index.html', active === 'shop')}
-                    ${this.navItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard')}
-                    ${this.navItem('person', 'Tôi', 'profile/index.html', active === 'profile')}
-                </nav>
+            <div class="fixed bottom-0 left-0 right-0 z-[9999]" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+                <!-- Floating nav pill -->
+                <div class="mx-3 mb-2 rounded-2xl overflow-hidden shadow-[0_-4px_30px_rgba(0,0,0,0.25)] border border-white/10 dark:border-white/5">
+                    <!-- Gradient top line -->
+                    <div class="h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0"></div>
+                    <!-- Glass background -->
+                    <div class="bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-2xl">
+                        <nav class="flex justify-between items-center px-1">
+                            ${this.navItem('home', 'Trang chủ', 'home/index.html', active === 'home' || active === '', '#ee9d2b', 'home')}
+                            ${this.navItem('dashboard', 'N.Vụ', 'dashboard/index.html', active === 'dashboard', '#f59e0b', 'target')}
+                            ${this.navItem('book_5', 'N.Ký', 'personality/index.html', active === 'diary', '#ec4899', 'auto_stories')}
+                            ${this.navItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena', '#6366f1', 'swords')}
+                            ${this.navStickerItem(active === 'stickers')}
+                            ${this.navItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth', '#10b981', 'park')}
+                            ${this.navItem('storefront', 'Quà', 'shop/index.html', active === 'shop', '#f97316', 'storefront')}
+                            ${this.navItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9', 'leaderboard')}
+                            ${this.navItem('person', 'Tôi', 'profile/index.html', active === 'profile', '#14b8a6', 'person')}
+                        </nav>
+                    </div>
+                </div>
             </div>
             <!--Spacer to prevent content from being hidden by fixed nav-->
             <div class="h-24"></div>
@@ -2415,51 +2318,59 @@ class ChildNav extends HTMLElement {
     }
 
     navStickerItem(isActive) {
-        const activeClass = isActive
-            ? 'text-primary transform -translate-y-2'
-            : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
-        const dot = isActive
-            ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>'
-            : '';
         const balance = window.AppState?.data?.user?.stickers || 0;
         const badge = balance > 0
-            ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center"> ${balance > 9 ? '9+' : balance}</span> `
+            ? `<span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[7px] font-black rounded-full flex items-center justify-center ring-2 ring-white dark:ring-[#1a140c] shadow-sm"> ${balance > 9 ? '9+' : balance}</span> `
             : '';
+
+        if (isActive) {
+            return `
+                <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group">
+                    <div class="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 dark:from-purple-500/30 dark:to-pink-500/30 animate-pulse"></div>
+                    <div class="relative p-1.5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 transform -translate-y-1 transition-all duration-300">
+                        <span class="material-symbols-outlined text-xl text-white" style="font-variation-settings:'FILL' 1">sell</span>
+                        ${badge}
+                    </div>
+                    <span class="text-[8px] font-black mt-0.5 leading-none text-purple-600 dark:text-purple-400">Sticker</span>
+                    <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full shadow-[0_0_6px_2px_rgba(168,85,247,0.5)]"></div>
+                </a>
+            `;
+        }
         return `
-            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[56px] py-2">
-                <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300 relative">
-                    <span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>
+            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group hover:bg-purple-500/5 rounded-xl transition-all">
+                <div class="relative p-1.5 transition-all duration-300 group-active:scale-90">
+                    <span class="material-symbols-outlined text-xl text-slate-400 dark:text-slate-500 group-hover:text-purple-500 transition-colors" style="font-variation-settings:'FILL' 0">sell</span>
                     ${badge}
                 </div>
-                <span class="text-[9px] font-bold mt-0.5 leading-none">Sticker</span>
-                ${dot}
+                <span class="text-[8px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500 group-hover:text-purple-500 transition-colors">Sticker</span>
             </a>
-
-            `;
+        `;
     }
 
-    navItem(icon, label, href, isActive, onClickStr = null) {
-        const activeClass = isActive
-            ? 'text-primary transform -translate-y-2'
-            : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
+    navItem(icon, label, href, isActive, color = '#ee9d2b', filledIcon = null) {
+        const displayIcon = filledIcon || icon;
 
-        const dot = isActive
-            ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>'
-            : '';
-
-        const iconClass = isActive ? 'font-black' : 'font-normal';
-        const attrs = onClickStr ? `href="${href}" onclick="${onClickStr}"` : `href="../${href}"`;
+        if (isActive) {
+            return `
+                <a href="../${href}" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px]">
+                    <div class="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-10 rounded-xl animate-pulse" style="background: ${color}15;"></div>
+                    <div class="relative p-1.5 rounded-xl shadow-lg transform -translate-y-1 transition-all duration-300" style="background: linear-gradient(135deg, ${color}, ${color}dd); box-shadow: 0 4px 15px ${color}40;">
+                        <span class="material-symbols-outlined text-xl text-white" style="font-variation-settings:'FILL' 1">${displayIcon}</span>
+                    </div>
+                    <span class="text-[8px] font-black mt-0.5 leading-none" style="color: ${color}">${label}</span>
+                    <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style="background: ${color}; box-shadow: 0 0 6px 2px ${color}80;"></div>
+                </a>
+            `;
+        }
 
         return `
-            <a ${attrs} class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[56px] py-2">
-                <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300">
-                    <span class="material-symbols-outlined text-2xl ${iconClass}">${icon}</span>
+            <a href="../${href}" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group rounded-xl transition-all" style="--nav-hover: ${color}">
+                <div class="relative p-1.5 transition-all duration-300 group-active:scale-90">
+                    <span class="material-symbols-outlined text-xl text-slate-400 dark:text-slate-500 transition-colors" style="font-variation-settings:'FILL' 0">${displayIcon}</span>
                 </div>
-                <span class="text-[9px] font-bold mt-0.5 leading-none">${label}</span>
-                ${dot}
+                <span class="text-[8px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500 transition-colors">${label}</span>
             </a>
-
-            `;
+        `;
     }
 }
 customElements.define('child-nav', ChildNav);
