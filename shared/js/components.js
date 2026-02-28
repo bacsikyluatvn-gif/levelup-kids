@@ -2939,47 +2939,48 @@ class BehaviorLogModal extends HTMLElement {
                                         </div>
 
                                         <!-- Rewards -->
-                                        <div class="space-y-3 pt-2">
+                                        <div class="space-y-4 pt-2">
                                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Thông số quà tặng</label>
                                             <div class="grid grid-cols-2 gap-4">
                                                 <input id="bh-gold" type="hidden" value="0">
                                                 <input id="bh-water" type="hidden" value="0">
                                                 <input id="bh-sticker" type="hidden" value="0">
+                                                
                                                 <!-- Personality (Tym) -->
-                                                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-800 flex flex-col gap-3">
+                                                <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border-2 ${this.activeType === 'GOOD' ? 'border-emerald-100 dark:border-emerald-900/20' : 'border-rose-100 dark:border-rose-900/20'} flex flex-col gap-4 shadow-sm">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded-xl">
-                                                            <span class="material-symbols-outlined text-rose-500 text-2xl" style="font-variation-settings:'FILL' 1">favorite</span>
+                                                        <div class="${this.activeType === 'GOOD' ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500' : 'bg-rose-50 dark:bg-rose-900/20 text-rose-500'} p-2.5 rounded-2xl">
+                                                            <span class="material-symbols-outlined text-2xl font-black" style="font-variation-settings:'FILL' 1">${this.activeType === 'GOOD' ? 'favorite' : 'heart_broken'}</span>
                                                         </div>
                                                         <div class="flex-grow">
-                                                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Điểm Nhân Cách</label>
-                                                            <input id="bh-personality" type="number" class="w-full bg-transparent font-black text-lg outline-none dark:text-white" value="${this.form.personality}">
+                                                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter mb-0.5">Điểm Nhân Cách</label>
+                                                            <input id="bh-personality" type="number" class="w-full bg-transparent font-black text-2xl outline-none dark:text-white" value="${this.form.personality}">
                                                         </div>
                                                     </div>
-                                                    <div class="flex flex-wrap gap-1.5">
-                                                        ${[5, 10, 20].map(v => `
-                                                            <button onclick="document.getElementById('bh-personality').value = ${v}" class="px-3 py-1 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-[10px] font-black text-slate-500 hover:text-rose-500 rounded-lg transition-all border border-transparent hover:border-rose-100">
-                                                                +${v}
+                                                    <div class="flex flex-wrap gap-2">
+                                                        ${(this.activeType === 'GOOD' ? [5, 10, 20] : [-5, -10, -15]).map(v => `
+                                                            <button onclick="document.getElementById('bh-personality').value = ${v}" class="flex-1 py-2 ${this.activeType === 'GOOD' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 hover:bg-emerald-100' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 hover:bg-rose-100'} text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
+                                                                ${v > 0 ? '+' : ''}${v}
                                                             </button>
                                                         `).join('')}
                                                     </div>
                                                 </div>
                                                 
                                                 <!-- EXP -->
-                                                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-800 flex flex-col gap-3">
+                                                <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border-2 border-amber-50 dark:border-amber-900/10 flex flex-col gap-4 shadow-sm">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="bg-amber-50 dark:bg-amber-900/20 p-2 rounded-xl">
-                                                            <span class="material-symbols-outlined text-amber-500 text-2xl">military_tech</span>
+                                                        <div class="bg-amber-50 dark:bg-amber-900/20 p-2.5 rounded-2xl text-amber-500">
+                                                            <span class="material-symbols-outlined text-2xl font-black">military_tech</span>
                                                         </div>
                                                         <div class="flex-grow">
-                                                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Kinh Nghiệm (EXP)</label>
-                                                            <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-lg outline-none dark:text-white" value="${this.form.xp}">
+                                                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter mb-0.5">Kinh Nghiệm (EXP)</label>
+                                                            <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-2xl outline-none dark:text-white" value="${this.form.xp}">
                                                         </div>
                                                     </div>
-                                                    <div class="flex flex-wrap gap-1.5">
-                                                        ${[10, 15, 30].map(v => `
-                                                            <button onclick="document.getElementById('bh-xp').value = ${v}" class="px-3 py-1 bg-slate-50 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 text-[10px] font-black text-slate-500 hover:text-amber-600 rounded-lg transition-all border border-transparent hover:border-amber-100">
-                                                                +${v}
+                                                    <div class="flex flex-wrap gap-2">
+                                                        ${(this.activeType === 'GOOD' ? [15, 25, 40] : [-5, -10, -20]).map(v => `
+                                                            <button onclick="document.getElementById('bh-xp').value = ${v}" class="flex-1 py-2 bg-amber-50 dark:bg-amber-900/30 text-amber-600 hover:bg-amber-100 text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
+                                                                ${v > 0 ? '+' : ''}${v}
                                                             </button>
                                                         `).join('')}
                                                     </div>
