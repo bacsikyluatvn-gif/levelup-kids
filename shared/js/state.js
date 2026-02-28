@@ -54,16 +54,16 @@ window.TITLE_MILESTONES = TITLE_MILESTONES;
 
 const GROWTH_BEHAVIORS = {
         GOOD: [
-                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
-                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
-                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
-                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 }
+                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
+                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
+                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
+                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 }
         ],
         BAD: [
-                { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: -10, xp: -5, water: 0, sticker: 0, personality: -5 },
-                { id: 'teasing', text: 'Trêu chọc, làm em khóc', emoji: '😤', gold: -20, xp: -10, water: 0, sticker: 0, personality: -10 },
-                { id: 'lazy', text: 'Lười biếng, không nghe lời', emoji: '😴', gold: -10, xp: -5, water: 0, sticker: 0, personality: -5 },
-                { id: 'tantrum', text: 'Ăn vạ, quấy khóc', emoji: '😭', gold: -15, xp: -10, water: 0, sticker: 0, personality: -5 }
+                { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: 0, xp: 0, water: 0, sticker: 0, personality: -5 },
+                { id: 'teasing', text: 'Trêu chọc, làm em khóc', emoji: '😤', gold: 0, xp: 0, water: 0, sticker: 0, personality: -10 },
+                { id: 'lazy', text: 'Lười biếng, không nghe lời', emoji: '😴', gold: 0, xp: 0, water: 0, sticker: 0, personality: -5 },
+                { id: 'tantrum', text: 'Ăn vạ, quấy khóc', emoji: '😭', gold: 0, xp: 0, water: 0, sticker: 0, personality: -5 }
         ]
 };
 window.GROWTH_BEHAVIORS = GROWTH_BEHAVIORS;
@@ -463,11 +463,27 @@ class StateManager {
                                 }
 
                                 if (shopRes && shopRes.data) {
-                                        this.data.shopItems = shopRes.data.filter(s => s.item_type === 'premium').map(s => ({
-                                                id: s.id, title: s.title, desc: s.description, price: s.price, image: s.image, emoji: s.emoji, category: s.category, color: s.color
+                                        this.data.shopItems = shopRes.data.filter(s => s.item_type === 'premium' || s.item_type === 'special' || !s.item_type).map(s => ({
+                                                id: s.id,
+                                                title: s.title,
+                                                desc: s.description,
+                                                price: s.price,
+                                                personalityPrice: s.personality_price,
+                                                image: s.image,
+                                                emoji: s.emoji,
+                                                category: s.category,
+                                                color: s.color,
+                                                itemType: s.item_type
                                         }));
                                         this.data.instantPerks = shopRes.data.filter(s => s.item_type === 'perk').map(s => ({
-                                                id: s.id, title: s.title, desc: s.description, stickerPrice: s.sticker_price, emoji: s.emoji, color: s.color
+                                                id: s.id,
+                                                title: s.title,
+                                                desc: s.description,
+                                                stickerPrice: s.sticker_price,
+                                                emoji: s.emoji,
+                                                color: s.color,
+                                                category: s.category,
+                                                itemType: s.item_type
                                         }));
                                 }
 
@@ -857,22 +873,25 @@ class StateManager {
                 if (behaviorId === 'custom' && customData) {
                         title = customData.title || (type === 'GOOD' ? 'Việc tốt khác' : 'Nhắc nhở khác');
                         description = customData.description || '';
-                        rewardGold = parseInt(customData.gold) || 0;
-                        rewardXp = parseInt(customData.xp) || 0;
+                        rewardGold = 0; // Nhật ký không thưởng vàng nữa
+                        rewardXp = 0; // KHÓA CỨNG: EXP nhật ký luôn = 0
                         rewardWater = parseInt(customData.water) || 0;
-                        rewardSticker = parseInt(customData.sticker) || 0;
-                        rewardPersonality = parseInt(customData.personality) || (type === 'GOOD' ? 5 : -5);
+                        rewardSticker = 0;
+                        // Personality: GOOD: +5/+10, BAD: -5/-10
+                        const allowedValues = type === 'GOOD' ? [5, 10] : [-5, -10];
+                        const val = parseInt(customData.personality);
+                        rewardPersonality = allowedValues.includes(val) ? val : (type === 'GOOD' ? 5 : -5);
                 } else {
                         const behavior = window.GROWTH_BEHAVIORS[type].find(b => b.id === behaviorId);
                         if (!behavior) return null;
 
                         title = behavior.text;
-                        description = customData?.description || ''; // Allow adding desc to preset
-                        rewardGold = customData?.gold !== undefined ? parseInt(customData.gold) : behavior.gold;
-                        rewardXp = customData?.xp !== undefined ? parseInt(customData.xp) : behavior.xp;
+                        description = customData?.description || '';
+                        rewardGold = 0;
+                        rewardXp = 0; // EXP KHÓA CỨNG
                         rewardWater = customData?.water !== undefined ? parseInt(customData.water) : behavior.water;
-                        rewardSticker = customData?.sticker !== undefined ? parseInt(customData.sticker) : behavior.sticker;
-                        rewardPersonality = customData?.personality !== undefined ? parseInt(customData.personality) : (behavior.personality || (type === 'GOOD' ? 5 : -5));
+                        rewardSticker = 0;
+                        rewardPersonality = customData?.personality !== undefined ? parseInt(customData.personality) : behavior.personality;
                 }
 
                 const profile = this.data.leaderboard.find(p => p.id === profileId);
@@ -977,10 +996,11 @@ class StateManager {
                         item_title: resolutionData.title + (resolutionData.description ? ` | ${resolutionData.description}` : ""),
                         status: 'approved',
                         type: 'reflection',
-                        reward_gold: 5,
-                        reward_xp: 10,
-                        reward_water: 2,
-                        reward_sticker: 1,
+                        reward_gold: 0,
+                        reward_xp: 0,
+                        reward_water: 10,
+                        reward_sticker: 0,
+                        reward_personality: 5,
                         is_sticker: false,
                         rewards_granted: true,
                         created_at: new Date().toISOString()
@@ -1012,14 +1032,30 @@ class StateManager {
         async completeTask(taskId) {
                 if (!this.data.user || !this.data.user.id) return;
                 const task = this.data.quests.find(q => q.id === taskId);
-                if (!task || task.completedBy.includes(this.data.user.id)) return;
+                if (!task) return;
+
+                // KIỂM TRA RESET NGÀY: 
+                // completed_at được lưu trong bảng requests hoặc quest_history (tùy cấu trúc DB)
+                // Ở đây ta dùng logic locally stored completion date để chặn nhanh
+                const today = new Date().toLocaleDateString('vi-VN');
+                const lastCompletedDate = localStorage.getItem(`task_completed_${taskId}_${this.data.user.id}`);
+
+                if (lastCompletedDate === today) {
+                        console.warn(`[State] Task ${taskId} already completed today by ${this.data.user.id}`);
+                        return;
+                }
+
+                if (task.completedBy.includes(this.data.user.id)) return;
 
                 // Optimistic UI
                 if (!this._pendingCompletions) this._pendingCompletions = new Set();
                 this._pendingCompletions.add(taskId);
 
                 task.completedBy.push(this.data.user.id);
-                this.addRewardsToLocalUser(task.reward, task.xp, task.water, task.sticker);
+                // KHÓA CỨNG THỐNG SỐ: Mỗi nhiệm vụ 20 EXP và 1 Sticker
+                const finalXp = 20;
+                const finalSticker = 1;
+                this.addRewardsToLocalUser(task.reward, finalXp, task.water, finalSticker);
                 this.notify();
 
                 try {
@@ -1032,9 +1068,9 @@ class StateManager {
                                 type: 'task',
                                 task_id: taskId,
                                 reward_gold: task.reward || 0,
-                                reward_xp: task.xp || 0,
+                                reward_xp: 20, // Cố định 20 EXP
                                 reward_water: task.water || 0,
-                                reward_sticker: task.sticker || 0,
+                                reward_sticker: 1, // Cố định 1 Sticker
                                 rewards_granted: true
                         }).select().single();
 
@@ -1065,8 +1101,9 @@ class StateManager {
                         this.notify();
                         await this.syncLocalUserToDb();
 
-                        // Thành công thì mới xóa khỏi pending
+                        // Thành công thì mới xóa khỏi pending và lưu ngày hoàn thành
                         this._pendingCompletions.delete(taskId);
+                        localStorage.setItem(`task_completed_${taskId}_${this.data.user.id}`, today);
                 } catch (e) {
                         console.error("Lỗi hoàn thành nhiệm vụ:", e);
                         // Có thể rollback local state ở đây nếu cần
@@ -1374,14 +1411,47 @@ class StateManager {
         }
 
         addTask(task) {
+                // CHỐNG SPAM: Giới hạn 6 Core + 6 Optional
+                const mandatoryCount = this.data.quests.filter(q => q.type === 'mandatory').length;
+                const optionalCount = this.data.quests.filter(q => q.type === 'optional').length;
+
+                if (task.type === 'mandatory' && mandatoryCount >= 6) {
+                        if (window.showLevelUpAlert) {
+                                window.showLevelUpAlert(
+                                        "Ba mẹ ơi, chậm lại một chút!",
+                                        "Gia đình chỉ nên có tối đa 6 nhiệm vụ <b>Bắt buộc</b>. Hãy ưu tiên những việc quan trọng nhất để giúp con thay đổi tích cực trước ba mẹ nhé!",
+                                        "info"
+                                );
+                        } else {
+                                alert("Gia đình chỉ được tối đa 6 nhiệm vụ BẮT BUỘC.");
+                        }
+                        return;
+                }
+                if (task.type === 'optional' && optionalCount >= 6) {
+                        if (window.showLevelUpAlert) {
+                                window.showLevelUpAlert(
+                                        "Giới hạn Nhiệm vụ",
+                                        "Mỗi gia đình chỉ được tối đa 6 nhiệm vụ <b>Tùy chọn</b> để tránh con bị quá tải.",
+                                        "info"
+                                );
+                        } else {
+                                alert("Gia đình chỉ được tối đa 6 nhiệm vụ TÙY CHỌN.");
+                        }
+                        return;
+                }
+
+                // CỐ ĐỊNH PHẦN THƯỞNG HỆ THỐNG
+                const finalGold = [10, 15, 20, 25].includes(parseInt(task.reward)) ? parseInt(task.reward) : 10;
+                const finalWater = [10, 20].includes(parseInt(task.water)) ? parseInt(task.water) : 10;
+
                 this.client.from('quests').insert({
                         family_id: this.familyId,
                         title: task.title,
                         description: task.desc,
-                        reward: task.reward,
-                        xp: task.xp,
-                        sticker: task.sticker,
-                        water: task.water || 0,
+                        reward: finalGold,
+                        xp: 20, // LUÔN LUÔN 20
+                        sticker: 1, // LUÔN LUÔN 1
+                        water: finalWater,
                         icon: task.icon,
                         category: task.category,
                         type: task.type
@@ -1389,13 +1459,16 @@ class StateManager {
         }
 
         async updateTask(id, data) {
+                const finalGold = [10, 15, 20, 25].includes(parseInt(data.reward)) ? parseInt(data.reward) : 10;
+                const finalWater = [10, 20].includes(parseInt(data.water)) ? parseInt(data.water) : 10;
+
                 await this.client.from('quests').update({
                         title: data.title,
-                        description: data.desc || data.title, // description in DB, desc in local object
-                        reward: data.reward,
-                        xp: data.xp,
-                        water: data.water,
-                        sticker: data.sticker,
+                        description: data.desc || data.title,
+                        reward: finalGold,
+                        xp: 20,
+                        sticker: 1,
+                        water: finalWater,
                         icon: data.icon,
                         category: data.category,
                         type: data.type
@@ -1521,7 +1594,8 @@ class StateManager {
                         emoji: item.emoji,
                         item_type: item.itemType || 'premium',
                         color: item.color,
-                        category: item.category
+                        category: item.category,
+                        sticker_price: item.stickerPrice || 0
                 }).then(({ error }) => {
                         if (error) {
                                 console.error("Lỗi thêm vật phẩm:", error);
@@ -1556,7 +1630,8 @@ class StateManager {
                         emoji: data.emoji,
                         item_type: data.itemType || 'premium',
                         category: data.category,
-                        color: data.color
+                        color: data.color,
+                        sticker_price: data.stickerPrice || data.sticker_price || 0
                 }).eq('id', id);
                 this.syncFromDatabase();
         }

@@ -262,45 +262,59 @@
           <input type="hidden" id="task-icon" value="brush" />
         </div>
         <!-- Rewards Row -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-[11px] font-bold mb-2">Vàng (Gold)</label>
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-amber-500 text-lg">monetization_on</span>
-              <input id="task-gold"
-                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-amber-600 text-sm"
-                type="number" value="50" required />
+        <!-- Rewards Selection Row -->
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Vàng Selection -->
+            <div class="bg-neutral-soft/30 p-4 rounded-2xl border-2 border-amber-100 dark:border-amber-900/20">
+              <label class="block text-[11px] font-black uppercase text-amber-600 mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">monetization_on</span> Thưởng Vàng
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <input type="hidden" id="task-gold" value="10">
+                <button type="button" onclick="selectRewardValue('gold', 10, this)"
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-amber-500 text-white border-amber-500">10</button>
+                <button type="button" onclick="selectRewardValue('gold', 15, this)"
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">15</button>
+                <button type="button" onclick="selectRewardValue('gold', 20, this)"
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">20</button>
+                <button type="button" onclick="selectRewardValue('gold', 25, this)"
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">25</button>
+              </div>
+            </div>
+            <!-- Nước Selection -->
+            <div class="bg-neutral-soft/30 p-4 rounded-2xl border-2 border-teal-100 dark:border-teal-900/20">
+              <label class="block text-[11px] font-black uppercase text-teal-600 mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">water_drop</span> Thưởng Nước
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <input type="hidden" id="task-water" value="10">
+                <button type="button" onclick="selectRewardValue('water', 10, this)"
+                  class="water-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-teal-500 text-white border-teal-500">10</button>
+                <button type="button" onclick="selectRewardValue('water', 20, this)"
+                  class="water-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">20</button>
+              </div>
             </div>
           </div>
-          <div>
-            <label class="block text-[11px] font-bold mb-2">Nước (Giọt)</label>
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-teal-500 text-lg">water_drop</span>
-              <input id="task-water"
-                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-teal-600 text-sm"
-                type="number" value="10" required />
+          <!-- System Fixed Rewards -->
+          <div
+            class="bg-blue-50/50 dark:bg-blue-900/10 p-4 rounded-2xl border border-blue-100 dark:border-blue-900/20 flex items-center justify-around">
+            <div class="text-center">
+              <p class="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1">Kinh nghiệm (Cố định)</p>
+              <div class="flex items-center justify-center gap-1 text-blue-600 font-extrabold">
+                <span class="material-symbols-outlined text-lg">military_tech</span>
+                <span>20 EXP</span>
+                <input type="hidden" id="task-exp" value="20">
+              </div>
             </div>
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold mb-2">Sticker</label>
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-purple-500 text-lg">sell</span>
-              <input id="task-sticker"
-                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-purple-600 text-sm"
-                type="number" value="2" required />
-            </div>
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold mb-2">Điểm EXP</label>
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 text-lg">military_tech</span>
-              <input id="task-exp"
-                class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-9 pr-2 py-3 font-bold text-blue-600 text-sm"
-                type="number" value="100" required />
+            <div class="w-px h-8 bg-blue-100 dark:bg-blue-900/40"></div>
+            <div class="text-center">
+              <p class="text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1">Sticker (Cố định)</p>
+              <div class="flex items-center justify-center gap-1 text-purple-600 font-extrabold">
+                <span class="material-symbols-outlined text-lg">sell</span>
+                <span>1 Thẻ</span>
+                <input type="hidden" id="task-sticker" value="1">
+              </div>
             </div>
           </div>
         </div>
@@ -357,6 +371,9 @@
         modal.classList.add('opacity-100', 'pointer-events-auto');
         if (!currentEditTaskId) {
           title.textContent = 'Thêm Nhiệm vụ mới';
+          // Set defaults for new task
+          selectRewardValue('gold', 10);
+          selectRewardValue('water', 10);
         } else {
           title.textContent = 'Sửa Nhiệm vụ';
         }
@@ -370,6 +387,20 @@
         const iconBtn = document.querySelector('.icon-btn'); // first one usually the brush
         if (iconBtn) selectIcon(iconBtn, 'brush');
       }
+    }
+
+    function selectRewardValue(type, val, btn) {
+      document.getElementById('task-' + type).value = val;
+      const chips = document.querySelectorAll(`.${type}-chip`);
+      chips.forEach(c => {
+        c.classList.remove('bg-primary', 'text-white', 'border-primary', 'bg-amber-500', 'bg-teal-500');
+        c.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+        if (parseInt(c.textContent.trim()) === val) {
+          const colorClass = type === 'gold' ? 'bg-amber-500' : 'bg-teal-500';
+          c.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+          c.classList.add(colorClass, 'text-white', 'border-' + (type === 'gold' ? 'amber-500' : 'teal-500'));
+        }
+      });
     }
 
     function selectIcon(btnElement, iconName) {
@@ -430,10 +461,8 @@
       currentEditTaskId = taskId;
 
       document.getElementById('task-name').value = task.title;
-      document.getElementById('task-gold').value = task.reward || 0;
-      document.getElementById('task-water').value = task.water || 0;
-      document.getElementById('task-sticker').value = task.sticker || 0;
-      document.getElementById('task-exp').value = task.xp || 0;
+      selectRewardValue('gold', task.reward || 10);
+      selectRewardValue('water', task.water || 10);
 
       // Handle Category
       const catSelect = document.getElementById('task-category');
@@ -495,25 +524,61 @@
         // UPDATE
         const updatedTask = {
           title: name,
-          reward: parseInt(gold) || 0,
-          water: parseInt(water) || 0,
-          sticker: parseInt(sticker) || 0,
-          xp: parseInt(exp) || 0,
+          reward: parseInt(gold) || 10,
+          water: parseInt(water) || 10,
+          sticker: 1,
+          xp: 20,
           icon: icon,
           category: category,
           type: type
         };
         window.AppState.updateTask(currentEditTaskId, updatedTask);
       } else {
+        // CHỐNG SPAM: Check limits locally before calling State
+        const familyTasks = window.AppState.data.quests;
+        const mandatoryCount = familyTasks.filter(q => q.type === 'mandatory').length;
+        const optionalCount = familyTasks.filter(q => q.type === 'optional').length;
+
+        if (type === 'mandatory' && mandatoryCount >= 6) {
+          window.showLevelUpAlert(
+            "Ba mẹ ơi, hãy chậm lại một chút!",
+            `<div class="text-left space-y-3">
+              <p>Gia đình hiện đã có đủ 6 nhiệm vụ <b>Bắt buộc</b>. Để con đạt kết quả tốt nhất, ba mẹ nên:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Ưu tiên những thói quen quan trọng nhất trước.</li>
+                <li>Tránh làm con bị "ngợp" bởi quá nhiều đầu việc.</li>
+                <li>Khi con đã thành thạo, ba mẹ mới nên thay đổi sang việc khác.</li>
+              </ul>
+            </div>`,
+            "error"
+          );
+          return;
+        }
+        if (type === 'optional' && optionalCount >= 6) {
+          window.showLevelUpAlert(
+            "Giới hạn Nhiệm vụ",
+            `<div class="text-left space-y-3">
+              <p>Mỗi gia đình chỉ nên có tối đa 6 nhiệm vụ <b>Tùy chọn</b>. Lí do là:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Giúp con tập trung hoàn thành tốt mục tiêu chính.</li>
+                <li>Xây dựng sự tự tin qua những chiến thắng nhỏ đều đặn.</li>
+                <li>Giữ cho không gian nhiệm vụ của con luôn tinh gọn.</li>
+              </ul>
+            </div>`,
+            "error"
+          );
+          return;
+        }
+
         // CREATE
         const newTask = {
           id: 'task_' + Date.now(),
           title: name,
-          desc: 'Vừa mới thêm',
-          reward: parseInt(gold) || 0,
-          water: parseInt(water) || 0,
-          sticker: parseInt(sticker) || 0,
-          xp: parseInt(exp) || 0,
+          desc: 'Nhiệm vụ hàng ngày',
+          reward: parseInt(gold) || 10,
+          water: parseInt(water) || 10,
+          sticker: 1,
+          xp: 20,
           icon: icon,
           color: 'blue',
           category: category,
@@ -608,8 +673,13 @@
       });
 
       // Update stats
-      document.getElementById('stat-total-tasks').innerText = window.AppState.data.quests.length;
+      const quests = window.AppState.data.quests;
+      document.getElementById('stat-total-tasks').innerText = quests.length + " / 12";
       document.getElementById('stat-total-gold').innerText = totalGold.toLocaleString('vi-VN');
+
+      const mCount = quests.filter(q => q.type === 'mandatory').length;
+      const oCount = quests.filter(q => q.type === 'optional').length;
+      // You could update a visual indicator here for 6/6
     }
 
     function deleteTask(btn, taskId) {

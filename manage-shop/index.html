@@ -73,11 +73,6 @@
                             class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-stone-300 font-bold text-xs flex items-center gap-2 transition-all">
                             <span class="material-symbols-outlined text-[18px]">sync</span> Làm mới
                         </button>
-                        <button onclick="toggleModal(true)"
-                            class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
-                            <span class="material-symbols-outlined">add_circle</span>
-                            Thêm vật phẩm mới
-                        </button>
                     </div>
                 </div>
 
@@ -85,11 +80,11 @@
                 <div
                     class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 w-fit mb-6 overflow-x-auto whitespace-nowrap max-w-full">
                     <button id="tab-btn-shop" onclick="switchTab('shop')"
-                        class="px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all">Các
-                        vật phẩm (Vàng)</button>
+                        class="px-5 py-2.5 bg-primary text-white rounded-lg shadow-sm font-bold text-sm transition-all">Quà
+                        Tặng (Vàng & Tim)</button>
                     <button id="tab-btn-perks" onclick="switchTab('perks')"
-                        class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Quà
-                        Tặng Ngay (Sticker)</button>
+                        class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Phần
+                        Thưởng (Sticker)</button>
                     <button id="tab-btn-special" onclick="switchTab('special')"
                         class="px-5 py-2.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg font-bold text-sm transition-all">Đặc
                         Quyền (Nhân Cách)</button>
@@ -104,6 +99,15 @@
 
                 <!-- TAB 1: Rewards Table -->
                 <div id="tab-shop">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-500 text-sm">Quà tặng bé có thể đổi bằng số Vàng tích lũy được từ nhiệm vụ.
+                        </p>
+                        <button onclick="toggleModal(true, 'Quà tặng')"
+                            class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            Thêm Quà Tặng
+                        </button>
+                    </div>
                     <div
                         class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
                         <div class="overflow-x-auto">
@@ -137,6 +141,15 @@
 
                 <!-- TAB 1.7: Special (Personality) Table -->
                 <div id="tab-special" style="display: none;">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-500 text-sm">Đặc quyền tinh thần bé dùng điểm Nhân cách (Tim) được ba mẹ
+                            khen thưởng để đổi.</p>
+                        <button onclick="toggleModal(true, 'Đặc quyền')"
+                            class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            Thêm Đặc Quyền
+                        </button>
+                    </div>
                     <div
                         class="bg-white dark:bg-slate-900 rounded-xl border border-rose-500/20 shadow-sm overflow-hidden">
                         <div class="overflow-x-auto">
@@ -171,12 +184,13 @@
                 <!-- TAB 1.5: Perks Table -->
                 <div id="tab-perks" style="display: none;">
                     <div class="flex justify-between items-center mb-4">
-                        <p class="text-slate-500 text-sm">Quà Tặng Ngay (Instant Perks) được các bé đổi trực tiếp bằng
+                        <p class="text-slate-500 text-sm">Phần Thưởng nhận ngay (Instant Perks) được các bé đổi trực
+                            tiếp bằng
                             Huy hiệu (Stickers) làm nhiệm vụ.</p>
                         <button onclick="togglePerkModal(true)"
                             class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-all text-sm">
                             <span class="material-symbols-outlined text-[18px]">add</span>
-                            Thêm Quà Tặng Ngay
+                            Thêm Phần Thưởng
                         </button>
                     </div>
                     <div
@@ -289,7 +303,8 @@
             </div>
             <form id="add-item-form" class="p-6 space-y-6">
                 <!-- Image Upload (Very Important Feature) -->
-                <div>
+                <!-- Image/Icon Upload area -->
+                <div id="image-upload-group">
                     <label class="block text-sm font-bold mb-2">Hình ảnh vật phẩm <span
                             class="text-xs text-slate-400 font-normal">(Chọn từ máy tính)</span></label>
                     <div class="w-full relative border-2 border-dashed border-primary/30 rounded-xl p-6 flex flex-col items-center justify-center gap-2 hover:bg-primary/5 transition-colors cursor-pointer group min-h-[160px]"
@@ -303,6 +318,20 @@
                         <img id="preview-image" class="absolute inset-0 w-full h-full object-cover rounded-xl hidden"
                             src="" alt="Preview" />
                         <input type="file" id="item-image" class="hidden" accept="image/*" />
+                    </div>
+                </div>
+
+                <div id="icon-select-group" class="hidden">
+                    <label class="block text-sm font-bold mb-2">Biểu tượng (Icon)</label>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-16 bg-teal-50 dark:bg-teal-900/30 rounded-2xl flex items-center justify-center text-teal-600 border border-teal-100 dark:border-teal-800">
+                            <span id="modal-icon-preview" class="material-symbols-outlined text-3xl">star</span>
+                        </div>
+                        <input id="item-icon-input"
+                            onkeyup="document.getElementById('modal-icon-preview').innerText = this.value || 'star'"
+                            class="flex-1 bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-medium"
+                            placeholder="Tên icon (VD: smartphone, sports_esports...)" value="star" />
                     </div>
                 </div>
 
@@ -320,15 +349,14 @@
                         placeholder="Mô tả sự hấp dẫn của quà..." type="text" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4 hidden">
                     <div class="col-span-2">
                         <label class="block text-sm font-bold mb-2">Danh mục phần thưởng</label>
-                        <select id="item-category"
+                        <select id="item-category" onchange="updateModalFields()"
                             class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-bold">
-                            <option value="Vật phẩm">🎁 Vật phẩm (Đồ chơi, quà tặng...)</option>
-                            <option value="Đặc quyền">⭐ Đặc quyền (Xem TV, đi chơi...)</option>
-                            <option value="Chuyến đi">🎢 Chuyến đi (Dã ngoại, du lịch...)</option>
-                            <option value="Kết nối">✨ Gắn kết (Hoạt động cùng bố mẹ...)</option>
+                            <option value="Quà tặng">🎁 Quà Tặng (Đồ chơi, bánh kẹo, Logo...)</option>
+                            <option value="Đặc quyền">✨ Đặc Quyền (Gắn kết, hoạt động cùng cha mẹ...)</option>
+                            <option value="Phần thưởng">🏆 Phần Thưởng (Xem TV, chơi game...)</option>
                         </select>
                     </div>
                 </div>
@@ -353,6 +381,17 @@
                             <input id="item-personality-price"
                                 class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-rose-500 rounded-xl pl-10 pr-4 py-3 font-bold text-rose-600"
                                 type="number" value="0" />
+                        </div>
+                    </div>
+
+                    <div id="sticker-price-group" class="hidden col-span-2">
+                        <label class="block text-sm font-bold mb-2">Giá (Sticker)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-teal-500">sell</span>
+                            <input id="item-sticker-price"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-teal-500 rounded-xl pl-10 pr-4 py-3 font-bold text-teal-600"
+                                type="number" value="5" />
                         </div>
                     </div>
                 </div>
@@ -381,7 +420,7 @@
             class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
             <div
                 class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-teal-50/50 dark:bg-teal-900/10">
-                <h3 class="text-xl font-black text-teal-700 dark:text-teal-400" id="perk-modal-title">Thêm Quà Tặng Ngay
+                <h3 class="text-xl font-black text-teal-700 dark:text-teal-400" id="perk-modal-title">Thêm Phần Thưởng
                 </h3>
                 <button onclick="togglePerkModal(false)" class="text-slate-400 hover:text-slate-800 transition-colors">
                     <span class="material-symbols-outlined">close</span>
@@ -488,13 +527,46 @@
             }
         }
 
-        function togglePriceFields() {
-            // Function no longer needed as both fields are visible, but keep for compatibility
+        function updateModalFields() {
+            const cat = document.getElementById('item-category').value;
+            const imgGroup = document.getElementById('image-upload-group');
+            const iconGroup = document.getElementById('icon-select-group');
+            const goldGroup = document.getElementById('gold-price-group');
+            const personalityGroup = document.getElementById('personality-price-group');
+            const stickerGroup = document.getElementById('sticker-price-group');
+
+            if (cat === "Phần thưởng") {
+                imgGroup.classList.add('hidden');
+                iconGroup.classList.remove('hidden');
+                goldGroup.classList.add('hidden');
+                personalityGroup.classList.add('hidden');
+                stickerGroup.classList.remove('hidden');
+            } else if (cat === "Đặc quyền") {
+                imgGroup.classList.remove('hidden');
+                iconGroup.classList.add('hidden');
+                goldGroup.classList.add('hidden');
+                personalityGroup.classList.remove('hidden');
+                stickerGroup.classList.add('hidden');
+            } else {
+                imgGroup.classList.remove('hidden');
+                iconGroup.classList.add('hidden');
+                goldGroup.classList.remove('hidden');
+                personalityGroup.classList.remove('hidden');
+                stickerGroup.classList.add('hidden');
+            }
         }
 
-        function toggleModal(show) {
+        function togglePriceFields() {
+            updateModalFields();
+        }
+
+        function toggleModal(show, forcedCategory) {
             const modal = document.getElementById('add-item-modal');
             if (show) {
+                if (forcedCategory) {
+                    document.getElementById('item-category').value = forcedCategory;
+                    updateModalFields();
+                }
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 modal.classList.add('opacity-100', 'pointer-events-auto');
             } else {
@@ -525,7 +597,7 @@
                 modal.classList.remove('opacity-100', 'pointer-events-auto');
                 document.getElementById('add-perk-form').reset();
                 document.getElementById('perk-id').value = "";
-                document.getElementById('perk-modal-title').innerText = "Thêm Quà Tặng Ngay";
+                document.getElementById('perk-modal-title').innerText = "Thêm Phần Thưởng";
                 document.getElementById('perk-icon-preview').innerText = "smartphone";
             }
         }
@@ -541,8 +613,9 @@
             const items = window.AppState.data.shopItems || [];
 
             items.forEach(item => {
-                const isPersonality = item.personalityPrice > 0;
-                let catColor = item.category === "Vật phẩm" ? "green" : (item.category === "Đặc quyền" ? "purple" : (item.category === "Gắn kết" ? "rose" : "blue"));
+                const isPersonality = (item.personalityPrice > 0);
+                const isGold = (item.price > 0);
+                let catColor = item.category === "Quà tặng" ? "amber" : (item.category === "Đặc quyền" ? "purple" : (item.category === "Phần thưởng" ? "teal" : "blue"));
 
                 let imageHTML = `<span class="material-symbols-outlined text-gray-400 text-3xl">image</span>`;
                 if (item.image && item.image !== 'null' && item.image !== 'undefined' && item.image !== '') {
@@ -593,7 +666,8 @@
                     </td>
                 </tr>`;
 
-                if (hasPersonality && !hasGold) {
+                // Group by Tab
+                if (item.category === "Đặc quyền" || (hasPersonality && !hasGold)) {
                     if (tbodySpecial) tbodySpecial.insertAdjacentHTML('beforeend', rowHTML);
                 } else {
                     tbodyShop.insertAdjacentHTML('beforeend', rowHTML);
@@ -740,8 +814,12 @@
             const desc = document.getElementById('item-desc').value;
             const category = document.getElementById('item-category').value;
 
-            const goldPrice = parseInt(document.getElementById('item-price').value) || 0;
-            const personalityPrice = parseInt(document.getElementById('item-personality-price').value) || 0;
+            const isPerk = category === "Phần thưởng";
+            const isSpecial = category === "Đặc quyền";
+            const goldPrice = (isPerk || isSpecial) ? 0 : (parseInt(document.getElementById('item-price').value) || 0);
+            const personalityPrice = isPerk ? 0 : (parseInt(document.getElementById('item-personality-price').value) || 0);
+            const stickerPrice = isPerk ? (parseInt(document.getElementById('item-sticker-price').value) || 0) : 0;
+            const icon = isPerk ? (document.getElementById('item-icon-input').value || 'star') : "";
 
             if (!name) {
                 alert("Vui lòng điền tên vật phẩm!");
@@ -752,15 +830,16 @@
             const previewImg = document.getElementById('preview-image');
             let finalImage = "";
 
-            if (previewImg && !previewImg.classList.contains('hidden') && previewImg.src) {
+            if (!isPerk && previewImg && !previewImg.classList.contains('hidden') && previewImg.src) {
                 const src = previewImg.src;
                 if (src.startsWith('data:') || src.startsWith('http')) {
                     finalImage = src;
                 }
             }
 
-            if (currentEditItemId && !finalImage) {
-                const existingItem = window.AppState.data.shopItems.find(i => i.id == currentEditItemId);
+            if (!isPerk && currentEditItemId && !finalImage) {
+                const existingItem = window.AppState.data.shopItems.find(i => i.id == currentEditItemId) ||
+                    window.AppState.data.instantPerks.find(i => i.id == currentEditItemId);
                 if (existingItem && existingItem.image) {
                     finalImage = existingItem.image;
                 }
@@ -768,13 +847,15 @@
 
             const itemData = {
                 title: name,
-                desc: desc || (personalityPrice > 0 && goldPrice == 0 ? 'Đặc quyền yêu thương' : 'Vừa mới thêm'),
+                desc: desc || (isPerk ? 'Phần thưởng tức thì' : (personalityPrice > 0 && goldPrice == 0 ? 'Đặc quyền yêu thương' : 'Vừa mới thêm')),
                 price: goldPrice,
                 personalityPrice: personalityPrice,
+                stickerPrice: stickerPrice,
                 category: category,
                 image: finalImage,
-                itemType: (personalityPrice > 0 && goldPrice == 0) ? 'special' : 'premium',
-                color: category === "Vật phẩm" ? "green" : (category === "Đặc quyền" ? "purple" : (category === "Gắn kết" ? "rose" : "blue"))
+                emoji: icon || null,
+                itemType: isPerk ? 'perk' : ((personalityPrice > 0 && goldPrice == 0) ? 'special' : 'premium'),
+                color: isPerk ? 'teal' : (category === "Đặc quyền" ? "rose" : "amber")
             };
 
             if (currentEditItemId) {
@@ -783,6 +864,15 @@
             } else {
                 window.AppState.addShopItem(itemData);
                 alert("Tạo vật phẩm mới thành công!");
+            }
+
+            // Switch to relevant tab
+            if (isPerk) {
+                switchTab('perks');
+            } else if (personalityPrice > 0 && goldPrice == 0) {
+                switchTab('special');
+            } else {
+                switchTab('shop');
             }
 
             toggleModal(false);
@@ -796,32 +886,39 @@
         function editItem(btn) {
             const tr = btn.closest('tr');
             const id = tr.getAttribute('data-id');
-            const item = window.AppState.data.shopItems.find(i => i.id == id);
+            const item = window.AppState.data.shopItems.find(i => i.id == id) ||
+                window.AppState.data.instantPerks.find(i => i.id == id);
 
             if (!item) return;
 
             currentEditItemId = id;
-
-            // Set values to form
             document.getElementById('item-name').value = item.title;
-            document.getElementById('item-desc').value = item.desc;
+            document.getElementById('item-desc').value = item.desc || "";
+            document.getElementById('item-category').value = item.itemType === 'perk' ? "Phần thưởng" : (item.category || "Quà tặng");
 
-            document.getElementById('item-price').value = item.price || 0;
-            document.getElementById('item-personality-price').value = item.personalityPrice || 0;
-            document.getElementById('item-category').value = item.category || (item.personalityPrice > 0 ? "Gắn kết" : "Vật phẩm");
+            if (item.itemType === 'perk') {
+                document.getElementById('item-sticker-price').value = item.stickerPrice || 5;
+                document.getElementById('item-icon-input').value = item.emoji || item.icon || "star";
+            } else {
+                document.getElementById('item-price').value = item.price || 0;
+                document.getElementById('item-personality-price').value = item.personalityPrice || 0;
+            }
 
-            if (item.image) {
-                const previewImg = document.getElementById('preview-image');
-                const placeholder = document.getElementById('upload-placeholder');
+            // Handle image preview
+            const previewImg = document.getElementById('preview-image');
+            const placeholder = document.getElementById('upload-placeholder');
+            if (item.image && item.image !== 'null' && item.image !== 'undefined') {
                 previewImg.src = item.image;
                 previewImg.classList.remove('hidden');
                 placeholder.classList.add('hidden');
+            } else {
+                previewImg.classList.add('hidden');
+                placeholder.classList.remove('hidden');
             }
 
-            document.querySelector('#add-item-modal h3').innerText = "Sửa Vật phẩm";
-            document.querySelector('button[onclick*="saveItem"]').innerText = "Lưu thay đổi";
-
-            // Open Modal
+            updateModalFields();
+            document.querySelector('#add-item-modal h3').innerText = "Chỉnh sửa vật phẩm";
+            document.querySelector('button[onclick*="saveItem"]').innerText = "Cập nhật";
             toggleModal(true);
         }
 
@@ -858,6 +955,7 @@
                     stickerPrice: price,
                     emoji: icon
                 });
+                alert("Cập nhật thành công!");
             } else {
                 // Create
                 const colors = ['blue', 'indigo', 'purple', 'teal', 'green', 'orange', 'pink'];
@@ -870,8 +968,10 @@
                     emoji: icon,
                     color: randomColor
                 });
+                alert("Tạo phần thưởng thành công!");
             }
 
+            switchTab('perks');
             togglePerkModal(false);
         }
 

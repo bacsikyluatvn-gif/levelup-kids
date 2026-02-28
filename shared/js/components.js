@@ -2005,12 +2005,13 @@ class ShopGrid extends HTMLElement {
         const targetCategory = this.getAttribute('category');
         let items = data.shopItems;
         if (targetCategory === 'personality') {
-            items = items.filter(i => i.personalityPrice > 0);
+            // "Đặc quyền" tab: Show items that ONLY use Personality (Tim) and have 0 Gold price
+            items = items.filter(i => i.personalityPrice > 0 && (!i.price || i.price <= 0));
         } else if (targetCategory) {
             items = items.filter(i => i.category === targetCategory);
         } else {
-            // If no category specified, show only gold-priced items (those without a personality price)
-            items = items.filter(i => !i.personalityPrice || i.personalityPrice <= 0);
+            // Default "Quà tặng" tab: Show items that have a Gold price (even if they also have personality price)
+            items = items.filter(i => i.price > 0);
         }
 
         const userGold = data.user.gold;
@@ -2943,7 +2944,6 @@ class BehaviorLogModal extends HTMLElement {
                                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Thông số quà tặng</label>
                                             <div class="grid grid-cols-2 gap-4">
                                                 <input id="bh-gold" type="hidden" value="0">
-                                                <input id="bh-water" type="hidden" value="0">
                                                 <input id="bh-sticker" type="hidden" value="0">
                                                 
                                                 <!-- Personality (Tym) -->
@@ -2958,33 +2958,34 @@ class BehaviorLogModal extends HTMLElement {
                                                         </div>
                                                     </div>
                                                     <div class="flex flex-wrap gap-2">
-                                                        ${(this.activeType === 'GOOD' ? [5, 10, 20] : [-5, -10, -15]).map(v => `
+                                                        ${(this.activeType === 'GOOD' ? [5, 10] : [-5, -10]).map(v => `
                                                             <button onclick="document.getElementById('bh-personality').value = ${v}" class="flex-1 py-2 ${this.activeType === 'GOOD' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 hover:bg-emerald-100' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 hover:bg-rose-100'} text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
                                                                 ${v > 0 ? '+' : ''}${v}
                                                             </button>
                                                         `).join('')}
                                                     </div>
                                                 </div>
-                                                
-                                                <!-- EXP -->
-                                                <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border-2 border-amber-50 dark:border-amber-900/10 flex flex-col gap-4 shadow-sm">
+
+                                                <!-- Water (Replacing EXP) -->
+                                                <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border-2 border-teal-50 dark:border-teal-900/10 flex flex-col gap-4 shadow-sm">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="bg-amber-50 dark:bg-amber-900/20 p-2.5 rounded-2xl text-amber-500">
-                                                            <span class="material-symbols-outlined text-2xl font-black">military_tech</span>
+                                                        <div class="bg-teal-50 dark:bg-teal-900/20 p-2.5 rounded-2xl text-teal-500">
+                                                            <span class="material-symbols-outlined text-2xl font-black">water_drop</span>
                                                         </div>
                                                         <div class="flex-grow">
-                                                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter mb-0.5">Kinh Nghiệm (EXP)</label>
-                                                            <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-2xl outline-none dark:text-white" value="${this.form.xp}">
+                                                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter mb-0.5">Giọt Nước (Tưới Cây)</label>
+                                                            <input id="bh-water" type="number" class="w-full bg-transparent font-black text-2xl outline-none dark:text-white" value="${this.form.water || 10}">
                                                         </div>
                                                     </div>
                                                     <div class="flex flex-wrap gap-2">
-                                                        ${(this.activeType === 'GOOD' ? [15, 25, 40] : [-5, -10, -20]).map(v => `
-                                                            <button onclick="document.getElementById('bh-xp').value = ${v}" class="flex-1 py-2 bg-amber-50 dark:bg-amber-900/30 text-amber-600 hover:bg-amber-100 text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
-                                                                ${v > 0 ? '+' : ''}${v}
+                                                        ${[10, 20, 30].map(v => `
+                                                            <button onclick="document.getElementById('bh-water').value = ${v}" class="flex-1 py-2 bg-teal-50 dark:bg-teal-900/30 text-teal-600 hover:bg-teal-100 text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
+                                                                +${v}
                                                             </button>
                                                         `).join('')}
                                                     </div>
                                                 </div>
+                                                <input id="bh-xp" type="hidden" value="0">
                                             </div>
                                         </div>
 
