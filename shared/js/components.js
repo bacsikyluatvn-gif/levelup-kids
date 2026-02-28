@@ -3421,7 +3421,8 @@ class GrowthDiaryView extends HTMLElement {
                 return `
                                             <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2rem] p-6 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative group hover:shadow-md transition-all" id="reflection-card-${logId}">
                                                 <div class="absolute top-4 right-4 flex items-center gap-2">
-                                                    <button onclick="window.editReflection('${logId}', '${desc.replace(/'/g, "\\'")}', '${rating}')" class="size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100" title="Chỉnh sửa nhật ký">
+                                                    <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100 pointer-events-auto"
+                                                        data-id="${logId}" data-rating="${rating}" title="Chỉnh sửa nhật ký">
                                                         <span class="material-symbols-outlined text-sm">edit</span>
                                                     </button>
                                                     <div class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 dark:bg-rose-900/20 rounded-full border border-red-100 dark:border-rose-900/30">
@@ -3442,10 +3443,12 @@ class GrowthDiaryView extends HTMLElement {
                                                 <div class="hidden" id="reflection-edit-${logId}">
                                                     <textarea id="reflection-textarea-${logId}" class="w-full h-28 bg-slate-50 dark:bg-white/5 border-2 border-indigo-200 dark:border-indigo-800 focus:border-indigo-400 focus:ring-0 rounded-2xl p-4 text-sm font-medium text-slate-700 dark:text-slate-200 resize-none transition-all">${desc}</textarea>
                                                     <div class="flex gap-2 mt-3">
-                                                        <button onclick="window.saveReflectionEdit('${logId}', '${rating}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-black py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5">
+                                                        <button class="save-reflection-btn flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-black py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5"
+                                                            data-id="${logId}" data-rating="${rating}">
                                                             <span class="material-symbols-outlined text-sm">save</span> LƯU NHẬT KÝ
                                                         </button>
-                                                        <button onclick="window.cancelReflectionEdit('${logId}')" class="px-5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-500 font-black py-2.5 rounded-2xl text-xs transition-all">
+                                                        <button class="cancel-reflection-btn px-5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-500 font-black py-2.5 rounded-2xl text-xs transition-all"
+                                                            data-id="${logId}">
                                                             HỦY
                                                         </button>
                                                     </div>
@@ -3466,55 +3469,71 @@ class GrowthDiaryView extends HTMLElement {
             document.body.appendChild(modal);
         };
 
-        // ---- Reflection Edit Handlers ----
-        window.editReflection = (logId, currentDesc, rating) => {
-            const viewEl = document.getElementById(`reflection-view-${logId}`);
-            const editEl = document.getElementById(`reflection-edit-${logId}`);
-            const textarea = document.getElementById(`reflection-textarea-${logId}`);
-            if (viewEl && editEl) {
-                viewEl.classList.add('hidden');
-                editEl.classList.remove('hidden');
-                if (textarea) { textarea.value = currentDesc; textarea.focus(); }
+        // ---- Reflection Edit Handlers (event delegation - avoids quote issues) ----
+        // Remove old listeners to avoid duplication
+        if (window._reflectionClickHandler) {
+            document.removeEventListener('click', window._reflectionClickHandler);
+        }
+        window._reflectionClickHandler = async (e) => {
+            // Edit button
+            const editBtn = e.target.closest('.edit-reflection-btn');
+            if (editBtn) {
+                const logId = editBtn.dataset.id;
+                const viewEl = document.getElementById(`reflection-view-${logId}`);
+                const editEl = document.getElementById(`reflection-edit-${logId}`);
+                const textarea = document.getElementById(`reflection-textarea-${logId}`);
+                if (viewEl && editEl) {
+                    viewEl.classList.add('hidden');
+                    editEl.classList.remove('hidden');
+                    if (textarea) textarea.focus();
+                }
+                return;
+            }
+            // Cancel button
+            const cancelBtn = e.target.closest('.cancel-reflection-btn');
+            if (cancelBtn) {
+                const logId = cancelBtn.dataset.id;
+                const viewEl = document.getElementById(`reflection-view-${logId}`);
+                const editEl = document.getElementById(`reflection-edit-${logId}`);
+                if (viewEl && editEl) {
+                    viewEl.classList.remove('hidden');
+                    editEl.classList.add('hidden');
+                }
+                return;
+            }
+            // Save button
+            const saveBtn = e.target.closest('.save-reflection-btn');
+            if (saveBtn) {
+                const logId = saveBtn.dataset.id;
+                const rating = saveBtn.dataset.rating;
+                const textarea = document.getElementById(`reflection-textarea-${logId}`);
+                if (!textarea) return;
+                const newDesc = textarea.value.trim();
+                if (!newDesc) return;
+
+                const origHTML = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<span class="material-symbols-outlined text-sm" style="animation:spin 1s linear infinite">sync</span> ĐANG LƯU...';
+                saveBtn.disabled = true;
+
+                try {
+                    const newTitle = `Tự đánh giá: ${rating}/10 điểm | ${newDesc}`;
+                    const { error } = await window.AppState.client
+                        .from('requests')
+                        .update({ item_title: newTitle })
+                        .eq('id', logId);
+                    if (error) throw error;
+                    await window.AppState.syncFromDatabase();
+                    window.showFamilyQuestAlert('Đã lưu!', 'Nhật ký của con đã được cập nhật rồi nhé ✨', 'success');
+                } catch (err) {
+                    console.error('Error saving reflection edit:', err);
+                    saveBtn.innerHTML = origHTML;
+                    saveBtn.disabled = false;
+                    window.showFamilyQuestAlert('Lỗi', 'Không lưu được, con thử lại nhé!', 'error');
+                }
+                return;
             }
         };
-
-        window.cancelReflectionEdit = (logId) => {
-            const viewEl = document.getElementById(`reflection-view-${logId}`);
-            const editEl = document.getElementById(`reflection-edit-${logId}`);
-            if (viewEl && editEl) {
-                viewEl.classList.remove('hidden');
-                editEl.classList.add('hidden');
-            }
-        };
-
-        window.saveReflectionEdit = async (logId, rating) => {
-            const textarea = document.getElementById(`reflection-textarea-${logId}`);
-            if (!textarea) return;
-            const newDesc = textarea.value.trim();
-            if (!newDesc) return;
-
-            const saveBtn = textarea.nextElementSibling?.querySelector('button');
-            const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
-            if (saveBtn) saveBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> ĐANG LƯU...';
-
-            try {
-                const newTitle = `Tự đánh giá: ${rating}/10 điểm | ${newDesc}`;
-                const { error } = await window.AppState.client
-                    .from('requests')
-                    .update({ item_title: newTitle })
-                    .eq('id', logId);
-
-                if (error) throw error;
-
-                // Re-sync and re-render
-                await window.AppState.syncFromDatabase();
-                window.showFamilyQuestAlert('Đã lưu!', 'Nhật ký của con đã được cập nhật rồi nhé ✨', 'success');
-            } catch (err) {
-                console.error('Error saving reflection edit:', err);
-                if (saveBtn) saveBtn.innerHTML = originalBtnText;
-                window.showFamilyQuestAlert('Lỗi', 'Không lưu được, con thử lại nhé!', 'error');
-            }
-        };
+        document.addEventListener('click', window._reflectionClickHandler);
 
         const todayStr = new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -3991,26 +4010,35 @@ class GrowthDiaryView extends HTMLElement {
                         if (textarea) textarea.value = '';
                         window.setDailyRating(0);
 
-                        window.showFamilyQuestAlert("Tuyệt vời", "Hành Trình LevelUp Kids của con đã được lưu vào rồi nhé! ✨", "success");
+                        window.showFamilyQuestAlert("Tuyệt vời!", "Nhật ký của con đã được lưu rồi nhé! ✨", "success");
                         if (window.confetti) {
                             window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
                         }
-                        window.showFamilyQuestAlert("Tuyệt vời", "Hành Trình LevelUp Kids của con đã được lưu vào rồi nhé! ✨", "success");
 
                         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                        // Final cleanup just in case sync put it back
-                        localStorage.removeItem('daily_rating_' + userId);
-                        localStorage.removeItem('daily_reflection_' + userId);
-                        localStorage.setItem('daily_rating_saved_' + userId, 'true'); // Flag to prevent immediate clear on re-render
-
-                        setTimeout(() => {
-                            this.render(window.AppState.data);
-                            // Force final DOM cleanup one more time
-                            const finalCleanupText = document.getElementById('reflection-text');
-                            if (finalCleanupText) finalCleanupText.value = '';
-                            window.setDailyRating(0);
-                        }, 300);
+                        // Full form reset
+                        const resetForm = () => {
+                            // Clear localStorage
+                            localStorage.removeItem('daily_rating_' + userId);
+                            localStorage.removeItem('daily_reflection_' + userId);
+                            // Clear textarea
+                            const ta = document.getElementById('reflection-text');
+                            if (ta) ta.value = '';
+                            // Reset all hearts to empty
+                            document.querySelectorAll('.heart-btn').forEach(btn => {
+                                const icon = btn.querySelector('.material-symbols-outlined');
+                                btn.classList.add('opacity-40');
+                                btn.classList.remove('scale-115');
+                                if (icon) { icon.classList.remove('text-red-500'); icon.classList.add('text-slate-300'); icon.style.fontVariationSettings = "'FILL' 0"; }
+                                const lbl = btn.querySelector('span:last-child');
+                                if (lbl) { lbl.classList.remove('text-red-500'); lbl.classList.add('text-slate-400'); }
+                                const glow = btn.querySelector('.blur-xl');
+                                if (glow) { glow.classList.remove('opacity-100'); glow.classList.add('opacity-0'); }
+                            });
+                        };
+                        resetForm();
+                        setTimeout(resetForm, 400);
                     } else {
                         throw new Error("Save failure");
                     }
@@ -4074,10 +4102,10 @@ class GrowthDiaryView extends HTMLElement {
                                 <span class="material-symbols-outlined text-[12px] ${isGood ? 'text-rose-500' : 'text-slate-400'}" style="font-variation-settings:'FILL' 1">favorite</span>
                                 <span class="text-[10px] font-black ${isGood ? 'text-rose-600' : 'text-slate-500'}">${isGood ? '+' : ''}${behavior ? behavior.personality : (isGood ? 5 : -5)} NC</span>
                             </div>
-                            ${log.water > 0 ? `
+                            ${(log.water > 0 || (behavior && behavior.water > 0)) ? `
                                 <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20">
                                     <span class="material-symbols-outlined text-[12px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
-                                    <span class="text-[10px] font-black text-blue-600">+${log.water} 💧</span>
+                                    <span class="text-[10px] font-black text-blue-600">+${log.water > 0 ? log.water : (behavior ? behavior.water : 0)} 💧</span>
                                 </div>
                             ` : ''}
                             ${log.reward !== 0 ? `
