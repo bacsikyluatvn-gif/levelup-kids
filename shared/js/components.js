@@ -389,86 +389,151 @@ class AppHeader extends HTMLElement {
     getChildStats(data) {
         const user = data.user;
         const xpPercent = Math.floor((user.xp / user.maxXp) * 100);
-        return `
-            <!-- Stats Hub (Center) -->
-            <div class="flex items-center gap-2 md:gap-6 bg-slate-100/50 dark:bg-white/5 p-1 md:px-6 md:py-2 rounded-2xl md:rounded-[2rem] border border-slate-200/50 dark:border-white/10 shadow-inner overflow-x-auto no-scrollbar max-w-[50%] md:max-w-none">
-                <!-- Progress (Hidden on mobile to save space, but visible on md+) -->
-                <div class="hidden md:flex items-center gap-4 border-r border-slate-200 dark:border-white/10 pr-6">
-                    <div class="flex flex-col w-32 gap-1">
-                        <div class="flex justify-between text-[9px] font-black uppercase tracking-tighter text-slate-500 dark:text-slate-400">
-                            <span>LEVEL ${user.level}</span>
-                            <span>${user.xp}/${user.maxXp} XP</span>
-                        </div>
-                        <div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-sm">
-                            <div class="h-full bg-gradient-to-r from-yellow-300 via-primary to-orange-500 transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style="width: ${xpPercent}%"></div>
-                        </div>
-                    </div>
-                </div>
+        const displayName = (() => {
+            if (!user || !user.name) return 'Alex';
+            const rawName = user.name;
+            if (rawName.includes('(') && rawName.includes(')')) {
+                return rawName.split('(')[1].split(')')[0].trim();
+            }
+            if (rawName.length > 15) {
+                const parts = rawName.split(' ');
+                return parts.length > 1 ? parts.slice(-2).join(' ') : rawName;
+            }
+            return rawName;
+        })();
+        const titleName = (data.title && data.title.currentTitleName) || 'Tân Binh';
 
-                <!-- Resources -->
-                <div class="flex items-center gap-1 md:gap-1.5 font-bold shrink-0">
-                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform" title="Vàng (Gold)">
-                        <span class="material-symbols-outlined text-[16px] md:text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                        <span class="text-[11px] md:text-sm tabular-nums">${user.gold}</span>
-                    </div>
-                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform" title="Huy hiệu (Stickers)">
-                        <span class="material-symbols-outlined text-[16px] md:text-[18px] transform rotate-12">sell</span>
-                        <span class="text-[11px] md:text-sm tabular-nums">${user.stickers || 0}</span>
-                    </div>
-                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
-                        <span class="material-symbols-outlined text-[16px] md:text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
-                        <span class="text-[11px] md:text-sm tabular-nums">${user.water || 0}</span>
-                    </div>
+        return `
+            <!-- Resources (Center) -->
+            <div class="flex items-center gap-1 font-bold shrink-0 ml-auto">
+                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" title="Vàng">
+                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                    <span class="text-[11px] tabular-nums">${user.gold}</span>
+                </div>
+                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20" title="Stickers">
+                    <span class="material-symbols-outlined text-[16px] transform rotate-12">sell</span>
+                    <span class="text-[11px] tabular-nums">${user.stickers || 0}</span>
+                </div>
+                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30" title="Nước">
+                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                    <span class="text-[11px] tabular-nums">${user.water || 0}</span>
                 </div>
             </div>
 
-
-            <!-- Profile & System (Right) -->
-            <div class="flex items-center gap-2 md:gap-4 ml-auto">
-                <!-- Theme Toggle -->
-                <button onclick="window.toggleDarkMode()" class="size-9 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm border border-transparent">
-                    <span class="material-symbols-outlined dark:hidden text-lg">dark_mode</span>
-                    <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-lg">light_mode</span>
+            <!-- Avatar + Hamburger Menu -->
+            <div class="flex items-center gap-2 shrink-0">
+                <div class="relative cursor-pointer" id="header-avatar-child">
+                    <div class="size-9 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
+                         style="background-image: url('${user.avatar}')"></div>
+                    <div class="absolute -top-1 -right-1 size-2.5 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full"></div>
+                </div>
+                <button onclick="document.getElementById('mobile-nav-drawer').classList.remove('translate-x-full')" 
+                        class="size-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all active:scale-90 shadow-sm" id="menu-hamburger">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
+            </div>
 
-                <!-- Profile Card -->
-                <div class="flex items-center gap-3 pl-3 md:pl-4 border-l border-slate-200 dark:border-white/10 group relative">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">
-                            ${(() => {
-                if (!user || !user.name) return 'Alex';
-                const rawName = user.name;
-                // Extract nickname if formatted like "Name (Nickname)"
-                if (rawName.includes('(') && rawName.includes(')')) {
-                    return rawName.split('(')[1].split(')')[0].trim();
-                }
-                // Shorten if too long
-                if (rawName.length > 15) {
-                    const parts = rawName.split(' ');
-                    return parts.length > 1 ? parts.slice(-2).join(' ') : rawName;
-                }
-                return rawName;
-            })()}
-                        </p>
-                        <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] opacity-80">${(data.title && data.title.currentTitleName) || 'Tân Binh'}</p>
-                    </div>
-                    
-                    <div class="relative cursor-pointer group/avatar" id="header-avatar-child">
-                        <div class="size-10 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md group-hover/avatar:ring-primary group-hover/avatar:scale-105 transition-all overflow-hidden" 
-                             style="background-image: url('${user.avatar}')">
+            <!-- MOBILE NAV DRAWER (Fullscreen overlay) -->
+            <div id="mobile-nav-drawer" class="fixed inset-0 z-[99999] translate-x-full transition-transform duration-300 ease-out" style="will-change:transform;">
+                <div class="absolute inset-0 bg-gradient-to-br from-[#0f0c1a] via-[#1a1030] to-[#0d0a14]"></div>
+                <div class="relative z-10 h-full flex flex-col overflow-y-auto">
+                    <!-- Drawer Header -->
+                    <div class="flex items-center justify-between px-5 pt-5 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="size-12 rounded-2xl bg-slate-200 ring-2 ring-primary/30 bg-cover bg-center shadow-lg overflow-hidden" 
+                                 style="background-image: url('${user.avatar}')"></div>
+                            <div>
+                                <p class="text-base font-black text-white uppercase tracking-tight">${displayName}</p>
+                                <p class="text-[10px] font-black text-primary uppercase tracking-widest">${titleName}</p>
+                            </div>
                         </div>
-                        <div class="absolute -top-1 -right-1 size-3 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
+                        <button onclick="document.getElementById('mobile-nav-drawer').classList.add('translate-x-full')" 
+                                class="size-10 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all active:scale-90">
+                            <span class="material-symbols-outlined text-2xl">close</span>
+                        </button>
                     </div>
 
-                    <!-- Compact Menu Actions -->
-                    <div class="flex items-center gap-1 ml-1">
-                        <button onclick="window.location.href='../portal/index.html'" 
-                                class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Đổi Bé">
-                            <span class="material-symbols-outlined text-[22px]">group</span>
+                    <!-- Stats Bar -->
+                    <div class="mx-5 mb-4 p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest">Level ${user.level}</span>
+                            <span class="text-[10px] font-black text-primary tabular-nums">${user.xp}/${user.maxXp} XP</span>
+                        </div>
+                        <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-yellow-400 via-primary to-orange-500 rounded-full" style="width: ${xpPercent}%"></div>
+                        </div>
+                        <div class="flex items-center justify-center gap-4 mt-3">
+                            <div class="flex items-center gap-1.5 text-amber-400"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-sm font-black">${user.gold}</span></div>
+                            <div class="flex items-center gap-1.5 text-purple-400"><span class="material-symbols-outlined text-[18px]">sell</span><span class="text-sm font-black">${user.stickers || 0}</span></div>
+                            <div class="flex items-center gap-1.5 text-blue-400"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-sm font-black">${user.water || 0}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Grid -->
+                    <div class="px-5 grid grid-cols-3 gap-2.5 mb-4">
+                        <a href="../home/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings:'FILL' 1">home</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Chương</span>
+                        </a>
+                        <a href="../dashboard/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500/20 hover:border-amber-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-amber-400" style="font-variation-settings:'FILL' 1">target</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhiệm vụ</span>
+                        </a>
+                        <a href="../personality/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-rose-500/20 hover:border-rose-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-rose-400" style="font-variation-settings:'FILL' 1">auto_stories</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhật Ký</span>
+                        </a>
+                        <a href="../arena/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-blue-400" style="font-variation-settings:'FILL' 1">swords</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Arena</span>
+                        </a>
+                        <a href="../sticker-book/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-purple-500/20 hover:border-purple-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-purple-400" style="font-variation-settings:'FILL' 1">sell</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Sticker</span>
+                        </a>
+                        <a href="../tree-growth/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-emerald-400" style="font-variation-settings:'FILL' 1">park</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Vườn</span>
+                        </a>
+                        <a href="../shop/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-orange-500/20 hover:border-orange-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-orange-400" style="font-variation-settings:'FILL' 1">storefront</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Quà</span>
+                        </a>
+                        <a href="../leaderboard/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-sky-400" style="font-variation-settings:'FILL' 1">leaderboard</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Top</span>
+                        </a>
+                        <a href="../profile/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-teal-500/20 hover:border-teal-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-3xl text-teal-400" style="font-variation-settings:'FILL' 1">person</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Tôi</span>
+                        </a>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="px-5 space-y-2 mb-4">
+                        <a href="../titles/index.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings:'FILL' 1">military_tech</span>
+                            <span class="text-sm font-bold text-white/80">Danh hiệu</span>
+                        </a>
+                        <a href="../settings/index.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-2xl text-slate-400">settings</span>
+                            <span class="text-sm font-bold text-white/80">Cài đặt</span>
+                        </a>
+                        <button onclick="window.toggleDarkMode(); document.getElementById('mobile-nav-drawer').classList.add('translate-x-full')" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98] w-full text-left">
+                            <span class="material-symbols-outlined text-2xl text-yellow-400">light_mode</span>
+                            <span class="text-sm font-bold text-white/80">Đổi giao diện sáng/tối</span>
                         </button>
-                        <button onclick="window.AppState.logout()" 
-                                class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất">
-                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                    </div>
+
+                    <!-- Bottom Actions -->
+                    <div class="mt-auto px-5 pb-8 flex gap-3">
+                        <button onclick="window.location.href='../portal/index.html'" class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-xl text-slate-400">group</span>
+                            <span class="text-xs font-bold text-white/70">Đổi bé</span>
+                        </button>
+                        <button onclick="window.AppState.logout()" class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-xl text-rose-400">logout</span>
+                            <span class="text-xs font-bold text-rose-400">Đăng xuất</span>
                         </button>
                     </div>
                 </div>
