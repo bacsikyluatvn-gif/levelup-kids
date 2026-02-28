@@ -923,6 +923,31 @@ class StateManager {
                 if (!user || user.level === undefined) return;
                 user.maxXp = Math.floor(100 * Math.pow(user.level, 1.5));
 
+                // Level-up check: if XP >= maxXP, trigger level up
+                let leveledUp = false;
+                while (user.xp >= user.maxXp && user.maxXp > 0) {
+                        user.level += 1;
+                        user.xp -= user.maxXp;
+                        user.maxXp = Math.floor(100 * Math.pow(user.level, 1.5));
+                        leveledUp = true;
+                }
+
+                if (leveledUp) {
+                        // Save to DB immediately
+                        this.syncLocalUserToDb();
+                        // Celebrate
+                        if (window.celebrate && this._initialSyncDone) {
+                                setTimeout(() => {
+                                        window.celebrate({
+                                                type: 'level',
+                                                title: `CẤP ĐỘ ${user.level}`,
+                                                subtitle: `Chúc mừng con đã thăng lên Cấp độ ${user.level}! Hãy tiếp tục nỗ lực nhé!`,
+                                                icon: 'military_tech'
+                                        });
+                                }, 100);
+                        }
+                }
+
                 let streak = user.treePoints || 0;
                 let sIdx = 0;
                 for (let i = 0; i < window.TREE_MILESTONES.length; i++) {

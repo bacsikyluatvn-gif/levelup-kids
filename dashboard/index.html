@@ -18,8 +18,8 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Shared Scripts -->
-    <script src="../shared/js/state.js?v=1.1.0_CUTE_V2"></script>
-    <script src="../shared/js/components.js?v=1.0.8" defer></script>
+    <script src="../shared/js/state.js?v=2.0.5"></script>
+    <script src="../shared/js/components.js?v=2.0.9" defer></script>
     <!-- Theme Config -->
     <script>
         tailwind.config = {
@@ -42,63 +42,69 @@
     <main class="flex-grow w-full max-w-[1200px] mx-auto p-4 md:p-8">
         <!-- Welcome Section -->
         <div>
-            <h2 class="text-2xl md:text-4xl font-black text-slate-800 dark:text-white mb-2">
-                Cuộc phiêu lưu đang chờ, <span id="user-greeting-name">Alex</span>! 🚀
+            <h2 class="text-xl md:text-4xl font-black text-slate-800 dark:text-white mb-1 md:mb-2">
+                Chào, <span id="user-greeting-name">Alex</span>! 🚀
             </h2>
-            <p class="text-sm md:text-lg text-slate-500 font-medium" id="task-greeting-count">Đang tải nhiệm vụ...</p>
+            <p class="text-xs md:text-lg text-slate-500 font-medium" id="task-greeting-count">Đang tải nhiệm vụ...</p>
         </div>
 
         <!-- Streak Badges -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6 md:mt-10">
+        <div class="grid grid-cols-2 gap-2 md:gap-3 mt-4 md:mt-10">
             <!-- Action Streak Badge -->
-            <div class="flex items-center gap-3 bg-white dark:bg-[#2c2215] px-4 py-2.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm animate-bounce-subtle"
+            <div class="flex items-center gap-2 md:gap-3 bg-white dark:bg-[#2c2215] px-3 md:px-4 py-2 md:py-2.5 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm"
                 title="Số ngày liên tiếp có hoạt động làm nhiệm vụ">
                 <div
-                    class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-xl text-blue-500 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-2xl">electric_bolt</span>
+                    class="bg-blue-100 dark:bg-blue-900/30 p-1.5 md:p-2 rounded-lg md:rounded-xl text-blue-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg md:text-2xl">electric_bolt</span>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Chuỗi Hành Động</p>
-                    <p class="text-lg font-black text-slate-800 dark:text-white"><span class="text-blue-500"
-                            id="stat-action-streak">12</span> <span class="text-sm">Ngày</span></p>
+                    <p class="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-slate-400">Hành Động
+                    </p>
+                    <p class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white"><span
+                            class="text-blue-500" id="stat-action-streak">12</span> <span
+                            class="text-xs md:text-sm">Ngày</span></p>
                 </div>
             </div>
 
             <!-- Completion Streak Badge -->
-            <div class="flex items-center gap-3 bg-white dark:bg-[#2c2215] px-4 py-2.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm animate-bounce-subtle"
+            <div class="flex items-center gap-2 md:gap-3 bg-white dark:bg-[#2c2215] px-3 md:px-4 py-2 md:py-2.5 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm"
                 title="Số ngày liên tiếp hoàn thành 100% nhiệm vụ">
                 <div
-                    class="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-xl text-orange-500 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-2xl">local_fire_department</span>
+                    class="bg-orange-100 dark:bg-orange-900/30 p-1.5 md:p-2 rounded-lg md:rounded-xl text-orange-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg md:text-2xl">local_fire_department</span>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Chuỗi Hoàn Thành</p>
-                    <p class="text-lg font-black text-slate-800 dark:text-white"><span class="text-orange-500"
-                            id="stat-completion-streak">4</span> <span class="text-sm">Ngày</span></p>
+                    <p class="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-slate-400">Hoàn Thành
+                    </p>
+                    <p class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white"><span
+                            class="text-orange-500" id="stat-completion-streak">4</span> <span
+                            class="text-xs md:text-sm">Ngày</span></p>
                 </div>
             </div>
         </div>
 
         <!-- Quests Grid with Reusable Card Components -->
-        <div class="mt-12">
+        <div class="mt-6 md:mt-12">
             <quest-grid></quest-grid>
         </div>
         <!-- Completed Tasks Section -->
         <completed-tasks></completed-tasks>
         <!-- Weekly Progress Mini Section -->
         <div id="weekly-progress-section"
-            class="mt-8 md:mt-12 bg-white dark:bg-[#2c2215] rounded-3xl p-5 md:p-8 border border-[#e6e1db] dark:border-[#3a2e22] shadow-sm flex flex-col md:flex-row items-center gap-5 md:gap-8 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-yellow-300"></div>
+            class="mt-6 md:mt-12 bg-white dark:bg-[#2c2215] rounded-xl md:rounded-3xl p-3 md:p-8 border border-[#e6e1db] dark:border-[#3a2e22] shadow-sm flex flex-col md:flex-row items-center gap-3 md:gap-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-primary to-yellow-300"></div>
             <div
-                class="flex-shrink-0 bg-yellow-100 dark:bg-yellow-900/20 rounded-full p-6 text-yellow-600 dark:text-yellow-400">
-                <span class="material-symbols-outlined text-5xl">trophy</span>
+                class="flex-shrink-0 bg-yellow-100 dark:bg-yellow-900/20 rounded-full p-3 md:p-6 text-yellow-600 dark:text-yellow-400">
+                <span class="material-symbols-outlined text-3xl md:text-5xl">trophy</span>
             </div>
             <div class="flex-grow text-center md:text-left">
-                <h3 class="text-2xl font-bold text-text-main dark:text-white">Chuỗi hoàn thành tuần! 🔥</h3>
-                <p class="text-text-muted dark:text-[#a89880] mt-1" id="weekly-streak-desc">Đang tính toán chuỗi của
+                <h3 class="text-base md:text-2xl font-bold text-text-main dark:text-white">Chuỗi hoàn thành tuần! 🔥
+                </h3>
+                <p class="text-xs md:text-base text-text-muted dark:text-[#a89880] mt-0.5 md:mt-1"
+                    id="weekly-streak-desc">Đang tính toán chuỗi của
                     con...</p>
             </div>
-            <div class="flex gap-2" id="weekly-log-container">
+            <div class="flex gap-1.5 md:gap-2" id="weekly-log-container">
                 <!-- Dynamic Content -->
             </div>
         </div>
@@ -106,14 +112,7 @@
     <!-- Bottom Navigation -->
     <child-nav active="dashboard"></child-nav>
 
-    <!-- Floating Parent Mode Button -->
-    <div class="fixed bottom-24 right-4 md:right-6 z-40">
-        <button onclick="window.openParentPinModal()"
-            class="bg-[#2c2215] dark:bg-white text-white dark:text-[#2c2215] px-4 md:px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 md:gap-3 border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-xs md:text-sm">
-            <span>Phụ huynh</span>
-            <span class="material-symbols-outlined text-lg md:text-xl">lock</span>
-        </button>
-    </div>
+
 
     <parent-pin-modal></parent-pin-modal>
 

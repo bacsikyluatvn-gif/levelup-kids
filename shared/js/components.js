@@ -364,12 +364,12 @@ class AppHeader extends HTMLElement {
         const type = this.getAttribute('type') || 'child';
 
         this.innerHTML = `
-            <header class="sticky top-0 z-50 bg-white/80 dark:bg-[#1a140c]/80 backdrop-blur-xl border-b border-[#e6e1db] dark:border-[#3a2e22] shadow-sm transition-all duration-300">
-                <div class="max-w-[1200px] mx-auto px-6 md:px-8 py-3 flex items-center justify-between gap-4">
+            <header class="sticky top-0 z-[70] bg-white/80 dark:bg-[#1a140c]/80 backdrop-blur-xl border-b border-[#e6e1db] dark:border-[#3a2e22] shadow-sm transition-all duration-300">
+                <div class="max-w-[1200px] mx-auto px-3 md:px-8 py-2 md:py-3 flex items-center justify-between gap-2 md:gap-4">
                     <!-- Brand Section -->
                     <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateWithTransition(this.closest('app-header').getAttribute('type') === 'child' ? '../home/index.html' : '../admin/index.html')">
-                        <div class="bg-primary/20 p-2.5 rounded-2xl text-primary group-hover:scale-110 group-active:scale-95 transition-all shadow-sm">
-                            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1">castle</span>
+                        <div class="bg-primary/20 p-1.5 md:p-2.5 rounded-xl md:rounded-2xl text-primary group-hover:scale-110 group-active:scale-95 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-xl md:text-3xl" style="font-variation-settings:'FILL' 1">castle</span>
                         </div>
                         <div class="hidden sm:block">
                             <h1 class="text-xl font-black tracking-tight text-text-main dark:text-white leading-none">${title}</h1>
@@ -403,33 +403,125 @@ class AppHeader extends HTMLElement {
         })();
         const titleName = (data.title && data.title.currentTitleName) || 'Tân Binh';
 
+        const menuId = 'header-dropdown-' + Date.now();
         return `
-            <!-- Resources (Center) -->
-            <div class="flex items-center gap-1 font-bold shrink-0 ml-auto">
-                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" title="Vàng">
-                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                    <span class="text-[11px] tabular-nums">${user.gold}</span>
+            <!-- ═══ MOBILE HEADER (< 768px): Clean & minimal ═══ -->
+            <div class="flex md:hidden items-center gap-1.5 ml-auto">
+                <!-- All 4 resources compact -->
+                <div class="flex items-center gap-1 font-bold">
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                        <span class="text-[10px] tabular-nums">${user.gold}</span>
+                    </div>
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+                        <span class="material-symbols-outlined text-[13px] rotate-12">sell</span>
+                        <span class="text-[10px] tabular-nums">${user.stickers || 0}</span>
+                    </div>
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                        <span class="text-[10px] tabular-nums">${user.water || 0}</span>
+                    </div>
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                        <span class="text-[10px] tabular-nums">${user.personalityPoints || 0}</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20" title="Stickers">
-                    <span class="material-symbols-outlined text-[16px] transform rotate-12">sell</span>
-                    <span class="text-[11px] tabular-nums">${user.stickers || 0}</span>
-                </div>
-                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30" title="Nước">
-                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">water_drop</span>
-                    <span class="text-[11px] tabular-nums">${user.water || 0}</span>
-                </div>
-                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20" title="Điểm Nhân Cách">
-                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">favorite</span>
-                    <span class="text-[11px] tabular-nums">${user.personalityPoints || 0}</span>
+
+                <!-- Avatar -->
+                <a href="../profile/index.html" class="relative shrink-0" id="header-avatar-child">
+                    <div class="size-8 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
+                         style="background-image: url('${user.avatar}')"></div>
+                </a>
+
+                <!-- 3-dot menu -->
+                <div class="relative">
+                    <button onclick="document.getElementById('${menuId}').classList.toggle('hidden')" class="size-8 flex items-center justify-center rounded-xl text-slate-400 hover:text-primary active:scale-90 transition-all">
+                        <span class="material-symbols-outlined text-[20px]">more_vert</span>
+                    </button>
+                    <div id="${menuId}" class="hidden absolute right-0 top-full mt-2 w-44 bg-white dark:bg-[#2c2215] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-[100]">
+                        <button onclick="window.toggleDarkMode();document.getElementById('${menuId}').classList.add('hidden')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                            <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
+                            <span class="material-symbols-outlined text-[20px] hidden dark:inline text-yellow-500">light_mode</span>
+                            <span class="dark:hidden">Chế độ tối</span><span class="hidden dark:inline">Chế độ sáng</span>
+                        </button>
+                        <button onclick="window.location.href='../portal/index.html'" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                            <span class="material-symbols-outlined text-[20px]">group</span> Đổi nhân vật
+                        </button>
+                        <button onclick="document.getElementById('${menuId}').classList.add('hidden');if(window.openParentPinModal)window.openParentPinModal()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                            <span class="material-symbols-outlined text-[20px]">lock</span> Phụ huynh
+                        </button>
+                        <button onclick="window.AppState.logout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors border-t border-slate-100 dark:border-white/5">
+                            <span class="material-symbols-outlined text-[20px]">logout</span> Đăng xuất
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Avatar (→ Profile) -->
-            <a href="../profile/index.html" class="relative cursor-pointer shrink-0" id="header-avatar-child">
-                <div class="size-9 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
-                     style="background-image: url('${user.avatar}')"></div>
-                <div class="absolute -top-1 -right-1 size-2.5 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full"></div>
-            </a>
+            <!-- ═══ DESKTOP HEADER (≥ 768px): Full layout ═══ -->
+            <div class="hidden md:contents">
+                <!-- Stats Hub (Center) -->
+                <div class="flex items-center gap-6 bg-slate-100/50 dark:bg-white/5 px-6 py-2 rounded-[2rem] border border-slate-200/50 dark:border-white/10 shadow-inner">
+                    <!-- XP Progress -->
+                    <div class="flex items-center gap-4 border-r border-slate-200 dark:border-white/10 pr-6">
+                        <div class="flex flex-col w-32 gap-1">
+                            <div class="flex justify-between text-[9px] font-black uppercase tracking-tighter text-slate-500 dark:text-slate-400">
+                                <span>LEVEL ${user.level}</span>
+                                <span>${user.xp}/${user.maxXp} XP</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-sm">
+                                <div class="h-full bg-gradient-to-r from-yellow-300 via-primary to-orange-500 transition-all duration-1000" style="width: ${xpPercent}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources -->
+                    <div class="flex items-center gap-1.5 font-bold shrink-0">
+                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform" title="Vàng">
+                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                            <span class="text-sm tabular-nums">${user.gold}</span>
+                        </div>
+                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform" title="Stickers">
+                            <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
+                            <span class="text-sm tabular-nums">${user.stickers || 0}</span>
+                        </div>
+                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Nước">
+                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                            <span class="text-sm tabular-nums">${user.water || 0}</span>
+                        </div>
+                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform" title="Nhân Cách">
+                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                            <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile & System (Right) -->
+                <div class="flex items-center gap-4 ml-auto">
+                    <button onclick="window.toggleDarkMode()" class="size-9 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm">
+                        <span class="material-symbols-outlined dark:hidden text-lg">dark_mode</span>
+                        <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-lg">light_mode</span>
+                    </button>
+                    <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-white/10">
+                        <div class="text-right">
+                            <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">${displayName}</p>
+                            <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] opacity-80">${titleName}</p>
+                        </div>
+                        <a href="../profile/index.html" class="relative cursor-pointer group/avatar" id="header-avatar-child">
+                            <div class="size-10 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md group-hover/avatar:ring-primary group-hover/avatar:scale-105 transition-all overflow-hidden" 
+                                 style="background-image: url('${user.avatar}')"></div>
+                            <div class="absolute -top-1 -right-1 size-3 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
+                        </a>
+                        <div class="flex items-center gap-1 ml-1">
+                            <button onclick="window.location.href='../portal/index.html'" class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Đổi Bé">
+                                <span class="material-symbols-outlined text-[22px]">group</span>
+                            </button>
+                            <button onclick="window.AppState.logout()" class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất">
+                                <span class="material-symbols-outlined text-[20px]">logout</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         `;
     }
 
@@ -513,83 +605,76 @@ class QuestCard extends HTMLElement {
 
         if (isCompleted) {
             this.innerHTML = `
-                <div class="bg-[#f0fdf4] dark:bg-[#152e1a] rounded-3xl border-2 border-green-200 dark:border-green-800 p-6 shadow-sm relative overflow-hidden opacity-90 h-full flex flex-col transition-all duration-500">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                        <div class="bg-white/90 dark:bg-black/80 backdrop-blur-sm px-6 py-3 rounded-2xl transform rotate-[-5deg] border-4 border-green-500 shadow-xl scale-110">
-                            <span class="text-green-600 dark:text-green-400 font-black text-2xl uppercase tracking-widest leading-none">ĐÃ XONG!</span>
-                        </div>
+                <div class="relative rounded-[28px] overflow-hidden h-full bg-slate-100 dark:bg-[#1a140f] border-2 border-slate-200 dark:border-[#2a221a] flex flex-col items-center pb-4 opacity-80">
+                    <div class="h-[80px] w-full flex items-center justify-center bg-slate-200 dark:bg-[#201913] rounded-b-[20px] mb-2 border-b-2 border-slate-300 dark:border-[#15100a]">
+                         <span class="material-symbols-outlined text-slate-400 dark:text-[#383028]" style="font-size: 48px; font-variation-settings:'FILL' 1">${icon}</span>
                     </div>
-                    <div class="relative z-10 flex flex-col h-full blur-[2px]">
-                        <div class="flex items-start gap-5 mb-4">
-                            <div class="shrink-0 bg-green-100 dark:bg-emerald-500/10 w-14 h-14 rounded-full flex items-center justify-center text-green-600 dark:text-emerald-400 shadow-sm border border-transparent dark:border-emerald-500/20">
-                                <span class="material-symbols-outlined text-3xl">${icon}</span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <h3 class="text-xl font-black text-slate-800 dark:text-white leading-tight mb-1 truncate">${title}</h3>
-                                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">${desc}</p>
-                            </div>
+                     
+                     <h3 class="text-[13px] md:text-base font-bold text-slate-400 dark:text-[#554a3f] leading-snug line-clamp-2 px-3 mt-2 text-center min-h-[38px] flex items-center">${title}</h3>
+                     
+                     <div class="mt-auto pt-4 relative w-full flex justify-center">
+                        <div class="bg-green-500/10 text-green-600 dark:text-green-500/80 border-2 border-green-500/30 font-black text-[11px] md:text-xs uppercase px-4 py-1.5 rounded-xl rotate-[-4deg] tracking-widest inline-flex items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">check_circle</span>
+                            Đã Xong
                         </div>
-                        
-                        <div class="flex gap-2 mb-6 flex-wrap mt-auto">
-                            <span class="inline-flex items-center gap-1 bg-orange-50 text-orange-600 px-3 py-1 rounded-lg text-xs font-bold border border-orange-100 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/30">
-                                <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">monetization_on</span> +${reward}
-                            </span>
-                            ${sticker > 0 ? `
-                            <span class="inline-flex items-center gap-1 bg-purple-50 text-purple-600 px-3 py-1 rounded-lg text-xs font-bold border border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800/30">
-                                <span class="material-symbols-outlined text-[14px] transform rotate-12" style="font-variation-settings:'FILL' 1">sell</span> +${sticker}
-                            </span>
-                            ` : ''}
-                            <span class="inline-flex items-center gap-1 bg-yellow-50 text-yellow-700 px-3 py-1 rounded-lg text-xs font-bold border border-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/30">
-                                <span class="material-symbols-outlined text-sm">military_tech</span> +${xp}
-                            </span>
-                            ${this.getAttribute('water') && parseInt(this.getAttribute('water')) > 0 ? `
-                            <span class="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-xs font-bold border border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/30">
-                                <span class="material-symbols-outlined text-sm inline" style="font-variation-settings:'FILL' 1">water_drop</span> +${this.getAttribute('water')}
-                            </span>
-                            ` : ''}
-                        </div>
-                        <button class="w-full py-3 bg-green-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 cursor-default" disabled>
-                            <span>Hoàn thành</span>
-                            <span class="material-symbols-outlined justify-center text-lg">check_circle</span>
-                        </button>
-                    </div>
+                     </div>
                 </div>
             `;
         } else {
+            const waterVal = this.getAttribute('water');
+            const hasWater = waterVal && parseInt(waterVal) > 0;
+
+            const colorMaps = {
+                blue: { grad: 'from-blue-400 to-blue-500', bdr: 'border-blue-600' },
+                red: { grad: 'from-rose-400 to-rose-500', bdr: 'border-rose-600' },
+                green: { grad: 'from-emerald-400 to-emerald-500', bdr: 'border-emerald-600' },
+                purple: { grad: 'from-purple-400 to-purple-500', bdr: 'border-purple-600' },
+                yellow: { grad: 'from-amber-400 to-amber-500', bdr: 'border-amber-600' },
+                orange: { grad: 'from-orange-400 to-orange-500', bdr: 'border-orange-600' },
+                pink: { grad: 'from-pink-400 to-pink-500', bdr: 'border-pink-600' },
+                indigo: { grad: 'from-indigo-400 to-indigo-500', bdr: 'border-indigo-600' },
+                teal: { grad: 'from-teal-400 to-teal-500', bdr: 'border-teal-600' },
+                cyan: { grad: 'from-cyan-400 to-cyan-500', bdr: 'border-cyan-600' }
+            };
+            const c = colorMaps[color] || colorMaps.blue;
+
             this.innerHTML = `
-                <div class="gamified-card bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm overflow-hidden relative dark:bg-[#2c2215] dark:border-slate-800 h-full flex flex-col transition-all duration-300">
-                    <div class="relative z-10 flex flex-col h-full">
-                        <div class="flex items-start gap-5 mb-4">
-                            <div class="shrink-0 bg-${color}-100 dark:bg-${color}-500/10 w-14 h-14 rounded-full flex items-center justify-center text-${color}-600 dark:text-${color}-400 shadow-sm border border-transparent dark:border-${color}-500/20 group-hover:scale-110 transition-transform duration-500">
-                                <span class="material-symbols-outlined text-3xl">${icon}</span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <h3 class="text-xl font-black text-slate-800 dark:text-white leading-tight mb-1 truncate">${title}</h3>
-                                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">${desc}</p>
-                            </div>
-                        </div>
+                <div class="gamified-card relative rounded-[28px] flex flex-col h-full bg-white dark:bg-[#221a14] border-2 border-slate-100 dark:border-[#382b20] border-b-[6px] shadow-sm pb-3 transition-transform hover:-translate-y-1">
+                    
+                    <!-- Top colored block with curve -->
+                    <div class="relative h-[90px] md:h-[100px] w-full bg-gradient-to-b ${c.grad} flex items-center justify-center rounded-b-[20px] shadow-sm ${c.bdr} border-b-[3px] shrink-0">
+                        <!-- Specular highlight for 3D feel -->
+                        <div class="absolute top-0 inset-x-0 h-3 bg-white/20 rounded-t-[28px]"></div>
+                        <span class="material-symbols-outlined text-white drop-shadow-md relative z-10" style="font-size: 52px; font-variation-settings:'FILL' 1">${icon}</span>
+                    </div>
+                    
+                    <!-- Content area -->
+                    <div class="px-3 pt-3 flex flex-col flex-grow items-center text-center">
+                        <h3 class="text-[13px] md:text-base font-extrabold text-slate-800 dark:text-gray-100 leading-snug line-clamp-2 mb-3 min-h-[38px] flex justify-center items-center w-full">${title}</h3>
                         
-                        <div class="flex gap-2 mb-6 flex-wrap mt-auto">
-                            <span class="inline-flex items-center gap-1 bg-orange-50 text-orange-600 px-3 py-1 rounded-lg text-xs font-bold border border-orange-100 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/30">
-                                <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">monetization_on</span> +${reward}
+                        <!-- Mini rewards -->
+                        <div class="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 mb-4 w-full">
+                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-amber-500">
+                                <span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">monetization_on</span>${reward}
                             </span>
                             ${sticker > 0 ? `
-                            <span class="inline-flex items-center gap-1 bg-purple-50 text-purple-600 px-3 py-1 rounded-lg text-xs font-bold border border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800/30">
-                                <span class="material-symbols-outlined text-[14px] transform rotate-12" style="font-variation-settings:'FILL' 1">sell</span> +${sticker}
+                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-purple-400">
+                                <span class="material-symbols-outlined text-[15px] rotate-12" style="font-variation-settings:'FILL' 1">sell</span>${sticker}
+                            </span>` : ''}
+                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-yellow-500">
+                                <span class="material-symbols-outlined text-[15px]">military_tech</span>${xp}
                             </span>
-                            ` : ''}
-                            <span class="inline-flex items-center gap-1 bg-yellow-50 text-yellow-700 px-3 py-1 rounded-lg text-xs font-bold border border-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/30">
-                                <span class="material-symbols-outlined text-sm">military_tech</span> +${xp}
-                            </span>
-                            ${this.getAttribute('water') && parseInt(this.getAttribute('water')) > 0 ? `
-                            <span class="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-xs font-bold border border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/30">
-                                <span class="material-symbols-outlined text-sm inline" style="font-variation-settings:'FILL' 1">water_drop</span> +${this.getAttribute('water')}
-                            </span>
-                            ` : ''}
+                            ${hasWater ? `
+                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-sky-400">
+                                <span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">water_drop</span>${waterVal}
+                            </span>` : ''}
                         </div>
-                        <button class="btn-complete btn-pressable w-full py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 mt-auto">
-                            <span>Con đã xong!</span>
-                            <span class="material-symbols-outlined">check_circle</span>
+                        
+                        <!-- 3D Yellow Action Button -->
+                        <button class="btn-complete mt-auto w-[90%] py-2 md:py-2.5 rounded-[16px] bg-gradient-to-b from-[#ffb347] to-[#f58d19] text-white font-black text-[12px] md:text-[14px] uppercase tracking-wide border-b-[4px] border-[#cc6f0a] active:border-b-0 active:translate-y-[4px] transition-all flex justify-center items-center gap-1 relative overflow-hidden group">
+                            <!-- Button Shine Effect -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                            Xong 
                         </button>
                     </div>
                 </div>
@@ -2170,15 +2255,13 @@ class QuestGrid extends HTMLElement {
 
         if (mandatory.length > 0) {
             html += `
-            <div class="mb-12">
-                    <div class="flex items-center gap-3 mb-6 bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-3xl border border-emerald-100 dark:border-emerald-800/30">
-                        <div class="bg-emerald-500 text-white p-2 rounded-xl shadow-lg">
-                            <span class="material-symbols-outlined">assignment_late</span>
-                        </div>
-                        <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-wider">Nhiệm vụ Bắt buộc</h3>
-                        <span class="ml-auto bg-emerald-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full">${mandatory.length} CẦN LÀM</span>
+            <div class="mb-4 md:mb-12">
+                    <div class="flex items-center gap-1.5 md:gap-3 mb-2 md:mb-6">
+                        <span class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500 shrink-0"></span>
+                        <h3 class="text-xs md:text-xl font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Bắt buộc</h3>
+                        <span class="text-[9px] md:text-[10px] font-bold text-emerald-500 ml-auto">${mandatory.length} việc</span>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
                         ${mandatory.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2188,14 +2271,12 @@ class QuestGrid extends HTMLElement {
         if (optional.length > 0) {
             html += `
             <div>
-                    <div class="flex items-center gap-3 mb-6 bg-purple-50 dark:bg-purple-900/10 p-4 rounded-3xl border border-purple-100 dark:border-purple-800/30">
-                        <div class="bg-purple-500 text-white p-2 rounded-xl shadow-lg">
-                            <span class="material-symbols-outlined">assignment_add</span>
-                        </div>
-                        <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-wider">Nhiệm vụ Tùy chọn</h3>
-                        <span class="ml-auto bg-purple-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full">${optional.length} THÊM VUI</span>
+                    <div class="flex items-center gap-1.5 md:gap-3 mb-2 md:mb-6">
+                        <span class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-purple-500 shrink-0"></span>
+                        <h3 class="text-xs md:text-xl font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Tùy chọn</h3>
+                        <span class="text-[9px] md:text-[10px] font-bold text-purple-500 ml-auto">${optional.length} việc</span>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 transition-all duration-500">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 transition-all duration-500">
                         ${optional.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2236,26 +2317,26 @@ class CompletedTasks extends HTMLElement {
         }
 
         this.innerHTML = `
-            <div class="mt-12">
-                <h3 class="text-xl font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-500">task_alt</span>
+            <div class="mt-6 md:mt-12">
+                <h3 class="text-sm md:text-xl font-black text-slate-800 dark:text-white mb-3 md:mb-6 flex items-center gap-1.5 md:gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-lg md:text-2xl">task_alt</span>
                     Nhiệm vụ đã hoàn thành hôm nay
                 </h3>
-                <div class="bg-white dark:bg-[#2c2215] rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div class="bg-white dark:bg-[#2c2215] rounded-xl md:rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
                     <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
                         ${completedQuests.map(quest => `
-                            <div class="p-4 sm:p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 text-green-500 rounded-2xl flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-2xl">${quest.icon || 'star'}</span>
+                            <div class="p-3 md:p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                                <div class="flex items-center gap-2 md:gap-4">
+                                    <div class="w-8 h-8 md:w-12 md:h-12 bg-green-50 dark:bg-green-900/20 text-green-500 rounded-lg md:rounded-2xl flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-lg md:text-2xl">${quest.icon || 'star'}</span>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-slate-800 dark:text-white line-through opacity-70 group-hover:opacity-100 transition-opacity">${quest.title}</h4>
-                                        <p class="text-xs text-slate-400 mt-1 flex flex-wrap gap-3">
-                                            <span class="flex items-center gap-1 text-orange-600 dark:text-orange-400 font-bold bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-lg"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">monetization_on</span> +${quest.reward}</span>
-                                            ${quest.sticker ? `<span class="flex items-center gap-1 text-purple-600 dark:text-purple-400 font-bold bg-purple-50 dark:bg-purple-900/20 px-2 py-0.5 rounded-lg"><span class="material-symbols-outlined text-[12px] transform rotate-12" style="font-variation-settings:'FILL' 1">sell</span> +${quest.sticker}</span>` : ''}
-                                            <span class="flex items-center gap-1 text-yellow-700 dark:text-yellow-400 font-bold bg-yellow-50 dark:bg-yellow-900/30 px-2 py-0.5 rounded-lg"><span class="material-symbols-outlined text-[14px]">military_tech</span> +${quest.xp}</span>
-                                            ${quest.water ? `<span class="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-lg"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">water_drop</span> +${quest.water}</span>` : ''}
+                                        <h4 class="font-bold text-xs md:text-base text-slate-800 dark:text-white line-through opacity-70 group-hover:opacity-100 transition-opacity">${quest.title}</h4>
+                                        <p class="text-[9px] md:text-xs text-slate-400 mt-0.5 md:mt-1 flex flex-wrap gap-1 md:gap-3">
+                                            <span class="flex items-center gap-0.5 text-orange-600 dark:text-orange-400 font-bold bg-orange-50 dark:bg-orange-900/20 px-1.5 md:px-2 py-0.5 rounded-md md:rounded-lg"><span class="material-symbols-outlined text-[10px] md:text-[14px]" style="font-variation-settings:'FILL' 1">monetization_on</span> +${quest.reward}</span>
+                                            ${quest.sticker ? `<span class="flex items-center gap-0.5 text-purple-600 dark:text-purple-400 font-bold bg-purple-50 dark:bg-purple-900/20 px-1.5 md:px-2 py-0.5 rounded-md md:rounded-lg"><span class="material-symbols-outlined text-[10px] md:text-[12px] rotate-12" style="font-variation-settings:'FILL' 1">sell</span> +${quest.sticker}</span>` : ''}
+                                            <span class="flex items-center gap-0.5 text-yellow-700 dark:text-yellow-400 font-bold bg-yellow-50 dark:bg-yellow-900/30 px-1.5 md:px-2 py-0.5 rounded-md md:rounded-lg"><span class="material-symbols-outlined text-[10px] md:text-[14px]">military_tech</span> +${quest.xp}</span>
+                                            ${quest.water ? `<span class="flex items-center gap-0.5 text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/20 px-1.5 md:px-2 py-0.5 rounded-md md:rounded-lg"><span class="material-symbols-outlined text-[10px] md:text-[14px]" style="font-variation-settings:'FILL' 1">water_drop</span> +${quest.water}</span>` : ''}
                                         </p>
                                     </div>
                                 </div>
@@ -2298,7 +2379,7 @@ class ChildNav extends HTMLElement {
     renderDesktop(active) {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-[9999] shadow-[0_-8px_30px_rgba(0,0,0,0.12)]" style="padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);">
-                <nav class="max-w-2xl mx-auto px-1 py-1 flex justify-between items-end relative gap-0.5">
+                <nav class="max-w-2xl mx-auto px-2 py-1 flex justify-between items-end relative gap-1">
                     ${this.dItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
                     ${this.dItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
                     ${this.dItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
@@ -2307,7 +2388,6 @@ class ChildNav extends HTMLElement {
                     ${this.dItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth')}
                     ${this.dItem('storefront', 'Quà', 'shop/index.html', active === 'shop')}
                     ${this.dItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard')}
-                    ${this.dItem('person', 'Tôi', 'profile/index.html', active === 'profile')}
                 </nav>
             </div>
             <div class="h-24"></div>
@@ -2317,68 +2397,81 @@ class ChildNav extends HTMLElement {
     dItem(icon, label, href, isActive) {
         const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
         const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
-        return `<a href="../${href}" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[56px] py-2">
+        return `<a href="../${href}" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[48px] py-2">
             <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">${icon}</span></div>
-            <span class="text-[9px] font-bold mt-0.5 leading-none">${label}</span>${dot}</a>`;
+            ${dot}</a>`;
     }
     dSticker(isActive) {
         const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
         const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
         const b = window.AppState?.data?.user?.stickers || 0;
         const badge = b > 0 ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center">${b > 9 ? '9+' : b}</span>` : '';
-        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[56px] py-2">
+        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[48px] py-2">
             <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300 relative"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>${badge}</div>
-            <span class="text-[9px] font-bold mt-0.5 leading-none">Sticker</span>${dot}</a>`;
+            ${dot}</a>`;
     }
 
-    /* ═══ MOBILE: Premium floating pill ═══ */
+    /* ═══ MOBILE: Hamburger FAB + Fullscreen overlay ═══ */
     renderMobile(active) {
+        const navId = 'mobile-nav-overlay-' + Date.now();
+        const b = window.AppState?.data?.user?.stickers || 0;
+        const stickerBadge = b > 0 ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[7px] font-black rounded-full flex items-center justify-center ring-2 ring-white dark:ring-[#1a140c]">${b > 9 ? '9+' : b}</span>` : '';
+
+        const items = [
+            { icon: 'home', label: 'Home', href: 'home/index.html', color: '#ee9d2b', active: active === 'home' || active === '' },
+            { icon: 'target', label: 'Nhiệm Vụ', href: 'dashboard/index.html', color: '#f59e0b', active: active === 'dashboard' },
+            { icon: 'auto_stories', label: 'Nhật Ký', href: 'personality/index.html', color: '#ec4899', active: active === 'diary' },
+            { icon: 'swords', label: 'Đấu Trường', href: 'arena/index.html', color: '#6366f1', active: active === 'arena' },
+            { icon: 'sell', label: 'Sticker', href: 'sticker-book/index.html', color: '#a855f7', active: active === 'stickers', badge: stickerBadge },
+            { icon: 'park', label: 'Vườn Cây', href: 'tree-growth/index.html', color: '#10b981', active: active === 'tree-growth' },
+            { icon: 'storefront', label: 'Kho Quà', href: 'shop/index.html', color: '#f97316', active: active === 'shop' },
+            { icon: 'leaderboard', label: 'Xếp Hạng', href: 'leaderboard/index.html', color: '#0ea5e9', active: active === 'leaderboard' },
+        ];
+
+        const gridItems = items.map(it => {
+            const activeBg = it.active ? `background:linear-gradient(135deg,${it.color},${it.color}dd);color:white;box-shadow:0 4px 15px ${it.color}50` : '';
+            const activeClass = it.active ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#1a140c]' : 'bg-white/80 dark:bg-white/5 text-slate-600 dark:text-slate-300';
+            const ringColor = it.active ? `ring-[${it.color}]` : '';
+            return `<a href="../${it.href}" class="flex flex-col items-center gap-2 p-3 rounded-2xl ${activeClass} active:scale-90 transition-all" style="${activeBg}${it.active ? `;--tw-ring-color:${it.color}` : ''}">
+                <div class="relative"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' ${it.active ? 1 : 0}">${it.icon}</span>${it.badge || ''}</div>
+                <span class="text-[10px] font-bold leading-none">${it.label}</span>
+            </a>`;
+        }).join('');
+
         this.innerHTML = `
-            <div class="fixed bottom-0 left-0 right-0 z-[9999]" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
-                <div class="mx-3 mb-2 rounded-2xl overflow-hidden shadow-[0_-4px_30px_rgba(0,0,0,0.25)] border border-white/10 dark:border-white/5">
-                    <div class="h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0"></div>
-                    <div class="bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-2xl">
-                        <nav class="flex justify-between items-center px-0.5">
-                            ${this.mItem('home', 'Chủ', 'home/index.html', active === 'home' || active === '', '#ee9d2b')}
-                            ${this.mItem('target', 'N.Vụ', 'dashboard/index.html', active === 'dashboard', '#f59e0b')}
-                            ${this.mItem('auto_stories', 'N.Ký', 'personality/index.html', active === 'diary', '#ec4899')}
-                            ${this.mItem('swords', 'Arena', 'arena/index.html', active === 'arena', '#6366f1')}
-                            ${this.mSticker(active === 'stickers')}
-                            ${this.mItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth', '#10b981')}
-                            ${this.mItem('storefront', 'Quà', 'shop/index.html', active === 'shop', '#f97316')}
-                            ${this.mItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9')}
-                            ${this.mItem('person', 'Tôi', 'profile/index.html', active === 'profile', '#14b8a6')}
-                        </nav>
+            <!-- Hamburger FAB -->
+            <button id="mobile-nav-fab" onclick="document.getElementById('${navId}').classList.toggle('hidden');document.getElementById('mobile-nav-fab').classList.toggle('mobile-fab-open')" 
+                    class="fixed bottom-4 right-4 z-[10000] size-12 bg-gradient-to-br from-primary to-amber-600 text-white rounded-2xl shadow-[0_4px_20px_rgba(238,157,43,0.5)] flex items-center justify-center active:scale-90 transition-all" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+                <span class="material-symbols-outlined text-[24px] transition-transform" id="fab-icon">menu</span>
+            </button>
+
+            <!-- Fullscreen Nav Overlay -->
+            <div id="${navId}" class="hidden fixed inset-0 z-[9999] flex items-end justify-center" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('${navId}').classList.add('hidden');document.getElementById('mobile-nav-fab').classList.remove('mobile-fab-open')"></div>
+                <div class="relative w-full mx-3 mb-20 bg-white dark:bg-[#1a140c] rounded-3xl shadow-2xl border border-slate-200/50 dark:border-white/10 p-4 animate-fade-in-up" style="animation-duration:0.2s">
+                    <div class="grid grid-cols-4 gap-2">
+                        ${gridItems}
                     </div>
                 </div>
             </div>
-            <div class="h-20"></div>
+
             <titles-modal></titles-modal><parent-pin-modal></parent-pin-modal>
         `;
-    }
-    mItem(icon, label, href, isActive, c) {
-        if (isActive) return `<a href="../${href}" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px]">
-            <div class="absolute top-0.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg animate-pulse" style="background:${c}15"></div>
-            <div class="relative p-1 rounded-lg shadow-lg -translate-y-0.5" style="background:linear-gradient(135deg,${c},${c}dd);box-shadow:0 3px 12px ${c}40">
-                <span class="material-symbols-outlined text-[18px] text-white" style="font-variation-settings:'FILL' 1">${icon}</span></div>
-            <span class="text-[7px] font-black mt-0.5 leading-none" style="color:${c}">${label}</span>
-            <div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style="background:${c};box-shadow:0 0 5px 1px ${c}80"></div></a>`;
-        return `<a href="../${href}" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px] group">
-            <div class="p-1 group-active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500" style="font-variation-settings:'FILL' 0">${icon}</span></div>
-            <span class="text-[7px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500">${label}</span></a>`;
-    }
-    mSticker(isActive) {
-        const b = window.AppState?.data?.user?.stickers || 0;
-        const badge = b > 0 ? `<span class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-rose-500 text-white text-[6px] font-black rounded-full flex items-center justify-center ring-1 ring-white dark:ring-[#1a140c]">${b > 9 ? '9+' : b}</span>` : '';
-        if (isActive) return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px]">
-            <div class="absolute top-0.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 animate-pulse"></div>
-            <div class="relative p-1 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 -translate-y-0.5">
-                <span class="material-symbols-outlined text-[18px] text-white" style="font-variation-settings:'FILL' 1">sell</span>${badge}</div>
-            <span class="text-[7px] font-black mt-0.5 leading-none text-purple-600 dark:text-purple-400">Sticker</span>
-            <div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full shadow-[0_0_5px_2px_rgba(168,85,247,0.5)]"></div></a>`;
-        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px] group">
-            <div class="relative p-1 group-active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500" style="font-variation-settings:'FILL' 0">sell</span>${badge}</div>
-            <span class="text-[7px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500">Sticker</span></a>`;
+
+        // Toggle hamburger icon
+        const fab = this.querySelector('#mobile-nav-fab');
+        const overlay = this.querySelector('#' + navId);
+        if (fab && overlay) {
+            const fabIcon = this.querySelector('#fab-icon');
+            const observer = new MutationObserver(() => {
+                const isOpen = !overlay.classList.contains('hidden');
+                if (fabIcon) {
+                    fabIcon.textContent = isOpen ? 'close' : 'menu';
+                    fabIcon.style.transform = isOpen ? 'rotate(90deg)' : '';
+                }
+            });
+            observer.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+        }
     }
 }
 customElements.define('child-nav', ChildNav);
