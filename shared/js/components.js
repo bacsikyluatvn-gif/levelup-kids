@@ -440,103 +440,96 @@ class AppHeader extends HTMLElement {
             <!-- MOBILE NAV DRAWER (Fullscreen overlay) -->
             <div id="mobile-nav-drawer" class="fixed inset-0 z-[99999] translate-x-full transition-transform duration-300 ease-out" style="will-change:transform;">
                 <div class="absolute inset-0 bg-gradient-to-br from-[#0f0c1a] via-[#1a1030] to-[#0d0a14]"></div>
-                <div class="relative z-10 h-full flex flex-col overflow-y-auto">
-                    <!-- Drawer Header -->
-                    <div class="flex items-center justify-between px-5 pt-5 pb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="size-12 rounded-2xl bg-slate-200 ring-2 ring-primary/30 bg-cover bg-center shadow-lg overflow-hidden" 
+                <div class="relative z-10 h-full flex flex-col" style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);">
+                    <!-- Compact Header: Avatar + Name + Close -->
+                    <div class="flex items-center justify-between px-4 pt-4 pb-2">
+                        <a href="../profile/index.html" class="flex items-center gap-2.5 active:opacity-70">
+                            <div class="size-10 rounded-xl bg-slate-200 ring-2 ring-primary/30 bg-cover bg-center shadow-lg overflow-hidden" 
                                  style="background-image: url('${user.avatar}')"></div>
                             <div>
-                                <p class="text-base font-black text-white uppercase tracking-tight">${displayName}</p>
-                                <p class="text-[10px] font-black text-primary uppercase tracking-widest">${titleName}</p>
+                                <p class="text-sm font-black text-white uppercase tracking-tight leading-tight">${displayName}</p>
+                                <p class="text-[9px] font-bold text-primary uppercase tracking-widest">${titleName} · Lv.${user.level}</p>
                             </div>
-                        </div>
+                        </a>
                         <button onclick="document.getElementById('mobile-nav-drawer').classList.add('translate-x-full')" 
-                                class="size-10 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all active:scale-90">
-                            <span class="material-symbols-outlined text-2xl">close</span>
+                                class="size-9 flex items-center justify-center rounded-xl bg-white/10 text-white/70 hover:bg-white/20 transition-all active:scale-90">
+                            <span class="material-symbols-outlined text-xl">close</span>
                         </button>
                     </div>
 
-                    <!-- Stats Bar -->
-                    <div class="mx-5 mb-4 p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest">Level ${user.level}</span>
-                            <span class="text-[10px] font-black text-primary tabular-nums">${user.xp}/${user.maxXp} XP</span>
-                        </div>
-                        <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-yellow-400 via-primary to-orange-500 rounded-full" style="width: ${xpPercent}%"></div>
-                        </div>
-                        <div class="flex items-center justify-center gap-4 mt-3">
-                            <div class="flex items-center gap-1.5 text-amber-400"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-sm font-black">${user.gold}</span></div>
-                            <div class="flex items-center gap-1.5 text-purple-400"><span class="material-symbols-outlined text-[18px]">sell</span><span class="text-sm font-black">${user.stickers || 0}</span></div>
-                            <div class="flex items-center gap-1.5 text-blue-400"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-sm font-black">${user.water || 0}</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Navigation Grid -->
-                    <div class="px-5 grid grid-cols-3 gap-2.5 mb-4">
-                        <a href="../home/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings:'FILL' 1">home</span>
+                    <!-- NAVIGATION GRID (Primary - fills most of screen) -->
+                    <div class="flex-1 px-4 py-3 grid grid-cols-3 grid-rows-4 gap-2 content-start">
+                        <a href="../home/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-primary" style="font-variation-settings:'FILL' 1">home</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Chương</span>
                         </a>
-                        <a href="../dashboard/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500/20 hover:border-amber-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-amber-400" style="font-variation-settings:'FILL' 1">target</span>
+                        <a href="../dashboard/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500/20 hover:border-amber-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-amber-400" style="font-variation-settings:'FILL' 1">target</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhiệm vụ</span>
                         </a>
-                        <a href="../personality/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-rose-500/20 hover:border-rose-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-rose-400" style="font-variation-settings:'FILL' 1">auto_stories</span>
+                        <a href="../personality/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-rose-500/20 hover:border-rose-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-rose-400" style="font-variation-settings:'FILL' 1">auto_stories</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Nhật Ký</span>
                         </a>
-                        <a href="../arena/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-blue-400" style="font-variation-settings:'FILL' 1">swords</span>
+                        <a href="../arena/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-blue-400" style="font-variation-settings:'FILL' 1">swords</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Arena</span>
                         </a>
-                        <a href="../sticker-book/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-purple-500/20 hover:border-purple-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-purple-400" style="font-variation-settings:'FILL' 1">sell</span>
+                        <a href="../sticker-book/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-purple-500/20 hover:border-purple-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-purple-400" style="font-variation-settings:'FILL' 1">sell</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Sticker</span>
                         </a>
-                        <a href="../tree-growth/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-emerald-400" style="font-variation-settings:'FILL' 1">park</span>
+                        <a href="../tree-growth/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-emerald-400" style="font-variation-settings:'FILL' 1">park</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Vườn</span>
                         </a>
-                        <a href="../shop/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-orange-500/20 hover:border-orange-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-orange-400" style="font-variation-settings:'FILL' 1">storefront</span>
+                        <a href="../shop/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-orange-500/20 hover:border-orange-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-orange-400" style="font-variation-settings:'FILL' 1">storefront</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Quà</span>
                         </a>
-                        <a href="../leaderboard/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-sky-400" style="font-variation-settings:'FILL' 1">leaderboard</span>
+                        <a href="../leaderboard/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-sky-400" style="font-variation-settings:'FILL' 1">leaderboard</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Top</span>
                         </a>
-                        <a href="../profile/index.html" class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-teal-500/20 hover:border-teal-500/30 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-3xl text-teal-400" style="font-variation-settings:'FILL' 1">person</span>
+                        <a href="../profile/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-teal-500/20 hover:border-teal-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-teal-400" style="font-variation-settings:'FILL' 1">person</span>
                             <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Tôi</span>
                         </a>
+                        <a href="../titles/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-yellow-400" style="font-variation-settings:'FILL' 1">military_tech</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Danh hiệu</span>
+                        </a>
+                        <a href="../settings/index.html" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-slate-500/20 hover:border-slate-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-slate-400" style="font-variation-settings:'FILL' 1">settings</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Cài đặt</span>
+                        </a>
+                        <button onclick="window.toggleDarkMode()" class="flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-[32px] text-yellow-300">light_mode</span>
+                            <span class="text-[10px] font-black text-white/80 uppercase tracking-wider">Sáng/Tối</span>
+                        </button>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="px-5 space-y-2 mb-4">
-                        <a href="../titles/index.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings:'FILL' 1">military_tech</span>
-                            <span class="text-sm font-bold text-white/80">Danh hiệu</span>
-                        </a>
-                        <a href="../settings/index.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98]">
-                            <span class="material-symbols-outlined text-2xl text-slate-400">settings</span>
-                            <span class="text-sm font-bold text-white/80">Cài đặt</span>
-                        </a>
-                        <button onclick="window.toggleDarkMode(); document.getElementById('mobile-nav-drawer').classList.add('translate-x-full')" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98] w-full text-left">
-                            <span class="material-symbols-outlined text-2xl text-yellow-400">light_mode</span>
-                            <span class="text-sm font-bold text-white/80">Đổi giao diện sáng/tối</span>
-                        </button>
+                    <!-- Stats Bar (Compact) -->
+                    <div class="mx-4 mb-2 p-2 rounded-xl bg-white/5 border border-white/10">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-1 text-amber-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">monetization_on</span><span class="text-[11px] font-black">${user.gold}</span></div>
+                                <div class="flex items-center gap-1 text-purple-400"><span class="material-symbols-outlined text-[15px]">sell</span><span class="text-[11px] font-black">${user.stickers || 0}</span></div>
+                                <div class="flex items-center gap-1 text-blue-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">water_drop</span><span class="text-[11px] font-black">${user.water || 0}</span></div>
+                                <div class="flex items-center gap-1 text-rose-400"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">favorite</span><span class="text-[11px] font-black">${user.personalityPoints || 0}</span></div>
+                            </div>
+                            <span class="text-[9px] font-black text-primary tabular-nums">${user.xp}/${user.maxXp} XP</span>
+                        </div>
                     </div>
 
                     <!-- Bottom Actions -->
-                    <div class="mt-auto px-5 pb-8 flex gap-3">
-                        <button onclick="window.location.href='../portal/index.html'" class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-xl text-slate-400">group</span>
+                    <div class="px-4 pb-4 flex gap-2">
+                        <button onclick="window.location.href='../portal/index.html'" class="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-lg text-slate-400">group</span>
                             <span class="text-xs font-bold text-white/70">Đổi bé</span>
                         </button>
-                        <button onclick="window.AppState.logout()" class="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-xl text-rose-400">logout</span>
+                        <button onclick="window.AppState.logout()" class="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-lg text-rose-400">logout</span>
                             <span class="text-xs font-bold text-rose-400">Đăng xuất</span>
                         </button>
                     </div>
