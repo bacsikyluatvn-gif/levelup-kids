@@ -3461,7 +3461,7 @@ class GrowthDiaryView extends HTMLElement {
                 return `
                                             <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2rem] p-6 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative group hover:shadow-md transition-all" id="reflection-card-${logId}">
                                                 <div class="absolute top-4 right-4 flex items-center gap-2">
-                                                    <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100 pointer-events-auto"
+                                                    <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-60 hover:opacity-100"
                                                         data-id="${logId}" data-rating="${rating}" title="Chỉnh sửa nhật ký">
                                                         <span class="material-symbols-outlined text-sm">edit</span>
                                                     </button>
@@ -3772,7 +3772,7 @@ class GrowthDiaryView extends HTMLElement {
             return `
                                                 <div class="bg-white dark:bg-[#1a140c]/60 rounded-3xl p-6 shadow-sm border border-indigo-50 dark:border-white/5 relative group hover:shadow-md transition-all" id="reflection-card-${log.id}">
                                                     <div class="absolute top-4 right-4 flex items-center gap-2">
-                                                        <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100"
+                                                        <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-60 hover:opacity-100"
                                                             data-id="${log.id}" data-rating="${rating}" title="Chỉnh sửa">
                                                             <span class="material-symbols-outlined text-sm">edit</span>
                                                         </button>
@@ -4008,9 +4008,9 @@ class GrowthDiaryView extends HTMLElement {
                     if (glow) glow.classList.add('opacity-100');
                 } else {
                     btn.classList.add('opacity-40');
-                    btn.classList.remove('scale-115');
-                    icon.classList.remove('text-red-500');
-                    icon.classList.add('text-slate-300');
+                    btn.classList.remove('scale-115', 'bg-rose-500/20', 'shadow-lg', 'shadow-rose-500/10');
+                    icon.classList.remove('text-red-500', 'text-rose-500', 'text-white');
+                    icon.classList.add('text-white/20');
                     icon.style.fontVariationSettings = "'FILL' 0";
                     if (label) {
                         label.classList.remove('text-red-500');
