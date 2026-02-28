@@ -2284,93 +2284,101 @@ class ChildNav extends HTMLElement {
     connectedCallback() {
         const active = this.getAttribute('active') || 'dashboard';
         this.render(active);
+        this._resizeHandler = () => this.render(active);
+        window.addEventListener('resize', this._resizeHandler);
+    }
+    disconnectedCallback() {
+        if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
+    }
+    render(active) {
+        if (window.innerWidth < 768) { this.renderMobile(active); } else { this.renderDesktop(active); }
     }
 
-    render(active) {
+    /* ═══ DESKTOP: Original full-width nav ═══ */
+    renderDesktop(active) {
+        this.innerHTML = `
+            <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-[9999] shadow-[0_-8px_30px_rgba(0,0,0,0.12)]" style="padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);">
+                <nav class="max-w-2xl mx-auto px-1 py-1 flex justify-between items-end relative gap-0.5">
+                    ${this.dItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
+                    ${this.dItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
+                    ${this.dItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
+                    ${this.dItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena')}
+                    ${this.dSticker(active === 'stickers')}
+                    ${this.dItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth')}
+                    ${this.dItem('storefront', 'Quà', 'shop/index.html', active === 'shop')}
+                    ${this.dItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard')}
+                    ${this.dItem('person', 'Tôi', 'profile/index.html', active === 'profile')}
+                </nav>
+            </div>
+            <div class="h-24"></div>
+            <titles-modal></titles-modal><parent-pin-modal></parent-pin-modal>
+        `;
+    }
+    dItem(icon, label, href, isActive) {
+        const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
+        const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
+        return `<a href="../${href}" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[56px] py-2">
+            <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">${icon}</span></div>
+            <span class="text-[9px] font-bold mt-0.5 leading-none">${label}</span>${dot}</a>`;
+    }
+    dSticker(isActive) {
+        const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
+        const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
+        const b = window.AppState?.data?.user?.stickers || 0;
+        const badge = b > 0 ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center">${b > 9 ? '9+' : b}</span>` : '';
+        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[56px] py-2">
+            <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300 relative"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>${badge}</div>
+            <span class="text-[9px] font-bold mt-0.5 leading-none">Sticker</span>${dot}</a>`;
+    }
+
+    /* ═══ MOBILE: Premium floating pill ═══ */
+    renderMobile(active) {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 z-[9999]" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
-                <!-- Floating nav pill -->
                 <div class="mx-3 mb-2 rounded-2xl overflow-hidden shadow-[0_-4px_30px_rgba(0,0,0,0.25)] border border-white/10 dark:border-white/5">
-                    <!-- Gradient top line -->
                     <div class="h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0"></div>
-                    <!-- Glass background -->
                     <div class="bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-2xl">
-                        <nav class="flex justify-between items-center px-1">
-                            ${this.navItem('home', 'Trang chủ', 'home/index.html', active === 'home' || active === '', '#ee9d2b', 'home')}
-                            ${this.navItem('dashboard', 'N.Vụ', 'dashboard/index.html', active === 'dashboard', '#f59e0b', 'target')}
-                            ${this.navItem('book_5', 'N.Ký', 'personality/index.html', active === 'diary', '#ec4899', 'auto_stories')}
-                            ${this.navItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena', '#6366f1', 'swords')}
-                            ${this.navStickerItem(active === 'stickers')}
-                            ${this.navItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth', '#10b981', 'park')}
-                            ${this.navItem('storefront', 'Quà', 'shop/index.html', active === 'shop', '#f97316', 'storefront')}
-                            ${this.navItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9', 'leaderboard')}
-                            ${this.navItem('person', 'Tôi', 'profile/index.html', active === 'profile', '#14b8a6', 'person')}
+                        <nav class="flex justify-between items-center px-0.5">
+                            ${this.mItem('home', 'Chủ', 'home/index.html', active === 'home' || active === '', '#ee9d2b')}
+                            ${this.mItem('target', 'N.Vụ', 'dashboard/index.html', active === 'dashboard', '#f59e0b')}
+                            ${this.mItem('auto_stories', 'N.Ký', 'personality/index.html', active === 'diary', '#ec4899')}
+                            ${this.mItem('swords', 'Arena', 'arena/index.html', active === 'arena', '#6366f1')}
+                            ${this.mSticker(active === 'stickers')}
+                            ${this.mItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth', '#10b981')}
+                            ${this.mItem('storefront', 'Quà', 'shop/index.html', active === 'shop', '#f97316')}
+                            ${this.mItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9')}
+                            ${this.mItem('person', 'Tôi', 'profile/index.html', active === 'profile', '#14b8a6')}
                         </nav>
                     </div>
                 </div>
             </div>
-            <!--Spacer to prevent content from being hidden by fixed nav-->
-            <div class="h-24"></div>
-
-            <titles-modal></titles-modal>
-            <parent-pin-modal></parent-pin-modal>
+            <div class="h-20"></div>
+            <titles-modal></titles-modal><parent-pin-modal></parent-pin-modal>
         `;
     }
-
-    navStickerItem(isActive) {
-        const balance = window.AppState?.data?.user?.stickers || 0;
-        const badge = balance > 0
-            ? `<span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[7px] font-black rounded-full flex items-center justify-center ring-2 ring-white dark:ring-[#1a140c] shadow-sm"> ${balance > 9 ? '9+' : balance}</span> `
-            : '';
-
-        if (isActive) {
-            return `
-                <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group">
-                    <div class="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 dark:from-purple-500/30 dark:to-pink-500/30 animate-pulse"></div>
-                    <div class="relative p-1.5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 transform -translate-y-1 transition-all duration-300">
-                        <span class="material-symbols-outlined text-xl text-white" style="font-variation-settings:'FILL' 1">sell</span>
-                        ${badge}
-                    </div>
-                    <span class="text-[8px] font-black mt-0.5 leading-none text-purple-600 dark:text-purple-400">Sticker</span>
-                    <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full shadow-[0_0_6px_2px_rgba(168,85,247,0.5)]"></div>
-                </a>
-            `;
-        }
-        return `
-            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group hover:bg-purple-500/5 rounded-xl transition-all">
-                <div class="relative p-1.5 transition-all duration-300 group-active:scale-90">
-                    <span class="material-symbols-outlined text-xl text-slate-400 dark:text-slate-500 group-hover:text-purple-500 transition-colors" style="font-variation-settings:'FILL' 0">sell</span>
-                    ${badge}
-                </div>
-                <span class="text-[8px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500 group-hover:text-purple-500 transition-colors">Sticker</span>
-            </a>
-        `;
+    mItem(icon, label, href, isActive, c) {
+        if (isActive) return `<a href="../${href}" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px]">
+            <div class="absolute top-0.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg animate-pulse" style="background:${c}15"></div>
+            <div class="relative p-1 rounded-lg shadow-lg -translate-y-0.5" style="background:linear-gradient(135deg,${c},${c}dd);box-shadow:0 3px 12px ${c}40">
+                <span class="material-symbols-outlined text-[18px] text-white" style="font-variation-settings:'FILL' 1">${icon}</span></div>
+            <span class="text-[7px] font-black mt-0.5 leading-none" style="color:${c}">${label}</span>
+            <div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style="background:${c};box-shadow:0 0 5px 1px ${c}80"></div></a>`;
+        return `<a href="../${href}" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px] group">
+            <div class="p-1 group-active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500" style="font-variation-settings:'FILL' 0">${icon}</span></div>
+            <span class="text-[7px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500">${label}</span></a>`;
     }
-
-    navItem(icon, label, href, isActive, color = '#ee9d2b', filledIcon = null) {
-        const displayIcon = filledIcon || icon;
-
-        if (isActive) {
-            return `
-                <a href="../${href}" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px]">
-                    <div class="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-10 rounded-xl animate-pulse" style="background: ${color}15;"></div>
-                    <div class="relative p-1.5 rounded-xl shadow-lg transform -translate-y-1 transition-all duration-300" style="background: linear-gradient(135deg, ${color}, ${color}dd); box-shadow: 0 4px 15px ${color}40;">
-                        <span class="material-symbols-outlined text-xl text-white" style="font-variation-settings:'FILL' 1">${displayIcon}</span>
-                    </div>
-                    <span class="text-[8px] font-black mt-0.5 leading-none" style="color: ${color}">${label}</span>
-                    <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style="background: ${color}; box-shadow: 0 0 6px 2px ${color}80;"></div>
-                </a>
-            `;
-        }
-
-        return `
-            <a href="../${href}" class="relative flex flex-col items-center justify-center py-2 px-1 flex-1 min-w-[44px] group rounded-xl transition-all" style="--nav-hover: ${color}">
-                <div class="relative p-1.5 transition-all duration-300 group-active:scale-90">
-                    <span class="material-symbols-outlined text-xl text-slate-400 dark:text-slate-500 transition-colors" style="font-variation-settings:'FILL' 0">${displayIcon}</span>
-                </div>
-                <span class="text-[8px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500 transition-colors">${label}</span>
-            </a>
-        `;
+    mSticker(isActive) {
+        const b = window.AppState?.data?.user?.stickers || 0;
+        const badge = b > 0 ? `<span class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-rose-500 text-white text-[6px] font-black rounded-full flex items-center justify-center ring-1 ring-white dark:ring-[#1a140c]">${b > 9 ? '9+' : b}</span>` : '';
+        if (isActive) return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px]">
+            <div class="absolute top-0.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 animate-pulse"></div>
+            <div class="relative p-1 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 -translate-y-0.5">
+                <span class="material-symbols-outlined text-[18px] text-white" style="font-variation-settings:'FILL' 1">sell</span>${badge}</div>
+            <span class="text-[7px] font-black mt-0.5 leading-none text-purple-600 dark:text-purple-400">Sticker</span>
+            <div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full shadow-[0_0_5px_2px_rgba(168,85,247,0.5)]"></div></a>`;
+        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center py-1.5 px-0.5 flex-1 min-w-[34px] group">
+            <div class="relative p-1 group-active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500" style="font-variation-settings:'FILL' 0">sell</span>${badge}</div>
+            <span class="text-[7px] font-bold mt-0.5 leading-none text-slate-400 dark:text-slate-500">Sticker</span></a>`;
     }
 }
 customElements.define('child-nav', ChildNav);
