@@ -52,6 +52,164 @@ const TITLE_MILESTONES = [
 ];
 window.TITLE_MILESTONES = TITLE_MILESTONES;
 
+const TASK_EMOJI = {
+        // Cơ bản
+        "Ăn sáng ngoan": "🍳",
+        "Tự dọn đồ chơi": "🧸",
+        "Đánh răng sạch": "🪥",
+        "Đi ngủ đúng giờ": "🌙",
+        "Lễ phép chào hỏi": "🙇",
+        "Giúp đỡ việc nhà": "🧹",
+        "Tự giác học bài": "📚",
+        "Uống nhiều nước": "💧",
+        "Tập thể dục sáng": "🏃",
+        "Rửa tay sạch sẽ": "🧼",
+        "Ăn nhiều rau xanh": "🥦",
+        "Không xem TV quá 30p": "📺",
+        "Không chơi game quá 30p": "🎮",
+        "Gấp quần áo gọn gàng": "👕",
+        "Tưới cây giúp mẹ": "🪴",
+        "Đọc 1 cuốn sách": "📖",
+        "Dậy sớm không nhè": "☀️",
+        "Vệ sinh cá nhân": "🚽",
+        "Chăm sóc thú cưng": "🐾",
+        "Giữ lời hứa": "🤝",
+
+        // Arena
+        'Dậy sớm': '🌅', 'Ăn xong suất': '🍽️', 'Tự học bài': '📚', 'Làm việc nhà': '🏠', 'Tập thể dục': '🏃', 'Đánh răng': '🪥',
+        'Viết thư yêu thương': '✉️', 'Ba việc tốt': '🤝', 'Kể chuyện anh hùng': '📖', 'Vũ điệu chiến thắng': '💃', 'Bữa sáng đầu tay': '🥪', 'Reviewer tài năng': '🎬',
+        'Sứ giả môi trường': '🌱', 'Quản trò vui vẻ': '🎲', 'Dũng sĩ tiết kiệm': '⚡', 'Bản tin cảm ơn': '🎙️', 'Họa sĩ tặng quà': '🎨',
+        'Siêu nhân dọn dẹp': '🧹', 'Món ăn tự hào': '🥗', 'Chăm sóc người thân': '🍵', 'Khám phá thế giới': '🔍', 'Vô địch tự lái': '🚲', 'Đầu bếp nhí': '👨‍🍳',
+        'Nhà thơ nhí': '🖋️', 'Nụ cười tỏa nắng': '😊', 'Đi bộ khám phá': '🚶', 'Chiến binh dũng cảm': '🦁', 'Người bạn tốt': '🙌', 'Lòng hiếu thảo': '👵',
+        'Tinh thần đồng đội': '🫂'
+};
+window.TASK_EMOJI = TASK_EMOJI;
+
+const TASK_CONDITIONS = {
+        "Ăn sáng ngoan": "Con hãy tự giác ăn hết suất sáng của mình mà không cần nhắc nhở nhé!",
+        "Tự dọn đồ chơi": "Sau khi chơi xong, con hãy xếp gọn toàn bộ đồ chơi vào đúng vị trí cũ.",
+        "Đánh răng sạch": "Chải răng thật kỹ mặt trong, mặt ngoài trong 2 phút nhé!",
+        "Đi ngủ đúng giờ": "Lên giường nằm và nhắm mắt trước 9 giờ tối con nhé.",
+        "Lễ phép chào hỏi": "Chào người lớn khi gặp mặt hoặc khi đi thưa về gửi thật to rõ.",
+        "Giúp đỡ việc nhà": "Cùng mẹ lau bàn, quét nhà hoặc đổ rác nhé.",
+        "Tự giác học bài": "Ngồi vào bàn học ngay khi đến giờ mà không đợi bố mẹ nhắc.",
+        "Uống nhiều nước": "Uống ít nhất 5 cốc nước trong ngày hôm nay.",
+        "Tập thể dục sáng": "Làm 5 động tác vươn vai và chạy tại chỗ 2 phút.",
+        "Rửa tay sạch sẽ": "Luôn rửa tay bằng xà phòng trước khi ăn và sau khi đi vệ sinh.",
+        "Ăn nhiều rau xanh": "Trong bữa ăn hôm nay, con hãy ăn ít nhất 2 loại rau nhé.",
+        "Không xem TV quá 30p": "Chỉ xem đúng 30 phút rồi tự giác tắt TV.",
+        "Không chơi game quá 30p": "Giữ đúng lời hứa về thời gian chơi iPad/điện thoại.",
+        "Gấp quần áo gọn gàng": "Gấp ít nhất 3 bộ quần áo của mình cho vào ngăn tủ.",
+        "Tưới cây giúp mẹ": "Dùng bình tưới nước cho các cây trong nhà hoặc ngoài sân.",
+        "Đọc 1 cuốn sách": "Chọn 1 cuốn truyện con thích và đọc hết hoặc nhờ mẹ đọc cùng.",
+        "Dậy sớm không nhè": "Dậy ngay khi có chuông báo hoặc mẹ gọi, cười thật tươi nhé!",
+        "Vệ sinh cá nhân": "Tự giác tắm giặt hoặc gội đầu thật sạch sẽ.",
+        "Chăm sóc thú cưng": "Cho chó/mèo ăn hoặc cùng chơi with các bạn nhỏ đó.",
+        "Giữ lời hứa": "Đã hứa làm gì với bố mẹ thì phải thực hiện bằng được nhé.",
+
+        // Arena
+        'Dậy sớm': 'Bé hãy dậy trước 6:30 và hoàn thành vệ sinh cá nhân thật nhanh nhẹn để chuẩn bị cho ngày mới nhé!',
+        'Ăn xong suất': 'Bé hãy ăn hết suất cơm, không để thừa hạt nào và tự mang khay bát đi cất gọn gàng.',
+        'Tự học bài': 'Bé tự giác hoàn thành toàn bộ bài tập về nhà và bài chuẩn bị cho ngày mai mà không cần ba mẹ nhắc.',
+        'Làm việc nhà': 'Bé hãy dọn dẹp khu vực con đã hứa (phòng ngủ, góc học tập) thật ngăn nắp và sạch sẽ.',
+        'Tập thể dục': 'Bé vận động liên tục 20 phút (nhảy dây, hít đất, chạy bộ) để cơ thể luôn khỏe mạnh.',
+        'Đánh răng': 'Bé hãy đánh răng thật kỹ cả mặt trong và mặt ngoài trong đủ 2 phút để răng luôn trắng sáng.',
+        'Viết thư yêu thương': 'Bé hãy viết một thư ngắn, ghi âm hoặc quay clip nói lời yêu thương và cảm ơn gửi đến ba mẹ hoặc ông bà.',
+        'Ba việc tốt': 'Bé hãy giúp đỡ ít nhất 3 người xung quanh (bạn bè, thầy cô, hàng xóm) một việc nhỏ mà họ đang cần.',
+        'Kể chuyện anh hùng': 'Bé hãy đọc một cuốn sách hay và kể lại bài học ý nghĩa nhất con học được cho cả gia đình trong bữa tối.',
+        'Vũ điệu chiến thắng': 'Bé tự học một điệu nhảy mới hoặc 3 động tác võ thuật trên mạng và biểu diễn lại thật tự tin.',
+        'Bữa sáng đầu tay': 'Bé hãy tự tay chuẩn bị một bữa sáng đơn giản (bánh mì, sữa, trứng...) cho mình hoặc cho người thân.',
+        'Reviewer tài năng': 'Bé quay clip giới thiệu về một món đồ chơi, cuốn sách hoặc một món ngon mà con cực kỳ yêu thích.',
+        'Sứ giả môi trường': 'Bé hãy nhặt và phân loại 10 món rác, hoặc chăm sóc tưới nước cho các cây xanh xung quanh mình.',
+        'Quản trò vui vẻ': 'Bé hãy tổ chức một trò chơi nhỏ để cả nhà cùng tham gia và tạo không khí vui vẻ bên nhau.',
+        'Dũng sĩ tiết kiệm': 'Bé hãy kiểm tra các thiết bị điện/nước đang lãng phí để tắt đi, giải thích lý do bảo vệ trái đất cho ba mẹ.',
+        'Bản tin cảm ơn': 'Bé gửi bản tin bằng giọng nói hoặc video kể về một điều tốt đẹp nhất mà con đã nhận được trong ngày.',
+        'Họa sĩ tặng quà': 'Bé hãy vẽ một bức tranh chứa đựng tình cảm để tặng một người thân và giải thích ý nghĩa tranh cho họ.',
+        'Siêu nhân dọn dẹp': 'Bé hãy làm sạch một khu vực mà mình "lỡ tay" làm bừa bãi trước đó nhanh hơn cả mong đợi.',
+        'Món ăn tự hào': 'Bé hãy giúp mẹ hoàn thành một món ăn truyền thống trong gia đình (cuốn nem, nhặt rau, trang trí món ăn).',
+        'Chăm sóc người thân': 'Bé hãy tự tay pha một cốc nước, bóp vai hoặc hỏi thăm sức khỏe khi thấy người thân mệt mỏi.',
+        'Khám phá thế giới': 'Bé hãy tìm hiểu về một kiến thức mới trên thế giới (vũ trụ, đại dương) và thuyết trình lại cho gia đình.',
+        'Vô địch tự lái': 'Bé hãy tự mình đi xe đạp, đi bộ hoặc di chuyển đến một nơi gần nhà mà con chưa dám tự đi trước đây.',
+        'Đầu bếp nhí': 'Bé hãy sáng tạo ra một công thức nước uống hoặc món ăn nhẹ mới lạ mang tên của chính mình.',
+        'Nhà thơ nhí': 'Bé hãy tự sáng tác một bài thơ 4 câu về chủ đề gia đình, con vật hoặc thiên nhiên.',
+        'Nụ cười tỏa nắng': 'Bé hãy tìm cách làm cho ít nhất 3 người trong ngày hôm nay phải bật cười hoặc cảm thấy hạnh phúc.',
+        'Đi bộ khám phá': 'Bé hãy cùng gia đình đi bộ ít nhất 2km và ghi lại 3 điều con thấy thú vị nhất dọc đường.',
+        'Chiến binh dũng cảm': 'Bé hãy thực hiện một việc mà trước đây con thấy sợ hãi (như tự ngủ một mình, xin lỗi khi sai).',
+        'Người bạn tốt': 'Bé hãy chọn một món đồ chơi hoặc món quà nhỏ để tặng cho một người bạn có hoàn cảnh khó khăn hơn.',
+        'Lòng hiếu thảo': 'Bé hãy làm một việc tốt bất ngờ dành tặng cho ba mẹ mà không cần họ yêu cầu.',
+        'Tinh thần đồng đội': 'Bé hãy cùng anh/chị/em hoặc bạn bè hoàn thành một nhiệm vụ chung cực khó trong hôm nay.'
+};
+window.TASK_CONDITIONS = TASK_CONDITIONS;
+
+const TASK_SCHEDULE = {
+        "Ăn sáng ngoan": { start: 6, end: 9 },
+        "Tự dọn đồ chơi": { start: 9, end: 11 },
+        "Đánh răng sạch": { start: 6, end: 21 },
+        "Đi ngủ đúng giờ": { start: 19, end: 21 },
+        "Lễ phép chào hỏi": { start: 7, end: 18 },
+        "Giúp đỡ việc nhà": { start: 10, end: 17 },
+        "Tự giác học bài": { start: 14, end: 20 },
+        "Uống nhiều nước": { start: 7, end: 20 },
+        "Tập thể dục sáng": { start: 6, end: 8 },
+        "Rửa tay sạch sẽ": { start: 7, end: 20 },
+        "Ăn nhiều rau xanh": { start: 11, end: 19 },
+        "Không xem TV quá 30p": { start: 16, end: 20 },
+        "Không chơi game quá 30p": { start: 16, end: 20 },
+        "Gấp quần áo gọn gàng": { start: 9, end: 16 },
+        "Tưới cây giúp mẹ": { start: 16, end: 18 },
+        "Đọc 1 cuốn sách": { start: 8, end: 20 },
+        "Dậy sớm không nhè": { start: 6, end: 8 },
+        "Vệ sinh cá nhân": { start: 16, end: 20 },
+        "Chăm sóc thú cưng": { start: 7, end: 17 },
+        "Giữ lời hứa": { start: 0, end: 23 },
+
+        // Arena
+        'Dậy sớm': { start: 5, end: 9 },
+        'Ăn xong suất': { start: 6, end: 20 },
+        'Tự học bài': { start: 9, end: 21 },
+        'Làm việc nhà': { start: 8, end: 19 },
+        'Tập thể dục': { start: 6, end: 19 },
+        'Đánh răng': { start: 6, end: 22 },
+        'Viết thư yêu thương': { start: 8, end: 22 },
+        'Ba việc tốt': { start: 7, end: 19 },
+        'Kể chuyện anh hùng': { start: 10, end: 21 },
+        'Vũ điệu chiến thắng': { start: 9, end: 20 },
+        'Bữa sáng đầu tay': { start: 6, end: 10 },
+        'Reviewer tài năng': { start: 9, end: 21 },
+        'Sứ giả môi trường': { start: 6, end: 18 },
+        'Quản trò vui vẻ': { start: 10, end: 21 },
+        'Dũng sĩ tiết kiệm': { start: 6, end: 22 },
+        'Bản tin cảm ơn': { start: 8, end: 21 },
+        'Họa sĩ tặng quà': { start: 8, end: 21 },
+        'Siêu nhân dọn dẹp': { start: 8, end: 19 },
+        'Món ăn tự hào': { start: 10, end: 19 },
+        'Chăm sóc người thân': { start: 7, end: 21 },
+        'Khám phá thế giới': { start: 9, end: 20 },
+        'Vô địch tự lái': { start: 7, end: 18 },
+        'Đầu bếp nhí': { start: 9, end: 19 },
+        'Nhà thơ nhí': { start: 9, end: 21 },
+        'Nụ cười tỏa nắng': { start: 7, end: 21 },
+        'Đi bộ khám phá': { start: 6, end: 20 },
+        'Chiến binh dũng cảm': { start: 7, end: 22 },
+        'Người bạn tốt': { start: 7, end: 20 },
+        'Lòng hiếu thảo': { start: 7, end: 21 },
+        'Tinh thần đồng đội': { start: 8, end: 20 }
+};
+window.TASK_SCHEDULE = TASK_SCHEDULE;
+
+const HERO_TASKS = [
+        "Ăn sáng ngoan", "Tự dọn đồ chơi", "Đánh răng sạch", "Đi ngủ đúng giờ",
+        "Tự giác học bài", "Giúp đỡ việc nhà", "Đọc 1 cuốn sách", "Tưới cây giúp mẹ",
+        "Tập thể dục sáng", "Ăn nhiều rau xanh",
+
+        'Viết thư yêu thương', 'Ba việc tốt', 'Kể chuyện anh hùng', 'Vũ điệu chiến thắng', 'Bữa sáng đầu tay',
+        'Reviewer tài năng', 'Sứ giả môi trường', 'Quản trò vui vẻ', 'Dũng sĩ tiết kiệm', 'Bản tin cảm ơn',
+        'Họa sĩ tặng quà', 'Siêu nhân dọn dẹp', 'Món ăn tự hào', 'Chăm sóc người thân', 'Khám phá thế giới',
+        'Vô địch tự lái', 'Đầu bếp nhí', 'Nhà thơ nhí', 'Nụ cười tỏa nắng', 'Đi bộ khám phá',
+        'Chiến binh dũng cảm', 'Người bạn tốt', 'Lòng hiếu thảo', 'Tinh thần đồng đội'
+];
+window.HERO_TASKS = HERO_TASKS;
+
 const GROWTH_BEHAVIORS = {
         GOOD: [
                 { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },

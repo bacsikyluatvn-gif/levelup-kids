@@ -9,6 +9,31 @@ window.toggleDarkMode = () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 };
 
+// Global Arena Engine Loader
+(function () {
+    const scripts = document.getElementsByTagName('script');
+    let isLoaded = false;
+    for (let i = 0; i < scripts.length; i++) {
+        if (scripts[i].src && scripts[i].src.includes('arena-engine.js')) {
+            isLoaded = true;
+            break;
+        }
+    }
+    if (!isLoaded) {
+        const script = document.createElement('script');
+        let path = '../shared/js/arena-engine.js';
+        for (let i = 0; i < scripts.length; i++) {
+            if (scripts[i].src && scripts[i].src.includes('state.js')) {
+                path = scripts[i].src.replace('state.js', 'arena-engine.js');
+                break;
+            }
+        }
+        script.src = path;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+})();
+
 // Global Utility for beautiful popups
 window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) => {
     const existing = document.getElementById('lu-alert-modal');
@@ -502,7 +527,7 @@ class QuestCard extends HTMLElement {
                     </div>
                     <div class="relative z-10 flex flex-col h-full blur-[2px]">
                         <div class="flex items-start gap-5 mb-4">
-                            <div class="shrink-0 bg-green-100 dark:bg-green-900/30 w-14 h-14 rounded-2xl flex items-center justify-center text-green-600 dark:text-green-400 shadow-sm">
+                            <div class="shrink-0 bg-green-100 dark:bg-emerald-500/10 w-14 h-14 rounded-full flex items-center justify-center text-green-600 dark:text-emerald-400 shadow-sm border border-transparent dark:border-emerald-500/20">
                                 <span class="material-symbols-outlined text-3xl">${icon}</span>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -541,7 +566,7 @@ class QuestCard extends HTMLElement {
                 <div class="gamified-card bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm overflow-hidden relative dark:bg-[#2c2215] dark:border-slate-800 h-full flex flex-col transition-all duration-300">
                     <div class="relative z-10 flex flex-col h-full">
                         <div class="flex items-start gap-5 mb-4">
-                            <div class="shrink-0 bg-${color}-100 dark:bg-${color}-900/30 w-14 h-14 rounded-2xl flex items-center justify-center text-${color}-600 dark:text-${color}-400 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                            <div class="shrink-0 bg-${color}-100 dark:bg-${color}-500/10 w-14 h-14 rounded-full flex items-center justify-center text-${color}-600 dark:text-${color}-400 shadow-sm border border-transparent dark:border-${color}-500/20 group-hover:scale-110 transition-transform duration-500">
                                 <span class="material-symbols-outlined text-3xl">${icon}</span>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -2808,7 +2833,7 @@ class BehaviorLogModal extends HTMLElement {
             if (window.showToast) window.showToast('Lỗi khi ghi nhận!', 'error');
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = 'GHI NHẬT KÝ TRƯỞNG THÀNH';
+                btn.innerHTML = 'GHI NHẬN HÀNH TRÌNH';
             }
         }
     }
@@ -2855,7 +2880,7 @@ class BehaviorLogModal extends HTMLElement {
                                 </span>
                             </div>
                             <div>
-                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white">Ghi Nhật Ký Trưởng Thành</h2>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white">Ghi nhận Hành Trình LevelUp Kids</h2>
                                 <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${this.activeType === 'GOOD' ? 'Khen ngợi con yêu' : 'Nhắc nhở con rèn luyện'}</p>
                             </div>
                         </div>
@@ -3006,7 +3031,7 @@ class BehaviorLogModal extends HTMLElement {
                                         </div>
 
                                         <button onclick="window.submitBehaviorLog()" id="submit-bh-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 transition-all mt-4 flex items-center justify-center gap-3">
-                                            GHI NHẬT KÝ TRƯỞNG THÀNH
+                                            GHI NHẬN HÀNH TRÌNH LevelUp Kids
                                             <span class="material-symbols-outlined text-sm">auto_stories</span>
                                         </button>
                                     </div>
@@ -3080,12 +3105,28 @@ class GrowthDiaryView extends HTMLElement {
         const progressToNext = nextMilestone ? ((personalityScore - currentMilestone.score) / (nextMilestone.score - currentMilestone.score) * 100) : 100;
 
         const groupedLogs = {};
+
+        const getSimpleDateKey = (date) => {
+            const d = new Date(date);
+            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        };
+
+        const todayKey = getSimpleDateKey(new Date());
+
         logs.forEach(log => {
             if (!log.createdAt) return;
             const d = new Date(log.createdAt);
+            const dateKey = getSimpleDateKey(d);
             const dateDisplay = d.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            if (!groupedLogs[dateDisplay]) groupedLogs[dateDisplay] = { GOOD: [], BAD: [], REFLECTION: [] };
+            if (!groupedLogs[dateKey]) {
+                groupedLogs[dateKey] = {
+                    display: dateDisplay,
+                    GOOD: [],
+                    BAD: [],
+                    REFLECTION: []
+                };
+            }
 
             const title = (log.itemTitle || "").toLowerCase();
             const desc = (log.itemDesc || "").toLowerCase();
@@ -3097,16 +3138,18 @@ class GrowthDiaryView extends HTMLElement {
                 (log.type === 'behavior_good' && title.includes('/10'));
 
             if (isReflection) {
-                groupedLogs[dateDisplay].REFLECTION.push(log);
+                groupedLogs[dateKey].REFLECTION.push(log);
             } else if (log.type === 'behavior_good') {
-                groupedLogs[dateDisplay].GOOD.push(log);
+                groupedLogs[dateKey].GOOD.push(log);
             } else {
-                groupedLogs[dateDisplay].BAD.push(log);
+                groupedLogs[dateKey].BAD.push(log);
             }
         });
 
-        const dateKeys = Object.keys(groupedLogs);
+        const dateKeys = Object.keys(groupedLogs).sort((a, b) => new Date(b) - new Date(a));
 
+        const todayGroup = groupedLogs[todayKey];
+        const pastDates = dateKeys.filter(d => d !== todayKey);
         window.showGrowthDetail = (logId) => {
             const log = logs.find(l => l.id === logId);
             if (!log) return;
@@ -3398,8 +3441,6 @@ class GrowthDiaryView extends HTMLElement {
         };
 
         const todayStr = new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const todayGroup = groupedLogs[todayStr];
-        const pastDates = dateKeys.filter(d => d !== todayStr);
 
         this.innerHTML = `
             <div class="relative space-y-6 pb-20 antialiased overflow-visible">
@@ -3874,11 +3915,11 @@ class GrowthDiaryView extends HTMLElement {
                         if (textarea) textarea.value = '';
                         window.setDailyRating(0);
 
-                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật Ký Trưởng Thành của con đã được lưu vào rồi nhé! ✨", "success");
+                        window.showFamilyQuestAlert("Tuyệt vời", "Hành Trình LevelUp Kids của con đã được lưu vào rồi nhé! ✨", "success");
                         if (window.confetti) {
                             window.confetti({ particleCount: 200, spread: 150, origin: { y: 0.7 }, colors: ['#10b981', '#ffffff'] });
                         }
-                        window.showFamilyQuestAlert("Tuyệt vời", "Nhật Ký Trưởng Thành của con đã được lưu vào rồi nhé! ✨", "success");
+                        window.showFamilyQuestAlert("Tuyệt vời", "Hành Trình LevelUp Kids của con đã được lưu vào rồi nhé! ✨", "success");
 
                         window.scrollTo({ top: 0, behavior: 'smooth' });
 

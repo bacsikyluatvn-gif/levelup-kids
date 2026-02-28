@@ -106,6 +106,10 @@
             <div class="flex items-center gap-4">
                 <notification-bell></notification-bell>
                 <div class="flex items-center gap-2">
+                    <button id="btn-approve-all" onclick="approveAllRequests()" style="display: none;"
+                        class="px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
+                        <span class="material-symbols-outlined text-[16px]">done_all</span> Duyệt nhanh tất cả
+                    </button>
                     <button onclick="window.AppState.syncFromDatabase()"
                         class="px-4 py-2 rounded-full bg-slate-100 dark:bg-stone-800 hover:bg-slate-200 text-slate-600 dark:text-stone-300 font-bold text-xs flex items-center gap-2 transition-all">
                         <span class="material-symbols-outlined text-[16px]">sync</span> Làm mới
@@ -313,6 +317,27 @@
                        <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-stone-700 mb-4">history</span>
                        <h4 class="font-bold text-slate-500">Chưa có lịch sử.</h4>
                    </div>`;
+
+            // Update approve all button visibility
+            const approveAllBtn = document.getElementById('btn-approve-all');
+            if (approveAllBtn) {
+                approveAllBtn.style.display = pendingReqs.length > 1 ? 'flex' : 'none';
+            }
+        };
+
+        window.approveAllRequests = async () => {
+            const requests = window.AppState.data.requests || [];
+            const pendingReqs = requests.filter(r => r.status === 'pending' && (r.type === 'task' || r.type === 'atonement'));
+
+            if (pendingReqs.length === 0) return;
+
+            if (confirm(`Bạn có chắc muốn duyệt tất cả ${pendingReqs.length} nhiệm vụ này không?`)) {
+                // Duyệt lần lượt
+                for (const req of pendingReqs) {
+                    await window.AppState.markRequestDelivered(req.id);
+                }
+                window.showLevelUpAlert('Thành công', `Đã duyệt tất cả ${pendingReqs.length} nhiệm vụ!`, 'success');
+            }
         };
 
         window.handleRequest = (reqId, action) => {
