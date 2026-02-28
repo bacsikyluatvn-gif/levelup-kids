@@ -4,3 +4,9 @@ node_modules/
 .gemini/
 level-up-kids/
 .vercel
+
+# Android / Capacitor
+android/
+www/
+*.apk
+build-app.sh

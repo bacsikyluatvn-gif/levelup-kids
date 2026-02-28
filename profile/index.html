@@ -80,11 +80,12 @@
             <app-header title="Hồ Sơ Của Bé" type="child" class="w-full max-w-[1200px] flex-shrink-0"></app-header>
 
             <main
-                class="layout-content-container flex flex-col max-w-[720px] w-full flex-1 p-6 pb-48 gap-8 mx-auto mt-4">
+                class="layout-content-container flex flex-col max-w-[720px] w-full flex-1 p-4 md:p-6 pb-48 gap-6 md:gap-8 mx-auto mt-2 md:mt-4">
                 <!-- Current Profile Avatar -->
                 <div class="flex flex-col items-center gap-6">
                     <div class="relative group">
-                        <div class="size-40 rounded-full bg-gradient-to-tr from-primary to-orange-300 p-1.5 shadow-xl">
+                        <div
+                            class="size-28 md:size-40 rounded-full bg-gradient-to-tr from-primary to-orange-300 p-1.5 shadow-xl">
                             <div
                                 class="w-full h-full rounded-full bg-background-light dark:bg-background-dark overflow-hidden flex items-center justify-center border-4 border-white dark:border-background-dark">
                                 <img id="active-avatar" alt="Current Avatar" class="w-full h-full object-cover"
@@ -103,7 +104,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="text-lg font-bold px-1 text-slate-800 dark:text-slate-200">Tên Anh Hùng</span>
                         <input id="hero-name-input"
-                            class="w-full h-16 rounded-xl border-4 border-primary/20 bg-white dark:bg-slate-800/50 px-6 text-xl font-bold focus:border-primary focus:outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-white"
+                            class="w-full h-14 md:h-16 rounded-xl border-4 border-primary/20 bg-white dark:bg-slate-800/50 px-4 md:px-6 text-lg md:text-xl font-bold focus:border-primary focus:outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-white"
                             placeholder="Nhập tên anh hùng của bạn..." type="text" value="..." />
                     </label>
                 </div>
@@ -111,7 +112,8 @@
                 <!-- Avatar Selection Grid -->
                 <div class="flex flex-col gap-4">
                     <div class="flex items-center justify-between px-1">
-                        <h3 class="text-xl font-800 text-slate-900 dark:text-slate-100 uppercase italic">Chọn Hình Đại
+                        <h3 class="text-lg md:text-xl font-800 text-slate-900 dark:text-slate-100 uppercase italic">Chọn
+                            Hình Đại
                             Diện Mới</h3>
                         <span class="text-sm font-bold text-primary hidden sm:inline-block">Bộ Sưu Tập Có Sẵn</span>
                     </div>

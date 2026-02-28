@@ -71,21 +71,21 @@
     <main class="flex-1 flex flex-col overflow-hidden">
       <!-- Header -->
       <header
-        class="h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-neutral-soft flex items-center justify-between px-8 shrink-0">
+        class="h-auto md:h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-neutral-soft flex flex-col md:flex-row md:items-center justify-between px-4 md:px-8 py-3 md:py-0 gap-3 shrink-0">
         <div>
-          <h2 class="text-2xl font-black tracking-tight">Quản lý Nhiệm vụ</h2>
+          <h2 class="text-xl md:text-2xl font-black tracking-tight">Quản lý Nhiệm vụ</h2>
           <p class="text-text-sub text-sm">Thiết lập thử thách và phần thưởng cho con</p>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 md:gap-4 flex-wrap">
           <notification-bell></notification-bell>
           <button onclick="window.openBehaviorLogModal()"
-            class="bg-white dark:bg-zinc-800 border-2 border-primary/20 text-slate-700 dark:text-slate-200 font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all hover:bg-primary/5 group">
+            class="bg-white dark:bg-zinc-800 border-2 border-primary/20 text-slate-700 dark:text-slate-200 font-bold py-2 md:py-2.5 px-3 md:px-6 rounded-xl flex items-center gap-1 md:gap-2 transition-all hover:bg-primary/5 group text-xs md:text-base">
             <span
               class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform">auto_awesome</span>
             <span>Ghi nhận hành động</span>
           </button>
           <button onclick="toggleModal(true)"
-            class="bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all shadow-sm shadow-primary/20">
+            class="bg-primary hover:bg-primary/90 text-white font-bold py-2 md:py-2.5 px-3 md:px-6 rounded-xl flex items-center gap-1 md:gap-2 transition-all shadow-sm shadow-primary/20 text-xs md:text-base">
             <span class="material-symbols-outlined text-[20px]">add_circle</span>
             <span>Thêm nhiệm vụ mới</span>
           </button>
@@ -93,7 +93,7 @@
 
       </header>
       <!-- Content Scrollable Area -->
-      <section class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+      <section class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
         <!-- Filters/Stats Row -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div class="bg-white p-4 rounded-xl border border-neutral-soft flex items-center gap-4">
@@ -126,23 +126,25 @@
         </div>
         <!-- Mission List Table -->
         <div class="bg-white dark:bg-zinc-900 rounded-xl border border-neutral-soft overflow-hidden shadow-sm">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr
-                class="bg-neutral-soft/50 dark:bg-white/5 text-text-sub dark:text-slate-400 text-xs uppercase font-bold tracking-wider">
-                <th class="px-6 py-4">Nhiệm vụ</th>
-                <th class="px-6 py-4">Thể loại</th>
-                <th class="px-6 py-4">Vàng (Gold)</th>
-                <th class="px-6 py-4">Nước (Giọt)</th>
-                <th class="px-6 py-4">Sticker (Uy tín)</th>
-                <th class="px-6 py-4">Kinh nghiệm (EXP)</th>
-                <th class="px-6 py-4 text-right">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="task-table-body" class="divide-y divide-neutral-soft">
-              <!-- Dynamic tasks inserted here via JS -->
-            </tbody>
-          </table>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[600px]">
+              <thead>
+                <tr
+                  class="bg-neutral-soft/50 dark:bg-white/5 text-text-sub dark:text-slate-400 text-xs uppercase font-bold tracking-wider">
+                  <th class="px-6 py-4">Nhiệm vụ</th>
+                  <th class="px-6 py-4">Thể loại</th>
+                  <th class="px-6 py-4">Vàng (Gold)</th>
+                  <th class="px-6 py-4">Nước (Giọt)</th>
+                  <th class="px-6 py-4">Sticker (Uy tín)</th>
+                  <th class="px-6 py-4">Kinh nghiệm (EXP)</th>
+                  <th class="px-6 py-4 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="task-table-body" class="divide-y divide-neutral-soft">
+                <!-- Dynamic tasks inserted here via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="mt-6 flex justify-center">
           <button class="text-text-sub hover:text-primary text-sm font-bold flex items-center gap-2">

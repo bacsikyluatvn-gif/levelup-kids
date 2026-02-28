@@ -30,38 +30,38 @@
     <!-- Reusable Header Component -->
     <app-header title="Bảng Xếp Hạng" type="child"></app-header>
 
-    <main class="flex-grow w-full max-w-[1000px] mx-auto p-6 md:p-8 space-y-8 pb-32">
+    <main class="flex-grow w-full max-w-[1000px] mx-auto p-4 md:p-8 space-y-6 md:space-y-8 pb-32">
         <!-- Top Section & Toggles -->
         <div class="text-center">
-            <h2 class="text-4xl font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tighter"
+            <h2 class="text-2xl md:text-4xl font-black text-slate-800 dark:text-white mb-1 md:mb-2 uppercase tracking-tighter"
                 id="lb-title">Siêu Sao Bảng Vàng 🌟</h2>
             <p class="text-slate-500 font-medium" id="lb-desc">Những thợ săn cày cuốc kinh nghiệm khủng nhất tuần này!
             </p>
 
             <div
-                class="mt-8 mb-12 bg-slate-100 dark:bg-slate-800 p-1 rounded-full inline-flex relative shadow-inner overflow-x-auto no-scrollbar">
+                class="mt-4 md:mt-8 mb-6 md:mb-12 bg-slate-100 dark:bg-slate-800 p-1 rounded-full inline-flex relative shadow-inner overflow-x-auto no-scrollbar max-w-full">
                 <button onclick="switchLeaderboard('arena_wins')" id="btn-lb-arena"
-                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 bg-white dark:bg-[#2c2215] text-primary shadow flex items-center gap-2">
+                    class="relative z-10 px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-black uppercase tracking-wider md:tracking-widest transition-all duration-300 bg-white dark:bg-[#2c2215] text-primary shadow flex items-center gap-1 md:gap-2 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">swords</span>
                     Đấu Trường
                 </button>
                 <button onclick="switchLeaderboard('weekly_xp')" id="btn-lb-weekly-xp"
-                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    class="relative z-10 px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-black uppercase tracking-wider md:tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-1 md:gap-2 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">local_fire_department</span>
                     Đua Tuần
                 </button>
                 <button onclick="switchLeaderboard('stickers')" id="btn-lb-stickers"
-                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    class="relative z-10 px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-black uppercase tracking-wider md:tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-1 md:gap-2 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">sell</span>
                     Huy Hiệu
                 </button>
                 <button onclick="switchLeaderboard('xp')" id="btn-lb-xp"
-                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    class="relative z-10 px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-black uppercase tracking-wider md:tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-1 md:gap-2 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">military_tech</span>
                     Cấp Độ
                 </button>
                 <button onclick="switchLeaderboard('streaks')" id="btn-lb-streaks"
-                    class="relative z-10 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                    class="relative z-10 px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-sm font-black uppercase tracking-wider md:tracking-widest transition-all duration-300 text-slate-500 hover:text-slate-700 flex items-center gap-1 md:gap-2 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">electric_bolt</span>
                     Chuỗi
                 </button>
@@ -73,7 +73,9 @@
         <!-- Detailed List Section (Intelligent Component) -->
         <div class="space-y-4">
             <div class="flex items-center justify-between px-2">
-                <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-widest">Danh sách thám
+                <h3
+                    class="text-base md:text-xl font-black text-slate-800 dark:text-white uppercase tracking-wider md:tracking-widest">
+                    Danh sách thám
                     hiểm</h3>
                 <span class="text-xs font-bold text-slate-400">Cập nhật tự động</span>
             </div>
@@ -84,7 +86,7 @@
 
     <!-- Footer -->
     <footer
-        class="bg-white dark:bg-[#2c2215] border-t border-slate-100 dark:border-slate-800 py-10 px-6 text-center mt-auto">
+        class="hidden md:block bg-white dark:bg-[#2c2215] border-t border-slate-100 dark:border-slate-800 py-10 px-6 text-center mt-auto">
         <p class="text-slate-400 text-sm font-bold">© 2023 LevelUp Kids - Biến việc nhà thành trò chơi</p>
     </footer>
 

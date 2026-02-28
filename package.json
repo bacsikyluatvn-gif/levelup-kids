@@ -5,9 +5,15 @@
   "main": "index.html",
   "scripts": {
     "start": "serve .",
-    "dev": "static-server"
+    "dev": "static-server",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android",
+    "cap:build": "npx cap sync android && npx cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
     "@supabase/supabase-js": "^2.48.0",
     "dotenv": "^16.4.5"
   }

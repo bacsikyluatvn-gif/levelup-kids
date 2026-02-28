@@ -391,9 +391,9 @@ class AppHeader extends HTMLElement {
         const xpPercent = Math.floor((user.xp / user.maxXp) * 100);
         return `
             <!-- Stats Hub (Center) -->
-            <div class="hidden lg:flex items-center gap-6 bg-slate-100/50 dark:bg-white/5 px-6 py-2 rounded-[2rem] border border-slate-200/50 dark:border-white/10 shadow-inner">
-                <!-- Progress -->
-                <div class="flex items-center gap-4 border-r border-slate-200 dark:border-white/10 pr-6">
+            <div class="flex items-center gap-2 md:gap-6 bg-slate-100/50 dark:bg-white/5 p-1 md:px-6 md:py-2 rounded-2xl md:rounded-[2rem] border border-slate-200/50 dark:border-white/10 shadow-inner overflow-x-auto no-scrollbar max-w-[50%] md:max-w-none">
+                <!-- Progress (Hidden on mobile to save space, but visible on md+) -->
+                <div class="hidden md:flex items-center gap-4 border-r border-slate-200 dark:border-white/10 pr-6">
                     <div class="flex flex-col w-32 gap-1">
                         <div class="flex justify-between text-[9px] font-black uppercase tracking-tighter text-slate-500 dark:text-slate-400">
                             <span>LEVEL ${user.level}</span>
@@ -406,25 +406,22 @@ class AppHeader extends HTMLElement {
                 </div>
 
                 <!-- Resources -->
-                <div class="flex items-center gap-1.5 font-bold">
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform cursor-help" title="Nhân Cách (Personality Points)">
-                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">favorite</span>
-                        <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
+                <div class="flex items-center gap-1 md:gap-1.5 font-bold shrink-0">
+                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform" title="Vàng (Gold)">
+                        <span class="material-symbols-outlined text-[16px] md:text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                        <span class="text-[11px] md:text-sm tabular-nums">${user.gold}</span>
                     </div>
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform cursor-help" title="Vàng (Gold)">
-                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                        <span class="text-sm tabular-nums">${user.gold}</span>
+                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform" title="Huy hiệu (Stickers)">
+                        <span class="material-symbols-outlined text-[16px] md:text-[18px] transform rotate-12">sell</span>
+                        <span class="text-[11px] md:text-sm tabular-nums">${user.stickers || 0}</span>
                     </div>
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform cursor-help" title="Huy hiệu (Stickers)">
-                        <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
-                        <span class="text-sm tabular-nums">${user.stickers || 0}</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
-                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
-                        <span class="text-sm tabular-nums">${user.water || 0}</span>
+                    <div class="flex items-center gap-1 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Giọt nước (Water - Để tưới cây)">
+                        <span class="material-symbols-outlined text-[16px] md:text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                        <span class="text-[11px] md:text-sm tabular-nums">${user.water || 0}</span>
                     </div>
                 </div>
             </div>
+
 
             <!-- Profile & System (Right) -->
             <div class="flex items-center gap-2 md:gap-4 ml-auto">
@@ -2083,7 +2080,7 @@ class ShopGrid extends HTMLElement {
         const userPersonality = data.user.personalityPoints || 0;
 
         this.innerHTML = `
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 ${items.map(item => {
             const hasGoldPrice = item.price > 0;
             const hasPersonalityPrice = item.personalityPrice > 0;
@@ -2224,7 +2221,7 @@ class QuestGrid extends HTMLElement {
                         <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-wider">Nhiệm vụ Bắt buộc</h3>
                         <span class="ml-auto bg-emerald-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full">${mandatory.length} CẦN LÀM</span>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                         ${mandatory.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2241,7 +2238,7 @@ class QuestGrid extends HTMLElement {
                         <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-wider">Nhiệm vụ Tùy chọn</h3>
                         <span class="ml-auto bg-purple-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full">${optional.length} THÊM VUI</span>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 transition-all duration-500">
                         ${optional.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2334,22 +2331,22 @@ class ChildNav extends HTMLElement {
 
     render(active) {
         this.innerHTML = `
-            <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1a140c]/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
-                <nav class="max-w-xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center relative gap-1">
-                    ${this.navItem('home', 'Tổng quan', 'home/index.html', active === 'home' || active === '')}
+            <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] overflow-x-auto no-scrollbar">
+                <nav class="max-w-2xl mx-auto px-1 py-1 flex justify-between items-end relative gap-0.5">
+                    ${this.navItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
                     ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
                     ${this.navItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
-                    ${this.navItem('sports_kabaddi', 'Đấu trường', 'arena/index.html', active === 'arena')}
-                    ${this.navItem('leaderboard', 'Xếp hạng', 'leaderboard/index.html', active === 'leaderboard')}
-                    ${this.navItem('workspace_premium', 'Danh hiệu', 'titles/index.html', active === 'titles')}
+                    ${this.navItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena')}
                     ${this.navStickerItem(active === 'stickers')}
-                    ${this.navItem('park', 'Hành trình', 'tree-growth/index.html', active === 'tree-growth')}
-                    ${this.navItem('storefront', 'Cửa hàng', 'shop/index.html', active === 'shop')}
-                    ${this.navItem('person', 'Hồ sơ', 'profile/index.html', active === 'profile')}
+                    ${this.navItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth')}
+                    ${this.navItem('storefront', 'Qùa', 'shop/index.html', active === 'shop')}
+                    ${this.navItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard')}
+                    ${this.navItem('person', 'Tôi', 'profile/index.html', active === 'profile')}
                 </nav>
             </div>
             <!--Spacer to prevent content from being hidden by fixed nav-->
-            <div class="h-24"></div>
+            <div class="h-20"></div>
+
             <titles-modal></titles-modal>
             <parent-pin-modal></parent-pin-modal>
         `;
@@ -2367,13 +2364,15 @@ class ChildNav extends HTMLElement {
             ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center"> ${balance > 9 ? '9+' : balance}</span> `
             : '';
         return `
-            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[44px] text-center">
-                <div class="${isActive ? 'bg-primary/10 p-2.5 rounded-2xl' : 'p-2.5'} transition-all duration-300 relative">
+            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[56px] py-2">
+                <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300 relative">
                     <span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>
                     ${badge}
                 </div>
+                <span class="text-[9px] font-bold mt-0.5 leading-none">Sticker</span>
                 ${dot}
             </a>
+
             `;
     }
 
@@ -2390,12 +2389,14 @@ class ChildNav extends HTMLElement {
         const attrs = onClickStr ? `href="${href}" onclick="${onClickStr}"` : `href="../${href}"`;
 
         return `
-            <a ${attrs} class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[44px] text-center">
-                <div class="${isActive ? 'bg-primary/10 p-2.5 rounded-2xl' : 'p-2.5'} transition-all duration-300">
+            <a ${attrs} class="relative flex flex-col items-center justify-center transition-all duration-300 ${activeClass} flex-1 min-w-[56px] py-2">
+                <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300">
                     <span class="material-symbols-outlined text-2xl ${iconClass}">${icon}</span>
                 </div>
+                <span class="text-[9px] font-bold mt-0.5 leading-none">${label}</span>
                 ${dot}
             </a>
+
             `;
     }
 }

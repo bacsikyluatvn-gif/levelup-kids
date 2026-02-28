@@ -201,3 +201,18 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #d48215;
 }
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Safe area padding for notch phones */
+.pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}

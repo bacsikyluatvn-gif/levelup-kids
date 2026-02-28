@@ -50,21 +50,30 @@
         <parent-sidebar active="dashboard"></parent-sidebar>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 h-screen custom-scrollbar">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 h-screen custom-scrollbar">
 
             <!-- Header Section -->
-            <header class="flex flex-col xl:flex-row xl:items-center justify-between mb-10 gap-6">
+            <header class="flex flex-col xl:flex-row xl:items-center justify-between mb-6 md:mb-10 gap-4 md:gap-6">
                 <div>
-                    <h2 class="text-4xl font-black text-slate-800 dark:text-white tracking-tighter">Bảng Điều Khiển</h2>
+                    <h2 class="text-2xl md:text-4xl font-black text-slate-800 dark:text-white tracking-tighter">Bảng
+                        Điều Khiển</h2>
                     <p class="text-slate-500 font-medium mt-1 uppercase text-[10px] tracking-widest font-black">Tổng
                         quan hoạt động rèn luyện của gia đình</p>
 
-                    <!-- View Switcher -->
-                    <div id="child-switcher"
-                        class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 mt-6 inline-flex">
-                        <button id="btn-all" onclick="changeDashboardView('all')"
-                            class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 rounded-lg shadow-sm text-sm font-bold text-slate-900 dark:text-white transition-all">
-                            <span>Toàn gia đình</span>
+                    <!-- View Switcher & Portal Link -->
+                    <div class="flex flex-wrap items-center gap-4 mt-6">
+                        <div id="child-switcher"
+                            class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 inline-flex">
+                            <button id="btn-all" onclick="changeDashboardView('all')"
+                                class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 rounded-lg shadow-sm text-sm font-bold text-slate-900 dark:text-white transition-all">
+                                <span>Toàn gia đình</span>
+                            </button>
+                        </div>
+
+                        <button onclick="navigateWithTransition('../portal/index.html')"
+                            class="flex items-center gap-2 px-5 py-2.5 bg-slate-800 dark:bg-slate-700 text-white rounded-xl text-xs font-black shadow-lg hover:bg-slate-900 transition-all uppercase tracking-widest">
+                            <span class="material-symbols-outlined text-lg text-primary">logout</span>
+                            <span>Trở lại App Của Bé</span>
                         </button>
                     </div>
                 </div>
@@ -86,7 +95,7 @@
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-8">
                 <!-- Left Column (Main Stats) -->
                 <div class="xl:col-span-2 space-y-8">
 

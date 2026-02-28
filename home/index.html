@@ -69,6 +69,13 @@
             border: 2px dashed rgba(238, 157, 43, 0.2);
             border-radius: 50%;
             pointer-events: none;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .power-orbit {
+                display: block;
+            }
         }
 
         .orbit-1 {
@@ -114,10 +121,17 @@
             background-color: white;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 3.5rem;
-            padding: 2rem;
+            border-radius: 2rem;
+            padding: 1.25rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .cute-card {
+                border-radius: 3.5rem;
+                padding: 2rem;
+            }
         }
 
         .dark .cute-card {
@@ -137,12 +151,12 @@
 
         /* Unified Button Style */
         .btn-glass {
-            margin-top: 2.5rem;
-            height: 3rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
+            margin-top: 1rem;
+            height: 2.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
             border-radius: 9999px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -157,14 +171,24 @@
             cursor: pointer;
         }
 
+        @media (min-width: 768px) {
+            .btn-glass {
+                margin-top: 2.5rem;
+                height: 3rem;
+                padding-left: 2rem;
+                padding-right: 2rem;
+                font-size: 11px;
+            }
+        }
+
         .btn-glass:active {
             transform: scale(0.95);
         }
 
         /* Icon Container Style */
         .icon-bloom {
-            width: 6rem;
-            height: 6rem;
+            width: 4rem;
+            height: 4rem;
             border-radius: 999px;
             display: flex;
             align-items: center;
@@ -173,7 +197,15 @@
             transition: all 0.5s;
             position: relative;
             z-index: 10;
-            border: 4px solid rgba(255, 255, 255, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @media (min-width: 768px) {
+            .icon-bloom {
+                width: 6rem;
+                height: 6rem;
+                border: 4px solid rgba(255, 255, 255, 0.4);
+            }
         }
 
         .hero-avatar {
@@ -195,7 +227,7 @@
         }
 
         .section-title {
-            font-size: 1.875rem;
+            font-size: 1.25rem;
             font-weight: 1000;
             color: rgba(30, 41, 59, 1);
             text-transform: uppercase;
@@ -203,7 +235,14 @@
             font-style: italic;
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 1.875rem;
+                gap: 1.5rem;
+            }
         }
 
         .dark .section-title {
@@ -215,7 +254,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.2rem;
-            padding: 0.15rem 0.4rem;
+            padding: 0.15rem 0.3rem;
             border-radius: 0.6rem;
             font-size: 9px;
             font-weight: 800;
@@ -225,6 +264,20 @@
             background: rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(0, 0, 0, 0.05);
             transition: all 0.3s;
+        }
+
+        .reward-tag span:not(.material-symbols-outlined) {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .reward-tag {
+                padding: 0.15rem 0.4rem;
+            }
+
+            .reward-tag span:not(.material-symbols-outlined) {
+                display: inline;
+            }
         }
 
         .dark .reward-tag {
@@ -321,17 +374,18 @@
 
     <!-- 1. VICTORY TICKER (BẢN TIN CHIẾN THẮNG) -->
     <div
-        class="fixed top-[96px] left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-[60] bg-white/40 dark:bg-black/40 backdrop-blur-3xl border border-white/30 dark:border-white/10 h-11 flex items-center overflow-hidden victory-ticker-container shadow-xl rounded-full">
-        <div class="animate-scroll whitespace-nowrap gap-24 text-blue-600 dark:text-blue-300 font-black text-[10px] uppercase tracking-[0.2em] px-12"
+        class="fixed top-[92px] md:top-[96px] left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-[60] bg-white/40 dark:bg-black/40 backdrop-blur-3xl border border-white/30 dark:border-white/10 h-8 md:h-11 flex items-center overflow-hidden victory-ticker-container shadow-xl rounded-full">
+        <div class="animate-scroll whitespace-nowrap gap-24 text-blue-600 dark:text-blue-300 font-extrabold text-[8px] md:text-[10px] uppercase tracking-[0.2em] px-12"
             style="animation-duration: 40s" id="ticker-content">
             <!-- Content dynamically generated by JS -->
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 pt-56 pb-32 space-y-24">
+    <main class="max-w-7xl mx-auto px-3 md:px-4 pt-28 md:pt-56 pb-32 space-y-8 md:space-y-24">
+
 
         <!-- 2. POWER CORE (TRUNG TÂM NĂNG LƯỢNG) -->
-        <section class="relative flex flex-col items-center justify-center py-10 animate-fade-in-up">
+        <section class="relative flex flex-col items-center justify-center py-2 md:py-10 animate-fade-in-up">
             <div class="hero-glow-bg absolute inset-0 -z-10 animate-pulse"></div>
 
             <!-- Orbits -->
@@ -345,14 +399,16 @@
             <!-- Avatar -->
             <div class="relative group cursor-pointer" onclick="window.location.href='../dashboard/index.html'">
                 <div
-                    class="absolute -inset-12 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-20 group-hover:opacity-60 transition-opacity animate-aura">
+                    class="absolute -inset-8 md:-inset-12 bg-gradient-to-tr from-primary via-amber-400 to-yellow-200 rounded-full blur-3xl opacity-20 group-hover:opacity-60 transition-opacity animate-aura">
                 </div>
                 <div id="hero-avatar"
-                    class="size-56 md:size-80 rounded-[5rem] bg-slate-200 dark:bg-slate-800 bg-cover bg-center border-8 border-white dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-2 animate-pulse">
-                    <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-primary to-amber-600 text-white size-20 md:size-24 rounded-[2.5rem] md:rounded-[3rem] flex flex-col items-center justify-center border-4 border-white dark:border-slate-800 shadow-2xl"
+                    class="size-32 md:size-80 rounded-[3rem] md:rounded-[5rem] bg-slate-200 dark:bg-slate-800 bg-cover bg-center border-4 md:border-8 border-white dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] relative z-20 group-hover:scale-105 transition-all duration-500 group-hover:rotate-2 animate-pulse">
+                    <div class="absolute -bottom-3 md:-bottom-6 -right-3 md:-right-6 bg-gradient-to-br from-primary to-amber-600 text-white size-12 md:size-24 rounded-[1.5rem] md:rounded-[3rem] flex flex-col items-center justify-center border-3 md:border-4 border-white dark:border-slate-800 shadow-2xl"
                         id="hero-level-ring">
-                        <span class="text-[10px] font-black uppercase tracking-tighter opacity-80">Cấp</span>
-                        <span class="font-[1000] text-3xl md:text-4xl leading-none mt-1" id="hero-level">&nbsp;</span>
+                        <span
+                            class="text-[8px] md:text-[10px] font-black uppercase tracking-tighter opacity-80">Cấp</span>
+                        <span class="font-[1000] text-xl md:text-4xl leading-none mt-0.5 md:mt-1"
+                            id="hero-level">&nbsp;</span>
                     </div>
                 </div>
 
@@ -373,11 +429,12 @@
             </div>
 
             <!-- Identity -->
-            <div class="mt-16 text-center relative z-10">
-                <h1 class="text-7xl md:text-9xl font-[1000] tracking-tighter uppercase italic text-slate-900 dark:text-white mb-4 drop-shadow-2xl"
+            <div class="mt-6 md:mt-16 text-center relative z-10">
+                <h1 class="text-3xl sm:text-7xl md:text-9xl font-[1000] tracking-tighter uppercase italic text-slate-900 dark:text-white mb-2 md:mb-4 drop-shadow-2xl"
                     id="hero-name">&nbsp;</h1>
                 <div
-                    class="inline-flex items-center gap-4 bg-white/70 dark:bg-black/40 backdrop-blur-2xl px-10 py-4 rounded-full border border-white/30 shadow-2xl">
+                    class="inline-flex items-center gap-3 md:gap-4 bg-white/70 dark:bg-black/40 backdrop-blur-2xl px-6 md:px-10 py-3 md:py-4 rounded-full border border-white/30 shadow-2xl">
+
                     <div
                         class="size-10 bg-gradient-to-br from-primary to-amber-500 rounded-xl flex items-center justify-center text-white shadow-lg overflow-hidden relative">
                         <span class="material-symbols-outlined text-2xl relative z-10"
@@ -391,7 +448,7 @@
             </div>
 
             <!-- Status Bar -->
-            <div class="mt-14 w-full max-w-lg space-y-6">
+            <div class="mt-6 md:mt-14 w-full max-w-lg space-y-4 md:space-y-6">
                 <div class="flex justify-between items-end px-6">
                     <span class="text-[11px] font-black text-primary uppercase tracking-[0.5em] glow-text">Hào Quang Thủ
                         Lĩnh</span>
@@ -407,117 +464,128 @@
             </div>
         </section>
 
-        <!-- CATEGORY 1: HÀNH ĐỘNG KIẾM VẬT PHẨM (ACTION) -->
+        <!-- CATEGORY 1: HÀNH ĐỘNG ANH HÙNG -->
         <section class="animate-fade-in-up delay-100">
-            <div class="flex items-center gap-6 mb-12">
-                <h2 class="section-title">HÀNH ĐỘNG <span class="text-primary italic">ANH HÙNG</span></h2>
+            <div class="flex items-center gap-2 md:gap-6 mb-3 md:mb-12">
+                <h2 class="section-title text-base md:text-3xl whitespace-nowrap">HÀNH ĐỘNG <span
+                        class="text-primary italic">ANH HÙNG</span></h2>
                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
-                <span class="text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">KIẾM VẬT PHẨM</span>
+                <span class="hidden md:inline text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">KIẾM VẬT
+                    PHẨM</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-10">
+
                 <!-- Mission -->
                 <a href="../dashboard/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
-                            class="absolute w-32 h-32 bg-amber-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
+                            class="hidden md:block absolute w-32 h-32 bg-amber-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
                         <div class="icon-bloom bg-gradient-to-br from-amber-400 to-orange-500 group-hover:rotate-6">
-                            <span class="material-symbols-outlined text-5xl"
+                            <span class="material-symbols-outlined text-3xl md:text-5xl"
                                 style="font-variation-settings:'FILL' 1">target</span>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHIỆM
-                        VỤ</h3>
-                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                    <h3
+                        class="text-base md:text-3xl font-[1000] mb-1 md:mb-4 text-slate-800 dark:text-white uppercase tracking-tight">
+                        NHIỆM VỤ</h3>
+                    <div class="hidden md:flex flex-wrap justify-center gap-2 mb-2">
                         <div class="reward-tag tag-gold"><span
-                                class="material-symbols-outlined !text-[14px]">monetization_on</span>Vàng</div>
+                                class="material-symbols-outlined !text-[14px]">monetization_on</span><span>Vàng</span>
+                        </div>
                         <div class="reward-tag tag-water"><span
-                                class="material-symbols-outlined !text-[14px]">water_drop</span>Nước</div>
+                                class="material-symbols-outlined !text-[14px]">water_drop</span><span>Nước</span></div>
                         <div class="reward-tag tag-sticker"><span
-                                class="material-symbols-outlined !text-[14px]">sell</span>Sticker</div>
+                                class="material-symbols-outlined !text-[14px]">sell</span><span>Sticker</span></div>
                         <div class="reward-tag tag-xp"><span
-                                class="material-symbols-outlined !text-[14px]">bolt</span>XP</div>
+                                class="material-symbols-outlined !text-[14px]">bolt</span><span>XP</span></div>
                     </div>
-                    <div class="btn-glass bg-amber-500/10 text-amber-600 border-amber-500/20" id="pending-count">
-                        0 ĐANG CHỜ
-                    </div>
+                    <div class="btn-glass bg-amber-500/10 text-amber-600 border-amber-500/20 !text-[9px] md:!text-[11px] !px-3 md:!px-8"
+                        id="pending-count">0 ĐANG CHỜ</div>
                 </a>
                 <!-- Growth Diary -->
                 <a href="../personality/index.html"
                     class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
-                            class="absolute w-32 h-32 bg-rose-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
+                            class="hidden md:block absolute w-32 h-32 bg-rose-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
                         <div class="icon-bloom bg-gradient-to-br from-rose-400 to-pink-600 group-hover:-rotate-6">
-                            <span class="material-symbols-outlined text-5xl"
+                            <span class="material-symbols-outlined text-3xl md:text-5xl"
                                 style="font-variation-settings:'FILL' 1">auto_stories</span>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">NHẬT
-                        KÝ</h3>
-                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                    <h3
+                        class="text-base md:text-3xl font-[1000] mb-1 md:mb-4 text-slate-800 dark:text-white uppercase tracking-tight">
+                        NHẬT KÝ</h3>
+                    <div class="hidden md:flex flex-wrap justify-center gap-2 mb-2">
                         <div class="reward-tag tag-personality"><span
-                                class="material-symbols-outlined !text-[14px]">favorite</span>Nhân Cách</div>
+                                class="material-symbols-outlined !text-[14px]">favorite</span><span>Nhân Cách</span>
+                        </div>
                         <div class="reward-tag tag-bond"><span
-                                class="material-symbols-outlined !text-[14px]">auto_awesome</span>Đặc Quyền</div>
+                                class="material-symbols-outlined !text-[14px]">auto_awesome</span><span>Đặc Quyền</span>
+                        </div>
                     </div>
-                    <div class="btn-glass bg-rose-500/10 text-rose-600 border-rose-500/20">
-                        VIẾT NHẬT KÝ
-                    </div>
+                    <div
+                        class="btn-glass bg-rose-500/10 text-rose-600 border-rose-500/20 !text-[9px] md:!text-[11px] !px-3 md:!px-8">
+                        VIẾT NHẬT KÝ</div>
                 </a>
                 <!-- Arena -->
                 <a href="../arena/index.html"
-                    class="cute-card group relative overflow-hidden flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
+                    class="cute-card group relative overflow-hidden flex flex-col items-center text-center col-span-2 md:col-span-1">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
-                            class="absolute w-32 h-32 bg-blue-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
+                            class="hidden md:block absolute w-32 h-32 bg-blue-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
                         <div class="icon-bloom bg-gradient-to-br from-blue-400 to-indigo-600">
-                            <span class="material-symbols-outlined text-5xl"
+                            <span class="material-symbols-outlined text-3xl md:text-5xl"
                                 style="font-variation-settings:'FILL' 1">swords</span>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-[1000] mb-4 text-slate-800 dark:text-white uppercase tracking-tight">ĐẤU
-                        TRƯỜNG</h3>
-                    <div class="flex flex-wrap justify-center gap-1.5 mb-2">
+                    <h3
+                        class="text-base md:text-3xl font-[1000] mb-1 md:mb-4 text-slate-800 dark:text-white uppercase tracking-tight">
+                        ĐẤU TRƯỜNG</h3>
+                    <div class="hidden md:flex flex-wrap justify-center gap-1.5 mb-2">
                         <div class="reward-tag tag-bet"><span
-                                class="material-symbols-outlined !text-[13px]">casino</span>Cược Vàng</div>
+                                class="material-symbols-outlined !text-[13px]">casino</span><span>Cược Vàng</span></div>
                         <div class="reward-tag tag-glory"><span
-                                class="material-symbols-outlined !text-[13px]">local_fire_department</span>Chiến Tích
-                        </div>
+                                class="material-symbols-outlined !text-[13px]">local_fire_department</span><span>Chiến
+                                Tích</span></div>
                         <div class="reward-tag tag-xp"><span
-                                class="material-symbols-outlined !text-[13px]">military_tech</span>Bảng Vàng</div>
+                                class="material-symbols-outlined !text-[13px]">military_tech</span><span>Bảng
+                                Vàng</span></div>
                     </div>
-                    <div class="btn-glass bg-blue-500/10 text-blue-600 border-blue-500/20" id="arena-status">
-                        ĐANG CHỜ KÈO...
-                    </div>
+                    <div class="btn-glass bg-blue-500/10 text-blue-600 border-blue-500/20 !text-[9px] md:!text-[11px] !px-3 md:!px-8"
+                        id="arena-status">THÁCH ĐẤU</div>
                 </a>
             </div>
         </section>
 
         <!-- CATEGORY: HÀNH TRÌNH KIÊN TRÌ (PERSISTENCE) -->
         <section class="animate-fade-in-up delay-150">
-            <div class="flex items-center gap-6 mb-12">
-                <h2 class="section-title">HÀNH TRÌNH <span class="text-emerald-500 italic">KIÊN TRÌ</span></h2>
+            <div class="flex items-center gap-2 md:gap-6 mb-4 md:mb-12">
+                <h2 class="section-title whitespace-nowrap">HÀNH TRÌNH <span class="text-emerald-500 italic">KIÊN
+                        TRÌ</span></h2>
                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
-                <span class="text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">NUÔI DƯỠNG</span>
+                <span
+                    class="text-[8px] md:text-[11px] font-black text-slate-400 tracking-[0.2em] md:tracking-[0.4em] uppercase">NUÔI
+                    DƯỠNG</span>
             </div>
 
             <a href="../tree-growth/index.html"
-                class="relative block bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[4.5rem] p-12 overflow-hidden shadow-2xl group hover:scale-[1.01] transition-all">
+                class="relative block bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl md:rounded-[4.5rem] p-5 md:p-12 overflow-hidden shadow-2xl group hover:scale-[1.01] transition-all">
                 <div
                     class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none">
                 </div>
 
-                <div class="relative z-10 flex flex-col md:flex-row items-center gap-10">
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-4 md:gap-10">
                     <div class="relative shrink-0">
                         <div
                             class="absolute w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-transform duration-700">
                         </div>
                         <div
-                            class="icon-bloom bg-gradient-to-br from-emerald-400 to-teal-600 size-32 md:size-40 rounded-[3rem] md:rounded-[4rem]">
+                            class="icon-bloom bg-gradient-to-br from-emerald-400 to-teal-600 !size-20 md:!size-40 !rounded-[2rem] md:!rounded-[4rem]">
                             <span class="material-symbols-outlined text-6xl md:text-8xl"
                                 style="font-variation-settings:'FILL' 1">park</span>
                         </div>
@@ -530,14 +598,15 @@
                             Dự án lớn của con
                         </div>
                         <h3
-                            class="text-4xl md:text-5xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight mb-4 italic">
+                            class="text-2xl md:text-5xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight mb-2 md:mb-4 italic">
                             CÂY ĐẠI THỤ KIÊN TRÌ</h3>
-                        <p class="text-lg font-bold text-slate-500 dark:text-slate-400 italic leading-relaxed max-w-xl">
+                        <p
+                            class="text-sm md:text-lg font-bold text-slate-500 dark:text-slate-400 italic leading-relaxed max-w-xl">
                             "Sức mạnh không nằm ở hành động một lần, mà ở sự bền bỉ tưới nước mỗi ngày."</p>
                     </div>
 
                     <div class="shrink-0 w-full md:w-auto">
-                        <div class="btn-glass bg-emerald-500 text-white shadow-emerald-500/40 border-none scale-110 !mt-0 h-16 px-12 text-sm"
+                        <div class="btn-glass bg-emerald-500 text-white shadow-emerald-500/40 border-none md:scale-110 !mt-0 h-12 md:h-16 px-6 md:px-12 text-xs md:text-sm"
                             id="water-status">
                             0 GIỌT NƯỚC
                         </div>
@@ -546,73 +615,68 @@
             </a>
         </section>
 
-        <!-- CATEGORY 2: TRƯNG BÀY VINH QUANG (SHOWCASE) -->
+        <!-- CATEGORY 2: VINH DANH -->
         <section class="animate-fade-in-up delay-200">
-            <div class="flex items-center gap-6 mb-12">
-                <h2 class="section-title">VINH DANH <span class="text-blue-500 italic">ANH HÙNG NHÍ</span></h2>
+            <div class="flex items-center gap-2 md:gap-6 mb-3 md:mb-12">
+                <h2 class="section-title text-base md:text-3xl whitespace-nowrap">VINH DANH <span
+                        class="text-blue-500 italic">ANH HÙNG NHÍ</span></h2>
                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
-                <span class="text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">VINH DANH</span>
+                <span class="hidden md:inline text-[11px] font-black text-slate-400 tracking-[0.4em] uppercase">VINH
+                    DANH</span>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div class="grid grid-cols-3 gap-2 md:gap-10">
                 <!-- Stickers -->
-                <a href="../sticker-book/index.html" class="cute-card group flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
+                <a href="../sticker-book/index.html"
+                    class="cute-card group flex flex-col items-center text-center !p-3 md:!p-8">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
-                            class="absolute w-32 h-32 bg-purple-500/15 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
+                            class="hidden md:block absolute w-32 h-32 bg-purple-500/15 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
                         <div
                             class="icon-bloom bg-gradient-to-br from-purple-400 to-fuchsia-600 group-hover:animate-wiggle">
-                            <span class="material-symbols-outlined text-5xl"
+                            <span class="material-symbols-outlined text-3xl md:text-5xl"
                                 style="font-variation-settings:'FILL' 1">sell</span>
-                            <div
-                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/10 to-transparent">
-                            </div>
                         </div>
                     </div>
-                    <h3 class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">BỘ SƯU TẬP
-                    </h3>
-                    <div class="mt-4 flex flex-col items-center">
-                        <span class="text-4xl font-[1000] text-purple-600 dark:text-purple-400 italic"
+                    <h3 class="text-xs md:text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">
+                        STICKER</h3>
+                    <div class="mt-1 md:mt-4 flex flex-col items-center">
+                        <span class="text-xl md:text-4xl font-[1000] text-purple-600 dark:text-purple-400 italic"
                             id="stickers-stat">0</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">STICKER ĐÃ
+                        <span class="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-wider">ĐÃ
                             MỞ</span>
                     </div>
                 </a>
                 <!-- Leaderboard -->
-                <a href="../leaderboard/index.html" class="cute-card group flex flex-col items-center text-center">
-                    <div class="mb-8 relative flex items-center justify-center">
+                <a href="../leaderboard/index.html"
+                    class="cute-card group flex flex-col items-center text-center !p-3 md:!p-8">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
-                            class="absolute w-32 h-32 bg-sky-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
+                            class="hidden md:block absolute w-32 h-32 bg-sky-500/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
                         <div class="icon-bloom bg-gradient-to-br from-sky-400 to-blue-600 group-hover:animate-float">
-                            <span class="material-symbols-outlined text-5xl"
+                            <span class="material-symbols-outlined text-3xl md:text-5xl"
                                 style="font-variation-settings:'FILL' 1">emoji_events</span>
-                            <div
-                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/10 to-transparent">
-                            </div>
                         </div>
                     </div>
-                    <h3 class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">SIÊU SAO
-                        BẢNG VÀNG</h3>
-                    <div class="mt-4 flex items-center justify-center gap-6">
-                        <div class="flex flex-col items-center border-r border-slate-200 dark:border-white/10 pr-6">
-                            <span class="text-4xl font-[1000] text-blue-600 dark:text-blue-400 italic"
-                                id="rank-val">--</span>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">BXH</span>
-                        </div>
+                    <h3 class="text-xs md:text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">
+                        XẾP HẠNG</h3>
+                    <div class="mt-1 md:mt-4 flex items-center justify-center gap-2 md:gap-6">
                         <div class="flex flex-col items-center">
-                            <span class="text-4xl font-[1000] text-amber-500 italic" id="streak-val">0</span>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">CHIẾN
-                                TÍCH</span>
+                            <span class="text-xl md:text-4xl font-[1000] text-blue-600 dark:text-blue-400 italic"
+                                id="rank-val">--</span>
+                            <span
+                                class="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-wider">BXH</span>
                         </div>
                     </div>
                 </a>
                 <!-- Achievements (Spotlight) -->
-                <div class="cute-card group flex flex-col items-center text-center relative">
+                <a href="../titles/index.html"
+                    class="cute-card group flex flex-col items-center text-center relative !p-3 md:!p-8">
                     <div
-                        class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]">
+                        class="hidden md:block absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]">
                     </div>
-                    <div class="mb-8 relative flex items-center justify-center">
+                    <div class="mb-2 md:mb-8 relative flex items-center justify-center">
                         <div
                             class="absolute w-32 h-32 bg-primary/20 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700">
                         </div>
@@ -623,50 +687,51 @@
                         </div>
                     </div>
                     <h3
-                        class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight relative z-10">
-                        DANH HIỆU TỰ HÀO
-                    </h3>
-                    <div class="mt-6 flex flex-col items-center relative z-10">
-                        <span class="text-lg font-black text-primary uppercase italic text-center px-4 leading-tight"
+                        class="text-xs md:text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight relative z-10">
+                        DANH HIỆU</h3>
+                    <div class="mt-1 md:mt-6 flex flex-col items-center relative z-10">
+                        <span
+                            class="text-[11px] md:text-lg font-black text-primary uppercase italic text-center leading-tight"
                             id="latest-achievement">...</span>
-                        <p
-                            class="text-[9px] font-bold text-slate-400 dark:text-white/50 uppercase tracking-[0.2em] mt-3">
-                            Danh hiệu mới nhất
-                            đã đạt được</p>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
         <!-- CATEGORY 3: QUY ĐỔI (REDEEM) -->
         <section class="animate-fade-in-up delay-300">
             <a href="../shop/index.html"
-                class="relative block bg-gradient-to-r from-primary to-amber-600 rounded-[4.5rem] p-16 text-white overflow-hidden shadow-[0_30px_60px_-15px_rgba(238,157,43,0.4)] group hover:scale-[1.02] transition-transform">
+                class="relative block bg-gradient-to-r from-primary to-amber-600 rounded-2xl md:rounded-[4.5rem] p-6 md:p-16 text-white overflow-hidden shadow-[0_30px_60px_-15px_rgba(238,157,43,0.4)] group hover:scale-[1.02] transition-transform">
                 <div
                     class="absolute right-0 top-0 h-full w-2/5 opacity-15 pointer-events-none group-hover:scale-110 transition-transform duration-1000 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[350px]">redeem</span>
+                    <span class="material-symbols-outlined text-[150px] md:text-[350px]">redeem</span>
                 </div>
-                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-12">
                     <div class="max-w-md">
                         <span
-                            class="bg-white/30 backdrop-blur-md px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.4em] mb-8 inline-block">KHO
+                            class="bg-white/30 backdrop-blur-md px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] mb-4 md:mb-8 inline-block">KHO
                             BÁU ELITE</span>
-                        <h2 class="text-5xl font-[1000] tracking-tighter uppercase italic mb-6 leading-none">CỬA HÀNG
-                            <br><span class="text-amber-200">ANH HÙNG NHÍ</span>
+                        <h2
+                            class="text-2xl md:text-5xl font-[1000] tracking-tighter uppercase italic mb-3 md:mb-6 leading-none">
+                            CỬA HÀNG
+                            <span class="text-amber-200">ANH HÙNG NHÍ</span>
                         </h2>
-                        <p class="text-xl font-bold text-white/90 italic leading-relaxed">"Quy đổi công sức làm việc tốt
+                        <p class="text-sm md:text-xl font-bold text-white/90 italic leading-relaxed">"Quy đổi công sức
+                            làm việc tốt
                             của con thành những món quà thần kỳ!"</p>
                     </div>
-                    <div class="flex flex-col items-center md:items-end gap-8 shrink-0">
+                    <div class="flex flex-col items-center md:items-end gap-4 md:gap-8 shrink-0">
                         <div
-                            class="bg-white/20 backdrop-blur-xl px-12 py-8 rounded-[3rem] border border-white/30 text-center shadow-xl">
-                            <span class="block text-[11px] font-black uppercase tracking-widest mb-3 opacity-80">QUỸ
+                            class="bg-white/20 backdrop-blur-xl px-6 md:px-12 py-4 md:py-8 rounded-2xl md:rounded-[3rem] border border-white/30 text-center shadow-xl">
+                            <span
+                                class="block text-[9px] md:text-[11px] font-black uppercase tracking-widest mb-1 md:mb-3 opacity-80">QUỸ
                                 VÀNG CỦA CON</span>
-                            <span class="text-6xl font-[1000] italic drop-shadow-lg" id="gold-stat">0 VÀNG</span>
+                            <span class="text-3xl md:text-6xl font-[1000] italic drop-shadow-lg" id="gold-stat">0
+                                VÀNG</span>
                         </div>
                         <button
-                            class="bg-white text-primary px-12 py-6 rounded-[2.5rem] font-[1000] text-lg uppercase tracking-widest shadow-2xl hover:bg-slate-900 hover:text-white transition-all transform hover:-translate-y-2 active:scale-95">VÀO
-                            KHO QUÀ BIẾN HÌNH</button>
+                            class="bg-white text-primary px-6 md:px-12 py-3 md:py-6 rounded-xl md:rounded-[2.5rem] font-[1000] text-sm md:text-lg uppercase tracking-wider md:tracking-widest shadow-2xl hover:bg-slate-900 hover:text-white transition-all transform hover:-translate-y-2 active:scale-95">VÀO
+                            KHO QUÀ</button>
                     </div>
                 </div>
             </a>
@@ -724,7 +789,7 @@
                 const arenaStatusEl = document.getElementById('arena-status');
                 if (arenaStatusEl) {
                     const isChallenged = user.challengesReceived?.length > 0;
-                    arenaStatusEl.innerText = isChallenged ? "BỊ THÁCH ĐẤU!" : "ĐANG CHỜ KÈO...";
+                    arenaStatusEl.innerText = isChallenged ? "BỊ THÁCH ĐẤU!" : "THÁCH ĐẤU";
                     arenaStatusEl.className = isChallenged ? "btn-glass bg-red-500 text-white shadow-red-500/40 border-none animate-pulse" : "btn-glass bg-blue-500/10 text-blue-600 border-blue-500/20";
                 }
 

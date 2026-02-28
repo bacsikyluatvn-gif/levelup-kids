@@ -50,40 +50,44 @@
     <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
 
     <!-- Header -->
-    <header class="relative z-10 p-6 flex items-center justify-between">
+    <header
+        class="relative z-10 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div class="flex items-center gap-3">
             <div
-                class="size-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/30 rotate-3">
-                <span class="material-symbols-outlined text-3xl">castle</span>
+                class="size-10 md:size-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/30 rotate-3">
+                <span class="material-symbols-outlined text-2xl md:text-3xl">castle</span>
             </div>
-            <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">LevelUp Kids</h1>
+            <h1 class="text-2xl md:text-3xl font-black tracking-tight text-slate-900 dark:text-white">LevelUp Kids</h1>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 md:gap-3 self-end sm:self-auto">
             <button id="manage-btn" onclick="toggleManageMode()"
-                class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-red-500 hover:text-red-500 transition-all shadow-sm group">
+                class="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-red-500 hover:text-red-500 transition-all shadow-sm group">
                 <span
-                    class="material-symbols-outlined group-hover:rotate-12 transition-transform">edit_attributes</span>
+                    class="material-symbols-outlined text-lg md:text-2xl group-hover:rotate-12 transition-transform">edit_attributes</span>
                 Quản lý
             </button>
             <button
                 onclick="document.getElementById('parent-modal').classList.remove('hidden', 'opacity-0'); setTimeout(()=> {document.getElementById('parent-modal').children[0].classList.remove('translate-y-10', 'opacity-0')}, 10);"
-                class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all shadow-sm group">
-                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">shield_person</span>
+                class="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all shadow-sm group">
+                <span
+                    class="material-symbols-outlined text-lg md:text-2xl group-hover:scale-110 transition-transform">shield_person</span>
                 Bố Mẹ
             </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="relative z-10 flex-grow flex flex-col items-center justify-center p-6 w-full max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-5xl font-black text-slate-800 dark:text-white tracking-tighter mb-4">Xin chào nhà thám hiểm!
+    <main class="relative z-10 flex-grow flex flex-col items-center justify-center p-4 md:p-6 w-full max-w-5xl mx-auto">
+        <div class="text-center mb-8 md:mb-12">
+            <h2 class="text-3xl md:text-5xl font-black text-slate-800 dark:text-white tracking-tighter mb-3 md:mb-4">Xin
+                chào nhà thám hiểm!
                 👋</h2>
-            <p class="text-xl text-slate-500 font-medium">Bé hãy chọn đúng nhân vật của mình để bắt đầu nhé</p>
+            <p class="text-base md:text-xl text-slate-500 font-medium">Bé hãy chọn đúng nhân vật của mình để bắt đầu nhé
+            </p>
         </div>
 
         <!-- Avatars Grid -->
-        <div id="avatars-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl text-center">
+        <div id="avatars-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-4xl text-center">
             <!-- Dynamically Populated -->
         </div>
     </main>
@@ -274,13 +278,13 @@
                             <div onclick="${isManageMode ? '' : `loginAsUser('${user.id}')`}"
                                 class="bg-white dark:bg-[#2c2215] p-6 rounded-3xl border-4 border-transparent ${isManageMode ? '' : 'hover:border-primary hover:shadow-xl hover:-translate-y-2'} transition-all cursor-pointer text-center">
                                 <div
-                                    class="size-32 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 overflow-hidden mb-4 ${isManageMode ? '' : 'group-hover:border-primary'} transition-colors">
+                                    class="size-24 md:size-32 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 overflow-hidden mb-3 md:mb-4 ${isManageMode ? '' : 'group-hover:border-primary'} transition-colors">
                                     <img class="w-full h-full object-cover ${isManageMode ? '' : 'group-hover:scale-110'} transition-transform duration-500"
                                         src="${user.avatar}"
                                         alt="${user.name}">
                                 </div>
-                                <h3 class="text-2xl font-black text-slate-800 dark:text-white">${user.name}</h3>
-                                <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">${getUserSubLabel(user)}</p>
+                                <h3 class="text-lg md:text-2xl font-black text-slate-800 dark:text-white">${user.name}</h3>
+                                <p class="text-[9px] md:text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">${getUserSubLabel(user)}</p>
                             </div>
                             
                             ${isManageMode ? `
