@@ -2076,11 +2076,27 @@ class ShopGrid extends HTMLElement {
                         </div>
                         <!-- Content -->
                         <div class="p-5 flex flex-col flex-1">
-                            <div class="cursor-pointer flex-1 flex flex-col" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')" title="Nhấn để xem chi tiết">
+                            <div class="cursor-pointer flex-1 flex flex-col mb-4" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')" title="Nhấn để xem chi tiết">
                                 <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1 ${(item.category === 'power_card' || item.category === 'POWER_CARD') ? 'hidden' : ''}">${item.category}</span>
                                 <h3 class="font-black text-slate-800 dark:text-white text-base mb-2 leading-tight group-hover:text-primary transition-colors">${item.title}</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 mb-4 line-clamp-2 hidden">${item.desc}</p>
+                                
+                                <!-- Detailed Price Info in Footer -->
+                                <div class="flex flex-wrap gap-3 mt-auto pt-2">
+                                    ${hasGoldPrice ? `
+                                        <div class="flex items-center gap-1.5 text-amber-600 font-black text-sm">
+                                            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                            ${item.price}
+                                        </div>
+                                    ` : ''}
+                                    ${hasPersonalityPrice ? `
+                                        <div class="flex items-center gap-1.5 text-rose-600 font-black text-sm">
+                                            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">favorite</span>
+                                            ${item.personalityPrice}
+                                        </div>
+                                    ` : ''}
+                                </div>
                             </div>
+
                             <button
                                 onclick="window.redeemPremiumItem && window.redeemPremiumItem('${item.id}')" class="${(canAfford && !isPending)
                     ? 'bg-gradient-to-r from-orange-400 to-rose-500 text-white hover:opacity-95 shadow-lg active:scale-95'
@@ -2088,7 +2104,7 @@ class ShopGrid extends HTMLElement {
                 } w-full font-black py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2"
                                 ${(!canAfford || isPending) ? 'disabled' : ''}>
                                 <span class="material-symbols-outlined text-lg">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock')}</span>
-                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? 'Gửi Yêu Cầu' : 'Chưa Đủ Điều Kiện')}
+                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? 'Đổi Quà' : 'Chưa Đủ Điều Kiện')}
                             </button>
                         </div>
                     </div>`;
