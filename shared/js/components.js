@@ -2331,7 +2331,7 @@ class ChildNav extends HTMLElement {
 
     render(active) {
         this.innerHTML = `
-            <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 pb-safe z-50 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] overflow-x-auto no-scrollbar">
+            <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-[9999] shadow-[0_-8px_30px_rgba(0,0,0,0.12)] overflow-x-auto no-scrollbar" style="padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);">
                 <nav class="max-w-2xl mx-auto px-1 py-1 flex justify-between items-end relative gap-0.5">
                     ${this.navItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
                     ${this.navItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
@@ -2345,7 +2345,7 @@ class ChildNav extends HTMLElement {
                 </nav>
             </div>
             <!--Spacer to prevent content from being hidden by fixed nav-->
-            <div class="h-20"></div>
+            <div class="h-24"></div>
 
             <titles-modal></titles-modal>
             <parent-pin-modal></parent-pin-modal>
