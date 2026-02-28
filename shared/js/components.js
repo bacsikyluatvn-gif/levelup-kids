@@ -3417,15 +3417,19 @@ class GrowthDiaryView extends HTMLElement {
                 const ratingMatch = log.itemTitle.match(/(\d+)\/10/);
                 const rating = ratingMatch ? ratingMatch[1] : '?';
                 const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
+                const logId = log.id;
                 return `
-                                            <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2rem] p-6 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative group hover:shadow-md transition-all">
-                                                <div class="absolute top-4 right-4">
+                                            <div class="bg-white dark:bg-[#1a140c]/80 rounded-[2rem] p-6 shadow-sm border border-indigo-50 dark:border-[#3a2e22] relative group hover:shadow-md transition-all" id="reflection-card-${logId}">
+                                                <div class="absolute top-4 right-4 flex items-center gap-2">
+                                                    <button onclick="window.editReflection('${logId}', '${desc.replace(/'/g, "\\'")}', '${rating}')" class="size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100" title="Chỉnh sửa nhật ký">
+                                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                                    </button>
                                                     <div class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 dark:bg-rose-900/20 rounded-full border border-red-100 dark:border-rose-900/30">
                                                         <span class="material-symbols-outlined text-red-500 text-xs fill-1">favorite</span>
                                                         <span class="text-xs font-black text-red-600 dark:text-rose-400">${rating}/10</span>
                                                     </div>
                                                 </div>
-                                                <div class="flex gap-4 items-start pr-16 text-left">
+                                                <div class="flex gap-4 items-start pr-24 text-left" id="reflection-view-${logId}">
                                                     <span class="text-4xl opacity-20 text-indigo-300 dark:text-[#3a2e22] font-serif leading-none mt-1">"</span>
                                                     <div class="flex-1">
                                                         <p class="text-lg font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-3 pt-2">${desc}</p>
@@ -3433,6 +3437,17 @@ class GrowthDiaryView extends HTMLElement {
                                                             <span class="material-symbols-outlined text-[10px]">schedule</span>
                                                             Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="hidden" id="reflection-edit-${logId}">
+                                                    <textarea id="reflection-textarea-${logId}" class="w-full h-28 bg-slate-50 dark:bg-white/5 border-2 border-indigo-200 dark:border-indigo-800 focus:border-indigo-400 focus:ring-0 rounded-2xl p-4 text-sm font-medium text-slate-700 dark:text-slate-200 resize-none transition-all">${desc}</textarea>
+                                                    <div class="flex gap-2 mt-3">
+                                                        <button onclick="window.saveReflectionEdit('${logId}', '${rating}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-black py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5">
+                                                            <span class="material-symbols-outlined text-sm">save</span> LƯU NHẬT KÝ
+                                                        </button>
+                                                        <button onclick="window.cancelReflectionEdit('${logId}')" class="px-5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-500 font-black py-2.5 rounded-2xl text-xs transition-all">
+                                                            HỦY
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3449,6 +3464,56 @@ class GrowthDiaryView extends HTMLElement {
                 if (e.target === modal) modal.remove();
             });
             document.body.appendChild(modal);
+        };
+
+        // ---- Reflection Edit Handlers ----
+        window.editReflection = (logId, currentDesc, rating) => {
+            const viewEl = document.getElementById(`reflection-view-${logId}`);
+            const editEl = document.getElementById(`reflection-edit-${logId}`);
+            const textarea = document.getElementById(`reflection-textarea-${logId}`);
+            if (viewEl && editEl) {
+                viewEl.classList.add('hidden');
+                editEl.classList.remove('hidden');
+                if (textarea) { textarea.value = currentDesc; textarea.focus(); }
+            }
+        };
+
+        window.cancelReflectionEdit = (logId) => {
+            const viewEl = document.getElementById(`reflection-view-${logId}`);
+            const editEl = document.getElementById(`reflection-edit-${logId}`);
+            if (viewEl && editEl) {
+                viewEl.classList.remove('hidden');
+                editEl.classList.add('hidden');
+            }
+        };
+
+        window.saveReflectionEdit = async (logId, rating) => {
+            const textarea = document.getElementById(`reflection-textarea-${logId}`);
+            if (!textarea) return;
+            const newDesc = textarea.value.trim();
+            if (!newDesc) return;
+
+            const saveBtn = textarea.nextElementSibling?.querySelector('button');
+            const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) saveBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> ĐANG LƯU...';
+
+            try {
+                const newTitle = `Tự đánh giá: ${rating}/10 điểm | ${newDesc}`;
+                const { error } = await window.AppState.client
+                    .from('requests')
+                    .update({ item_title: newTitle })
+                    .eq('id', logId);
+
+                if (error) throw error;
+
+                // Re-sync and re-render
+                await window.AppState.syncFromDatabase();
+                window.showFamilyQuestAlert('Đã lưu!', 'Nhật ký của con đã được cập nhật rồi nhé ✨', 'success');
+            } catch (err) {
+                console.error('Error saving reflection edit:', err);
+                if (saveBtn) saveBtn.innerHTML = originalBtnText;
+                window.showFamilyQuestAlert('Lỗi', 'Không lưu được, con thử lại nhé!', 'error');
+            }
         };
 
         const todayStr = new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -4003,29 +4068,28 @@ class GrowthDiaryView extends HTMLElement {
                         
                         ${description ? `<p class="text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">${description}</p>` : ''}
                         
-                        <div class="flex items-center gap-3 mt-3">
+                        <div class="flex items-center gap-2 mt-3 flex-wrap">
+                            <!-- Personality always shown -->
+                            <div class="flex items-center gap-1 px-2 py-1 rounded-full ${isGood ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-100 dark:bg-white/5'}">
+                                <span class="material-symbols-outlined text-[12px] ${isGood ? 'text-rose-500' : 'text-slate-400'}" style="font-variation-settings:'FILL' 1">favorite</span>
+                                <span class="text-[10px] font-black ${isGood ? 'text-rose-600' : 'text-slate-500'}">${isGood ? '+' : ''}${behavior ? behavior.personality : (isGood ? 5 : -5)} NC</span>
+                            </div>
+                            ${log.water > 0 ? `
+                                <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20">
+                                    <span class="material-symbols-outlined text-[12px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
+                                    <span class="text-[10px] font-black text-blue-600">+${log.water} 💧</span>
+                                </div>
+                            ` : ''}
                             ${log.reward !== 0 ? `
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px] text-amber-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                                    <span class="text-[10px] font-black ${log.reward > 0 ? 'text-amber-600' : 'text-rose-500'}">${log.reward > 0 ? '+' : ''}${log.reward}</span>
+                                <div class="flex items-center gap-1 px-2 py-1 rounded-full ${log.reward > 0 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-red-50 dark:bg-red-900/20'}">
+                                    <span class="material-symbols-outlined text-[12px] ${log.reward > 0 ? 'text-amber-500' : 'text-red-500'}" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                    <span class="text-[10px] font-black ${log.reward > 0 ? 'text-amber-600' : 'text-red-600'}">${log.reward > 0 ? '+' : ''}${log.reward} 🪙</span>
                                 </div>
                             ` : ''}
-                            ${log.xp !== 0 ? `
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px] text-indigo-500">military_tech</span>
-                                    <span class="text-[10px] font-black ${log.xp > 0 ? 'text-indigo-600' : 'text-rose-500'}">${log.xp > 0 ? '+' : ''}${log.xp}</span>
-                                </div>
-                            ` : ''}
-                            ${log.sticker !== 0 ? `
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px] text-pink-500 rotate-12" style="font-variation-settings:'FILL' 1">sell</span>
-                                    <span class="text-[10px] font-black ${log.sticker > 0 ? 'text-pink-600' : 'text-rose-500'}">${log.sticker > 0 ? '+' : ''}${log.sticker}</span>
-                                </div>
-                            ` : ''}
-                            ${log.water !== 0 ? `
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
-                                    <span class="text-[10px] font-black ${log.water > 0 ? 'text-blue-600' : 'text-rose-500'}">${log.water > 0 ? '+' : ''}${log.water}</span>
+                            ${log.sticker > 0 ? `
+                                <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-purple-50 dark:bg-purple-900/20">
+                                    <span class="material-symbols-outlined text-[12px] text-purple-500 rotate-12" style="font-variation-settings:'FILL' 1">sell</span>
+                                    <span class="text-[10px] font-black text-purple-600">+${log.sticker} 🏷️</span>
                                 </div>
                             ` : ''}
                         </div>
