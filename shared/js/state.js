@@ -599,7 +599,10 @@ class StateManager {
 
                                 if (reqRes && reqRes.data) {
                                         this.data.requests = reqRes.data.map(r => ({
-                                                id: r.id, profileId: r.profile_id, user: this.getProfileName(r.profile_id, profiles),
+                                                id: r.id,
+                                                profileId: r.profile_id,
+                                                profile_id: r.profile_id, // Redundancy for compatibility
+                                                user: this.getProfileName(r.profile_id, profiles),
                                                 itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
                                                 taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
                                                 sticker: r.reward_sticker, personality: r.reward_personality,
@@ -607,7 +610,9 @@ class StateManager {
                                                 image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
                                         }));
                                         // Growth Logs
-                                        this.data.growthLogs = this.data.requests.filter(r => ['behavior_good', 'behavior_bad', 'reflection', 'atonement'].includes(r.type));
+                                        this.data.growthLogs = this.data.requests.filter(r =>
+                                                ['behavior_good', 'behavior_bad', 'reflection', 'atonement', 'behavior_reflection'].includes(r.type)
+                                        );
                                 }
 
                                 if (questRes && questRes.data) {

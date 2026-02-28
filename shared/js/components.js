@@ -3069,7 +3069,7 @@ class GrowthDiaryView extends HTMLElement {
     render(data) {
         if (!data || !data.user) return;
         const logs = (data.growthLogs || [])
-            .filter(l => l.profileId === data.user.id)
+            .filter(l => String(l.profileId || l.profile_id) === String(data.user.id))
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         const goodCount = logs.filter(l => l.type === 'behavior_good').length;
@@ -3108,7 +3108,11 @@ class GrowthDiaryView extends HTMLElement {
 
         const getSimpleDateKey = (date) => {
             const d = new Date(date);
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+            if (isNaN(d.getTime())) return null;
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`; // ISO format YYYY-MM-DD
         };
 
         const todayKey = getSimpleDateKey(new Date());
@@ -3117,6 +3121,8 @@ class GrowthDiaryView extends HTMLElement {
             if (!log.createdAt) return;
             const d = new Date(log.createdAt);
             const dateKey = getSimpleDateKey(d);
+            if (!dateKey) return;
+
             const dateDisplay = d.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             if (!groupedLogs[dateKey]) {
@@ -3146,7 +3152,7 @@ class GrowthDiaryView extends HTMLElement {
             }
         });
 
-        const dateKeys = Object.keys(groupedLogs).sort((a, b) => new Date(b) - new Date(a));
+        const dateKeys = Object.keys(groupedLogs).sort((a, b) => b.localeCompare(a)); // String sort is safe for YYYY-MM-DD
 
         const todayGroup = groupedLogs[todayKey];
         const pastDates = dateKeys.filter(d => d !== todayKey);
