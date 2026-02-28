@@ -253,17 +253,19 @@
         }
 
         .tag-water {
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.2);
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
+        /* Blue like header */
         .tag-personality {
             color: #f43f5e;
             background: rgba(244, 63, 94, 0.1);
             border-color: rgba(244, 63, 94, 0.2);
         }
 
+        /* Rose like heart in header */
         .tag-bond {
             color: #8b5cf6;
             background: rgba(139, 92, 246, 0.1);
@@ -271,9 +273,9 @@
         }
 
         .tag-bet {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.2);
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
         }
 
         .tag-glory {
@@ -431,9 +433,11 @@
                         VỤ</h3>
                     <div class="flex flex-wrap justify-center gap-2 mb-2">
                         <div class="reward-tag tag-gold"><span
-                                class="material-symbols-outlined !text-[14px]">payments</span>Lương Vàng</div>
+                                class="material-symbols-outlined !text-[14px]">monetization_on</span>Vàng</div>
                         <div class="reward-tag tag-water"><span
                                 class="material-symbols-outlined !text-[14px]">water_drop</span>Nước</div>
+                        <div class="reward-tag tag-sticker"><span
+                                class="material-symbols-outlined !text-[14px]">sell</span>Sticker</div>
                         <div class="reward-tag tag-xp"><span
                                 class="material-symbols-outlined !text-[14px]">bolt</span>XP</div>
                     </div>
@@ -461,9 +465,10 @@
                         KÝ</h3>
                     <div class="flex flex-wrap justify-center gap-2 mb-2">
                         <div class="reward-tag tag-personality"><span
-                                class="material-symbols-outlined !text-[14px]">psychology</span>Nhân Cách</div>
+                                class="material-symbols-outlined !text-[14px]">favorite</span>Nhân Cách</div>
                         <div class="reward-tag tag-bond"><span
-                                class="material-symbols-outlined !text-[14px]">favorite</span>Gắn kết Ba Mẹ</div>
+                                class="material-symbols-outlined !text-[14px]">auto_awesome</span>Đặc Quyền Đặc Biệt
+                        </div>
                     </div>
                     <div class="btn-glass bg-rose-500/10 text-rose-600 border-rose-500/20">
                         VIẾT NHẬT KÝ
@@ -490,9 +495,10 @@
                         <div class="reward-tag tag-bet"><span
                                 class="material-symbols-outlined !text-[14px]">casino</span>Cược Vàng</div>
                         <div class="reward-tag tag-glory"><span
-                                class="material-symbols-outlined !text-[14px]">stars</span>Vinh Quang</div>
+                                class="material-symbols-outlined !text-[14px]">local_fire_department</span>Chuỗi Thắng
+                        </div>
                         <div class="reward-tag tag-xp"><span
-                                class="material-symbols-outlined !text-[14px]">military_tech</span>Hạng</div>
+                                class="material-symbols-outlined !text-[14px]">military_tech</span>Kỷ Lục Cá Nhân</div>
                     </div>
                     <div class="btn-glass bg-blue-500/10 text-blue-600 border-blue-500/20" id="arena-status">
                         ĐANG CHỜ KÈO...
@@ -599,11 +605,17 @@
                     </div>
                     <h3 class="text-2xl font-[1000] text-slate-800 dark:text-white uppercase tracking-tight">SIÊU SAO
                         BẢNG VÀNG</h3>
-                    <div class="mt-4 flex flex-col items-center">
-                        <span class="text-4xl font-[1000] text-blue-600 dark:text-blue-400 italic"
-                            id="rank-val">--</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">BẢNG VÀNG TUẦN
-                            NÀY</span>
+                    <div class="mt-4 flex items-center justify-center gap-6">
+                        <div class="flex flex-col items-center border-r border-slate-200 dark:border-white/10 pr-6">
+                            <span class="text-4xl font-[1000] text-blue-600 dark:text-blue-400 italic"
+                                id="rank-val">--</span>
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">BXH</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-4xl font-[1000] text-amber-500 italic" id="streak-val">0</span>
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">CHUỖI
+                                THẮNG</span>
+                        </div>
                     </div>
                 </a>
                 <!-- Achievements (Spotlight) -->
@@ -734,10 +746,16 @@
                 // 4. Category: Showcase
                 document.getElementById('stickers-stat').innerText = `${user.unlockedStickers?.length || 0}`;
                 if (data.leaderboard) {
-                    // Ưu tiên xếp hạng theo XP Tuần để tạo không khí thi đua sôi nổi
                     const sorted = [...data.leaderboard].sort((a, b) => (b.weeklyXp || 0) - (a.weeklyXp || 0));
                     const myRank = sorted.findIndex(p => p.id === user.id) + 1;
                     document.getElementById('rank-val').innerText = myRank > 0 ? `#${myRank}` : '--';
+                }
+
+                // Streak logic (from user challenges or mock for motivation)
+                const streakEl = document.getElementById('streak-val');
+                if (streakEl) {
+                    const streak = user.winStreak || 0;
+                    streakEl.innerText = streak;
                 }
 
                 // Latest Achievement logic
