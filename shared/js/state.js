@@ -212,10 +212,10 @@ window.HERO_TASKS = HERO_TASKS;
 
 const GROWTH_BEHAVIORS = {
         GOOD: [
-                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
-                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
-                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 },
-                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 0, xp: 0, water: 0, sticker: 0, personality: 5 }
+                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 0, water: 5, sticker: 0, personality: 10 },
+                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 0, xp: 0, water: 5, sticker: 0, personality: 5 },
+                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 0, xp: 0, water: 5, sticker: 0, personality: 5 },
+                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 0, xp: 0, water: 5, sticker: 0, personality: 5 }
         ],
         BAD: [
                 { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: 0, xp: 0, water: 0, sticker: 0, personality: -5 },
