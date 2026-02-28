@@ -418,15 +418,19 @@ class AppHeader extends HTMLElement {
                     <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">water_drop</span>
                     <span class="text-[11px] tabular-nums">${user.water || 0}</span>
                 </div>
+                <div class="flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20" title="Điểm Nhân Cách">
+                    <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                    <span class="text-[11px] tabular-nums">${user.personalityPoints || 0}</span>
+                </div>
             </div>
 
-            <!-- Avatar + Hamburger Menu -->
+            <!-- Avatar (→ Profile) + Hamburger Menu -->
             <div class="flex items-center gap-2 shrink-0">
-                <div class="relative cursor-pointer" id="header-avatar-child">
+                <a href="../profile/index.html" class="relative cursor-pointer" id="header-avatar-child">
                     <div class="size-9 rounded-xl bg-slate-200 ring-2 ring-primary/20 bg-cover bg-center shadow-md overflow-hidden" 
                          style="background-image: url('${user.avatar}')"></div>
                     <div class="absolute -top-1 -right-1 size-2.5 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full"></div>
-                </div>
+                </a>
                 <button onclick="document.getElementById('mobile-nav-drawer').classList.remove('translate-x-full')" 
                         class="size-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all active:scale-90 shadow-sm" id="menu-hamburger">
                     <span class="material-symbols-outlined text-2xl">menu</span>
