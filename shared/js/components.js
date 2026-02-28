@@ -9,6 +9,46 @@ window.toggleDarkMode = () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 };
 
+// ==========================================
+// GLOBAL ALERT / TOAST NOTIFICATION
+// ==========================================
+window.showFamilyQuestAlert = (title, message, type = 'info') => {
+    // Remove existing alert if any
+    const existing = document.getElementById('fq-toast-alert');
+    if (existing) existing.remove();
+
+    const colors = {
+        success: { bg: 'bg-emerald-500', icon: 'check_circle' },
+        error: { bg: 'bg-rose-500', icon: 'error' },
+        warning: { bg: 'bg-amber-500', icon: 'warning' },
+        info: { bg: 'bg-blue-500', icon: 'info' }
+    };
+    const { bg, icon } = colors[type] || colors.info;
+
+    const toast = document.createElement('div');
+    toast.id = 'fq-toast-alert';
+    toast.className = `fixed top-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 px-6 py-4 ${bg} text-white rounded-[2rem] shadow-2xl min-w-[280px] max-w-[90vw] animate-bounce`;
+    toast.style.cssText = 'animation: slideDown 0.3s ease forwards;';
+    toast.innerHTML = `
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">${icon}</span>
+        <div>
+            <p class="font-black text-sm">${title}</p>
+            <p class="text-xs opacity-90 font-medium">${message}</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="ml-auto opacity-70 hover:opacity-100">
+            <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+    `;
+    document.body.appendChild(toast);
+    // Add slide-down animation
+    const style = document.createElement('style');
+    style.textContent = `@keyframes slideDown { from { opacity:0; transform: translate(-50%,-20px); } to { opacity:1; transform: translate(-50%,0); } }`;
+    document.head.appendChild(style);
+    // Auto remove after 4 seconds
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 4000);
+};
+
+
 // Global Arena Engine Loader
 (function () {
     const scripts = document.getElementsByTagName('script');
@@ -3730,14 +3770,18 @@ class GrowthDiaryView extends HTMLElement {
             const rating = ratingMatch ? ratingMatch[1] : '?';
             const desc = (log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ')[1] : log.itemDesc) || "Con hôm nay thật tuyệt vời!";
             return `
-                                                <div class="bg-white dark:bg-[#1a140c]/60 rounded-3xl p-6 shadow-sm border border-indigo-50 dark:border-white/5 relative group hover:shadow-md transition-all">
-                                                    <div class="absolute top-4 right-4">
+                                                <div class="bg-white dark:bg-[#1a140c]/60 rounded-3xl p-6 shadow-sm border border-indigo-50 dark:border-white/5 relative group hover:shadow-md transition-all" id="reflection-card-${log.id}">
+                                                    <div class="absolute top-4 right-4 flex items-center gap-2">
+                                                        <button class="edit-reflection-btn size-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100"
+                                                            data-id="${log.id}" data-rating="${rating}" title="Chỉnh sửa">
+                                                            <span class="material-symbols-outlined text-sm">edit</span>
+                                                        </button>
                                                         <div class="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-full border border-rose-100 dark:border-rose-900/30">
                                                             <span class="material-symbols-outlined text-rose-500 text-xs" style="font-variation-settings:'FILL' 1">favorite</span>
                                                             <span class="text-xs font-black text-rose-600 dark:text-rose-400">${rating}/10</span>
                                                         </div>
                                                     </div>
-                                                    <div class="flex gap-4 items-start pr-16 text-left">
+                                                    <div class="flex gap-4 items-start pr-24 text-left" id="reflection-view-${log.id}">
                                                         <span class="text-4xl opacity-20 text-indigo-300 dark:text-slate-700 font-serif leading-none mt-1">"</span>
                                                         <div class="flex-1">
                                                             <p class="text-base font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic mb-3 pt-2">${desc}</p>
@@ -3745,6 +3789,19 @@ class GrowthDiaryView extends HTMLElement {
                                                                 <span class="material-symbols-outlined text-[10px]">schedule</span>
                                                                 Ghi nhận lúc ${log.time ? log.time.split(' ')[1] : ''}
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hidden" id="reflection-edit-${log.id}">
+                                                        <textarea id="reflection-textarea-${log.id}" class="w-full h-28 bg-slate-50 dark:bg-white/5 border-2 border-indigo-200 dark:border-indigo-800 focus:border-indigo-400 focus:ring-0 rounded-2xl p-4 text-sm font-medium text-slate-700 dark:text-slate-200 resize-none transition-all">${desc}</textarea>
+                                                        <div class="flex gap-2 mt-3">
+                                                            <button class="save-reflection-btn flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-black py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5"
+                                                                data-id="${log.id}" data-rating="${rating}">
+                                                                <span class="material-symbols-outlined text-sm">save</span> LƯU NHẬT KÝ
+                                                            </button>
+                                                            <button class="cancel-reflection-btn px-5 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-white font-black py-2.5 rounded-2xl text-xs transition-all"
+                                                                data-id="${log.id}">
+                                                                HỦY
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
