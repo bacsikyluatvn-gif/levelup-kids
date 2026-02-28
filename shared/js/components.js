@@ -2581,7 +2581,7 @@ customElements.define('reward-history-modal', RewardHistoryModal);
 class BehaviorLogModal extends HTMLElement {
     constructor() {
         super();
-        this.selectedChildId = null;
+        this.selectedChildIds = []; // Array for multi-select
         this.activeType = 'GOOD';
         this.isOpen = false;
         this.data = null;
@@ -2607,7 +2607,8 @@ class BehaviorLogModal extends HTMLElement {
 
         window.openBehaviorLogModal = (childId) => {
             if (this.data && this.data.leaderboard) {
-                this.selectedChildId = childId || (this.data.leaderboard.find(p => p.role === 'child')?.id);
+                const firstChild = this.data.leaderboard.find(p => p.role === 'child');
+                this.selectedChildIds = childId ? [childId] : (firstChild ? [firstChild.id] : []);
             }
             this.resetForm();
             this.isOpen = true;
@@ -2653,10 +2654,7 @@ class BehaviorLogModal extends HTMLElement {
                 return;
             }
 
-            const goldInput = this.querySelector('#bh-gold');
-            const xpInput = this.querySelector('#bh-xp');
-            const waterInput = this.querySelector('#bh-water');
-            const stickerInput = this.querySelector('#bh-sticker');
+            const personalityInput = this.querySelector('#bh-personality');
 
             let overrides = JSON.parse(localStorage.getItem('behavior_overrides') || '{"GOOD": [], "BAD": []}');
             if (!overrides[this.activeType]) overrides[this.activeType] = [];
@@ -2665,10 +2663,11 @@ class BehaviorLogModal extends HTMLElement {
                 id: this.selectedBehavior?.id && this.selectedBehavior.id !== 'custom' ? this.selectedBehavior.id : 'custom_' + Date.now(),
                 text: titleInput.value.trim(),
                 emoji: this.activeType === 'GOOD' ? '⭐' : '⚠️',
-                gold: parseInt(goldInput?.value || 0),
+                gold: 0,
                 xp: parseInt(xpInput?.value || 0),
-                water: parseInt(waterInput?.value || 0),
-                sticker: parseInt(stickerInput?.value || 0)
+                water: 0,
+                sticker: 0,
+                personality: parseInt(personalityInput?.value || 0)
             };
 
             // Update or Add
@@ -2686,12 +2685,22 @@ class BehaviorLogModal extends HTMLElement {
         };
 
         window.selectBehaviorChild = (id) => {
-            this.selectedChildId = id;
+            const index = this.selectedChildIds.indexOf(id);
+            if (index > -1) {
+                if (this.selectedChildIds.length > 1) {
+                    this.selectedChildIds.splice(index, 1);
+                }
+            } else {
+                this.selectedChildIds.push(id);
+            }
             this.render();
         };
 
         window.onSelectBehavior = (bid) => {
-            const behaviors = window.GROWTH_BEHAVIORS[this.activeType] || [];
+            const defaults = window.GROWTH_BEHAVIORS[this.activeType] || [];
+            const overrides = JSON.parse(localStorage.getItem('behavior_overrides') || '{"GOOD": [], "BAD": []}');
+            const behaviors = [...defaults, ...(overrides[this.activeType] || [])];
+
             const found = behaviors.find(b => b.id === bid);
             if (found) {
                 this.selectedBehavior = found;
@@ -2737,25 +2746,22 @@ class BehaviorLogModal extends HTMLElement {
     }
 
     async submitLog() {
-        if (!this.selectedChildId || !this.selectedBehavior) return;
+        if (!this.selectedChildIds.length || !this.selectedBehavior) return;
 
         // Get actual values from inputs since we don't render on every keystroke
         const titleInput = this.querySelector('#bh-title');
         const descInput = this.querySelector('#bh-desc');
-        const goldInput = this.querySelector('#bh-gold');
         const xpInput = this.querySelector('#bh-xp');
         const personalityInput = this.querySelector('#bh-personality');
-        const waterInput = this.querySelector('#bh-water');
-        const stickerInput = this.querySelector('#bh-sticker');
 
         const finalData = {
             title: titleInput ? titleInput.value : this.form.title,
             description: descInput ? descInput.value : this.form.description,
-            gold: goldInput ? parseInt(goldInput.value) : this.form.gold,
+            gold: 0,
             xp: xpInput ? parseInt(xpInput.value) : this.form.xp,
             personality: personalityInput ? parseInt(personalityInput.value) : this.form.personality,
-            water: waterInput ? parseInt(waterInput.value) : this.form.water,
-            sticker: stickerInput ? parseInt(stickerInput.value) : this.form.sticker
+            water: 0,
+            sticker: 0
         };
 
         if (this.selectedBehavior.id === 'custom' && !finalData.title) {
@@ -2770,8 +2776,13 @@ class BehaviorLogModal extends HTMLElement {
         }
 
         try {
-            await window.AppState.logBehavior(this.selectedChildId, this.selectedBehavior.id, this.activeType, finalData);
-            if (window.showToast) window.showToast('Đã ghi nhận hành động!', 'success');
+            // Log for each selected child
+            const promises = this.selectedChildIds.map(childId =>
+                window.AppState.logBehavior(childId, this.selectedBehavior.id, this.activeType, finalData)
+            );
+            await Promise.all(promises);
+
+            if (window.showToast) window.showToast(`Đã ghi nhận hành động cho ${this.selectedChildIds.length} con!`, 'success');
             this.isOpen = false;
             this.resetForm();
             this.render();
@@ -2848,8 +2859,15 @@ class BehaviorLogModal extends HTMLElement {
                                     <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">1. Chọn con</label>
                                     <div class="flex flex-wrap gap-2">
                                         ${children.map(c => `
-                                            <button onclick="window.selectBehaviorChild('${c.id}')" class="flex-shrink-0 flex items-center gap-2 p-1.5 pr-4 rounded-full border-2 transition-all ${this.selectedChildId === c.id ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800 opacity-60'}">
-                                                <img src="${c.avatar}" class="w-8 h-8 rounded-full border border-white shadow-sm">
+                                            <button onclick="window.selectBehaviorChild('${c.id}')" class="flex-shrink-0 flex items-center gap-2 p-1.5 pr-4 rounded-full border-2 transition-all ${this.selectedChildIds.includes(c.id) ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800 opacity-60'}">
+                                                <div class="relative">
+                                                    <img src="${c.avatar}" class="w-8 h-8 rounded-full border border-white shadow-sm">
+                                                    ${this.selectedChildIds.includes(c.id) ? `
+                                                        <div class="absolute -top-1 -right-1 bg-primary text-white size-4 rounded-full flex items-center justify-center border border-white">
+                                                            <span class="material-symbols-outlined text-[10px] font-black">check</span>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
                                                 <span class="font-bold text-xs dark:text-white">${c.name}</span>
                                             </button>
                                         `).join('')}
@@ -2923,61 +2941,48 @@ class BehaviorLogModal extends HTMLElement {
                                         <!-- Rewards -->
                                         <div class="space-y-3 pt-2">
                                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Thông số quà tặng</label>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <!-- Gold -->
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="material-symbols-outlined text-orange-400 text-xl" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                                                        <input id="bh-gold" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.gold}">
-                                                    </div>
-                                                    <select onchange="document.getElementById('bh-gold').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
-                                                        <option value="">Nhanh...</option>
-                                                        <option value="10">10 Gold</option>
-                                                        <option value="20">20 Gold</option>
-                                                        <option value="30">30 Gold</option>
-                                                    </select>
-                                                </div>
-                                                <!-- EXP -->
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="material-symbols-outlined text-amber-500 text-xl">military_tech</span>
-                                                        <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.xp}">
-                                                    </div>
-                                                    <select onchange="document.getElementById('bh-xp').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
-                                                        <option value="">Nhanh...</option>
-                                                        <option value="10">10 EXP</option>
-                                                        <option value="15">15 EXP</option>
-                                                        <option value="20">20 EXP</option>
-                                                        <option value="25">25 EXP</option>
-                                                        <option value="30">30 EXP</option>
-                                                    </select>
-                                                </div>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <input id="bh-gold" type="hidden" value="0">
+                                                <input id="bh-water" type="hidden" value="0">
+                                                <input id="bh-sticker" type="hidden" value="0">
                                                 <!-- Personality (Tym) -->
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="material-symbols-outlined text-rose-500 text-xl" style="font-variation-settings:'FILL' 1">favorite</span>
-                                                        <input id="bh-personality" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.personality}">
+                                                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-800 flex flex-col gap-3">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded-xl">
+                                                            <span class="material-symbols-outlined text-rose-500 text-2xl" style="font-variation-settings:'FILL' 1">favorite</span>
+                                                        </div>
+                                                        <div class="flex-grow">
+                                                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Điểm Nhân Cách</label>
+                                                            <input id="bh-personality" type="number" class="w-full bg-transparent font-black text-lg outline-none dark:text-white" value="${this.form.personality}">
+                                                        </div>
                                                     </div>
-                                                    <select onchange="document.getElementById('bh-personality').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
-                                                        <option value="">Nhanh...</option>
-                                                        <option value="5">5 Tim</option>
-                                                        <option value="10">10 Tim</option>
-                                                        <option value="20">20 Tim</option>
-                                                    </select>
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        ${[5, 10, 20].map(v => `
+                                                            <button onclick="document.getElementById('bh-personality').value = ${v}" class="px-3 py-1 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-[10px] font-black text-slate-500 hover:text-rose-500 rounded-lg transition-all border border-transparent hover:border-rose-100">
+                                                                +${v}
+                                                            </button>
+                                                        `).join('')}
+                                                    </div>
                                                 </div>
-                                                <input id="bh-water" type="hidden" value="${this.form.water || 0}">
-                                                <!-- Sticker -->
-                                                <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="material-symbols-outlined text-purple-400 text-xl" style="font-variation-settings:'FILL' 1">sell</span>
-                                                        <input id="bh-sticker" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.sticker}">
+                                                
+                                                <!-- EXP -->
+                                                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-800 flex flex-col gap-3">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="bg-amber-50 dark:bg-amber-900/20 p-2 rounded-xl">
+                                                            <span class="material-symbols-outlined text-amber-500 text-2xl">military_tech</span>
+                                                        </div>
+                                                        <div class="flex-grow">
+                                                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Kinh Nghiệm (EXP)</label>
+                                                            <input id="bh-xp" type="number" class="w-full bg-transparent font-black text-lg outline-none dark:text-white" value="${this.form.xp}">
+                                                        </div>
                                                     </div>
-                                                    <select onchange="document.getElementById('bh-sticker').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
-                                                        <option value="">Nhanh...</option>
-                                                        <option value="1">1 Sticker</option>
-                                                        <option value="2">2 Stickers</option>
-                                                        <option value="3">3 Stickers</option>
-                                                    </select>
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        ${[10, 15, 30].map(v => `
+                                                            <button onclick="document.getElementById('bh-xp').value = ${v}" class="px-3 py-1 bg-slate-50 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 text-[10px] font-black text-slate-500 hover:text-amber-600 rounded-lg transition-all border border-transparent hover:border-amber-100">
+                                                                +${v}
+                                                            </button>
+                                                        `).join('')}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
