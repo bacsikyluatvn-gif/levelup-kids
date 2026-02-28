@@ -121,7 +121,7 @@
                                             Danh mục</th>
                                         <th
                                             class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                                            Giá trị (Vàng)</th>
+                                            Giá trị (Vàng & Tim)</th>
                                         <th
                                             class="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
                                             Thao tác</th>
@@ -321,45 +321,39 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold mb-2">Loại tiền tệ</label>
-                        <select id="item-price-type" onchange="togglePriceFields()"
-                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-bold">
-                            <option value="gold">💰 Vàng</option>
-                            <option value="personality">❤️ Nhân Cách</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-2">Danh mục</label>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold mb-2">Danh mục phần thưởng</label>
                         <select id="item-category"
                             class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 font-bold">
-                            <option value="Vật phẩm">🎁 Vật phẩm</option>
-                            <option value="Đặc quyền">⭐ Đặc quyền</option>
-                            <option value="Chuyến đi">🎢 Chuyến đi</option>
-                            <option value="Gắn kết">✨ Gắn kết</option>
+                            <option value="Vật phẩm">🎁 Vật phẩm (Đồ chơi, quà tặng...)</option>
+                            <option value="Đặc quyền">⭐ Đặc quyền (Xem TV, đi chơi...)</option>
+                            <option value="Chuyến đi">🎢 Chuyến đi (Dã ngoại, du lịch...)</option>
+                            <option value="Kết nối">✨ Gắn kết (Hoạt động cùng bố mẹ...)</option>
                         </select>
                     </div>
                 </div>
 
-                <div id="gold-price-group">
-                    <label class="block text-sm font-bold mb-2">Giá (Vàng)</label>
-                    <div class="relative">
-                        <span
-                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
-                        <input id="item-price"
-                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-10 pr-4 py-3 font-bold text-primary"
-                            type="number" value="100" />
+                <div class="grid grid-cols-2 gap-4">
+                    <div id="gold-price-group">
+                        <label class="block text-sm font-bold mb-2">Giá (Vàng)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">monetization_on</span>
+                            <input id="item-price"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-primary rounded-xl pl-10 pr-4 py-3 font-bold text-primary"
+                                type="number" value="100" />
+                        </div>
                     </div>
-                </div>
 
-                <div id="personality-price-group" style="display: none;">
-                    <label class="block text-sm font-bold mb-2">Giá (Điểm Nhân Cách)</label>
-                    <div class="relative">
-                        <span
-                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-rose-500">favorite</span>
-                        <input id="item-personality-price"
-                            class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-rose-500 rounded-xl pl-10 pr-4 py-3 font-bold text-rose-600"
-                            type="number" value="50" />
+                    <div id="personality-price-group">
+                        <label class="block text-sm font-bold mb-2">Giá (Nhân Cách)</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-rose-500">favorite</span>
+                            <input id="item-personality-price"
+                                class="w-full bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-rose-500 rounded-xl pl-10 pr-4 py-3 font-bold text-rose-600"
+                                type="number" value="0" />
+                        </div>
                     </div>
                 </div>
 
@@ -495,20 +489,7 @@
         }
 
         function togglePriceFields() {
-            const type = document.getElementById('item-price-type').value;
-            const goldGroup = document.getElementById('gold-price-group');
-            const personalityGroup = document.getElementById('personality-price-group');
-            const categorySelect = document.getElementById('item-category');
-
-            if (type === 'personality') {
-                goldGroup.style.display = 'none';
-                personalityGroup.style.display = 'block';
-                categorySelect.value = "Gắn kết";
-            } else {
-                goldGroup.style.display = 'block';
-                personalityGroup.style.display = 'none';
-                if (categorySelect.value === "Gắn kết") categorySelect.value = "Vật phẩm";
-            }
+            // Function no longer needed as both fields are visible, but keep for compatibility
         }
 
         function toggleModal(show) {
@@ -568,15 +549,23 @@
                     imageHTML = `<img src="${item.image}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'material-symbols-outlined text-gray-400 text-3xl\\'>image</span>'" />`;
                 }
 
-                const priceHTML = isPersonality ? `
-                    <div class="flex items-center gap-1.5 font-black text-rose-600">
-                        <span class="material-symbols-outlined fill-1 text-xl">favorite</span>
-                        ${item.personalityPrice} Điểm
-                    </div>
-                ` : `
-                    <div class="flex items-center gap-1.5 font-black text-primary">
-                        <span class="material-symbols-outlined fill-1 text-xl">monetization_on</span>
-                        ${item.price} Vàng
+                const hasGold = item.price > 0;
+                const hasPersonality = item.personalityPrice > 0;
+
+                const priceHTML = `
+                    <div class="flex flex-col gap-1">
+                        ${hasGold ? `
+                            <div class="flex items-center gap-1.5 font-black text-primary text-sm">
+                                <span class="material-symbols-outlined fill-1 text-lg">monetization_on</span>
+                                ${item.price} Vàng
+                            </div>
+                        ` : ''}
+                        ${hasPersonality ? `
+                            <div class="flex items-center gap-1.5 font-black text-rose-600 text-sm">
+                                <span class="material-symbols-outlined fill-1 text-lg">favorite</span>
+                                ${item.personalityPrice} Tim
+                            </div>
+                        ` : ''}
                     </div>
                 `;
 
@@ -604,7 +593,7 @@
                     </td>
                 </tr>`;
 
-                if (isPersonality) {
+                if (hasPersonality && !hasGold) {
                     if (tbodySpecial) tbodySpecial.insertAdjacentHTML('beforeend', rowHTML);
                 } else {
                     tbodyShop.insertAdjacentHTML('beforeend', rowHTML);
@@ -684,7 +673,10 @@
                         <p class="text-xs text-slate-500 mt-1">
                             ${req.type === 'perk' ?
                         `<span class="font-bold text-teal-600">-${req.stickerPrice || 0} Sticker</span>` :
-                        `<span class="font-bold text-primary">-${req.price || 0} Vàng</span>`
+                        `<div class="flex flex-wrap gap-x-2">
+                            ${(req.price || 0) > 0 ? `<span class="font-bold text-primary">-${req.price} Vàng</span>` : ''}
+                            ${(req.pricePersonality || 0) > 0 ? `<span class="font-bold text-rose-600">-${req.pricePersonality} Tim</span>` : ''}
+                         </div>`
                     }
                         </p>
                     </td>
@@ -747,7 +739,6 @@
             const name = document.getElementById('item-name').value;
             const desc = document.getElementById('item-desc').value;
             const category = document.getElementById('item-category').value;
-            const priceType = document.getElementById('item-price-type').value;
 
             const goldPrice = parseInt(document.getElementById('item-price').value) || 0;
             const personalityPrice = parseInt(document.getElementById('item-personality-price').value) || 0;
@@ -777,12 +768,12 @@
 
             const itemData = {
                 title: name,
-                desc: desc || (priceType === 'personality' ? 'Đặc quyền yêu thương' : 'Vừa mới thêm'),
-                price: priceType === 'gold' ? goldPrice : 0,
-                personalityPrice: priceType === 'personality' ? personalityPrice : 0,
+                desc: desc || (personalityPrice > 0 && goldPrice == 0 ? 'Đặc quyền yêu thương' : 'Vừa mới thêm'),
+                price: goldPrice,
+                personalityPrice: personalityPrice,
                 category: category,
                 image: finalImage,
-                itemType: priceType === 'personality' ? 'special' : 'premium',
+                itemType: (personalityPrice > 0 && goldPrice == 0) ? 'special' : 'premium',
                 color: category === "Vật phẩm" ? "green" : (category === "Đặc quyền" ? "purple" : (category === "Gắn kết" ? "rose" : "blue"))
             };
 
@@ -815,15 +806,9 @@
             document.getElementById('item-name').value = item.title;
             document.getElementById('item-desc').value = item.desc;
 
-            const isPersonality = item.personalityPrice > 0;
-            const priceType = isPersonality ? 'personality' : 'gold';
-
-            document.getElementById('item-price-type').value = priceType;
             document.getElementById('item-price').value = item.price || 0;
             document.getElementById('item-personality-price').value = item.personalityPrice || 0;
-            document.getElementById('item-category').value = item.category || (isPersonality ? "Gắn kết" : "Vật phẩm");
-
-            togglePriceFields();
+            document.getElementById('item-category').value = item.category || (item.personalityPrice > 0 ? "Gắn kết" : "Vật phẩm");
 
             if (item.image) {
                 const previewImg = document.getElementById('preview-image');

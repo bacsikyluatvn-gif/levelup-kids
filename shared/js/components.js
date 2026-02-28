@@ -2019,10 +2019,13 @@ class ShopGrid extends HTMLElement {
         this.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 ${items.map(item => {
-            const isPersonalityItem = item.personalityPrice > 0;
-            const userBalance = isPersonalityItem ? userPersonality : userGold;
-            const targetPrice = isPersonalityItem ? item.personalityPrice : item.price;
-            const canAfford = userBalance >= targetPrice;
+            const hasGoldPrice = item.price > 0;
+            const hasPersonalityPrice = item.personalityPrice > 0;
+
+            const canAffordGold = userGold >= (item.price || 0);
+            const canAffordPersonality = userPersonality >= (item.personalityPrice || 0);
+            const canAfford = canAffordGold && canAffordPersonality;
+
             const isPending = (data.requests || []).some(r => r.itemTitle === item.title && r.status === 'pending' && r.profileId === data.user.id);
 
             const colorAccent = {
@@ -2041,13 +2044,32 @@ class ShopGrid extends HTMLElement {
                     : `<span class="material-symbols-outlined text-5xl text-slate-300">redeem</span>`
                 }
                             <!-- Price badge -->
-                            <div class="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm ${isPersonalityItem ? 'text-orange-600' : 'text-amber-600'} font-black text-sm px-3 py-1.5 rounded-full shadow-md flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px] ${isPersonalityItem ? 'text-orange-500' : 'text-amber-500'}" style="font-variation-settings:'FILL' 1">${isPersonalityItem ? 'favorite' : 'monetization_on'}</span>
-                                ${targetPrice}
+                            <div class="absolute top-3 right-3 flex flex-col gap-1 items-end">
+                                ${hasGoldPrice ? `
+                                    <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-amber-600 font-black text-[13px] px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 min-w-[65px] justify-center">
+                                        <span class="material-symbols-outlined text-[16px] text-amber-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                        ${item.price}
+                                    </div>
+                                ` : ''}
+                                ${hasPersonalityPrice ? `
+                                    <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-rose-600 font-black text-[13px] px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 min-w-[65px] justify-center">
+                                        <span class="material-symbols-outlined text-[16px] text-rose-500" style="font-variation-settings:'FILL' 1">favorite</span>
+                                        ${item.personalityPrice}
+                                    </div>
+                                ` : ''}
                             </div>
                             ${(!canAfford || isPending) ? `<div class="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] flex items-center justify-center">
-                                <div class="bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                                    ${isPending ? 'Đang chờ duyệt...' : `Cần thêm ${targetPrice - userBalance} <span class="material-symbols-outlined text-[14px] ${isPersonalityItem ? 'text-orange-500' : 'text-amber-500'}" style="font-variation-settings:\'FILL\' 1">${isPersonalityItem ? 'favorite' : 'monetization_on'}</span>`}
+                                <div class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold px-4 py-2 rounded-2xl flex flex-col items-center gap-1.5 shadow-xl border border-white/20">
+                                    ${isPending ? `
+                                        <span class="material-symbols-outlined text-amber-500 animate-spin text-xl">progress_activity</span>
+                                        <span>Đang chờ duyệt...</span>
+                                    ` : `
+                                        <span class="material-symbols-outlined text-rose-500 text-xl font-black">lock</span>
+                                        <div class="flex flex-col items-center">
+                                            ${!canAffordGold ? `<span class="whitespace-nowrap">Cần thêm ${item.price - userGold} Vàng</span>` : ''}
+                                            ${!canAffordPersonality ? `<span class="whitespace-nowrap">Cần thêm ${item.personalityPrice - userPersonality} Tim</span>` : ''}
+                                        </div>
+                                    `}
                                 </div>
                             </div>` : ''}
                         </div>
@@ -2060,12 +2082,12 @@ class ShopGrid extends HTMLElement {
                             </div>
                             <button
                                 onclick="window.redeemPremiumItem && window.redeemPremiumItem('${item.id}')" class="${(canAfford && !isPending)
-                    ? (isPersonalityItem ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white hover:opacity-90 shadow-md active:scale-95' : `bg-gradient-to-r ${colorAccent} text-white hover:opacity-90 shadow-md active:scale-95`)
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                } w-full font-bold py-3 rounded-2xl transition-all flex items-center justify-center gap-2"
+                    ? 'bg-gradient-to-r from-orange-400 to-rose-500 text-white hover:opacity-95 shadow-lg active:scale-95'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-200 dark:border-slate-700'
+                } w-full font-black py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2"
                                 ${(!canAfford || isPending) ? 'disabled' : ''}>
-                                <span class="material-symbols-outlined text-lg">${isPending ? 'schedule' : (canAfford ? (isPersonalityItem ? 'auto_awesome' : 'redeem') : 'lock')}</span>
-                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? (isPersonalityItem ? 'Đổi Đặc Quyền' : 'Gửi Yêu Cầu') : (isPersonalityItem ? 'Chưa Đủ Điểm' : 'Chưa Đủ Vàng'))}
+                                <span class="material-symbols-outlined text-lg">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock')}</span>
+                                ${isPending ? 'Đang Chờ Duyệt' : (canAfford ? 'Gửi Yêu Cầu' : 'Chưa Đủ Điều Kiện')}
                             </button>
                         </div>
                     </div>`;
@@ -2679,17 +2701,19 @@ class BehaviorLogModal extends HTMLElement {
                     gold: found.gold,
                     xp: found.xp,
                     water: found.water,
-                    sticker: found.sticker
+                    sticker: found.sticker,
+                    personality: found.personality || 0
                 };
             } else if (bid === 'custom') {
                 this.selectedBehavior = { id: 'custom' };
                 this.form = {
                     title: '',
                     description: '',
-                    gold: this.activeType === 'GOOD' ? 10 : -10,
-                    xp: this.activeType === 'GOOD' ? 5 : -5,
+                    gold: this.activeType === 'GOOD' ? 0 : -10,
+                    xp: this.activeType === 'GOOD' ? 15 : -5,
                     water: 0,
-                    sticker: 0
+                    sticker: 0,
+                    personality: this.activeType === 'GOOD' ? 5 : -5
                 };
             }
             this.render();
@@ -2709,7 +2733,7 @@ class BehaviorLogModal extends HTMLElement {
 
     resetForm() {
         this.selectedBehavior = null;
-        this.form = { title: '', description: '', gold: 0, xp: 0, water: 0, sticker: 0 };
+        this.form = { title: '', description: '', gold: 0, xp: 0, water: 0, sticker: 0, personality: 0 };
     }
 
     async submitLog() {
@@ -2720,6 +2744,7 @@ class BehaviorLogModal extends HTMLElement {
         const descInput = this.querySelector('#bh-desc');
         const goldInput = this.querySelector('#bh-gold');
         const xpInput = this.querySelector('#bh-xp');
+        const personalityInput = this.querySelector('#bh-personality');
         const waterInput = this.querySelector('#bh-water');
         const stickerInput = this.querySelector('#bh-sticker');
 
@@ -2728,6 +2753,7 @@ class BehaviorLogModal extends HTMLElement {
             description: descInput ? descInput.value : this.form.description,
             gold: goldInput ? parseInt(goldInput.value) : this.form.gold,
             xp: xpInput ? parseInt(xpInput.value) : this.form.xp,
+            personality: personalityInput ? parseInt(personalityInput.value) : this.form.personality,
             water: waterInput ? parseInt(waterInput.value) : this.form.water,
             sticker: stickerInput ? parseInt(stickerInput.value) : this.form.sticker
         };
@@ -2926,19 +2952,20 @@ class BehaviorLogModal extends HTMLElement {
                                                         <option value="30">30 EXP</option>
                                                     </select>
                                                 </div>
-                                                <!-- Water -->
+                                                <!-- Personality (Tym) -->
                                                 <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
                                                     <div class="flex items-center gap-2">
-                                                        <span class="material-symbols-outlined text-blue-400 text-xl" style="font-variation-settings:'FILL' 1">water_drop</span>
-                                                        <input id="bh-water" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.water}">
+                                                        <span class="material-symbols-outlined text-rose-500 text-xl" style="font-variation-settings:'FILL' 1">favorite</span>
+                                                        <input id="bh-personality" type="number" class="w-full bg-transparent font-black text-sm outline-none dark:text-white" value="${this.form.personality}">
                                                     </div>
-                                                    <select onchange="document.getElementById('bh-water').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
+                                                    <select onchange="document.getElementById('bh-personality').value = this.value" class="text-[10px] bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-2 py-1 outline-none text-slate-500 font-bold">
                                                         <option value="">Nhanh...</option>
-                                                        <option value="10">10 Drops</option>
-                                                        <option value="20">20 Drops</option>
-                                                        <option value="30">30 Drops</option>
+                                                        <option value="5">5 Tim</option>
+                                                        <option value="10">10 Tim</option>
+                                                        <option value="20">20 Tim</option>
                                                     </select>
                                                 </div>
+                                                <input id="bh-water" type="hidden" value="${this.form.water || 0}">
                                                 <!-- Sticker -->
                                                 <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-2">
                                                     <div class="flex items-center gap-2">

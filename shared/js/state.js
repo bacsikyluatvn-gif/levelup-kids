@@ -54,16 +54,16 @@ window.TITLE_MILESTONES = TITLE_MILESTONES;
 
 const GROWTH_BEHAVIORS = {
         GOOD: [
-                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 20, xp: 15, water: 2, sticker: 1 },
-                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 15, xp: 10, water: 1, sticker: 0 },
-                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 10, xp: 5, water: 0, sticker: 0 },
-                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 10, xp: 10, water: 1, sticker: 0 }
+                { id: 'help_sibling', text: 'Nhường nhịn, giúp đỡ em', emoji: '🤝', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
+                { id: 'proactive_clean', text: 'Tự giác dọn dẹp', emoji: '🧹', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
+                { id: 'polite', text: 'Lễ phép, ngoan ngoãn', emoji: '🙇', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 },
+                { id: 'finish_food', text: 'Tự giác ăn hết suất', emoji: '😋', gold: 0, xp: 15, water: 0, sticker: 0, personality: 5 }
         ],
         BAD: [
-                { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: -10, xp: -5, water: 0, sticker: 0 },
-                { id: 'teasing', text: 'Trêu chọc, làm em khóc', emoji: '😤', gold: -20, xp: -10, water: 0, sticker: 0 },
-                { id: 'lazy', text: 'Lười biếng, không nghe lời', emoji: '😴', gold: -10, xp: -5, water: 0, sticker: 0 },
-                { id: 'tantrum', text: 'Ăn vạ, quấy khóc', emoji: '😭', gold: -15, xp: -10, water: 0, sticker: 0 }
+                { id: 'whining', text: 'Mè nheo, nhè nhẹo', emoji: '😩', gold: -10, xp: -5, water: 0, sticker: 0, personality: -5 },
+                { id: 'teasing', text: 'Trêu chọc, làm em khóc', emoji: '😤', gold: -20, xp: -10, water: 0, sticker: 0, personality: -10 },
+                { id: 'lazy', text: 'Lười biếng, không nghe lời', emoji: '😴', gold: -10, xp: -5, water: 0, sticker: 0, personality: -5 },
+                { id: 'tantrum', text: 'Ăn vạ, quấy khóc', emoji: '😭', gold: -15, xp: -10, water: 0, sticker: 0, personality: -5 }
         ]
 };
 window.GROWTH_BEHAVIORS = GROWTH_BEHAVIORS;
@@ -444,7 +444,8 @@ class StateManager {
                                                 id: r.id, profileId: r.profile_id, user: this.getProfileName(r.profile_id, profiles),
                                                 itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
                                                 taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
-                                                sticker: r.reward_sticker, price: r.price_gold, stickerPrice: r.price_sticker,
+                                                sticker: r.reward_sticker, personality: r.reward_personality,
+                                                price: r.price_gold, stickerPrice: r.price_sticker, pricePersonality: r.price_personality,
                                                 image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
                                         }));
                                         // Growth Logs
@@ -851,6 +852,7 @@ class StateManager {
                 let rewardXp = 0;
                 let rewardWater = 0;
                 let rewardSticker = 0;
+                let rewardPersonality = 0;
 
                 if (behaviorId === 'custom' && customData) {
                         title = customData.title || (type === 'GOOD' ? 'Việc tốt khác' : 'Nhắc nhở khác');
@@ -859,6 +861,7 @@ class StateManager {
                         rewardXp = parseInt(customData.xp) || 0;
                         rewardWater = parseInt(customData.water) || 0;
                         rewardSticker = parseInt(customData.sticker) || 0;
+                        rewardPersonality = parseInt(customData.personality) || (type === 'GOOD' ? 5 : -5);
                 } else {
                         const behavior = window.GROWTH_BEHAVIORS[type].find(b => b.id === behaviorId);
                         if (!behavior) return null;
@@ -869,6 +872,7 @@ class StateManager {
                         rewardXp = customData?.xp !== undefined ? parseInt(customData.xp) : behavior.xp;
                         rewardWater = customData?.water !== undefined ? parseInt(customData.water) : behavior.water;
                         rewardSticker = customData?.sticker !== undefined ? parseInt(customData.sticker) : behavior.sticker;
+                        rewardPersonality = customData?.personality !== undefined ? parseInt(customData.personality) : (behavior.personality || (type === 'GOOD' ? 5 : -5));
                 }
 
                 const profile = this.data.leaderboard.find(p => p.id === profileId);
@@ -884,6 +888,7 @@ class StateManager {
                         reward_xp: rewardXp,
                         reward_water: rewardWater,
                         reward_sticker: rewardSticker,
+                        reward_personality: rewardPersonality,
                         rewards_granted: true,
                         created_at: new Date().toISOString()
                 };
@@ -895,8 +900,8 @@ class StateManager {
                         return null;
                 }
 
-                // Tự động cộng/trừ điểm nhân cách: Tốt +10, Xấu -5
-                const personalityChange = type === 'GOOD' ? 10 : -5;
+                // Update profile stats immediately
+                const personalityChange = rewardPersonality;
 
                 // Update profile stats immediately
                 await this.client.from('profiles').update({
@@ -1188,16 +1193,18 @@ class StateManager {
 
         async redeemShopItem(itemId) {
                 const item = this.data.shopItems.find(i => i.id === itemId);
-                if (!item || this.data.user.gold < item.price) return false;
+                if (!item || this.data.user.gold < item.price || (this.data.user.personalityPoints || 0) < (item.personalityPrice || 0)) return false;
 
                 this.data.user.gold -= item.price;
+                this.data.user.personalityPoints = Math.max(0, (this.data.user.personalityPoints || 0) - (item.personalityPrice || 0));
                 this.notify();
 
                 await this.syncLocalUserToDb();
                 const { error } = await this.client.from('requests').insert({
                         family_id: this.familyId, profile_id: this.data.user.id,
                         item_title: item.title, status: 'pending', type: 'shop',
-                        price_gold: item.price
+                        price_gold: item.price,
+                        price_personality: item.personalityPrice || 0
                         // image: item.image -- CỘT KHÔNG TỒN TẠI
                 });
 
