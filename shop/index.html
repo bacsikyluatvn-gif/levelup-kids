@@ -108,7 +108,7 @@
                     <span>Đặc Quyền ✨</span>
                 </button>
                 <button onclick="switchShopTab('premium')" id="tab-btn-premium"
-                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-amber-500">
+                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white">
                     <span class="material-symbols-outlined text-xl">redeem</span>
                     <span>Quà Tặng 🎁</span>
                 </button>
@@ -303,7 +303,7 @@
                 target.classList.add('block');
             }
 
-            // Reset all buttons
+            // Reset all buttons to inactive
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white";
             });
@@ -311,9 +311,14 @@
             // Set active button style
             const activeBtn = document.getElementById(`tab-btn-${tabId}`);
             if (activeBtn) {
-                if (tabId === 'power') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-rose-500";
-                else if (tabId === 'premium') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-amber-500";
-                else if (tabId === 'instant') activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-purple-500";
+                // Common active classes
+                activeBtn.classList.add('bg-white', 'dark:bg-[#2c2215]', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-500');
+
+                // Color-specific active classes
+                if (tabId === 'power') activeBtn.classList.add('text-rose-500');
+                else if (tabId === 'premium') activeBtn.classList.add('text-amber-500');
+                else if (tabId === 'instant') activeBtn.classList.add('text-purple-500');
             }
         }
         document.addEventListener('DOMContentLoaded', () => {
