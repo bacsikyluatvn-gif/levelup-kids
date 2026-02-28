@@ -603,11 +603,13 @@ class StateManager {
                                                 profileId: r.profile_id,
                                                 profile_id: r.profile_id, // Redundancy for compatibility
                                                 user: this.getProfileName(r.profile_id, profiles),
-                                                itemTitle: r.item_title, itemDesc: r.item_desc, status: r.status, type: r.type,
-                                                taskId: r.task_id, reward: r.reward_gold, xp: r.reward_xp, water: r.reward_water,
-                                                sticker: r.reward_sticker, personality: r.reward_personality,
-                                                price: r.price_gold, stickerPrice: r.price_sticker, pricePersonality: r.price_personality,
-                                                image: r.image, createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
+                                                itemTitle: r.item_title,
+                                                itemDesc: '', // item_desc column does not exist in DB
+                                                status: r.status, type: r.type,
+                                                taskId: r.task_id, reward: r.reward_gold || 0, xp: r.reward_xp || 0, water: r.reward_water || 0,
+                                                sticker: r.reward_sticker || 0, personality: 0, // reward_personality column does not exist
+                                                price: r.price_gold || 0, stickerPrice: r.price_sticker || 0, pricePersonality: r.price_personality || 0,
+                                                createdAt: r.created_at, time: r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : ''
                                         }));
                                         // Growth Logs
                                         this.data.growthLogs = this.data.requests.filter(r =>
@@ -1070,7 +1072,8 @@ class StateManager {
                         reward_xp: rewardXp,
                         reward_water: rewardWater,
                         reward_sticker: rewardSticker,
-                        reward_personality: rewardPersonality,
+                        // reward_personality column does NOT exist in 'requests' table
+                        // Personality is updated directly in profiles table below
                         rewards_granted: true,
                         created_at: new Date().toISOString()
                 };
@@ -1163,7 +1166,7 @@ class StateManager {
                         reward_xp: 0,
                         reward_water: 10,
                         reward_sticker: 0,
-                        reward_personality: 5,
+                        // reward_personality does NOT exist in requests table - see profiles update below
                         is_sticker: false,
                         rewards_granted: true,
                         created_at: new Date().toISOString()
@@ -1184,7 +1187,8 @@ class StateManager {
                                 weekly_xp: (u.weeklyXp || 0) + 10,
                                 water: (u.water || 0) + 2,
                                 stickers: (u.stickers || 0) + 1,
-                                total_stickers: (u.totalStickers || 0) + 1
+                                total_stickers: (u.totalStickers || 0) + 1,
+                                personality_points: Math.max(0, (u.personalityPoints || 0) + 5)
                         }).eq('id', profileId);
                 }
 

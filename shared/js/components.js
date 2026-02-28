@@ -3740,8 +3740,8 @@ class GrowthDiaryView extends HTMLElement {
                                                 <span class="material-symbols-outlined text-lg">calendar_today</span>
                                             </div>
                                             <div>
-                                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">${date.split(', ')[0]}</p>
-                                                <h5 class="text-sm font-black text-slate-800 dark:text-white">${date.split(', ')[1]}</h5>
+                                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">${group.display.split(', ')[0] || 'Ngày'}</p>
+                                                <h5 class="text-sm font-black text-slate-800 dark:text-white">${group.display.split(', ').slice(1).join(', ') || group.display}</h5>
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-4">
