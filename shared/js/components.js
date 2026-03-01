@@ -3358,7 +3358,7 @@ class GrowthDiaryView extends HTMLElement {
 
             if (isReflection) {
                 groupedLogs[dateKey].REFLECTION.push(log);
-            } else if (log.type === 'behavior_good') {
+            } else if (log.type === 'behavior_good' || log.type === 'atonement') {
                 groupedLogs[dateKey].GOOD.push(log);
             } else {
                 groupedLogs[dateKey].BAD.push(log);
@@ -3376,6 +3376,25 @@ class GrowthDiaryView extends HTMLElement {
             const isBad = log.type === 'behavior_bad';
             const isResolved = log.itemTitle.includes('Đã chuộc lỗi ✨');
             const isReflection = log.type === 'reflection' || log.type === 'behavior_reflection';
+            let [cleanTitle] = log.itemTitle.includes(' | ') ? log.itemTitle.split(' | ') : [log.itemTitle, ''];
+            cleanTitle = cleanTitle.replace(/\s+\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\/?/g, '').trim();
+            cleanTitle = cleanTitle.replace(/\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\/?$/g, '').trim();
+            cleanTitle = cleanTitle.replace(/^Sửa sai:\s+/g, '').trim();
+            cleanTitle = cleanTitle.replace(/^\[HỨA SỬA SAI\]\s+/g, '').trim();
+
+            const isBehaviorGood = log.type === 'behavior_good' || log.type === 'atonement';
+            const behaviorList = (window.GROWTH_BEHAVIORS && window.GROWTH_BEHAVIORS[isBehaviorGood ? 'GOOD' : 'BAD']) || [];
+
+            // Flexible matching for behavior
+            const searchTitle = cleanTitle.toLowerCase();
+            const behavior = behaviorList.find(b =>
+                searchTitle === b.text.toLowerCase() ||
+                searchTitle.includes(b.text.toLowerCase()) ||
+                b.text.toLowerCase().includes(searchTitle)
+            );
+
+            const displayPersonality = (log.personality && log.personality !== 0) ? log.personality : (behavior ? behavior.personality : (isBad ? -5 : 10));
+            const displayWater = log.water > 0 ? log.water : (behavior && behavior.water ? behavior.water : 0);
 
             const modal = document.createElement('div');
             modal.id = 'diary-detail-modal';
@@ -3414,12 +3433,23 @@ class GrowthDiaryView extends HTMLElement {
                             <div class="space-y-2">
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left px-2">Phần thưởng nhận được</p>
                                 <div class="flex justify-center gap-4 py-3 px-4 bg-slate-50 rounded-3xl border border-slate-100 flex-wrap">
-                                    ${log.personality !== 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl ${log.personality > 0 ? 'bg-rose-100 text-rose-500' : 'bg-slate-200 text-slate-400'} flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">favorite</span></div><span class="text-xs font-black ${log.personality > 0 ? 'text-rose-600' : 'text-slate-500'}">${log.personality > 0 ? '+' : ''}${log.personality} NC</span></div>` : (isBad ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-rose-100 text-rose-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">favorite</span></div><span class="text-xs font-black text-rose-600">-5 NC</span></div>` : `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-rose-100 text-rose-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">favorite</span></div><span class="text-xs font-black text-rose-600">+5 NC</span></div>`)}
-                                    ${log.water > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-blue-100 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">water_drop</span></div><span class="text-xs font-black text-blue-600">+${log.water} 💧</span></div>` : ''}
-                                    ${log.reward > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-amber-100 text-amber-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">monetization_on</span></div><span class="text-xs font-black text-amber-600">+${log.reward} 🪙</span></div>` : ''}
-                                    ${log.reward < 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-red-100 text-red-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">monetization_on</span></div><span class="text-xs font-black text-red-600">${log.reward} 🪙</span></div>` : ''}
-                                    ${log.sticker > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-purple-100 text-purple-500 flex items-center justify-center"><span class="material-symbols-outlined text-xl rotate-12" style="font-variation-settings:'FILL' 1">sell</span></div><span class="text-xs font-black text-purple-600">+${log.sticker} 🏷️</span></div>` : ''}
-                                    ${log.xp > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center"><span class="material-symbols-outlined text-xl">military_tech</span></div><span class="text-xs font-black text-amber-700">+${log.xp} XP</span></div>` : ''}
+                                    <div class="flex flex-col items-center gap-1.5 px-3">
+                                        <div class="size-10 rounded-2xl ${displayPersonality > 0 ? 'bg-rose-50 border border-rose-100' : 'bg-slate-100 border border-slate-200'} flex items-center justify-center shadow-sm">
+                                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-5 object-contain" ${displayPersonality <= 0 ? 'style="filter: grayscale(1)"' : ''}/>
+                                        </div>
+                                        <span class="text-xs font-black ${displayPersonality > 0 ? 'text-rose-600' : 'text-slate-500'}">${displayPersonality > 0 ? '+' : ''}${displayPersonality} NC</span>
+                                    </div>
+                                    ${displayWater > 0 ? `
+                                    <div class="flex flex-col items-center gap-1.5 px-3">
+                                        <div class="size-10 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center shadow-sm">
+                                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-5 object-contain"/>
+                                        </div>
+                                        <span class="text-xs font-black text-blue-600">+${displayWater} Nước</span>
+                                    </div>` : ''}
+                                    ${log.reward > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center shadow-sm"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-5 object-contain"/></div><span class="text-xs font-black text-amber-600">+${log.reward} 🪙</span></div>` : ''}
+                                    ${log.reward < 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-xl text-red-500" style="font-variation-settings:'FILL' 1">monetization_on</span></div><span class="text-xs font-black text-red-600">${log.reward} 🪙</span></div>` : ''}
+                                    ${log.sticker > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center shadow-sm"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-5 object-contain"/></div><span class="text-xs font-black text-purple-600">+${log.sticker} Huy hiệu</span></div>` : ''}
+                                    ${log.xp > 0 ? `<div class="flex flex-col items-center gap-1.5 px-3"><div class="size-10 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-xl text-amber-500">military_tech</span></div><span class="text-xs font-black text-amber-700">+${log.xp} XP</span></div>` : ''}
                                 </div>
                             </div>
 
@@ -3855,29 +3885,27 @@ class GrowthDiaryView extends HTMLElement {
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
                             </div>
 
-                            <div class="overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
-                                <div class="flex items-center gap-0 sm:gap-0 justify-between relative" style="min-width: 420px;">
+                            <div class="overflow-x-auto custom-scrollbar pb-6 pt-12 -mt-8">
+                                <div class="flex items-center gap-0 sm:gap-0 justify-between relative px-2 sm:px-4" style="min-width: 500px;">
                                 ${milestones.map((m, idx) => {
             const isCurrent = m.title === auraTitle;
             const isPassed = personalityScore >= m.score;
             return `
                                         <div class="relative flex flex-col items-center group/m flex-1">
                                             <!-- Path Line -->
-                                            ${idx > 0 ? `<div class="absolute top-[16px] sm:top-[18px] -left-1/2 w-full h-[2px] ${isPassed ? 'bg-gradient-to-r from-emerald-500/60 to-emerald-500/30' : 'bg-slate-300/40 dark:bg-white/10'} z-0" style="background-image: ${isPassed ? 'none' : 'repeating-linear-gradient(90deg, currentColor 0, currentColor 4px, transparent 4px, transparent 8px)'}; background-color: transparent; border: none;"></div>` : ''}
+                                            ${idx > 0 ? `<div class="absolute top-[16px] sm:top-[18px] -left-1/2 w-full h-[2px] ${isPassed ? 'bg-gradient-to-r from-emerald-500/60 to-emerald-500/30' : 'bg-slate-300 dark:bg-slate-700'} z-0"></div>` : ''}
                                             
                                             <!-- Node Shell -->
-                                            <div class="relative z-10 size-8 sm:size-9 rounded-xl sm:rounded-2xl flex items-center justify-center text-base sm:text-lg transition-all duration-500 
+                                            <div ${isCurrent ? 'id="current-milestone-node"' : ''} class="relative z-10 size-8 sm:size-9 rounded-xl sm:rounded-2xl flex items-center justify-center text-base sm:text-lg transition-all duration-500 
                                                 ${isCurrent ? 'bg-amber-500 text-white scale-110 sm:scale-125 shadow-lg shadow-amber-500/40 ring-2 ring-amber-300/50' :
                     (isPassed ? 'bg-emerald-500/20 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-white/5 border border-slate-200 dark:border-white/5')}">
                                                 ${m.img ? `<img src="${m.img}" class="size-6 sm:size-7 object-contain" alt="${m.title}">` : m.emoji}
                                                 ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-xl sm:rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
                                             </div>
                                             
-                                            <!-- Label below icon -->
-                                            <p class="mt-1 text-[6px] sm:hidden font-black text-center leading-tight ${isCurrent ? 'text-amber-600 dark:text-amber-400' : (isPassed ? 'text-emerald-600/70 dark:text-emerald-400/70' : 'text-slate-400/60 dark:text-slate-600')} line-clamp-2 max-w-[44px]">${m.title}</p>
-                                            
-                                            <!-- Desktop Tooltip (hover only) -->
-                                            <div class="hidden sm:block absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-white/10 text-[8px] font-black text-white rounded-lg opacity-0 group-hover/m:opacity-100 transition-all scale-75 group-hover/m:scale-100 whitespace-nowrap pointer-events-none z-20">
+                                            <!-- Label Tooltip (hover only) -->
+                                            <div class="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-2 bg-slate-900 border border-white/10 text-[10px] sm:text-xs font-black text-white rounded-lg opacity-0 group-hover/m:opacity-100 group-hover/m:translate-y-[-5px] transition-all scale-75 group-hover/m:scale-100 whitespace-nowrap pointer-events-none z-20 shadow-xl">
+                                                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900"></div>
                                                 ${m.title}
                                             </div>
                                         </div>
@@ -4027,7 +4055,7 @@ class GrowthDiaryView extends HTMLElement {
                             <div class="relative group">
                                 <textarea id="reflection-text" 
                                     oninput="localStorage.setItem('daily_reflection_' + '${data.user.id}', this.value)"
-                                    class="w-full bg-white/5 border border-white/10 rounded-[2.5rem] p-8 text-lg font-medium text-white focus:ring-4 focus:ring-amber-400/20 focus:border-amber-400/50 transition-all outline-none min-h-[140px] placeholder:text-slate-600 resize-none pr-20"
+                                    class="w-full bg-white/5 border border-white/10 rounded-[2.5rem] p-6 sm:p-8 text-sm sm:text-base font-medium text-white focus:ring-4 focus:ring-amber-400/20 focus:border-amber-400/50 transition-all outline-none min-h-[120px] placeholder:text-slate-600 resize-none pr-20"
                                     placeholder="VD: Hôm nay con rất vui vì được điểm 10, hoặc con hơi buồn vì chưa làm xong bài...">${localStorage.getItem('daily_reflection_' + data.user.id) || ''}</textarea>
                                 
                                 <button id="voice-record-btn" onclick="window.toggleVoiceRecording()" class="absolute bottom-6 right-6 size-12 bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl flex items-center justify-center transition-all group/mic">
@@ -4082,6 +4110,18 @@ class GrowthDiaryView extends HTMLElement {
                 </div>
             </div>
         `;
+
+        // Scroll to current milestone container
+        setTimeout(() => {
+            const currentMilestoneNode = document.getElementById('current-milestone-node');
+            if (currentMilestoneNode) {
+                const container = currentMilestoneNode.closest('.overflow-x-auto');
+                if (container) {
+                    const scrollLeft = currentMilestoneNode.offsetLeft - (container.clientWidth / 2) + (currentMilestoneNode.clientWidth / 2);
+                    container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                }
+            }
+        }, 300);
 
         // Voice Recording Logic
         let recognition = null;
@@ -4306,60 +4346,65 @@ class GrowthDiaryView extends HTMLElement {
 
         const isRepairing = log.status === 'repairing';
         const isResolved = log.status === 'resolved' || log.itemTitle.includes('Đã sửa lỗi hoàn hảo ✨');
+        const isAtonementPending = log.type === 'atonement' && log.status === 'pending';
 
         let emoji = isGood ? '✨' : (isResolved ? '🌱' : '⚠️');
         if (isRepairing) emoji = '⏳';
-        if (behavior) emoji = behavior.emoji;
+        if (isAtonementPending) emoji = '⏳';
+        else if (behavior) emoji = behavior.emoji;
 
-        const accentColor = isGood ? 'emerald' : 'rose';
+        let accentColor = isGood ? 'emerald' : 'rose';
+        if (isAtonementPending) accentColor = 'slate';
+
+        const bgClass = isAtonementPending ? 'bg-slate-50/50 dark:bg-slate-900/20 grayscale border-slate-200' : 'bg-white dark:bg-[#1a140c]/40 border-slate-100 dark:border-white/5';
 
         return `
             <div onclick="window.showGrowthDetail('${log.id}')" 
-                class="group relative p-6 rounded-[2rem] bg-white dark:bg-[#1a140c]/40 border border-slate-100 dark:border-white/5 hover:border-${accentColor}-400/50 hover:shadow-xl hover:shadow-${accentColor}-500/5 transition-all cursor-pointer overflow-hidden">
+                class="group relative p-4 sm:p-5 rounded-3xl ${bgClass} border hover:border-${accentColor}-400/50 hover:shadow-xl hover:shadow-${accentColor}-500/5 transition-all cursor-pointer overflow-hidden">
                 
-                ${isResolved ? `<div class="absolute top-0 right-0 px-4 py-1.5 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest rounded-bl-2xl shadow-lg">Victory ✨</div>` : ''}
+                ${isResolved ? `<div class="absolute top-0 right-0 px-3 py-1 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest rounded-bl-2xl shadow-lg">Victory ✨</div>` : (isAtonementPending ? `<div class="absolute top-0 right-0 px-3 py-1 bg-slate-400 text-white text-[8px] font-black uppercase tracking-widest rounded-bl-2xl shadow-lg text-center">Đang chờ <br/> phê duyệt</div>` : '')}
                 
-                <div class="flex items-center gap-5">
-                    <div class="size-14 rounded-2xl bg-${accentColor}-50 dark:bg-${accentColor}-900/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500 select-none shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="size-11 sm:size-12 rounded-2xl bg-${accentColor}-50 dark:bg-${accentColor}-900/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-500 select-none shadow-sm">
                         ${emoji}
                     </div>
                     
                     <div class="flex-1 min-w-0">
-                        <div class="flex justify-between items-center mb-1">
-                            <h6 class="font-black ${isGood ? 'text-slate-800' : 'text-rose-600'} dark:text-white text-base truncate flex-1">${title}</h6>
+                        <div class="flex justify-between items-center mb-0.5">
+                            <h6 class="font-black ${isAtonementPending ? 'text-slate-500' : (isGood ? 'text-slate-800' : 'text-rose-600')} dark:text-white text-sm truncate flex-1">${title}</h6>
                         </div>
                         
-                        ${description ? `<p class="text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">${description}</p>` : ''}
+                        ${description ? `<p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 line-clamp-1 leading-tight">${description}</p>` : ''}
                         
-                        <div class="flex items-center gap-2 mt-3 flex-wrap">
+                        <div class="flex items-center gap-1.5 mt-2.5 flex-wrap">
                             <!-- Personality always shown -->
-                            <div class="flex items-center gap-1 px-2 py-1 rounded-full ${isGood ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-100 dark:bg-white/5'}">
-                                <span class="material-symbols-outlined text-[12px] ${isGood ? 'text-rose-500' : 'text-slate-400'}" style="font-variation-settings:'FILL' 1">favorite</span>
-                                <span class="text-[10px] font-black ${isGood ? 'text-rose-600' : 'text-slate-500'}">${isGood ? '+' : ''}${behavior ? behavior.personality : (isGood ? 5 : -5)} NC</span>
+                            <div class="flex items-center gap-1 px-2 py-0.5 rounded-full ${isAtonementPending ? 'bg-slate-200 dark:bg-slate-800/30' : (isGood ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-100 dark:bg-white/5')}">
+                                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3 object-contain ${isAtonementPending || !isGood ? 'grayscale opacity-50' : ''}" />
+                                <span class="text-[9px] sm:text-[10px] font-black ${isAtonementPending ? 'text-slate-500' : (isGood ? 'text-rose-600' : 'text-slate-500')}">${isGood ? '+' : ''}${behavior ? behavior.personality : (isGood ? 5 : -5)} NC</span>
                             </div>
                             ${(log.water > 0 || (behavior && behavior.water > 0)) ? `
-                                <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20">
-                                    <span class="material-symbols-outlined text-[12px] text-blue-500" style="font-variation-settings:'FILL' 1">water_drop</span>
-                                    <span class="text-[10px] font-black text-blue-600">+${log.water > 0 ? log.water : (behavior ? behavior.water : 0)} 💧</span>
+                                <div class="flex items-center gap-1 px-2 py-0.5 rounded-full ${isAtonementPending ? 'bg-slate-200 dark:bg-slate-800/30' : 'bg-blue-50 dark:bg-blue-900/20'}">
+                                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-3 object-contain ${isAtonementPending ? 'grayscale opacity-50' : ''}" />
+                                    <span class="text-[9px] sm:text-[10px] font-black ${isAtonementPending ? 'text-slate-500' : 'text-blue-600'}">+${log.water > 0 ? log.water : (behavior ? behavior.water : 0)} Nước</span>
                                 </div>
                             ` : ''}
                             ${log.reward !== 0 ? `
-                                <div class="flex items-center gap-1 px-2 py-1 rounded-full ${log.reward > 0 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-red-50 dark:bg-red-900/20'}">
-                                    <span class="material-symbols-outlined text-[12px] ${log.reward > 0 ? 'text-amber-500' : 'text-red-500'}" style="font-variation-settings:'FILL' 1">monetization_on</span>
-                                    <span class="text-[10px] font-black ${log.reward > 0 ? 'text-amber-600' : 'text-red-600'}">${log.reward > 0 ? '+' : ''}${log.reward} 🪙</span>
+                                <div class="flex items-center gap-1 px-2 py-0.5 rounded-full ${isAtonementPending ? 'bg-slate-200 dark:bg-slate-800/30' : (log.reward > 0 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-red-50 dark:bg-red-900/20')}">
+                                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3 object-contain ${isAtonementPending ? 'grayscale opacity-50' : (log.reward < 0 ? 'hue-rotate-180 grayscale-0' : '')}" />
+                                    <span class="text-[9px] sm:text-[10px] font-black ${isAtonementPending ? 'text-slate-500' : (log.reward > 0 ? 'text-amber-600' : 'text-red-600')}">${log.reward > 0 ? '+' : ''}${log.reward} 🪙</span>
                                 </div>
                             ` : ''}
                             ${log.sticker > 0 ? `
-                                <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-purple-50 dark:bg-purple-900/20">
-                                    <span class="material-symbols-outlined text-[12px] text-purple-500 rotate-12" style="font-variation-settings:'FILL' 1">sell</span>
-                                    <span class="text-[10px] font-black text-purple-600">+${log.sticker} 🏷️</span>
+                                <div class="flex items-center gap-1 px-2 py-0.5 rounded-full ${isAtonementPending ? 'bg-slate-200 dark:bg-slate-800/30' : 'bg-purple-50 dark:bg-purple-900/20'}">
+                                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-3 object-contain ${isAtonementPending ? 'grayscale opacity-50' : ''}" />
+                                    <span class="text-[9px] sm:text-[10px] font-black ${isAtonementPending ? 'text-slate-500' : 'text-purple-600'}">+${log.sticker} Huy hiệu</span>
                                 </div>
                             ` : ''}
                         </div>
                     </div>
                     
-                    <div class="size-8 rounded-full border border-slate-100 dark:border-white/5 flex items-center justify-center text-slate-200 dark:text-slate-800 group-hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined text-lg">chevron_right</span>
+                    <div class="size-7 sm:size-8 rounded-full border border-slate-100 dark:border-white/5 flex items-center justify-center text-slate-200 dark:text-slate-800 group-hover:text-${accentColor}-400 transition-colors">
+                        <span class="material-symbols-outlined text-base">chevron_right</span>
                     </div>
                 </div>
             </div>

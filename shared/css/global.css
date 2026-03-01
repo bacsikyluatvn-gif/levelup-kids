@@ -431,3 +431,40 @@ body {
             transparent);
     animation: shimmer 2s infinite;
 }
+
+/* Roadmap Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    height: 4px;
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(238, 157, 43, 0.2);
+    border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(238, 157, 43, 0.4);
+}
+
+/* Hide scrollbar on desktop */
+@media (min-width: 768px) {
+    .custom-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Tooltip persistence */
+.group\/m:hover .opacity-0 {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(-5px) scale(1) !important;
+}
