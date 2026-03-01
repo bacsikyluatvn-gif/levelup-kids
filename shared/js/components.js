@@ -2982,7 +2982,7 @@ class BehaviorLogModal extends HTMLElement {
 
     resetForm() {
         this.selectedBehavior = null;
-        this.form = { title: '', description: '', gold: 0, xp: 0, water: 0, sticker: 0, personality: 0 };
+        this.form = { title: '', description: '', gold: 0, xp: 0, water: 10, sticker: 0, personality: 0 };
     }
 
     async submitLog() {
@@ -3000,7 +3000,7 @@ class BehaviorLogModal extends HTMLElement {
             gold: 0,
             xp: xpInput ? parseInt(xpInput.value) : this.form.xp,
             personality: personalityInput ? parseInt(personalityInput.value) : this.form.personality,
-            water: 0,
+            water: parseInt(this.querySelector('#bh-water')?.value) || 10,
             sticker: 0
         };
 
@@ -3023,15 +3023,24 @@ class BehaviorLogModal extends HTMLElement {
             await Promise.all(promises);
 
             if (window.showToast) window.showToast(`Đã ghi nhận hành động cho ${this.selectedChildIds.length} con!`, 'success');
-            this.isOpen = false;
-            this.resetForm();
-            this.render();
+
+            // Show success message inside the form - DO NOT close the form
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span> GHI NHẬN';
+            }
+            const successMsg = this.querySelector('#submit-success-msg');
+            if (successMsg) {
+                successMsg.classList.remove('hidden');
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            // Keep form open - user can close manually
         } catch (err) {
             console.error('Log behavior failed:', err);
             if (window.showToast) window.showToast('Lỗi khi ghi nhận!', 'error');
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = 'GHI NHẬN HÀNH TRÌNH';
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span> GHI NHẬN';
             }
         }
     }
@@ -3219,7 +3228,7 @@ class BehaviorLogModal extends HTMLElement {
                                                     <div class="flex flex-wrap gap-2">
                                                         ${[10, 20, 30].map(v => `
                                                             <button onclick="document.getElementById('bh-water').value = ${v}" class="flex-1 py-2 bg-teal-50 dark:bg-teal-900/30 text-teal-600 hover:bg-teal-100 text-[11px] font-black rounded-xl transition-all border border-transparent shadow-sm">
-                                                                +${v}
+                                                                ${v}
                                                             </button>
                                                         `).join('')}
                                                     </div>
@@ -3229,9 +3238,15 @@ class BehaviorLogModal extends HTMLElement {
                                         </div>
 
                                         <button onclick="window.submitBehaviorLog()" id="submit-bh-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 transition-all mt-4 flex items-center justify-center gap-3">
-                                            GHI NHẬN HÀNH TRÌNH LevelUp Kids
-                                            <span class="material-symbols-outlined text-sm">auto_stories</span>
+                                            GHI NHẬN
+                                            <span class="material-symbols-outlined text-sm">check_circle</span>
                                         </button>
+                                        <div id="submit-success-msg" class="hidden mt-3 p-3 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-2xl text-center">
+                                            <p class="text-emerald-600 dark:text-emerald-400 font-bold text-sm flex items-center justify-center gap-2">
+                                                <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">task_alt</span>
+                                                Đã ghi nhận thành công!
+                                            </p>
+                                        </div>
                                     </div>
                                 `}
                             </div>
@@ -3840,14 +3855,15 @@ class GrowthDiaryView extends HTMLElement {
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
                             </div>
 
-                            <div class="flex items-start gap-0 sm:gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide justify-between sm:justify-center relative">
+                            <div class="overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
+                                <div class="flex items-center gap-0 sm:gap-0 justify-between relative" style="min-width: 420px;">
                                 ${milestones.map((m, idx) => {
             const isCurrent = m.title === auraTitle;
             const isPassed = personalityScore >= m.score;
             return `
-                                        <div class="relative flex flex-col items-center group/m shrink-0 flex-1 min-w-0">
+                                        <div class="relative flex flex-col items-center group/m flex-1">
                                             <!-- Path Line -->
-                                            ${idx > 0 ? `<div class="absolute top-[18px] -left-1/2 w-full h-[2px] ${isPassed ? 'bg-gradient-to-r from-emerald-500/60 to-emerald-500/30' : 'bg-slate-200 dark:bg-white/10'} z-0"></div>` : ''}
+                                            ${idx > 0 ? `<div class="absolute top-[16px] sm:top-[18px] -left-1/2 w-full h-[2px] ${isPassed ? 'bg-gradient-to-r from-emerald-500/60 to-emerald-500/30' : 'bg-slate-300/40 dark:bg-white/10'} z-0" style="background-image: ${isPassed ? 'none' : 'repeating-linear-gradient(90deg, currentColor 0, currentColor 4px, transparent 4px, transparent 8px)'}; background-color: transparent; border: none;"></div>` : ''}
                                             
                                             <!-- Node Shell -->
                                             <div class="relative z-10 size-8 sm:size-9 rounded-xl sm:rounded-2xl flex items-center justify-center text-base sm:text-lg transition-all duration-500 
@@ -3857,6 +3873,9 @@ class GrowthDiaryView extends HTMLElement {
                                                 ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-xl sm:rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
                                             </div>
                                             
+                                            <!-- Label below icon -->
+                                            <p class="mt-1 text-[6px] sm:hidden font-black text-center leading-tight ${isCurrent ? 'text-amber-600 dark:text-amber-400' : (isPassed ? 'text-emerald-600/70 dark:text-emerald-400/70' : 'text-slate-400/60 dark:text-slate-600')} line-clamp-2 max-w-[44px]">${m.title}</p>
+                                            
                                             <!-- Desktop Tooltip (hover only) -->
                                             <div class="hidden sm:block absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-white/10 text-[8px] font-black text-white rounded-lg opacity-0 group-hover/m:opacity-100 transition-all scale-75 group-hover/m:scale-100 whitespace-nowrap pointer-events-none z-20">
                                                 ${m.title}
@@ -3864,6 +3883,7 @@ class GrowthDiaryView extends HTMLElement {
                                         </div>
                                     `;
         }).join('')}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3875,9 +3895,9 @@ class GrowthDiaryView extends HTMLElement {
                     <!-- TODAY'S LOGS (Reverted to 2-Column Layout) -->
                     <section class="max-w-[85rem] mx-auto space-y-10">
                         <div class="flex items-center gap-6">
-                            <h4 class="flex items-center gap-3 text-slate-800 dark:text-white font-black text-sm uppercase tracking-[0.4em] whitespace-nowrap">
-                                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png" class="size-7 object-contain" />
-                                Hoạt động hôm nay <span class="text-[10px] font-bold text-slate-400 tracking-normal ml-2">(${new Date().toLocaleDateString('vi-VN')})</span>
+                            <h4 class="flex items-center gap-3 text-slate-800 dark:text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.4em]">
+                                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png" class="size-6 sm:size-7 object-contain flex-shrink-0" />
+                                <span>Hoạt động hôm nay</span> <span class="text-[10px] font-bold text-slate-400 tracking-normal">(${new Date().toLocaleDateString('vi-VN')})</span>
                             </h4>
                             <div class="h-px flex-1 bg-slate-100 dark:bg-slate-800"></div>
                         </div>
