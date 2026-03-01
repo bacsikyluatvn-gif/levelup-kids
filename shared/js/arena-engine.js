@@ -8,9 +8,9 @@ let currentInvitingTask = null;
 let botInvitationInterval = null;
 
 function scheduleNextBotChallenge() {
-    // Tần suất ngẫu nhiên từ 1 đến 3 phút (60000ms - 180000ms)
+    // Tần suất ngẫu nhiên từ 10 đến 15 giây (10000ms - 15000ms) - Testing mode
     const isDebug = window.location.search.includes('debug=true');
-    const randomTime = isDebug ? 10000 : Math.floor(Math.random() * (180000 - 60000 + 1)) + 60000;
+    const randomTime = isDebug ? 5000 : Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
 
     console.log(`[ArenaEngine] 🛡️ Lên lịch kiểm tra thách đấu mới sau ${Math.round(randomTime / 1000)} giây...`);
 
@@ -61,7 +61,7 @@ function checkForBotChallenge() {
     console.log("[ArenaEngine] Current passive challenges used today:", passiveUsed);
 
     const isDebug = window.location.search.includes('debug=true');
-    const triggerChance = isDebug ? 1.0 : 0.9;
+    const triggerChance = 1.0; // Always trigger for testing
 
     if (passiveUsed < 3 && Math.random() < triggerChance) {
         console.log("[ArenaEngine] Conditions met for a new challenge!");
