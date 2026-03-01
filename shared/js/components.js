@@ -125,7 +125,7 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
  */
 let activeCelebrationAudio = null;
 let lastCelebrationSoundTime = 0;
-const SOUND_COOLDOWN = 5000; // 5 seconds cooldown between sounds
+const SOUND_COOLDOWN = 30000; // 30 seconds cooldown - only first celebration plays sound
 
 window.celebrate = (config = {}) => {
     const {
@@ -230,14 +230,12 @@ window.celebrate = (config = {}) => {
     const existing = document.getElementById('global-celebration');
     if (existing) {
         existing.remove();
-        // If sound was playing for previous one, we might want to keep it or stop it.
-        // The user says "sequence of sounds" is bad, so we stop previous.
     }
 
     // 3. Create Container
     const container = document.createElement('div');
     container.id = 'global-celebration';
-    container.className = 'fixed inset-0 z-[20000] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-3xl animate-in fade-in duration-700';
+    container.className = 'fixed inset-0 z-[20000] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-3xl';
 
     container.innerHTML = `
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -476,22 +474,22 @@ class AppHeader extends HTMLElement {
                     </div>
 
                     <!-- Resources -->
-                    <div class="flex items-center gap-4 font-black shrink-0">
-                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform shadow-sm" title="Vàng">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-8 object-contain drop-shadow-sm" />
-                            <span class="text-base tabular-nums">${user.gold}</span>
+                    <div class="flex items-center gap-2 font-black shrink-0">
+                        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform shadow-sm" title="Vàng">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-6 object-contain" />
+                            <span class="text-sm tabular-nums">${user.gold}</span>
                         </div>
-                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform shadow-sm" title="Huy hiệu">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-8 object-contain drop-shadow-sm" />
-                            <span class="text-base tabular-nums">${user.stickers || 0}</span>
+                        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform shadow-sm" title="Huy hiệu">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-6 object-contain" />
+                            <span class="text-sm tabular-nums">${user.stickers || 0}</span>
                         </div>
-                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:scale-105 transition-transform shadow-sm" title="Nước">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-8 object-contain drop-shadow-sm" />
-                            <span class="text-base tabular-nums">${user.water || 0}</span>
+                        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:scale-105 transition-transform shadow-sm" title="Nước">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-6 object-contain" />
+                            <span class="text-sm tabular-nums">${user.water || 0}</span>
                         </div>
-                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform shadow-sm" title="Điểm nhân cách">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-8 object-contain drop-shadow-sm" />
-                            <span class="text-base tabular-nums">${user.personalityPoints || 0}</span>
+                        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform shadow-sm" title="Điểm nhân cách">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-6 object-contain" />
+                            <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
                         </div>
                     </div>
                 </div>
