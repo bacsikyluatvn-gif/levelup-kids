@@ -29,13 +29,16 @@
 
         <!-- Page Header -->
         <div
-            class="flex flex-col items-center justify-center text-center gap-2 mb-6 md:mb-10 w-full animate-in slide-in-from-top-4 duration-500">
+            class="flex flex-col items-center justify-center text-center gap-3 mb-8 md:mb-14 w-full animate-in slide-in-from-top-4 duration-500">
             <h1
-                class="text-2xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 mb-1 md:mb-2 tracking-tight drop-shadow-sm pb-1">
-                Cửa Hàng Anh Hùng Nhí</h1>
-            <p class="text-slate-500 font-medium text-sm md:text-base">Nơi đổi phần thưởng cho sự nỗ lực và tính cách
-                tuyệt vời của
-                con!</p>
+                class="text-3xl md:text-6xl font-black text-slate-800 dark:text-white leading-tight tracking-tight px-4">
+                Cửa Hàng <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-rose-500">Anh
+                    Hùng Nhí</span>
+            </h1>
+            <p
+                class="text-slate-500 dark:text-slate-400 font-medium text-xs sm:text-sm md:text-lg max-w-md mx-auto leading-relaxed">
+                Đổi sự nỗ lực lấy những phần thưởng tuyệt vời dành riêng cho con! 🎁
+            </p>
         </div>
 
         <!-- Balances Grid (Responsive & Icon-Synced) -->
@@ -92,26 +95,27 @@
             </div>
         </div>
 
-        <!-- Tab Navigation (Centered, Sleek) -->
-        <div class="flex justify-center mb-10 w-full overflow-x-auto hide-scrollbar">
+        <!-- Tab Navigation (Centered, Premium Pills) -->
+        <div class="sticky top-2 z-30 flex justify-center mb-8 w-full">
             <div
-                class="inline-flex gap-1.5 md:gap-2 bg-slate-100 dark:bg-slate-800 p-1 md:p-1.5 rounded-2xl shadow-inner whitespace-nowrap overflow-x-auto min-w-max md:min-w-0">
+                class="flex gap-1.5 p-1.5 bg-slate-200/50 dark:bg-slate-800/50 backdrop-blur-xl rounded-[2rem] border border-white/20 dark:border-white/5 shadow-xl overflow-x-auto no-scrollbar max-w-full">
                 <button onclick="switchShopTab('power')" id="tab-btn-power"
-                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] bg-white dark:bg-[#2c2215] shadow-sm text-rose-500">
-                    <span class="material-symbols-outlined text-xl"
-                        style="font-variation-settings:'FILL' 1">favorite</span>
-                    <span>Đặc Quyền ✨</span>
+                    class="tab-btn flex items-center justify-center gap-2 px-5 py-3 rounded-full font-black text-[11px] sm:text-sm transition-all whitespace-nowrap bg-white dark:bg-[#2c2215] shadow-sm text-rose-500 border border-slate-100 dark:border-slate-700">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png"
+                        class="size-5 object-contain" />
+                    <span>Đặc Quyền✨</span>
                 </button>
                 <button onclick="switchShopTab('premium')" id="tab-btn-premium"
-                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white">
-                    <span class="material-symbols-outlined text-xl">redeem</span>
-                    <span>Quà Tặng 🎁</span>
+                    class="tab-btn flex items-center justify-center gap-2 px-5 py-3 rounded-full font-black text-[11px] sm:text-sm transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png"
+                        class="size-5 object-contain" />
+                    <span>Quà Tặng🎁</span>
                 </button>
                 <button onclick="switchShopTab('instant')" id="tab-btn-instant"
-                    class="tab-btn flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white">
-                    <span class="material-symbols-outlined text-xl transform rotate-12"
-                        style="font-variation-settings:'FILL' 1">sell</span>
-                    <span>Phần Thưởng 🏆</span>
+                    class="tab-btn flex items-center justify-center gap-2 px-5 py-3 rounded-full font-black text-[11px] sm:text-sm transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png"
+                        class="size-5 object-contain" />
+                    <span>Phần Thưởng🏆</span>
                 </button>
             </div>
         </div>
@@ -297,8 +301,10 @@
         // Tab switching
         function switchShopTab(tabId) {
             // Hide all tab content
-            document.querySelectorAll('.shop-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.shop-tab-content').forEach(el => el.classList.remove('block'));
+            document.querySelectorAll('.shop-tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
 
             // Show target content
             const target = document.getElementById(`shop-tab-${tabId}`);
@@ -309,17 +315,14 @@
 
             // Reset all buttons to inactive
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-6 py-2.5 md:py-3 rounded-xl font-bold text-xs md:text-sm transition-all sm:min-w-[180px] text-slate-500 hover:text-slate-800 dark:hover:text-white";
+                btn.className = "tab-btn flex items-center justify-center gap-2 px-5 py-3 rounded-full font-black text-[11px] sm:text-sm transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
             });
 
             // Set active button style
             const activeBtn = document.getElementById(`tab-btn-${tabId}`);
             if (activeBtn) {
-                // Common active classes
-                activeBtn.classList.add('bg-white', 'dark:bg-[#2c2215]', 'shadow-sm');
-                activeBtn.classList.remove('text-slate-500');
+                activeBtn.className = "tab-btn flex items-center justify-center gap-2 px-5 py-3 rounded-full font-black text-[11px] sm:text-sm transition-all whitespace-nowrap bg-white dark:bg-[#2c2215] shadow-lg border border-slate-100 dark:border-slate-700";
 
-                // Color-specific active classes
                 if (tabId === 'power') activeBtn.classList.add('text-rose-500');
                 else if (tabId === 'premium') activeBtn.classList.add('text-amber-500');
                 else if (tabId === 'instant') activeBtn.classList.add('text-purple-500');
