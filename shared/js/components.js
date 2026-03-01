@@ -2515,9 +2515,9 @@ class ChildNav extends HTMLElement {
         const gridItems = items.map(it => {
             const activeBg = it.active ? `background:linear-gradient(135deg,${it.color},${it.color}dd);color:white;box-shadow:0 4px 15px ${it.color}50` : '';
             const activeClass = it.active ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#1a140c]' : 'bg-white/80 dark:bg-white/5 text-slate-600 dark:text-slate-300';
-            return `<a href="../${it.href}" class="flex flex-col items-center gap-2 p-3 rounded-2xl ${activeClass} active:scale-90 transition-all" style="${activeBg}${it.active ? `;--tw-ring-color:${it.color}` : ''}">
+            return `<a href="../${it.href}" class="flex flex-col items-center gap-2 px-1.5 py-3 rounded-2xl ${activeClass} active:scale-90 transition-all font-sans" style="${activeBg}${it.active ? `;--tw-ring-color:${it.color}` : ''}">
                 <div class="relative"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' ${it.active ? 1 : 0}">${it.icon}</span>${it.badge || ''}</div>
-                <span class="text-[10px] font-bold leading-none">${it.label}</span>
+                <span class="text-[9.5px] font-black leading-none whitespace-nowrap tracking-tighter uppercase">${it.label}</span>
             </a>`;
         }).join('');
 
