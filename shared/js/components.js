@@ -2128,25 +2128,23 @@ class InstantPerksGrid extends HTMLElement {
             return `
                     <div class="group relative bg-white dark:bg-slate-900 rounded-3xl border ${c.border} shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col">
                         <!-- Top color strip with icon -->
-                        <div class="bg-gradient-to-br ${c.bg} p-6 flex items-center justify-between">
-                            <span class="material-symbols-outlined text-4xl drop-shadow-sm text-white" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
-                            <div class="flex items-center gap-1 bg-white/20 text-white text-xs font-black px-2.5 py-1.5 rounded-full">
-                                <span class="material-symbols-outlined text-[14px] transform rotate-12" style="font-variation-settings:'FILL' 1">sell</span>
+                        <div class="bg-gradient-to-br ${c.bg} p-5 flex items-center justify-between">
+                            <span class="material-symbols-outlined text-4xl drop-shadow-md text-white" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
+                            <div class="flex items-center gap-1 bg-white/20 backdrop-blur-md text-white text-[11px] font-black px-3 py-1.5 rounded-full border border-white/20">
+                                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-3.5 object-contain" />
                                 ${perk.stickerPrice}
                             </div>
                         </div>
                         <!-- Content -->
                         <div class="p-4 flex flex-col flex-1">
-                            <h3 class="font-black text-slate-800 dark:text-white text-sm leading-tight mb-1">${perk.title}</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 hidden">${perk.desc}</p>
+                            <h3 class="font-black text-slate-800 dark:text-white text-xs sm:text-sm leading-tight mb-2">${perk.title}</h3>
                             <button
-                                onclick="window.redeemInstantPerk && window.redeemInstantPerk('${perk.id}')" class="mt-3 w-full ${canAfford
-                    ? `bg-gradient-to-r ${c.bg} text-white hover:opacity-90 shadow-sm`
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                } font-bold text-xs py-2.5 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-1.5"
+                                onclick="window.redeemInstantPerk && window.redeemInstantPerk('${perk.id}')" class="mt-auto w-full ${canAfford
+                    ? `bg-slate-900 dark:bg-slate-700 text-white hover:opacity-90 shadow-lg active:scale-95`
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-200 dark:border-slate-800/50'
+                } font-black text-[10px] py-3 rounded-xl transition-all flex items-center justify-center gap-1.5"
                                 ${!canAfford ? 'disabled' : ''}>
-                                <span class="material-symbols-outlined text-sm">bolt</span>
-                                ${canAfford ? 'Đổi Ngay!' : `Thiếu ${perk.stickerPrice - userStickers} Huy hiệu`}
+                                ${canAfford ? '<span class="material-symbols-outlined text-sm">bolt</span> Đổi Ngay!' : `Cần thêm ${perk.stickerPrice - userStickers} ⭐`}
                             </button>
                         </div>
                     </div>`;
@@ -2212,16 +2210,16 @@ class ShopGrid extends HTMLElement {
                     : `<span class="material-symbols-outlined text-5xl text-slate-300">redeem</span>`
                 }
                             <!-- Price badge -->
-                            <div class="absolute top-3 right-3 flex flex-col gap-1 items-end">
+                            <div class="absolute top-2 right-2 flex flex-col gap-1 items-end">
                                 ${hasGoldPrice ? `
-                                    <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-amber-600 font-black text-[13px] px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 min-w-[65px] justify-center">
-                                        <span class="material-symbols-outlined text-[16px] text-amber-500" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                    <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-amber-600 font-black text-[11px] sm:text-[13px] px-2.5 py-1.5 rounded-full shadow-lg border border-amber-100/50 dark:border-amber-900/30 flex items-center gap-1 justify-center">
+                                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3 sm:size-4 object-contain" />
                                         ${item.price}
                                     </div>
                                 ` : ''}
                                 ${hasPersonalityPrice ? `
-                                    <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-rose-600 font-black text-[13px] px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 min-w-[65px] justify-center">
-                                        <span class="material-symbols-outlined text-[16px] text-rose-500" style="font-variation-settings:'FILL' 1">favorite</span>
+                                    <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-rose-600 font-black text-[11px] sm:text-[13px] px-2.5 py-1.5 rounded-full shadow-lg border border-rose-100/50 dark:border-rose-900/30 flex items-center gap-1 justify-center">
+                                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3 sm:size-4 object-contain" />
                                         ${item.personalityPrice}
                                     </div>
                                 ` : ''}
@@ -2248,16 +2246,16 @@ class ShopGrid extends HTMLElement {
                                 <h3 class="font-black text-slate-800 dark:text-white text-base mb-2 leading-tight group-hover:text-primary transition-colors">${item.title}</h3>
                                 
                                 <!-- Detailed Price Info in Footer -->
-                                <div class="flex flex-wrap gap-3 mt-auto pt-2">
+                                <div class="flex flex-wrap gap-2.5 mt-auto pt-2">
                                     ${hasGoldPrice ? `
-                                        <div class="flex items-center gap-1.5 text-amber-600 font-black text-sm">
-                                            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                                        <div class="flex items-center gap-1.5 text-amber-600 font-black text-xs sm:text-sm">
+                                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3.5 sm:size-4 object-contain" />
                                             ${item.price}
                                         </div>
                                     ` : ''}
                                     ${hasPersonalityPrice ? `
-                                        <div class="flex items-center gap-1.5 text-rose-600 font-black text-sm">
-                                            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">favorite</span>
+                                        <div class="flex items-center gap-1.5 text-rose-600 font-black text-xs sm:text-sm">
+                                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3.5 sm:size-4 object-contain" />
                                             ${item.personalityPrice}
                                         </div>
                                     ` : ''}
