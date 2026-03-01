@@ -2232,21 +2232,25 @@ class ShopGrid extends HTMLElement {
 
                             <!-- Locked / Pending Overlay -->
                             ${(!canAfford || isPending) ? `
-                            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center p-4 transition-all group-hover:backdrop-blur-[4px]">
-                                <div class="bg-white/95 dark:bg-slate-800/95 p-4 rounded-3xl flex flex-col items-center gap-2 shadow-2xl border border-white/20 animate-in zoom-in-95 duration-300">
+                            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center p-3 transition-all group-hover:backdrop-blur-[4px]">
+                                <div class="bg-white/95 dark:bg-slate-800/95 p-3.5 sm:p-4 rounded-3xl flex flex-col items-center gap-2 shadow-2xl border border-white/20 animate-in zoom-in-95 duration-300 min-w-[140px]">
                                     ${isPending ? `
                                         <div class="size-10 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-amber-500 animate-spin">
                                             <span class="material-symbols-outlined text-2xl font-black">progress_activity</span>
                                         </div>
                                         <span class="text-[10px] font-black text-slate-700 dark:text-white uppercase tracking-wider text-center">Đang chờ<br/>phê duyệt</span>
                                     ` : `
-                                        <div class="size-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400">
-                                            <span class="material-symbols-outlined text-2xl font-black">lock</span>
-                                        </div>
-                                        <div class="flex flex-col items-center gap-0.5">
-                                            <span class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">Cần thêm</span>
-                                            ${!canAffordGold ? `<div class="flex items-center gap-1 text-[10px] font-black text-amber-600 dark:text-amber-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3" />${item.price - userGold}</div>` : ''}
-                                            ${!canAffordPersonality ? `<div class="flex items-center gap-1 text-[10px] font-black text-rose-600 dark:text-rose-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3" />${item.personalityPrice - userPersonality}</div>` : ''}
+                                        <div class="flex items-center gap-3 w-full">
+                                            <div class="size-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400 shrink-0">
+                                                <span class="material-symbols-outlined text-2xl font-black">lock</span>
+                                            </div>
+                                            <div class="flex flex-col items-start gap-0.5">
+                                                <span class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Cần thêm</span>
+                                                <div class="flex flex-col gap-0.5">
+                                                    ${!canAffordGold ? `<div class="flex items-center gap-1 text-[11px] font-black text-amber-600 dark:text-amber-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3.5" />${item.price - userGold}</div>` : ''}
+                                                    ${!canAffordPersonality ? `<div class="flex items-center gap-1 text-[11px] font-black text-rose-600 dark:text-rose-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3.5" />${item.personalityPrice - userPersonality}</div>` : ''}
+                                                </div>
+                                            </div>
                                         </div>
                                     `}
                                 </div>
@@ -2256,9 +2260,6 @@ class ShopGrid extends HTMLElement {
                         <!-- Card Body -->
                         <div class="p-5 flex flex-col flex-1 bg-white dark:bg-[#1a140c]/40 relative z-10">
                             <div class="flex-1 flex flex-col mb-4">
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1.5 ${(!item.category || item.category === 'null' || item.category === 'POWER_CARD') ? 'hidden' : ''}">
-                                    ${item.category}
-                                </span>
                                 <h3 class="font-black text-slate-800 dark:text-white text-sm sm:text-base mb-1 leading-tight line-clamp-2 min-h-[2.5rem] group-hover:text-amber-500 transition-colors cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
                                     ${item.title}
                                 </h3>
@@ -2273,7 +2274,7 @@ class ShopGrid extends HTMLElement {
                                 ${(!canAfford || isPending) ? 'disabled' : ''}>
                                 ${canAfford && !isPending ? '<div class="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>' : ''}
                                 <span class="material-symbols-outlined text-lg relative z-10">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock_open')}</span>
-                                <span class="relative z-10 text-[11px] uppercase tracking-wider">${isPending ? 'Đang Chờ' : (canAfford ? 'Đổi Quà Ngay' : 'Chưa Đủ Điều Kiện')}</span>
+                                <span class="relative z-10 text-[11px] uppercase tracking-wider">${isPending ? 'Đang Chờ' : (canAfford ? 'Đổi Quà Ngay' : 'Chưa Đủ')}</span>
                             </button>
                         </div>
                     </div>`;
