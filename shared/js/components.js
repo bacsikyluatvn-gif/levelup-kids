@@ -243,39 +243,39 @@ window.celebrate = (config = {}) => {
             <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 24px 24px;"></div>
         </div>
 
-        <div class="relative w-full max-w-xl p-8 text-center animate-in zoom-in-90 slide-in-from-bottom-24 duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)">
-            <div class="mb-12 relative inline-block">
+        <div class="relative w-full max-w-xl p-5 sm:p-8 text-center animate-in zoom-in-90 slide-in-from-bottom-24 duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)">
+            <div class="mb-6 sm:mb-12 relative inline-block">
                 <div class="absolute inset-0 ${theme.glow} rounded-full blur-[60px] animate-pulse"></div>
                 ${image ?
-            `<div class="relative z-10 p-2 bg-white/10 backdrop-blur-xl rounded-[3.5rem] border border-white/20 shadow-2xl">
-                        <img src="${image}" class="size-56 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform hover:rotate-6 transition-transform">
+            `<div class="relative z-10 p-2 bg-white/10 backdrop-blur-xl rounded-[2.5rem] sm:rounded-[3.5rem] border border-white/20 shadow-2xl">
+                        <img src="${image}" class="size-32 sm:size-56 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform hover:rotate-6 transition-transform">
                     </div>` :
-            `<div class="size-44 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl rounded-[3rem] flex items-center justify-center mx-auto border border-white/30 relative z-10 shadow-2xl ring-1 ring-white/20">
-                        <span class="material-symbols-outlined text-[100px] text-white drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]" style="font-variation-settings:'FILL' 1">${activeIcon}</span>
+            `<div class="size-28 sm:size-44 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl rounded-[2rem] sm:rounded-[3rem] flex items-center justify-center mx-auto border border-white/30 relative z-10 shadow-2xl ring-1 ring-white/20">
+                        <span class="material-symbols-outlined text-[60px] sm:text-[100px] text-white drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]" style="font-variation-settings:'FILL' 1">${activeIcon}</span>
                     </div>`
         }
                 <!-- Floating Elements - Type Specific -->
-                <div class="absolute -top-10 -left-10 size-16 bg-${theme.accent}-400/40 rounded-full blur-2xl animate-bounce"></div>
-                <div class="absolute -bottom-10 -right-10 size-20 bg-${theme.accent}-300/30 rounded-full blur-3xl animate-bounce" style="animation-delay: 1.5s"></div>
+                <div class="absolute -top-6 sm:-top-10 -left-6 sm:-left-10 size-10 sm:size-16 bg-${theme.accent}-400/40 rounded-full blur-2xl animate-bounce"></div>
+                <div class="absolute -bottom-6 sm:-bottom-10 -right-6 sm:-right-10 size-14 sm:size-20 bg-${theme.accent}-300/30 rounded-full blur-3xl animate-bounce" style="animation-delay: 1.5s"></div>
             </div>
 
-            <div class="space-y-6 relative">
-                <div class="inline-flex items-center gap-2 px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-2">
+            <div class="space-y-4 sm:space-y-6 relative">
+                <div class="inline-flex items-center gap-2 px-4 sm:px-6 py-1.5 sm:py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-1 sm:mb-2">
                     <span class="size-2 bg-${theme.accent}-400 rounded-full animate-ping"></span>
-                    <h4 class="text-white font-black uppercase tracking-[0.4em] text-xs md:text-sm pt-0.5">${theme.announcement}</h4>
+                    <h4 class="text-white font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[10px] sm:text-sm pt-0.5">${theme.announcement}</h4>
                 </div>
-                <h2 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 leading-tight drop-shadow-2xl animate-in slide-in-from-bottom-8 duration-700 delay-300">${title}</h2>
-                <div class="h-1 w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent mx-auto"></div>
-                <p class="text-blue-100/80 text-xl md:text-2xl font-bold max-w-lg mx-auto leading-relaxed animate-in fade-in duration-1000 delay-700">${subtitle}</p>
+                <h2 class="text-3xl sm:text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 leading-tight drop-shadow-2xl animate-in slide-in-from-bottom-8 duration-700 delay-300">${title}</h2>
+                <div class="h-1 w-16 sm:w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent mx-auto"></div>
+                <p class="text-blue-100/80 text-base sm:text-xl md:text-2xl font-bold max-w-lg mx-auto leading-relaxed animate-in fade-in duration-1000 delay-700">${subtitle}</p>
             </div>
 
-            <div class="mt-16 animate-in fade-in zoom-in-50 duration-700 delay-[1.2s]">
-                <button id="close-celebration" class="group relative px-14 py-6 ${theme.btn} text-white font-black rounded-3xl text-lg uppercase tracking-widest shadow-2xl hover:scale-110 active:scale-95 transition-all ring-1 ring-white/30">
-                    <span class="relative z-10 flex items-center gap-3">
+            <div class="mt-8 sm:mt-16 animate-in fade-in zoom-in-50 duration-700 delay-[1.2s]">
+                <button id="close-celebration" class="group relative px-8 sm:px-14 py-4 sm:py-6 ${theme.btn} text-white font-black rounded-2xl sm:rounded-3xl text-sm sm:text-lg uppercase tracking-wider sm:tracking-widest shadow-2xl hover:scale-110 active:scale-95 transition-all ring-1 ring-white/30">
+                    <span class="relative z-10 flex items-center gap-2 sm:gap-3">
                         TIẾP TỤC HÀNH TRÌNH
-                        <span class="material-symbols-outlined font-black">arrow_forward</span>
+                        <span class="material-symbols-outlined font-black text-base sm:text-xl">arrow_forward</span>
                     </span>
-                    <div class="absolute inset-0 bg-white/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute inset-0 bg-white/20 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </button>
             </div>
         </div>
@@ -3840,26 +3840,21 @@ class GrowthDiaryView extends HTMLElement {
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
                             </div>
 
-                            <div class="flex items-start gap-1 sm:gap-2 overflow-x-auto pb-2 sm:pb-0 snap-x snap-mandatory scrollbar-hide justify-between sm:justify-center">
+                            <div class="flex items-start gap-0 sm:gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide justify-between sm:justify-center relative">
                                 ${milestones.map((m, idx) => {
             const isCurrent = m.title === auraTitle;
             const isPassed = personalityScore >= m.score;
             return `
-                                        <div class="relative flex flex-col items-center group/m snap-center shrink-0 w-[60px] sm:w-auto sm:flex-1">
-                                            <!-- Path Line (desktop only) -->
-                                            ${idx > 0 ? `<div class="hidden sm:block absolute top-[18px] -left-1/2 w-full h-[1px] ${isPassed ? 'bg-emerald-500/50' : 'bg-slate-200 dark:bg-white/10'} z-0"></div>` : ''}
+                                        <div class="relative flex flex-col items-center group/m shrink-0 flex-1 min-w-0">
+                                            <!-- Path Line -->
+                                            ${idx > 0 ? `<div class="absolute top-[18px] -left-1/2 w-full h-[2px] ${isPassed ? 'bg-gradient-to-r from-emerald-500/60 to-emerald-500/30' : 'bg-slate-200 dark:bg-white/10'} z-0"></div>` : ''}
                                             
                                             <!-- Node Shell -->
-                                            <div class="relative z-10 size-9 rounded-2xl flex items-center justify-center text-lg transition-all duration-500 
+                                            <div class="relative z-10 size-8 sm:size-9 rounded-xl sm:rounded-2xl flex items-center justify-center text-base sm:text-lg transition-all duration-500 
                                                 ${isCurrent ? 'bg-amber-500 text-white scale-110 sm:scale-125 shadow-lg shadow-amber-500/40 ring-2 ring-amber-300/50' :
                     (isPassed ? 'bg-emerald-500/20 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-white/5 border border-slate-200 dark:border-white/5')}">
-                                                ${m.img ? `<img src="${m.img}" class="size-7 object-contain" alt="${m.title}">` : m.emoji}
-                                                ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
-                                            </div>
-                                            
-                                            <!-- Mobile Label (always visible) -->
-                                            <div class="mt-1.5 sm:mt-0">
-                                                <p class="text-[7px] sm:hidden font-black text-center leading-tight ${isCurrent ? 'text-amber-600 dark:text-amber-400' : (isPassed ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-600')} line-clamp-2 max-w-[56px]">${m.title}</p>
+                                                ${m.img ? `<img src="${m.img}" class="size-6 sm:size-7 object-contain" alt="${m.title}">` : m.emoji}
+                                                ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-xl sm:rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
                                             </div>
                                             
                                             <!-- Desktop Tooltip (hover only) -->
@@ -3995,15 +3990,15 @@ class GrowthDiaryView extends HTMLElement {
                             </div>
 
                             <!-- Optimized Heart Row -->
-                            <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                            <div class="flex flex-nowrap justify-center md:justify-start gap-1.5 sm:gap-3">
                                 ${Array.from({ length: 10 }).map((_, i) => {
             const rating = i + 1;
             const currentRating = parseInt(localStorage.getItem('daily_rating_' + data.user.id)) || 0;
             const isActive = rating <= currentRating;
             return `
                                         <button onclick="window.setDailyRating(${rating})" 
-                                            class="heart-btn size-11 rounded-2xl bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center group ${isActive ? 'bg-rose-500/20 shadow-lg shadow-rose-500/10' : ''}">
-                                            <span class="material-symbols-outlined text-2xl ${isActive ? 'text-rose-500' : 'text-white/20 group-hover:text-white/40'}" style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'}">favorite</span>
+                                            class="heart-btn size-8 sm:size-11 rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center group ${isActive ? 'bg-rose-500/20 shadow-lg shadow-rose-500/10' : ''}">
+                                            <span class="material-symbols-outlined text-lg sm:text-2xl ${isActive ? 'text-rose-500' : 'text-white/20 group-hover:text-white/40'}" style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'}">favorite</span>
                                         </button>
                                     `;
         }).join('')}
