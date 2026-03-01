@@ -9,6 +9,16 @@ body {
     overflow-x: hidden;
 }
 
+/* Scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 :root {
     --primary: #ee9d2b;
     --primary-dark: #d48215;
