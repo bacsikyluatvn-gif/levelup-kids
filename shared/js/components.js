@@ -3740,8 +3740,8 @@ class GrowthDiaryView extends HTMLElement {
                 <!-- No background shells here, pure transparency -->
 
                 <!-- 01. DASHBOARD HERO SECTION (Premium Minimalist Redesign) -->
-                <div class="pt-8 px-6 sm:px-12">
-                    <div class="relative group bg-white/70 dark:bg-white/5 backdrop-blur-2xl p-10 sm:p-14 rounded-[5rem] shadow-xl dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/5 overflow-hidden">
+                <div class="pt-4 sm:pt-8 px-2 sm:px-12">
+                    <div class="relative group bg-white/70 dark:bg-white/5 backdrop-blur-2xl p-5 sm:p-14 rounded-[2rem] sm:rounded-[5rem] shadow-xl dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/5 overflow-hidden">
                         <!-- Dynamic Aura Background -->
                         <div class="absolute inset-0 bg-gradient-to-br from-${auraColor}-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
                         <div class="absolute -right-20 -top-20 size-80 bg-${auraColor}-500/10 blur-[100px] rounded-full"></div>
@@ -3829,9 +3829,9 @@ class GrowthDiaryView extends HTMLElement {
                         </div>
 
                         <!-- Roadmap Row: Integrated Journey Map -->
-                        <div class="relative z-10 bg-slate-50/50 dark:bg-black/20 border border-slate-200 dark:border-white/5 p-8 rounded-[3rem] backdrop-blur-md">
+                        <div class="relative z-10 bg-slate-50/50 dark:bg-black/20 border border-slate-200 dark:border-white/5 p-4 sm:p-8 rounded-[2rem] sm:rounded-[3rem] backdrop-blur-md">
                             <!-- Roadmap Label (Minimalist Harmonized Style) -->
-                            <div class="flex items-center gap-4 mb-8">
+                            <div class="flex items-center gap-4 mb-4 sm:mb-8">
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
                                 <div class="flex items-center gap-2 text-amber-500">
                                     <span class="material-symbols-outlined text-sm">timeline</span>
@@ -3840,26 +3840,31 @@ class GrowthDiaryView extends HTMLElement {
                                 <div class="h-px flex-1 bg-slate-200 dark:bg-white/5"></div>
                             </div>
 
-                            <div class="flex items-center justify-center gap-2 overflow-visible">
+                            <div class="flex items-start gap-1 sm:gap-2 overflow-x-auto pb-2 sm:pb-0 snap-x snap-mandatory scrollbar-hide justify-between sm:justify-center">
                                 ${milestones.map((m, idx) => {
             const isCurrent = m.title === auraTitle;
             const isPassed = personalityScore >= m.score;
             return `
-                                        <div class="relative flex-1 flex flex-col items-center group/m">
-                                            <!-- Path Line -->
-                                            ${idx > 0 ? `<div class="absolute top-1/2 -left-1/2 w-full h-[1px] ${isPassed ? 'bg-emerald-500/50' : 'bg-slate-200 dark:bg-white/10'} -translate-y-1/2 z-0"></div>` : ''}
+                                        <div class="relative flex flex-col items-center group/m snap-center shrink-0 w-[60px] sm:w-auto sm:flex-1">
+                                            <!-- Path Line (desktop only) -->
+                                            ${idx > 0 ? `<div class="hidden sm:block absolute top-[18px] -left-1/2 w-full h-[1px] ${isPassed ? 'bg-emerald-500/50' : 'bg-slate-200 dark:bg-white/10'} z-0"></div>` : ''}
                                             
                                             <!-- Node Shell -->
                                             <div class="relative z-10 size-9 rounded-2xl flex items-center justify-center text-lg transition-all duration-500 
-                                                ${isCurrent ? 'bg-amber-500 text-white scale-125 shadow-lg shadow-amber-500/40' :
+                                                ${isCurrent ? 'bg-amber-500 text-white scale-110 sm:scale-125 shadow-lg shadow-amber-500/40 ring-2 ring-amber-300/50' :
                     (isPassed ? 'bg-emerald-500/20 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-white/5 border border-slate-200 dark:border-white/5')}">
                                                 ${m.img ? `<img src="${m.img}" class="size-7 object-contain" alt="${m.title}">` : m.emoji}
                                                 ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
-                                                
-                                                <!-- Minimalist Tooltip -->
-                                                <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-white/10 text-[8px] font-black text-white rounded-lg opacity-0 group-hover/m:opacity-100 transition-all scale-75 group-hover/m:scale-100 whitespace-nowrap pointer-events-none z-20">
-                                                    ${m.title}
-                                                </div>
+                                            </div>
+                                            
+                                            <!-- Mobile Label (always visible) -->
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="text-[7px] sm:hidden font-black text-center leading-tight ${isCurrent ? 'text-amber-600 dark:text-amber-400' : (isPassed ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-600')} line-clamp-2 max-w-[56px]">${m.title}</p>
+                                            </div>
+                                            
+                                            <!-- Desktop Tooltip (hover only) -->
+                                            <div class="hidden sm:block absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-white/10 text-[8px] font-black text-white rounded-lg opacity-0 group-hover/m:opacity-100 transition-all scale-75 group-hover/m:scale-100 whitespace-nowrap pointer-events-none z-20">
+                                                ${m.title}
                                             </div>
                                         </div>
                                     `;
@@ -3870,7 +3875,7 @@ class GrowthDiaryView extends HTMLElement {
                 </div>
 
                 <!-- 02. MAIN JOURNEY (Expanding Grid Architecture) -->
-                <div class="px-6 sm:px-12 mt-20 space-y-24 pb-20">
+                <div class="px-2 sm:px-12 mt-10 sm:mt-20 space-y-12 sm:space-y-24 pb-20">
                     
                     <!-- TODAY'S LOGS (Reverted to 2-Column Layout) -->
                     <section class="max-w-[85rem] mx-auto space-y-10">
@@ -3972,16 +3977,16 @@ class GrowthDiaryView extends HTMLElement {
                     </section>
 
                     <!-- Diary Writing Area (Expanded) -->
-                    <section class="max-w-[85rem] mx-auto bg-slate-900 dark:bg-[#2c2215] p-8 sm:p-14 rounded-[4rem] shadow-2xl relative overflow-hidden text-white border border-white/5">
-                        <div class="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                            <span class="material-symbols-outlined text-[100px]">auto_stories</span>
+                    <section class="max-w-[85rem] mx-auto bg-slate-900 dark:bg-[#2c2215] p-5 sm:p-14 rounded-[2rem] sm:rounded-[4rem] shadow-2xl relative overflow-hidden text-white border border-white/5">
+                        <div class="absolute top-0 right-0 p-6 sm:p-10 opacity-5 pointer-events-none">
+                            <span class="material-symbols-outlined text-[60px] sm:text-[100px]">auto_stories</span>
                         </div>
                         
                         <div class="relative z-10 space-y-10">
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                                 <div>
-                                    <h3 class="text-3xl font-black tracking-tight mb-2 whitespace-nowrap">Hôm nay của con thế nào?</h3>
-                                    <p class="text-slate-400 font-medium text-sm">Hôm nay con cảm thấy thế nào? Hãy chia sẻ với bố mẹ nhé! ❤️</p>
+                                    <h3 class="text-xl sm:text-3xl font-black tracking-tight mb-2">Hôm nay của con thế nào?</h3>
+                                    <p class="text-slate-400 font-medium text-xs sm:text-sm">Hôm nay con cảm thấy thế nào? Hãy chia sẻ với bố mẹ nhé! ❤️</p>
                                 </div>
                                 <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl flex-shrink-0">
                                     <span class="material-symbols-outlined text-rose-500" style="font-variation-settings: 'FILL' 1">favorite</span>

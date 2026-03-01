@@ -120,45 +120,45 @@ function ensureInvitationModal() {
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-90"></div>
                 </div>
 
-                <div class="relative z-10 p-10 sm:p-14 text-center">
+                <div class="relative z-10 p-5 sm:p-14 text-center flex flex-col justify-center min-h-screen">
                     <!-- Battle Header -->
-                    <div class="mb-12">
-                        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-8">
+                    <div class="mb-4 sm:mb-12">
+                        <div class="inline-flex items-center gap-2 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-4 sm:mb-8">
                             <span class="material-symbols-outlined text-yellow-400 text-sm animate-spin">stars</span>
-                            <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">LỜI THÁCH ĐẤU TỪ HUYỀN THOẠI</span>
+                            <span class="text-[9px] sm:text-[10px] font-black text-white uppercase tracking-[0.3em]">LỜI THÁCH ĐẤU TỪ HUYỀN THOẠI</span>
                         </div>
 
-                        <div class="flex items-center justify-center gap-4 sm:gap-10">
+                        <div class="flex items-center justify-center gap-3 sm:gap-10">
                             <!-- Bot Side -->
-                            <div class="flex flex-col items-center gap-6 group">
+                            <div class="flex flex-col items-center gap-2 sm:gap-6 group">
                                 <div class="relative">
-                                    <div class="absolute -inset-4 bg-rose-500/30 rounded-full blur-2xl animate-pulse"></div>
-                                    <img id="invitation-bot-avatar" src="" class="w-28 h-28 sm:w-40 sm:h-40 rounded-full border-4 border-white shadow-[0_0_40px_rgba(244,63,94,0.6)] relative z-10 aura-active-red">
-                                    <div class="absolute -bottom-3 -right-3 bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-2xl shadow-2xl z-20 uppercase tracking-tighter border-2 border-white/20">ATTACKER</div>
+                                    <div class="absolute -inset-3 sm:-inset-4 bg-rose-500/30 rounded-full blur-2xl animate-pulse"></div>
+                                    <img id="invitation-bot-avatar" src="" class="w-16 h-16 sm:w-40 sm:h-40 rounded-full border-3 sm:border-4 border-white shadow-[0_0_40px_rgba(244,63,94,0.6)] relative z-10 aura-active-red">
+                                    <div class="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 bg-red-600 text-white text-[8px] sm:text-[10px] font-black px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-2xl z-20 uppercase tracking-tighter border-2 border-white/20">ATTACKER</div>
                                 </div>
-                                <h3 class="text-2xl font-black text-white uppercase italic tracking-widest drop-shadow-lg" id="invitation-bot-name">Hiệp sĩ</h3>
-                                <div id="invitation-bot-rank" class="mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 font-black text-xs uppercase tracking-[0.2em] backdrop-blur-md">
-                                    <span class="material-symbols-outlined text-[14px]">military_tech</span>
+                                <h3 class="text-sm sm:text-2xl font-black text-white uppercase italic tracking-wider drop-shadow-lg" id="invitation-bot-name">Hiệp sĩ</h3>
+                                <div id="invitation-bot-rank" class="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 font-black text-[10px] sm:text-xs uppercase tracking-[0.15em] backdrop-blur-md">
+                                    <span class="material-symbols-outlined text-[12px] sm:text-[14px]">military_tech</span>
                                     HẠNG <span id="invitation-bot-rank-num">-</span>
                                 </div>
                             </div>
 
                             <!-- VS Center -->
-                            <div class="relative py-10">
-                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-yellow-500/20 blur-3xl rounded-full animate-pulse"></div>
-                                <span class="vs-text-styled text-7xl sm:text-8xl drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]">VS</span>
+                            <div class="relative py-4 sm:py-10">
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-32 sm:h-32 bg-yellow-500/20 blur-3xl rounded-full animate-pulse"></div>
+                                <span class="vs-text-styled text-4xl sm:text-8xl drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]">VS</span>
                             </div>
 
                             <!-- Your Side -->
-                            <div class="flex flex-col items-center gap-6">
+                            <div class="flex flex-col items-center gap-2 sm:gap-6">
                                 <div class="relative">
-                                    <div class="absolute -inset-4 bg-blue-500/20 rounded-full blur-2xl"></div>
-                                    <img id="invitation-your-avatar" src="" class="w-28 h-28 sm:w-40 sm:h-40 rounded-full border-4 border-white/40 shadow-2xl relative z-10 grayscale-[0.5] opacity-80 aura-active-blue">
-                                    <div class="absolute -bottom-3 -left-3 bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-2xl shadow-2xl z-20 uppercase tracking-tighter border-2 border-white/20">DEFENDER</div>
+                                    <div class="absolute -inset-3 sm:-inset-4 bg-blue-500/20 rounded-full blur-2xl"></div>
+                                    <img id="invitation-your-avatar" src="" class="w-16 h-16 sm:w-40 sm:h-40 rounded-full border-3 sm:border-4 border-white/40 shadow-2xl relative z-10 grayscale-[0.5] opacity-80 aura-active-blue">
+                                    <div class="absolute -bottom-2 -left-2 sm:-bottom-3 sm:-left-3 bg-blue-600 text-white text-[8px] sm:text-[10px] font-black px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-2xl z-20 uppercase tracking-tighter border-2 border-white/20">DEFENDER</div>
                                 </div>
-                                <h3 class="text-2xl font-black text-white uppercase italic tracking-widest drop-shadow-lg" id="invitation-your-name">BẠN</h3>
-                                <div id="invitation-your-rank" class="mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 font-black text-xs uppercase tracking-[0.2em] backdrop-blur-md">
-                                    <span class="material-symbols-outlined text-[14px]">stars</span>
+                                <h3 class="text-sm sm:text-2xl font-black text-white uppercase italic tracking-wider drop-shadow-lg" id="invitation-your-name">BẠN</h3>
+                                <div id="invitation-your-rank" class="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 font-black text-[10px] sm:text-xs uppercase tracking-[0.15em] backdrop-blur-md">
+                                    <span class="material-symbols-outlined text-[12px] sm:text-[14px]">stars</span>
                                     HẠNG <span id="invitation-your-rank-num">-</span>
                                 </div>
                             </div>
@@ -166,29 +166,29 @@ function ensureInvitationModal() {
                     </div>
 
                     <!-- Task Card -->
-                    <div class="invitation-glass-card rounded-[3.5rem] p-8 mb-12 border-2 border-white/10 relative overflow-hidden scanner-effect group hover:border-yellow-500/50 transition-colors">
-                        <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">
-                            <span class="material-symbols-outlined text-8xl text-white">swords</span>
+                    <div class="invitation-glass-card rounded-[2rem] sm:rounded-[3.5rem] p-5 sm:p-8 mb-4 sm:mb-12 border-2 border-white/10 relative overflow-hidden scanner-effect group hover:border-yellow-500/50 transition-colors">
+                        <div class="absolute top-0 right-0 p-4 sm:p-6 opacity-5 group-hover:opacity-20 transition-opacity">
+                            <span class="material-symbols-outlined text-6xl sm:text-8xl text-white">swords</span>
                         </div>
-                        <p class="text-[11px] font-black text-yellow-500 uppercase tracking-[0.4em] mb-6">NHIỆM VỤ CHIẾN ĐẤU</p>
-                        <div class="flex items-center justify-center gap-8 relative z-10">
-                            <div class="w-24 h-24 sm:w-32 sm:h-32 bg-white/5 rounded-[2.5rem] flex items-center justify-center border border-white/10 shadow-inner group-hover:scale-110 transition-transform">
-                                <span id="invitation-task-emoji" class="text-6xl sm:text-8xl filter drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)]">⚔️</span>
+                        <p class="text-[10px] sm:text-[11px] font-black text-yellow-500 uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-3 sm:mb-6">NHIỆM VỤ CHIẾN ĐẤU</p>
+                        <div class="flex items-center gap-4 sm:gap-8 relative z-10">
+                            <div class="w-16 h-16 sm:w-32 sm:h-32 bg-white/5 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center border border-white/10 shadow-inner group-hover:scale-110 transition-transform shrink-0">
+                                <span id="invitation-task-emoji" class="text-4xl sm:text-8xl filter drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)]">⚔️</span>
                             </div>
-                            <div class="text-left flex-1">
-                                <span id="invitation-task-name" class="text-3xl sm:text-5xl font-black text-white uppercase italic leading-none block mb-4 tracking-tighter drop-shadow-md">Nhiệm vụ</span>
-                                <div class="h-[2px] w-20 bg-gradient-to-r from-yellow-500 to-transparent mb-4"></div>
-                                <p id="invitation-task-desc" class="text-sm sm:text-lg text-slate-300 font-medium leading-snug italic opacity-80">"Bé có dám nhận lời thách đấu này không?"</p>
+                            <div class="text-left flex-1 min-w-0">
+                                <span id="invitation-task-name" class="text-lg sm:text-5xl font-black text-white uppercase italic leading-tight block mb-2 sm:mb-4 tracking-tight drop-shadow-md line-clamp-2"></span>
+                                <div class="h-[2px] w-12 sm:w-20 bg-gradient-to-r from-yellow-500 to-transparent mb-2 sm:mb-4"></div>
+                                <p id="invitation-task-desc" class="text-xs sm:text-lg text-slate-300 font-medium leading-snug italic opacity-80 line-clamp-3"></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Action Central -->
-                    <div class="flex flex-col sm:flex-row gap-5 relative z-10">
-                        <button id="btn-accept-bot-global" onclick="acceptGlobalBotChallenge()" class="flex-[2] group py-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-rose-600 text-white font-black rounded-[2.5rem] text-3xl shadow-[0_20px_60px_rgba(249,115,22,0.5)] hover:scale-[1.03] active:scale-95 transition-all flex items-center justify-center gap-4 shimmer-btn border-t-4 border-white/30">
-                            <span class="material-symbols-outlined text-4xl animate-bounce">rocket_launch</span> BẮT ĐẦU CHIẾN!
+                    <div class="flex flex-col gap-3 sm:flex-row sm:gap-5 relative z-10">
+                        <button id="btn-accept-bot-global" onclick="acceptGlobalBotChallenge()" class="flex-[2] group py-5 sm:py-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-rose-600 text-white font-black rounded-2xl sm:rounded-[2.5rem] text-xl sm:text-3xl shadow-[0_20px_60px_rgba(249,115,22,0.5)] hover:scale-[1.03] active:scale-95 transition-all flex items-center justify-center gap-3 sm:gap-4 shimmer-btn border-t-4 border-white/30">
+                            <span class="material-symbols-outlined text-2xl sm:text-4xl animate-bounce">rocket_launch</span> BẮT ĐẦU CHIẾN!
                         </button>
-                        <button onclick="closeGlobalBotInvitation()" class="flex-1 py-8 px-10 bg-white/5 hover:bg-white/10 text-white/50 hover:text-white font-black rounded-[2.5rem] text-xl backdrop-blur-3xl transition-all border border-white/10 hover:border-white/30">ĐỂ SAU...</button>
+                        <button onclick="closeGlobalBotInvitation()" class="py-3 sm:py-8 sm:flex-1 px-6 sm:px-10 bg-white/5 hover:bg-white/10 text-white/50 hover:text-white font-black rounded-2xl sm:rounded-[2.5rem] text-base sm:text-xl backdrop-blur-3xl transition-all border border-white/10 hover:border-white/30">ĐỂ SAU...</button>
                     </div>
                 </div>
             </div>
