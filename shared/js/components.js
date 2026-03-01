@@ -2128,25 +2128,25 @@ class InstantPerksGrid extends HTMLElement {
             return `
                     <div class="group relative bg-white dark:bg-slate-900 rounded-3xl border ${c.border} shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col">
                         <!-- Top color strip with icon -->
-                        <div class="bg-gradient-to-br ${c.bg} p-5 flex items-center justify-between relative overflow-hidden">
+                        <div class="bg-gradient-to-br ${c.bg} p-4 sm:p-5 flex items-center justify-between relative overflow-hidden">
                             <!-- Decorative background icon -->
-                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-7xl opacity-10 rotate-12" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
+                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-6xl opacity-10 rotate-12" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
                             
-                            <span class="material-symbols-outlined text-4xl drop-shadow-md text-white relative z-10" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
-                            <div class="flex items-center gap-1 bg-white/25 backdrop-blur-md text-white text-[11px] font-black px-3 py-1.5 rounded-full border border-white/30 relative z-10 shadow-sm">
+                            <span class="material-symbols-outlined text-3xl sm:text-4xl drop-shadow-md text-white relative z-10" style="font-variation-settings:'FILL' 1">${perk.emoji || perk.icon || 'star'}</span>
+                            <div class="flex items-center gap-1 bg-white/25 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1 rounded-full border border-white/30 relative z-10 shadow-sm">
                                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-4 object-contain" />
                                 ${perk.stickerPrice}
                             </div>
                         </div>
                         <!-- Content -->
-                        <div class="p-4 flex flex-col flex-1 bg-white dark:bg-[#1a140c]/40">
-                            <h3 class="font-black text-slate-800 dark:text-white text-xs sm:text-sm leading-tight mb-3 line-clamp-2 min-h-[2.5rem]">${perk.title}</h3>
+                        <div class="p-3 sm:p-4 flex flex-col flex-1 bg-white dark:bg-[#1a140c]/40">
+                            <h3 class="font-black text-slate-800 dark:text-white text-[11px] sm:text-[13px] leading-tight mb-2 line-clamp-2 min-h-[2rem]">${perk.title}</h3>
                             <button
                                 onclick="window.redeemInstantPerk && window.redeemInstantPerk('${perk.id}')" 
                                 class="mt-auto w-full ${canAfford
                     ? `bg-slate-900 dark:bg-slate-700 text-white hover:opacity-90 active:scale-95 shadow-lg`
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed grayscale-[0.5]'
-                } font-black text-[10px] py-3.5 rounded-2xl transition-all flex items-center justify-center gap-1.5 border border-transparent shadow-sm"
+                } font-black text-[9px] py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 border border-transparent shadow-sm"
                                 ${!canAfford ? 'disabled' : ''}>
                                 ${canAfford ? '<span class="material-symbols-outlined text-sm">bolt</span> Đổi Ngay!' : `Cần thêm ${perk.stickerPrice - userStickers} ⭐`}
                             </button>
@@ -2206,16 +2206,16 @@ class ShopGrid extends HTMLElement {
             }[item.color] || 'from-amber-400 to-orange-500';
 
             return `
-                    <div class="group bg-white dark:bg-[#1a140c]/60 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col relative">
+                    <div class="group bg-white dark:bg-[#1a140c]/60 rounded-[2rem] shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col relative">
                         <!-- Item Image Section -->
-                        <div class="relative h-48 sm:h-56 overflow-hidden bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
+                        <div class="relative h-28 sm:h-36 overflow-hidden bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
                             ${(item.image && item.image !== 'null' && item.image !== 'undefined' && item.image !== '')
-                    ? `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 blur-0" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'material-symbols-outlined text-6xl text-slate-300 dark:text-slate-700\'>redeem</span>'">`
-                    : `<span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-700">redeem</span>`
+                    ? `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 blur-0" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'material-symbols-outlined text-5xl text-slate-300 dark:text-slate-700\'>redeem</span>'">`
+                    : `<span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-700">redeem</span>`
                 }
                             
                             <!-- Floating Pricing Tags -->
-                            <div class="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
+                            <div class="absolute top-2 right-2 flex flex-col gap-1 items-end">
                                 ${hasGoldPrice ? `
                                     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-amber-600 font-black text-[11px] px-3 py-1.5 rounded-full shadow-lg border border-amber-100 dark:border-amber-900/20 flex items-center gap-1.5 justify-center transform group-hover:scale-105 transition-transform">
                                         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-4 object-contain" />
@@ -2232,23 +2232,23 @@ class ShopGrid extends HTMLElement {
 
                             <!-- Locked / Pending Overlay -->
                             ${(!canAfford || isPending) ? `
-                            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center p-3 transition-all group-hover:backdrop-blur-[4px]">
-                                <div class="bg-white/95 dark:bg-slate-800/95 p-3.5 sm:p-4 rounded-3xl flex flex-col items-center gap-2 shadow-2xl border border-white/20 animate-in zoom-in-95 duration-300 min-w-[140px]">
+                            <div class="absolute inset-0 bg-slate-800/40 backdrop-blur-[1px] flex items-center justify-center p-2 transition-all group-hover:backdrop-blur-[2px]">
+                                <div class="bg-white/95 dark:bg-slate-800/95 p-3 rounded-2xl flex flex-col items-center gap-1.5 shadow-xl border border-white/20 animate-in zoom-in-95 duration-300 min-w-[120px]">
                                     ${isPending ? `
-                                        <div class="size-10 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-amber-500 animate-spin">
-                                            <span class="material-symbols-outlined text-2xl font-black">progress_activity</span>
+                                        <div class="size-8 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-amber-500 animate-spin">
+                                            <span class="material-symbols-outlined text-xl font-black">progress_activity</span>
                                         </div>
-                                        <span class="text-[10px] font-black text-slate-700 dark:text-white uppercase tracking-wider text-center">Đang chờ<br/>phê duyệt</span>
+                                        <span class="text-[9px] font-black text-slate-700 dark:text-white uppercase tracking-wider text-center leading-tight">Đang chờ<br/>phê duyệt</span>
                                     ` : `
-                                        <div class="flex items-center gap-3 w-full">
-                                            <div class="size-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400 shrink-0">
-                                                <span class="material-symbols-outlined text-2xl font-black">lock</span>
+                                        <div class="flex items-center gap-2 w-full">
+                                            <div class="size-8 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400 shrink-0">
+                                                <span class="material-symbols-outlined text-xl font-black">lock</span>
                                             </div>
-                                            <div class="flex flex-col items-start gap-0.5">
-                                                <span class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Cần thêm</span>
-                                                <div class="flex flex-col gap-0.5">
-                                                    ${!canAffordGold ? `<div class="flex items-center gap-1 text-[11px] font-black text-amber-600 dark:text-amber-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3.5" />${item.price - userGold}</div>` : ''}
-                                                    ${!canAffordPersonality ? `<div class="flex items-center gap-1 text-[11px] font-black text-rose-600 dark:text-rose-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3.5" />${item.personalityPrice - userPersonality}</div>` : ''}
+                                            <div class="flex flex-col items-start gap-0">
+                                                <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Cần thêm</span>
+                                                <div class="flex flex-col gap-0">
+                                                    ${!canAffordGold ? `<div class="flex items-center gap-1 text-[10px] font-black text-amber-600 dark:text-amber-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-3" />${item.price - userGold}</div>` : ''}
+                                                    ${!canAffordPersonality ? `<div class="flex items-center gap-1 text-[10px] font-black text-rose-600 dark:text-rose-500"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-3" />${item.personalityPrice - userPersonality}</div>` : ''}
                                                 </div>
                                             </div>
                                         </div>
@@ -2258,9 +2258,9 @@ class ShopGrid extends HTMLElement {
                         </div>
 
                         <!-- Card Body -->
-                        <div class="p-5 flex flex-col flex-1 bg-white dark:bg-[#1a140c]/40 relative z-10">
-                            <div class="flex-1 flex flex-col mb-4">
-                                <h3 class="font-black text-slate-800 dark:text-white text-sm sm:text-base mb-1 leading-tight line-clamp-2 min-h-[2.5rem] group-hover:text-amber-500 transition-colors cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
+                        <div class="p-4 flex flex-col flex-1 bg-white dark:bg-[#1a140c]/40 relative z-10">
+                            <div class="flex-1 flex flex-col mb-3">
+                                <h3 class="font-black text-slate-800 dark:text-white text-xs sm:text-sm mb-1 leading-tight line-clamp-2 min-h-[2rem] group-hover:text-amber-500 transition-colors cursor-pointer" onclick="window.showItemDetailModal && window.showItemDetailModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.desc)}', '${item.image || ''}')">
                                     ${item.title}
                                 </h3>
                             </div>
@@ -2270,12 +2270,13 @@ class ShopGrid extends HTMLElement {
                                 class="${(canAfford && !isPending)
                     ? 'bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-lg active:scale-95'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-200 dark:border-slate-800/50'
-                } w-full font-black py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 group/btn relative overflow-hidden"
+                } w-full font-black py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 group/btn relative overflow-hidden"
                                 ${(!canAfford || isPending) ? 'disabled' : ''}>
                                 ${canAfford && !isPending ? '<div class="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>' : ''}
-                                <span class="material-symbols-outlined text-lg relative z-10">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock_open')}</span>
-                                <span class="relative z-10 text-[11px] uppercase tracking-wider">${isPending ? 'Đang Chờ' : (canAfford ? 'Đổi Quà Ngay' : 'Chưa Đủ')}</span>
+                                <span class="material-symbols-outlined text-base relative z-10">${isPending ? 'schedule' : (canAfford ? 'redeem' : 'lock_open')}</span>
+                                <span class="relative z-10 text-[10px] uppercase tracking-wider">${isPending ? 'Đang Chờ' : (canAfford ? 'Đổi Quà' : 'Chưa Đủ')}</span>
                             </button>
+                        </div>
                         </div>
                     </div>`;
         }).join('')
