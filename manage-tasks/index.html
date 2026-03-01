@@ -160,160 +160,109 @@
     class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     <div
       class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-      <div class="p-6 border-b border-neutral-soft flex justify-between items-center">
-        <h3 class="text-xl font-black">Thêm Nhiệm vụ mới</h3>
-        <button onclick="toggleModal(false)" class="text-text-sub hover:text-text-main transition-colors">
+      <div class="p-6 border-b border-neutral-soft dark:border-white/10 flex justify-between items-center">
+        <h3 class="text-xl font-black text-slate-800 dark:text-white">Thêm Nhiệm vụ mới</h3>
+        <button onclick="toggleModal(false)"
+          class="text-text-sub dark:text-slate-400 hover:text-text-main dark:hover:text-white transition-colors">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
       <form id="add-task-form" class="p-6 space-y-6">
         <!-- Task Name -->
         <div>
-          <label class="block text-sm font-bold mb-2">Tên việc cần làm</label>
+          <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-200">Tên việc cần làm</label>
           <input id="task-name"
-            class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 placeholder:text-text-sub/50"
+            class="w-full bg-neutral-soft/50 dark:bg-white/5 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 placeholder:text-text-sub/50 dark:placeholder:text-slate-500 text-slate-800 dark:text-white"
             placeholder="Ví dụ: Đổ rác, Tưới cây..." type="text" required />
+        </div>
+        <!-- Task Description -->
+        <div>
+          <label
+            class="block text-sm font-bold mb-2 flex items-center justify-between text-slate-700 dark:text-slate-200">
+            <span>Mô tả chi tiết</span>
+            <span class="text-[10px] font-black text-primary/60 uppercase tracking-widest">Hiển thị khi bé nhấn vào
+              card</span>
+          </label>
+          <textarea id="task-desc"
+            class="w-full bg-neutral-soft/50 dark:bg-white/5 border-0 focus:ring-2 focus:ring-primary rounded-2xl px-4 py-3 placeholder:text-text-sub/40 dark:placeholder:text-slate-500 text-sm min-h-[100px] resize-none text-slate-800 dark:text-white"
+            placeholder="Mô tả cách thực hiện hoặc lời nhắn nhủ của Ba Mẹ dành cho bé..."></textarea>
         </div>
         <!-- Icon Selection -->
         <div>
-          <label class="block text-sm font-bold mb-3">Chọn Icon minh họa</label>
-          <div id="icon-selector" class="grid grid-cols-6 gap-3 max-h-40 overflow-y-auto p-1 custom-scrollbar">
-            <!-- Active Icon Button (Defaults to brush) -->
-            <button onclick="selectIcon(this, 'brush')"
-              class="icon-btn size-12 rounded-xl bg-primary text-white flex items-center justify-center border-2 border-primary shrink-0"
-              type="button"><span class="material-symbols-outlined">brush</span></button>
-            <button onclick="selectIcon(this, 'menu_book')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">menu_book</span></button>
-            <button onclick="selectIcon(this, 'school')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">school</span></button>
-            <button onclick="selectIcon(this, 'assignment')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">assignment</span></button>
-            <button onclick="selectIcon(this, 'bed')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">bed</span></button>
-            <button onclick="selectIcon(this, 'skillet')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">skillet</span></button>
-            <button onclick="selectIcon(this, 'local_dining')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">local_dining</span></button>
-            <button onclick="selectIcon(this, 'local_laundry_service')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">local_laundry_service</span></button>
-            <button onclick="selectIcon(this, 'iron')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">iron</span></button>
-            <button onclick="selectIcon(this, 'vacuum')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">vacuum</span></button>
-            <button onclick="selectIcon(this, 'checkroom')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">checkroom</span></button>
-            <button onclick="selectIcon(this, 'chair')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">chair</span></button>
-            <button onclick="selectIcon(this, 'recycling')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">recycling</span></button>
-            <button onclick="selectIcon(this, 'water_drop')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">water_drop</span></button>
-            <button onclick="selectIcon(this, 'sanitizer')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">sanitizer</span></button>
-            <button onclick="selectIcon(this, 'park')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">park</span></button>
-            <button onclick="selectIcon(this, 'local_florist')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">local_florist</span></button>
-            <button onclick="selectIcon(this, 'pets')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">pets</span></button>
-            <button onclick="selectIcon(this, 'sports_basketball')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">sports_basketball</span></button>
-            <button onclick="selectIcon(this, 'fitness_center')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">fitness_center</span></button>
-            <button onclick="selectIcon(this, 'directions_car')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">directions_car</span></button>
-            <button onclick="selectIcon(this, 'self_improvement')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">self_improvement</span></button>
-            <button onclick="selectIcon(this, 'music_note')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">music_note</span></button>
-            <button onclick="selectIcon(this, 'emoji_events')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">emoji_events</span></button>
-            <button onclick="selectIcon(this, 'volunteer_activism')"
-              class="icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button"><span class="material-symbols-outlined">volunteer_activism</span></button>
-            <button onclick="promptNewIcon()"
-              class="size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30 shrink-0"
-              type="button" title="Tìm icon khác">
-              <span class="material-symbols-outlined">add</span>
-            </button>
+          <label class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-200">Chọn Ảnh Minh Họa</label>
+          <div id="icon-selector"
+            class="grid grid-cols-4 sm:grid-cols-6 gap-3 max-h-48 overflow-y-auto p-1 custom-scrollbar">
+            <!-- Icons generated by JS -->
           </div>
           <!-- Hidden input to store selected icon -->
-          <input type="hidden" id="task-icon" value="brush" />
+          <input type="hidden" id="task-icon"
+            value="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Dog%20Face.png" />
         </div>
         <!-- Rewards Row -->
         <!-- Rewards Selection Row -->
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <!-- Vàng Selection -->
-            <div class="bg-neutral-soft/30 p-4 rounded-2xl border-2 border-amber-100 dark:border-amber-900/20">
-              <label class="block text-[11px] font-black uppercase text-amber-600 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">monetization_on</span> Thưởng Vàng
+            <div
+              class="bg-neutral-soft/30 dark:bg-amber-900/10 p-4 rounded-2xl border-2 border-amber-100 dark:border-amber-500/20">
+              <label
+                class="block text-[11px] font-black uppercase text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-2">
+                <img
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png"
+                  class="size-4 object-contain" /> Thưởng Vàng
               </label>
               <div class="flex flex-wrap gap-2">
                 <input type="hidden" id="task-gold" value="10">
                 <button type="button" onclick="selectRewardValue('gold', 10, this)"
                   class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-amber-500 text-white border-amber-500">10</button>
                 <button type="button" onclick="selectRewardValue('gold', 15, this)"
-                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">15</button>
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10">15</button>
                 <button type="button" onclick="selectRewardValue('gold', 20, this)"
-                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">20</button>
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10">20</button>
                 <button type="button" onclick="selectRewardValue('gold', 25, this)"
-                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">25</button>
+                  class="gold-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10">25</button>
               </div>
             </div>
             <!-- Nước Selection -->
-            <div class="bg-neutral-soft/30 p-4 rounded-2xl border-2 border-teal-100 dark:border-teal-900/20">
-              <label class="block text-[11px] font-black uppercase text-teal-600 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">water_drop</span> Thưởng Nước
+            <div
+              class="bg-neutral-soft/30 dark:bg-teal-900/10 p-4 rounded-2xl border-2 border-teal-100 dark:border-teal-500/20">
+              <label
+                class="block text-[11px] font-black uppercase text-teal-600 dark:text-teal-400 mb-3 flex items-center gap-2">
+                <img
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png"
+                  class="size-4 object-contain" /> Thưởng Nước
               </label>
               <div class="flex flex-wrap gap-2">
                 <input type="hidden" id="task-water" value="10">
                 <button type="button" onclick="selectRewardValue('water', 10, this)"
                   class="water-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-teal-500 text-white border-teal-500">10</button>
                 <button type="button" onclick="selectRewardValue('water', 20, this)"
-                  class="water-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white text-slate-400 border-slate-100">20</button>
+                  class="water-chip flex-1 py-2 text-xs font-black rounded-xl border-2 transition-all bg-white dark:bg-white/5 text-slate-400 border-slate-100 dark:border-white/10">20</button>
               </div>
             </div>
           </div>
           <!-- System Fixed Rewards -->
           <div
             class="bg-blue-50/50 dark:bg-blue-900/10 p-4 rounded-2xl border border-blue-100 dark:border-blue-900/20 flex items-center justify-around">
-            <div class="text-center">
-              <p class="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1">Kinh nghiệm (Cố định)</p>
-              <div class="flex items-center justify-center gap-1 text-blue-600 font-extrabold">
-                <span class="material-symbols-outlined text-lg">military_tech</span>
+            <div class="text-center w-1/2 px-2">
+              <p class="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1.5 line-clamp-1 truncate">Kinh
+                nghiệm</p>
+              <div class="flex items-center justify-center gap-1.5 text-blue-600 font-extrabold">
+                <img
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png"
+                  class="size-6 object-contain" />
                 <span>20 EXP</span>
                 <input type="hidden" id="task-exp" value="20">
               </div>
             </div>
-            <div class="w-px h-8 bg-blue-100 dark:bg-blue-900/40"></div>
-            <div class="text-center">
-              <p class="text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1">Sticker (Cố định)</p>
-              <div class="flex items-center justify-center gap-1 text-purple-600 font-extrabold">
-                <span class="material-symbols-outlined text-lg">sell</span>
+            <div class="w-px h-10 bg-blue-100 dark:bg-blue-900/40"></div>
+            <div class="text-center w-1/2 px-2">
+              <p class="text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1.5 line-clamp-1 truncate">
+                Sticker</p>
+              <div class="flex items-center justify-center gap-1.5 text-purple-600 font-extrabold">
+                <img
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png"
+                  class="size-6 object-contain" />
                 <span>1 Thẻ</span>
                 <input type="hidden" id="task-sticker" value="1">
               </div>
@@ -324,9 +273,9 @@
         <div class="grid grid-cols-2 gap-4">
           <!-- Category -->
           <div>
-            <label class="block text-sm font-bold mb-2">Nhóm nhiệm vụ</label>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-200">Nhóm nhiệm vụ</label>
             <select id="task-category" onchange="handleCategoryChange(this)"
-              class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium">
+              class="w-full bg-neutral-soft/50 dark:bg-white/5 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium text-slate-800 dark:text-white">
               <option value="Việc nhà">Việc nhà</option>
               <option value="Học tập">Học tập</option>
               <option value="Kỹ năng">Kỹ năng</option>
@@ -336,9 +285,9 @@
           </div>
           <!-- Type (Mandatory vs Optional) -->
           <div>
-            <label class="block text-sm font-bold mb-2">Loại hình</label>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-200">Loại hình</label>
             <select id="task-type"
-              class="w-full bg-neutral-soft/50 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium">
+              class="w-full bg-neutral-soft/50 dark:bg-white/5 border-0 focus:ring-2 focus:ring-primary rounded-xl px-4 py-3 text-sm font-medium text-slate-800 dark:text-white">
               <option value="mandatory">🟢 Bắt buộc</option>
               <option value="optional">🟣 Tùy chọn</option>
             </select>
@@ -347,7 +296,7 @@
         <!-- Cancel -->
         <div class="pt-4 flex gap-3">
           <button onclick="toggleModal(false)"
-            class="flex-1 bg-neutral-soft hover:bg-neutral-soft/80 text-text-main font-bold py-3 rounded-xl transition-all"
+            class="flex-1 bg-neutral-soft dark:bg-white/5 hover:bg-neutral-soft/80 dark:hover:bg-white/10 text-text-main dark:text-slate-300 font-bold py-3 rounded-xl transition-all"
             type="button">
             Hủy
           </button>
@@ -383,57 +332,101 @@
         modal.classList.add('opacity-0', 'pointer-events-none');
         modal.classList.remove('opacity-100', 'pointer-events-auto');
         document.getElementById('add-task-form').reset(); // reset form
+        document.getElementById('task-desc').value = ''; // explicitly clear description
         currentEditTaskId = null;
 
         // Reset icon
-        const iconBtn = document.querySelector('.icon-btn'); // first one usually the brush
-        if (iconBtn) selectIcon(iconBtn, 'brush');
+        const iconBtns = document.querySelectorAll('.icon-btn');
+        if (iconBtns.length > 0) {
+          const firstUrl = chibiAnimalsList[0];
+          selectIcon(iconBtns[0], firstUrl);
+        }
       }
     }
 
     function selectRewardValue(type, val, btn) {
       document.getElementById('task-' + type).value = val;
       const chips = document.querySelectorAll(`.${type}-chip`);
+      const isDark = document.documentElement.classList.contains('dark');
       chips.forEach(c => {
-        c.classList.remove('bg-primary', 'text-white', 'border-primary', 'bg-amber-500', 'bg-teal-500');
-        c.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+        c.classList.remove('bg-primary', 'text-white', 'border-primary', 'bg-amber-500', 'bg-teal-500', 'bg-white', 'border-amber-500', 'border-teal-500');
+        c.className = c.className.replace(/dark:bg-\S+/g, '').trim();
+        // Inactive style
+        if (isDark) {
+          c.classList.add('bg-white/5', 'text-slate-400', 'border-white/10');
+        } else {
+          c.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+        }
         if (parseInt(c.textContent.trim()) === val) {
           const colorClass = type === 'gold' ? 'bg-amber-500' : 'bg-teal-500';
-          c.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+          c.classList.remove('bg-white', 'bg-white/5', 'text-slate-400', 'border-slate-100', 'border-white/10');
           c.classList.add(colorClass, 'text-white', 'border-' + (type === 'gold' ? 'amber-500' : 'teal-500'));
         }
       });
     }
 
-    function selectIcon(btnElement, iconName) {
-      // Revert all icon buttons to gray
+    function selectIcon(btnElement, iconUrl) {
+      if (!btnElement) return;
+      const isDark = document.documentElement.classList.contains('dark');
       const buttons = document.querySelectorAll('.icon-btn');
+
+      // Revert all
       buttons.forEach(btn => {
-        btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
+        btn.className = `icon-btn size-14 rounded-3xl ${isDark ? 'bg-white/5 border-transparent pointer-events-auto' : 'bg-neutral-soft/50 border-transparent'} relative flex items-center justify-center p-2 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer`;
+        const existingRing = btn.querySelector('.active-ring');
+        if (existingRing) btn.removeChild(existingRing);
+        const img = btn.querySelector('img');
+        if (img) img.classList.remove('scale-110');
       });
 
-      // Make clicked one primary
-      btnElement.className = "icon-btn size-12 rounded-xl bg-primary text-white flex items-center justify-center border-2 border-primary";
+      // Active state
+      btnElement.className = `icon-btn size-14 rounded-3xl bg-primary/10 border-[2.5px] border-primary relative flex items-center justify-center p-2 transition-all scale-105 shadow-primary/20 shadow-lg`;
+      const ring = document.createElement('div');
+      ring.className = 'active-ring absolute -right-1.5 -top-1.5 size-5 bg-gradient-to-br from-primary to-rose-500 rounded-full border-2 border-white dark:border-[#2c2215] flex items-center justify-center';
+      ring.innerHTML = '<span class="material-symbols-outlined text-white text-[10px] font-black">check</span>';
+      btnElement.appendChild(ring);
+      const activeImg = btnElement.querySelector('img');
+      if (activeImg) activeImg.classList.add('scale-110');
 
       // Update hidden input
-      document.getElementById('task-icon').value = iconName;
+      document.getElementById('task-icon').value = iconUrl;
     }
 
-    function promptNewIcon() {
-      const iconName = prompt("Nhập tên icon bạn muốn (tra cứu trên https://fonts.google.com/icons):\nVí dụ: star, diamond, lightbulb, fitness_center");
-      if (iconName && iconName.trim() !== "") {
-        // Set hidden input
-        document.getElementById('task-icon').value = iconName.trim();
-        // Unselect other buttons
-        const buttons = document.querySelectorAll('.icon-btn');
-        buttons.forEach(btn => {
-          btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
+    const chibiAnimalsList = [
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Dog%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Fox.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Bear.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Tiger%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Lion.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Monkey%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Hatching%20Chick.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Rabbit%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Mouse%20Face.png',
+      'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Frog.png'
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render chibi icons
+      const iconSelector = document.getElementById('icon-selector');
+      if (iconSelector) {
+        let html = '';
+        chibiAnimalsList.forEach((url, idx) => {
+          html += `
+                    <button onclick="selectIcon(this, '${url}')" class="icon-btn size-14 rounded-3xl bg-neutral-soft/50 dark:bg-white/5 border-transparent relative flex items-center justify-center p-2 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer" type="button">
+                      <img src="${url}" class="w-full h-full object-contain filter drop-shadow transition-transform pointer-events-none" />
+                    </button>
+                `;
         });
-
-        // Replace the '+' button temporarily with a selected state block (or you can just assume hidden input does the job internally)
-        alert("Đã gán Icon mới: " + iconName.trim() + " thành công!");
+        iconSelector.innerHTML = html;
+        // Select first initially
+        setTimeout(() => {
+          const firstBtn = iconSelector.querySelector('.icon-btn');
+          if (firstBtn) selectIcon(firstBtn, chibiAnimalsList[0]);
+        }, 50);
       }
-    }
+    });
 
     function handleCategoryChange(selectElement) {
       if (selectElement.value === "add_new_category") {
@@ -463,6 +456,7 @@
       currentEditTaskId = taskId;
 
       document.getElementById('task-name').value = task.title;
+      document.getElementById('task-desc').value = task.description || '';
       selectRewardValue('gold', task.reward || 10);
       selectRewardValue('water', task.water || 10);
 
@@ -489,17 +483,21 @@
       const allIconBtns = document.querySelectorAll('.icon-btn');
       let iconFound = false;
       allIconBtns.forEach(btn => {
-        const spanText = btn.querySelector('span').textContent.trim();
-        if (spanText === task.icon) {
+        const img = btn.querySelector('img');
+        if (img && img.src === task.icon) {
           selectIcon(btn, task.icon);
           iconFound = true;
         }
       });
       if (!iconFound) {
-        document.getElementById('task-icon').value = task.icon;
-        allIconBtns.forEach(btn => {
-          btn.className = "icon-btn size-12 rounded-xl bg-neutral-soft/50 text-text-sub flex items-center justify-center border-2 border-transparent hover:border-primary/30";
-        });
+        // Fallback: If old task didn't have URL, assign the deterministic URL
+        let hash = 0;
+        for (let i = 0; i < task.title.length; i++) {
+          hash = task.title.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const animalIndex = Math.abs(hash) % chibiAnimalsList.length;
+        const fallbackUrl = chibiAnimalsList[animalIndex];
+        selectIcon(allIconBtns[animalIndex] || allIconBtns[0], fallbackUrl);
       }
 
       toggleModal(true);
@@ -508,6 +506,7 @@
     function saveTask() {
       // Validate
       const name = document.getElementById('task-name').value;
+      const desc = document.getElementById('task-desc').value;
       const gold = document.getElementById('task-gold').value;
       const water = document.getElementById('task-water').value;
       const sticker = document.getElementById('task-sticker').value;
@@ -526,6 +525,7 @@
         // UPDATE
         const updatedTask = {
           title: name,
+          desc: desc,
           reward: parseInt(gold) || 10,
           water: parseInt(water) || 10,
           sticker: 1,
@@ -576,7 +576,7 @@
         const newTask = {
           id: 'task_' + Date.now(),
           title: name,
-          desc: 'Nhiệm vụ hàng ngày',
+          desc: desc || 'Nhiệm vụ hàng ngày',
           reward: parseInt(gold) || 10,
           water: parseInt(water) || 10,
           sticker: 1,
@@ -619,12 +619,17 @@
           `<span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 border border-purple-200 rounded text-[9px] uppercase tracking-wider font-bold">Tùy chọn</span>` :
           `<span class="ml-2 px-2 py-0.5 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded text-[9px] uppercase tracking-wider font-bold">Bắt buộc</span>`;
 
+        const isUrl = task.icon && task.icon.startsWith('http');
+        const renderedIcon = isUrl
+          ? `<img src="${task.icon}" class="w-[75%] h-[75%] object-contain filter drop-shadow" />`
+          : `<span class="material-symbols-outlined text-white">${task.icon}</span>`;
+
         const newRowHTML = `
-           <tr class="hover:bg-neutral-soft/30 transition-colors">
+          <tr class="hover:bg-neutral-soft/30 transition-colors">
                <td class="px-6 py-4">
                  <div class="flex items-center gap-3">
-                   <div class="size-10 ${iconBgColor} rounded-full flex items-center justify-center">
-                     <span class="material-symbols-outlined">${task.icon}</span>
+                   <div class="size-10 ${iconBgColor} rounded-full flex items-center justify-center relative overflow-hidden">
+                     ${renderedIcon}
                    </div>
                    <div>
                      <p class="font-bold text-sm flex items-center">${task.title} ${typeBadge}</p>
@@ -637,39 +642,39 @@
                </td>
                <td class="px-6 py-4">
                  <div class="flex items-center gap-1.5 font-bold text-amber-600">
-                   <span class="material-symbols-outlined text-[18px]">monetization_on</span>
+                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-5 object-contain" />
                    <span>+${task.reward}</span>
                  </div>
                </td>
                <td class="px-6 py-4">
                  <div class="flex items-center gap-1.5 font-bold text-teal-500">
-                   <span class="material-symbols-outlined text-[18px]">water_drop</span>
+                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-5 object-contain" />
                    <span>+${task.water || 0}</span>
                  </div>
                </td>
                <td class="px-6 py-4">
                  <div class="flex items-center gap-1.5 font-bold text-purple-500">
-                   <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
+                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-5 object-contain" />
                    <span>+${task.sticker || 0}</span>
                  </div>
                </td>
                <td class="px-6 py-4">
                  <div class="flex items-center gap-1.5 font-bold text-blue-600">
-                   <span class="material-symbols-outlined text-[18px]">military_tech</span>
-                   <span>+${task.xp}</span>
+                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-5 object-contain" />
+                   <span>+${task.xp || 20}</span>
                  </div>
                </td>
                <td class="px-6 py-4 text-right">
-                 <div class="flex justify-end gap-2">
-                   <button onclick="editTask('${task.id}')" class="p-2 text-text-sub hover:text-primary transition-colors">
-                     <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                 <div class="flex items-center justify-end gap-2">
+                   <button onclick="editTask('${task.id}')" class="size-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+                     <span class="material-symbols-outlined text-[16px]">edit</span>
                    </button>
-                   <button onclick="deleteTask(this, '${task.id}')" class="p-2 text-text-sub hover:text-red-500 transition-colors">
-                     <span class="material-symbols-outlined text-[20px]">delete</span>
+                   <button onclick="deleteTask('${task.id}')" class="size-8 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-500 flex items-center justify-center transition-colors">
+                     <span class="material-symbols-outlined text-[16px]">delete</span>
                    </button>
                  </div>
                </td>
-           </tr>
+           </tr >
         `;
         tbody.insertAdjacentHTML('beforeend', newRowHTML);
       });
@@ -684,7 +689,7 @@
       // You could update a visual indicator here for 6/6
     }
 
-    function deleteTask(btn, taskId) {
+    function deleteTask(taskId) {
       if (confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này?")) {
         window.AppState.deleteTask(taskId);
       }

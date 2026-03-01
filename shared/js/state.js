@@ -620,9 +620,18 @@ class StateManager {
                                 if (questRes && questRes.data) {
                                         const todayStr = new Date().toISOString().split('T')[0];
                                         this.data.quests = questRes.data.map(q => ({
-                                                id: q.id, title: q.title, desc: q.description, reward: q.reward, xp: q.xp,
-                                                water: q.water, sticker: q.sticker, icon: q.icon, color: q.color,
-                                                category: q.category, type: q.type,
+                                                id: q.id,
+                                                title: q.title,
+                                                desc: q.description || q.title,
+                                                description: q.description || q.title, // Keep both for safety
+                                                reward: q.reward,
+                                                xp: q.xp,
+                                                water: q.water,
+                                                sticker: q.sticker,
+                                                icon: q.icon,
+                                                color: q.color || 'blue',
+                                                category: q.category,
+                                                type: q.type,
                                                 completedBy: this.data.requests.filter(r => r.taskId == q.id && r.type === 'task' && r.createdAt && r.createdAt.startsWith(todayStr)).map(r => r.profileId)
                                         }));
                                 }
@@ -1639,14 +1648,15 @@ class StateManager {
                 this.client.from('quests').insert({
                         family_id: this.familyId,
                         title: task.title,
-                        description: task.desc,
+                        description: task.desc || task.description || task.title,
                         reward: finalGold,
                         xp: 20, // LUÔN LUÔN 20
                         sticker: 1, // LUÔN LUÔN 1
                         water: finalWater,
                         icon: task.icon,
                         category: task.category,
-                        type: task.type
+                        type: task.type,
+                        color: task.color || 'blue'
                 }).then(() => this.syncFromDatabase());
         }
 
@@ -1656,14 +1666,15 @@ class StateManager {
 
                 await this.client.from('quests').update({
                         title: data.title,
-                        description: data.desc || data.title,
+                        description: data.desc || data.description || data.title,
                         reward: finalGold,
                         xp: 20,
                         sticker: 1,
                         water: finalWater,
                         icon: data.icon,
                         category: data.category,
-                        type: data.type
+                        type: data.type,
+                        color: data.color || 'blue'
                 }).eq('id', id);
                 this.syncFromDatabase();
         }

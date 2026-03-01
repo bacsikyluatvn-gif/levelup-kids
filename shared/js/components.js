@@ -410,19 +410,19 @@ class AppHeader extends HTMLElement {
                 <!-- All 4 resources compact -->
                 <div class="flex items-center gap-1 font-bold">
                     <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="w-3.5 h-3.5 object-contain" />
                         <span class="text-[10px] tabular-nums">${user.gold}</span>
                     </div>
                     <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
-                        <span class="material-symbols-outlined text-[13px] rotate-12">sell</span>
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="w-3.5 h-3.5 object-contain" />
                         <span class="text-[10px] tabular-nums">${user.stickers || 0}</span>
                     </div>
                     <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="w-3.5 h-3.5 object-contain" />
                         <span class="text-[10px] tabular-nums">${user.water || 0}</span>
                     </div>
                     <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
-                        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="w-3.5 h-3.5 object-contain" />
                         <span class="text-[10px] tabular-nums">${user.personalityPoints || 0}</span>
                     </div>
                 </div>
@@ -477,19 +477,19 @@ class AppHeader extends HTMLElement {
                     <!-- Resources -->
                     <div class="flex items-center gap-1.5 font-bold shrink-0">
                         <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform" title="Vàng">
-                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">monetization_on</span>
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-5 object-contain drop-shadow-sm" />
                             <span class="text-sm tabular-nums">${user.gold}</span>
                         </div>
                         <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform" title="Stickers">
-                            <span class="material-symbols-outlined text-[18px] transform rotate-12">sell</span>
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-5 object-contain drop-shadow-sm" />
                             <span class="text-sm tabular-nums">${user.stickers || 0}</span>
                         </div>
                         <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Nước">
-                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">water_drop</span>
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-5 object-contain drop-shadow-sm" />
                             <span class="text-sm tabular-nums">${user.water || 0}</span>
                         </div>
                         <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform" title="Nhân Cách">
-                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-5 object-contain drop-shadow-sm" />
                             <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
                         </div>
                     </div>
@@ -605,76 +605,100 @@ class QuestCard extends HTMLElement {
 
         if (isCompleted) {
             this.innerHTML = `
-                <div class="relative rounded-[28px] overflow-hidden h-full bg-slate-100 dark:bg-[#1a140f] border-2 border-slate-200 dark:border-[#2a221a] flex flex-col items-center pb-4 opacity-80">
-                    <div class="h-[80px] w-full flex items-center justify-center bg-slate-200 dark:bg-[#201913] rounded-b-[20px] mb-2 border-b-2 border-slate-300 dark:border-[#15100a]">
-                         <span class="material-symbols-outlined text-slate-400 dark:text-[#383028]" style="font-size: 48px; font-variation-settings:'FILL' 1">${icon}</span>
-                    </div>
-                     
-                     <h3 class="text-[13px] md:text-base font-bold text-slate-400 dark:text-[#554a3f] leading-snug line-clamp-2 px-3 mt-2 text-center min-h-[38px] flex items-center">${title}</h3>
-                     
-                     <div class="mt-auto pt-4 relative w-full flex justify-center">
-                        <div class="bg-green-500/10 text-green-600 dark:text-green-500/80 border-2 border-green-500/30 font-black text-[11px] md:text-xs uppercase px-4 py-1.5 rounded-xl rotate-[-4deg] tracking-widest inline-flex items-center gap-1 shadow-sm">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">check_circle</span>
-                            Đã Xong
+                <div class="cute-card group relative overflow-hidden flex flex-row items-center text-left opacity-60 grayscale-[0.8] p-3 md:p-5 gap-4 md:gap-6">
+                    <div class="relative flex-shrink-0">
+                        <div class="w-14 h-14 md:w-20 md:h-20 rounded-full bg-slate-400 dark:bg-slate-600 flex items-center justify-center text-white opacity-50">
+                            <span class="material-symbols-outlined text-2xl md:text-4xl">${icon}</span>
                         </div>
-                     </div>
+                        <div class="absolute inset-0 flex items-center justify-center z-20">
+                            <span class="material-symbols-outlined text-emerald-500 text-3xl md:text-5xl drop-shadow-md" style="font-variation-settings:'FILL' 1">check_circle</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow flex flex-col">
+                        <h3 class="text-sm md:text-lg font-[1000] text-slate-800 dark:text-white uppercase tracking-tight truncate mb-1">${title}</h3>
+                        <div class="reward-tag tag-gold bg-emerald-500/10 text-emerald-600 border-emerald-500/20 self-start scale-75 origin-left">ĐÃ HOÀN THÀNH</div>
+                    </div>
                 </div>
             `;
         } else {
             const waterVal = this.getAttribute('water');
             const hasWater = waterVal && parseInt(waterVal) > 0;
 
-            const colorMaps = {
-                blue: { grad: 'from-blue-400 to-blue-500', bdr: 'border-blue-600' },
-                red: { grad: 'from-rose-400 to-rose-500', bdr: 'border-rose-600' },
-                green: { grad: 'from-emerald-400 to-emerald-500', bdr: 'border-emerald-600' },
-                purple: { grad: 'from-purple-400 to-purple-500', bdr: 'border-purple-600' },
-                yellow: { grad: 'from-amber-400 to-amber-500', bdr: 'border-amber-600' },
-                orange: { grad: 'from-orange-400 to-orange-500', bdr: 'border-orange-600' },
-                pink: { grad: 'from-pink-400 to-pink-500', bdr: 'border-pink-600' },
-                indigo: { grad: 'from-indigo-400 to-indigo-500', bdr: 'border-indigo-600' },
-                teal: { grad: 'from-teal-400 to-teal-500', bdr: 'border-teal-600' },
-                cyan: { grad: 'from-cyan-400 to-cyan-500', bdr: 'border-cyan-600' }
-            };
-            const c = colorMaps[color] || colorMaps.blue;
+            const type = this.getAttribute('type') || 'mandatory';
+            const isMandatory = type === 'mandatory';
+
+            // Clean & Professional Colors
+            const colors = isMandatory
+                ? { primary: 'rose', grad: 'from-rose-500 to-pink-600', glow: 'shadow-rose-500/10' }
+                : { primary: 'indigo', grad: 'from-indigo-500 to-blue-600', glow: 'shadow-indigo-500/10' };
+
+            // 12 Awesome 3D Chibi Animals (Transparent Background)
+            const chibiAnimals = [
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Dog%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Fox.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Bear.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Tiger%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Lion.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Monkey%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Hatching%20Chick.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Rabbit%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Mouse%20Face.png',
+                'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Frog.png'
+            ];
+
+            // Map title string to a specific animal index deterministically IF icon is not a URL
+            let animalUrl = icon;
+            if (!animalUrl.startsWith('http')) {
+                let hash = 0;
+                for (let i = 0; i < title.length; i++) {
+                    hash = title.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                const animalIndex = Math.abs(hash) % chibiAnimals.length;
+                animalUrl = chibiAnimals[animalIndex];
+            }
 
             this.innerHTML = `
-                <div class="gamified-card relative rounded-[28px] flex flex-col h-full bg-white dark:bg-[#221a14] border-2 border-slate-100 dark:border-[#382b20] border-b-[6px] shadow-sm pb-3 transition-transform hover:-translate-y-1">
+                <div class="group relative flex items-center bg-white/95 dark:bg-[#1a140d]/80 backdrop-blur-xl rounded-[1.75rem] p-3 md:p-4 border border-white/40 dark:border-white/5 cursor-pointer hover:bg-white dark:hover:bg-[#231A10] transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1"
+                     onclick="window.showQuestDetail && window.showQuestDetail('${encodeURIComponent(title)}', '${encodeURIComponent(desc)}', '${animalUrl}', '${colors.primary}', '${reward}', '${xp}', '${waterVal || 0}', '${sticker}', '${type}', true)">
                     
-                    <!-- Top colored block with curve -->
-                    <div class="relative h-[90px] md:h-[100px] w-full bg-gradient-to-b ${c.grad} flex items-center justify-center rounded-b-[20px] shadow-sm ${c.bdr} border-b-[3px] shrink-0">
-                        <!-- Specular highlight for 3D feel -->
-                        <div class="absolute top-0 inset-x-0 h-3 bg-white/20 rounded-t-[28px]"></div>
-                        <span class="material-symbols-outlined text-white drop-shadow-md relative z-10" style="font-size: 52px; font-variation-settings:'FILL' 1">${icon}</span>
+                    <!-- Left: 3D Pop-Out Chibi Animal -->
+                    <div class="relative w-16 h-16 md:w-[72px] md:h-[72px] flex-shrink-0 mr-4 md:mr-5 flex items-center justify-center">
+                        <!-- Soft Glow Backing -->
+                        <div class="absolute inset-0 bg-gradient-to-br ${colors.grad} rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <!-- Solid subtle circle block -->
+                        <div class="absolute inset-1.5 bg-gradient-to-br ${colors.grad} rounded-full opacity-10"></div>
+                        
+                        <!-- Transparent Chibi Pop-Out -->
+                        <img src="${animalUrl}" loading="lazy" alt="Chibi" class="relative z-10 w-[115%] h-[115%] object-contain drop-shadow-xl transform group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300 pointer-events-none" />
+                        
+                        ${isMandatory ? `
+                        <div class="absolute top-0 right-0 size-5 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center shadow-sm border-[1.5px] border-rose-500 z-20">
+                            <span class="material-symbols-outlined text-rose-500 text-[10px] font-black" style="font-variation-settings:'FILL' 1">star</span>
+                        </div>` : ''}
                     </div>
-                    
-                    <!-- Content area -->
-                    <div class="px-3 pt-3 flex flex-col flex-grow items-center text-center">
-                        <h3 class="text-[13px] md:text-base font-extrabold text-slate-800 dark:text-gray-100 leading-snug line-clamp-2 mb-3 min-h-[38px] flex justify-center items-center w-full">${title}</h3>
+
+                    <!-- Middle: Clean Title & Micro-Rewards -->
+                    <div class="flex-grow flex flex-col justify-center min-w-0 pr-2">
+                        <!-- Elegant Title (Truncated if too long to prevent height break) -->
+                        <h3 class="text-[15px] md:text-[17px] font-semibold text-slate-700 dark:text-slate-200 tracking-tight leading-snug w-full truncate mb-1.5 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">${title}</h3>
                         
-                        <!-- Mini rewards -->
-                        <div class="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 mb-4 w-full">
-                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-amber-500">
-                                <span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">monetization_on</span>${reward}
-                            </span>
+                        <!-- Micro Reward Row (Icons Only, No numbers as requested) -->
+                        <div class="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity mt-1 drop-shadow-sm">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-4 md:size-[18px] object-contain" title="Vàng" />
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-4 md:size-[18px] object-contain" title="Nhân cách/EXP" />
                             ${sticker > 0 ? `
-                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-purple-400">
-                                <span class="material-symbols-outlined text-[15px] rotate-12" style="font-variation-settings:'FILL' 1">sell</span>${sticker}
-                            </span>` : ''}
-                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-yellow-500">
-                                <span class="material-symbols-outlined text-[15px]">military_tech</span>${xp}
-                            </span>
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-4 md:size-[18px] object-contain" title="Sticker" />` : ''}
                             ${hasWater ? `
-                            <span class="flex items-center gap-0.5 font-extrabold text-[12px] md:text-[13px] text-sky-400">
-                                <span class="material-symbols-outlined text-[15px]" style="font-variation-settings:'FILL' 1">water_drop</span>${waterVal}
-                            </span>` : ''}
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-4 md:size-[18px] object-contain" title="Nước" />` : ''}
                         </div>
-                        
-                        <!-- 3D Yellow Action Button -->
-                        <button class="btn-complete mt-auto w-[90%] py-2 md:py-2.5 rounded-[16px] bg-gradient-to-b from-[#ffb347] to-[#f58d19] text-white font-black text-[12px] md:text-[14px] uppercase tracking-wide border-b-[4px] border-[#cc6f0a] active:border-b-0 active:translate-y-[4px] transition-all flex justify-center items-center gap-1 relative overflow-hidden group">
-                            <!-- Button Shine Effect -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                            Xong 
+                    </div>
+
+                    <!-- Right: Seamless Action Area -->
+                    <div class="flex-shrink-0 ml-2">
+                        <button class="btn-complete size-11 md:size-12 rounded-full border-[1.5px] border-slate-200 dark:border-white/10 text-slate-300 dark:text-slate-600 hover:border-emerald-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-sm" onclick="event.stopPropagation()">
+                            <span class="material-symbols-outlined font-light text-[24px]">check</span>
                         </button>
                     </div>
                 </div>
@@ -2255,13 +2279,16 @@ class QuestGrid extends HTMLElement {
 
         if (mandatory.length > 0) {
             html += `
-            <div class="mb-4 md:mb-12">
-                    <div class="flex items-center gap-1.5 md:gap-3 mb-2 md:mb-6">
-                        <span class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500 shrink-0"></span>
-                        <h3 class="text-xs md:text-xl font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Bắt buộc</h3>
-                        <span class="text-[9px] md:text-[10px] font-bold text-emerald-500 ml-auto">${mandatory.length} việc</span>
+            <div class="mb-8 md:mb-16">
+                    <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-8">
+                        <div class="bg-gradient-to-r from-rose-500 to-pink-600 text-white px-4 py-1.5 md:px-6 md:py-2.5 rounded-2xl md:rounded-3xl text-[10px] md:text-sm font-black uppercase tracking-[0.15em] flex items-center gap-2 shadow-lg shadow-rose-500/20">
+                            <span class="material-symbols-outlined text-sm md:text-xl" style="font-variation-settings:'FILL' 1">verified</span>
+                            Bắt buộc
+                        </div>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                        <span class="text-[10px] md:text-xs font-black text-rose-500/70 uppercase tracking-widest">${mandatory.length} việc</span>
                     </div>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                         ${mandatory.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2270,13 +2297,16 @@ class QuestGrid extends HTMLElement {
 
         if (optional.length > 0) {
             html += `
-            <div>
-                    <div class="flex items-center gap-1.5 md:gap-3 mb-2 md:mb-6">
-                        <span class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-purple-500 shrink-0"></span>
-                        <h3 class="text-xs md:text-xl font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Tùy chọn</h3>
-                        <span class="text-[9px] md:text-[10px] font-bold text-purple-500 ml-auto">${optional.length} việc</span>
+            <div class="mb-8 md:mb-16">
+                    <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-8">
+                        <div class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-4 py-1.5 md:px-6 md:py-2.5 rounded-2xl md:rounded-3xl text-[10px] md:text-sm font-black uppercase tracking-[0.15em] flex items-center gap-2 shadow-lg shadow-indigo-500/20">
+                            <span class="material-symbols-outlined text-sm md:text-xl" style="font-variation-settings:'FILL' 1">add_circle</span>
+                            Tùy chọn
+                        </div>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                        <span class="text-[10px] md:text-xs font-black text-indigo-500/70 uppercase tracking-widest">${optional.length} việc</span>
                     </div>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 transition-all duration-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                         ${optional.map(renderQuest).join('')}
                     </div>
                 </div>
@@ -2317,15 +2347,19 @@ class CompletedTasks extends HTMLElement {
         }
 
         this.innerHTML = `
-            <div class="mt-6 md:mt-12">
-                <h3 class="text-sm md:text-xl font-black text-slate-800 dark:text-white mb-3 md:mb-6 flex items-center gap-1.5 md:gap-2">
-                    <span class="material-symbols-outlined text-green-500 text-lg md:text-2xl">task_alt</span>
-                    Nhiệm vụ đã hoàn thành hôm nay
-                </h3>
+            <div class="mt-8 md:mt-20">
+                <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-8">
+                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-4 py-1.5 md:px-6 md:py-2.5 rounded-2xl md:rounded-3xl text-[10px] md:text-sm font-black uppercase tracking-[0.15em] flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+                        <span class="material-symbols-outlined text-sm md:text-xl" style="font-variation-settings:'FILL' 1">task_alt</span>
+                        Đã hoàn thành hôm nay
+                    </div>
+                    <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+                </div>
                 <div class="bg-white dark:bg-[#2c2215] rounded-xl md:rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
                     <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
                         ${completedQuests.map(quest => `
-                            <div class="p-3 md:p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                             <div class="p-3 md:p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group cursor-pointer"
+                                onclick="window.showQuestDetail && window.showQuestDetail('${encodeURIComponent(quest.title)}', '${encodeURIComponent(quest.desc || '')}', '${quest.icon || 'star'}', '${quest.type === 'mandatory' ? 'rose' : 'indigo'}', '${quest.reward}', '${quest.xp}', '${quest.water}', '${quest.sticker}', '${quest.type}')">
                                 <div class="flex items-center gap-2 md:gap-4">
                                     <div class="w-8 h-8 md:w-12 md:h-12 bg-green-50 dark:bg-green-900/20 text-green-500 rounded-lg md:rounded-2xl flex items-center justify-center shrink-0">
                                         <span class="material-symbols-outlined text-lg md:text-2xl">${quest.icon || 'star'}</span>
@@ -2342,7 +2376,7 @@ class CompletedTasks extends HTMLElement {
                                 </div>
                                 <div class="hidden sm:flex items-center text-green-500 font-bold text-sm bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-xl">
                                     <span class="material-symbols-outlined text-[18px] mr-1">done_all</span>
-                                    Tuyệt vời!
+                                    Ghi chú
                                 </div>
                             </div>
                         `).join('')}
@@ -4579,3 +4613,81 @@ customElements.define('notification-bell', NotificationBell);
         setTimeout(() => { window.location.href = url; }, 250);
     };
 })();
+
+// ==========================================
+// QUEST DETAIL MODAL
+// ==========================================
+window.showQuestDetail = (titleEnc, descEnc, iconOrUrl, color, reward, xp, water, sticker, type, isImage = false) => {
+    const title = decodeURIComponent(titleEnc);
+    const desc = decodeURIComponent(descEnc);
+    const existing = document.getElementById('quest-detail-modal');
+    if (existing) existing.remove();
+
+    const isMandatory = type === 'mandatory';
+    // Match section colors: Rose for mandatory, Indigo for optional
+    const grad = isMandatory ? 'from-rose-500 to-pink-600' : 'from-indigo-500 to-blue-600';
+
+
+    const modal = document.createElement('div');
+    modal.id = 'quest-detail-modal';
+    modal.className = 'fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl animate-in fade-in duration-300';
+    modal.innerHTML = `
+        <div class="bg-white dark:bg-[#2c2215] w-full max-w-[440px] rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 relative border border-white/20">
+            <div class="h-3 bg-gradient-to-r ${grad}"></div>
+            
+            <button onclick="this.closest('#quest-detail-modal').remove()" class="absolute top-6 right-6 size-10 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-rose-500 transition-colors z-[100]">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="p-8 md:p-12 text-center">
+                <!-- Icon / Chibi Group -->
+                <div class="relative size-24 md:size-32 mx-auto mb-8">
+                    <div class="absolute inset-0 bg-gradient-to-br ${grad} blur-2xl opacity-30 animate-pulse"></div>
+                    <div class="w-full h-full rounded-full bg-gradient-to-br ${grad} flex items-center justify-center text-white border-[4px] border-white/30 relative z-10 p-2 md:p-4 shadow-xl">
+                        ${isImage
+            ? `<img src="${iconOrUrl}" alt="Quest Chibi" class="w-full h-full object-contain filter drop-shadow-lg" />`
+            : `<span class="material-symbols-outlined text-5xl md:text-7xl font-black text-white" style="font-variation-settings:'FILL' 1">${iconOrUrl}</span>`
+        }
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-10">
+                    <span class="px-5 py-1.5 ${type === 'mandatory' ? 'bg-rose-500/10 text-rose-500' : 'bg-indigo-500/10 text-indigo-500'} rounded-full text-[10px] font-black uppercase tracking-widest border border-current/20">
+                        ${type === 'mandatory' ? 'Nhiệm vụ Bắt buộc' : 'Nhiệm vụ Tùy chọn'}
+                    </span>
+                    <h2 class="text-3xl font-black text-slate-800 dark:text-white uppercase tracking-tight leading-tight">${title}</h2>
+                    <p class="text-base font-medium text-slate-500 dark:text-slate-400 leading-relaxed px-2">
+                        ${desc || "Con hãy hoàn thành thật tốt thử thách này để nhận thưởng nhé!"}
+                    </p>
+                </div>
+
+                <!-- Reward Grid -->
+                <div class="grid grid-cols-2 gap-3 mb-10">
+                    <div class="bg-amber-50 dark:bg-amber-900/10 p-4 rounded-[1.5rem] border border-amber-100 dark:border-amber-500/10 flex flex-col items-center gap-2">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-7 object-contain drop-shadow" />
+                        <span class="text-lg font-black text-amber-600">${reward} Vàng</span>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-[1.5rem] border border-blue-100 dark:border-blue-500/10 flex flex-col items-center gap-2">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-7 object-contain drop-shadow" />
+                        <span class="text-lg font-black text-blue-600">${xp} EXP</span>
+                    </div>
+                    <div class="bg-purple-50 dark:bg-purple-900/10 p-4 rounded-[1.5rem] border border-purple-100 dark:border-purple-500/10 flex flex-col items-center gap-2">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-7 object-contain drop-shadow" />
+                        <span class="text-lg font-black text-purple-600">${sticker} Sticker</span>
+                    </div>
+                    <div class="bg-teal-50 dark:bg-teal-900/10 p-4 rounded-[1.5rem] border border-teal-100 dark:border-teal-500/10 flex flex-col items-center gap-2">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-7 object-contain drop-shadow" />
+                        <span class="text-lg font-black text-teal-600">${water} Nước</span>
+                    </div>
+                </div>
+
+                <button onclick="this.closest('#quest-detail-modal').remove()" class="w-full py-5 bg-gradient-to-r ${grad} text-white font-black rounded-3xl hover:opacity-90 shadow-2xl transition-all uppercase tracking-widest text-base shadow-blue-500/20">
+                    Đã hiểu, con sẽ làm ngay!
+                </button>
+            </div>
+        </div>
+    `;
+
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+    document.body.appendChild(modal);
+};
