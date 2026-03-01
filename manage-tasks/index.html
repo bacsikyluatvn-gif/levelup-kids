@@ -77,6 +77,10 @@
           <p class="text-text-sub text-sm">Thiết lập thử thách và phần thưởng cho con</p>
         </div>
         <div class="flex items-center gap-2 md:gap-4 flex-wrap">
+          <button onclick="window.toggleParentSidebar(true)"
+            class="lg:hidden p-3 bg-primary text-white rounded-2xl shadow-lg shadow-primary/30 hover:scale-110 active:scale-95 transition-all outline-none">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
           <notification-bell></notification-bell>
           <button onclick="window.openBehaviorLogModal()"
             class="bg-white dark:bg-zinc-800 border-2 border-primary/20 text-slate-700 dark:text-slate-200 font-bold py-2 md:py-2.5 px-3 md:px-6 rounded-xl flex items-center gap-1 md:gap-2 transition-all hover:bg-primary/5 group text-xs md:text-base">
@@ -136,7 +140,7 @@
                   <th class="px-6 py-4">Vàng (Gold)</th>
                   <th class="px-6 py-4">Nước (Giọt)</th>
                   <th class="px-6 py-4">Sticker (Uy tín)</th>
-                  <th class="px-6 py-4">Kinh nghiệm (EXP)</th>
+                  <th class="px-6 py-4">Nhân cách (NC)</th>
                   <th class="px-6 py-4 text-right">Thao tác</th>
                 </tr>
               </thead>
@@ -157,9 +161,9 @@
   </div>
   <!-- Add Task Modal -->
   <div id="add-task-modal"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto">
     <div
-      class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+      class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 my-4">
       <div class="p-6 border-b border-neutral-soft dark:border-white/10 flex justify-between items-center">
         <h3 class="text-xl font-black text-slate-800 dark:text-white">Thêm Nhiệm vụ mới</h3>
         <button onclick="toggleModal(false)"
@@ -249,9 +253,9 @@
                 nghiệm</p>
               <div class="flex items-center justify-center gap-1.5 text-blue-600 font-extrabold">
                 <img
-                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png"
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png"
                   class="size-6 object-contain" />
-                <span>20 EXP</span>
+                <span>20 NC</span>
                 <input type="hidden" id="task-exp" value="20">
               </div>
             </div>
@@ -521,6 +525,42 @@
       }
       if (category === "add_new_category") category = "Mặc định";
 
+      // CHỐNG SPAM: Check limits before calling State
+      const familyQuests = window.AppState.data.quests || [];
+      const mandatoryCount = familyQuests.filter(q => q.id !== currentEditTaskId && (q.type === 'mandatory' || !q.type || q.type === '')).length;
+      const optionalCount = familyQuests.filter(q => q.id !== currentEditTaskId && q.type === 'optional').length;
+
+      if (type === 'mandatory' && mandatoryCount >= 6) {
+        window.showLevelUpAlert(
+          "Ba mẹ ơi, hãy chậm lại một chút!",
+          `<div class="text-left space-y-3">
+            <p>Gia đình hiện đã có đủ 6 nhiệm vụ <b>Bắt buộc</b>. Để con đạt kết quả tốt nhất, ba mẹ nên:</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Ưu tiên những thói quen quan trọng nhất trước.</li>
+              <li>Tránh làm con bị "ngợp" bởi quá nhiều đầu việc.</li>
+              <li>Khi con đã thành thạo, ba mẹ mới nên thay đổi sang việc khác.</li>
+            </ul>
+          </div>`,
+          "error"
+        );
+        return;
+      }
+      if (type === 'optional' && optionalCount >= 6) {
+        window.showLevelUpAlert(
+          "Giới hạn Nhiệm vụ",
+          `<div class="text-left space-y-3">
+            <p>Mỗi gia đình chỉ nên có tối đa 6 nhiệm vụ <b>Tùy chọn</b>. Lí do là:</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Giúp con tập trung hoàn thành tốt mục tiêu chính.</li>
+              <li>Xây dựng sự tự tin qua những chiến thắng nhỏ đều đặn.</li>
+              <li>Giữ cho không gian nhiệm vụ của con luôn tinh gọn.</li>
+            </ul>
+          </div>`,
+          "error"
+        );
+        return;
+      }
+
       if (currentEditTaskId) {
         // UPDATE
         const updatedTask = {
@@ -536,42 +576,6 @@
         };
         window.AppState.updateTask(currentEditTaskId, updatedTask);
       } else {
-        // CHỐNG SPAM: Check limits locally before calling State
-        const familyTasks = window.AppState.data.quests;
-        const mandatoryCount = familyTasks.filter(q => q.type === 'mandatory').length;
-        const optionalCount = familyTasks.filter(q => q.type === 'optional').length;
-
-        if (type === 'mandatory' && mandatoryCount >= 6) {
-          window.showLevelUpAlert(
-            "Ba mẹ ơi, hãy chậm lại một chút!",
-            `<div class="text-left space-y-3">
-              <p>Gia đình hiện đã có đủ 6 nhiệm vụ <b>Bắt buộc</b>. Để con đạt kết quả tốt nhất, ba mẹ nên:</p>
-              <ul class="list-disc pl-5 space-y-1">
-                <li>Ưu tiên những thói quen quan trọng nhất trước.</li>
-                <li>Tránh làm con bị "ngợp" bởi quá nhiều đầu việc.</li>
-                <li>Khi con đã thành thạo, ba mẹ mới nên thay đổi sang việc khác.</li>
-              </ul>
-            </div>`,
-            "error"
-          );
-          return;
-        }
-        if (type === 'optional' && optionalCount >= 6) {
-          window.showLevelUpAlert(
-            "Giới hạn Nhiệm vụ",
-            `<div class="text-left space-y-3">
-              <p>Mỗi gia đình chỉ nên có tối đa 6 nhiệm vụ <b>Tùy chọn</b>. Lí do là:</p>
-              <ul class="list-disc pl-5 space-y-1">
-                <li>Giúp con tập trung hoàn thành tốt mục tiêu chính.</li>
-                <li>Xây dựng sự tự tin qua những chiến thắng nhỏ đều đặn.</li>
-                <li>Giữ cho không gian nhiệm vụ của con luôn tinh gọn.</li>
-              </ul>
-            </div>`,
-            "error"
-          );
-          return;
-        }
-
         // CREATE
         const newTask = {
           id: 'task_' + Date.now(),
@@ -660,7 +664,7 @@
                </td>
                <td class="px-6 py-4">
                  <div class="flex items-center gap-1.5 font-bold text-blue-600">
-                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-5 object-contain" />
+                   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-5 object-contain" />
                    <span>+${task.xp || 20}</span>
                  </div>
                </td>

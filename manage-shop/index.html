@@ -68,6 +68,10 @@
                         <p class="text-slate-500 mt-1">Tạo động lực cho các con bằng những phần thưởng hấp dẫn.</p>
                     </div>
                     <div class="flex items-center gap-4">
+                        <button onclick="window.toggleParentSidebar(true)"
+                            class="lg:hidden p-3 bg-primary text-white rounded-2xl shadow-lg shadow-primary/30 hover:scale-110 active:scale-95 transition-all outline-none">
+                            <span class="material-symbols-outlined text-2xl">menu</span>
+                        </button>
                         <notification-bell></notification-bell>
                         <button onclick="window.AppState.syncFromDatabase()"
                             class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-stone-300 font-bold text-xs flex items-center gap-2 transition-all">

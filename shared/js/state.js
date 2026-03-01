@@ -1613,8 +1613,8 @@ class StateManager {
 
         addTask(task) {
                 // CHỐNG SPAM: Giới hạn 6 Core + 6 Optional
-                const mandatoryCount = this.data.quests.filter(q => q.type === 'mandatory').length;
-                const optionalCount = this.data.quests.filter(q => q.type === 'optional').length;
+                const mandatoryCount = (this.data.quests || []).filter(q => q.type === 'mandatory' || !q.type || q.type === '').length;
+                const optionalCount = (this.data.quests || []).filter(q => q.type === 'optional').length;
 
                 if (task.type === 'mandatory' && mandatoryCount >= 6) {
                         if (window.showLevelUpAlert) {
@@ -1661,6 +1661,27 @@ class StateManager {
         }
 
         async updateTask(id, data) {
+                // CHỐNG SPAM: Kiểm tra giới hạn khi cập nhật (loại trừ chính task đang sửa)
+                const mandatoryCount = (this.data.quests || []).filter(q => q.id !== id && (q.type === 'mandatory' || !q.type || q.type === '')).length;
+                const optionalCount = (this.data.quests || []).filter(q => q.id !== id && q.type === 'optional').length;
+
+                if (data.type === 'mandatory' && mandatoryCount >= 6) {
+                        if (window.showLevelUpAlert) {
+                                window.showLevelUpAlert("Hành động bị chặn", "Mỗi gia đình chỉ có tối đa 6 nhiệm vụ Bắt buộc. Vui lòng kiểm tra lại!", "error");
+                        } else {
+                                alert("Gia đình chỉ được tối đa 6 nhiệm vụ BẮT BUỘC.");
+                        }
+                        return;
+                }
+                if (data.type === 'optional' && optionalCount >= 6) {
+                        if (window.showLevelUpAlert) {
+                                window.showLevelUpAlert("Hành động bị chặn", "Mỗi gia đình chỉ có tối đa 6 nhiệm vụ Tùy chọn. Vui lòng kiểm tra lại!", "error");
+                        } else {
+                                alert("Gia đình chỉ được tối đa 6 nhiệm vụ TÙY CHỌN.");
+                        }
+                        return;
+                }
+
                 const finalGold = [10, 15, 20, 25].includes(parseInt(data.reward)) ? parseInt(data.reward) : 10;
                 const finalWater = [10, 20].includes(parseInt(data.water)) ? parseInt(data.water) : 10;
 

@@ -8,16 +8,16 @@ let currentInvitingTask = null;
 let botInvitationInterval = null;
 
 function scheduleNextBotChallenge() {
-    // Tần suất ngẫu nhiên từ 3 đến 5 phút (180,000ms - 300,000ms)
+    // Tần suất ngẫu nhiên từ 1 đến 3 phút (60000ms - 180000ms)
     const isDebug = window.location.search.includes('debug=true');
-    const randomTime = isDebug ? 20000 : Math.floor(Math.random() * (300000 - 180000 + 1)) + 180000;
+    const randomTime = isDebug ? 10000 : Math.floor(Math.random() * (180000 - 60000 + 1)) + 60000;
 
-    console.log(`[ArenaEngine] 🛡️ Đang chờ thách đấu... Lần tới sau ${Math.round(randomTime / 1000)} giây.`);
+    console.log(`[ArenaEngine] 🛡️ Lên lịch kiểm tra thách đấu mới sau ${Math.round(randomTime / 1000)} giây...`);
 
     if (botInvitationInterval) clearTimeout(botInvitationInterval);
     botInvitationInterval = setTimeout(() => {
         checkForBotChallenge();
-        scheduleNextBotChallenge(); // Tự động lên lịch cho lần tiếp theo
+        scheduleNextBotChallenge();
     }, randomTime);
 }
 
@@ -37,34 +37,60 @@ function getGlobalSuitableTask(isBotInitiated = false) {
 }
 
 function checkForBotChallenge() {
+    console.log("[ArenaEngine] Running periodic check for bot challenges...");
+
     // Check if any modal is visible
     const isAnyModalVisible = Array.from(document.querySelectorAll('.fixed.inset-0')).some(el => {
-        const isOverlay = el.classList.contains('bg-slate-900/80') || el.classList.contains('bg-slate-900/40') || el.classList.contains('bg-slate-900/90') || el.classList.contains('bg-black');
-        const isNotHidden = !el.classList.contains('opacity-0') && !el.classList.contains('pointer-events-none');
+        const isOverlay = el.classList.contains('bg-slate-900/80') || el.classList.contains('bg-slate-900/40') || el.classList.contains('bg-slate-900/90') || el.classList.contains('bg-black') || el.classList.contains('bg-slate-900/60');
+        const isNotHidden = !el.classList.contains('opacity-0') && !el.classList.contains('pointer-events-none') && el.style.display !== 'none';
         return isOverlay && isNotHidden && el.id !== 'bot-invitation-modal';
     });
 
     if (isAnyModalVisible || !window.AppState || !window.AppState.data.user) {
-        console.log("[ArenaEngine] Bỏ qua thách đấu vì đang bận hoặc chưa sẵn sàng.");
+        console.log("[ArenaEngine] Bỏ qua thách đấu vì đang bận hoặc chưa sẵn sàng. Modals visible:", isAnyModalVisible);
         return;
     }
 
     const userData = window.AppState.data.user;
-    if (userData.role !== 'child') return;
+    if (userData.role !== 'child') {
+        console.log("[ArenaEngine] Ngừng check vì user không phải role CHILD:", userData.role);
+        return;
+    }
 
     const passiveUsed = window.AppState.getDailyChallengeCount(userData.id, 'passive');
+    console.log("[ArenaEngine] Current passive challenges used today:", passiveUsed);
 
-    if (passiveUsed < 3 && Math.random() < 0.85) {
+    const isDebug = window.location.search.includes('debug=true');
+    const triggerChance = isDebug ? 1.0 : 0.9;
+
+    if (passiveUsed < 3 && Math.random() < triggerChance) {
+        console.log("[ArenaEngine] Conditions met for a new challenge!");
+
         const bots = window.AppState.data.leaderboard.filter(p => p.role === 'bot');
-        if (bots.length === 0) return;
+        if (bots.length === 0) {
+            console.warn("[ArenaEngine] No bots found in leaderboard to challenge.");
+            return;
+        }
 
-        const randomBot = bots[Math.floor(Math.random() * bots.length)];
+        // Tránh chọn chính mình hoặc Ba Mẹ
+        const validBots = bots.filter(b => b.id !== userData.id);
+        if (validBots.length === 0) {
+            console.warn("[ArenaEngine] No valid bots found (excluding user).");
+            return;
+        }
+
+        const randomBot = validBots[Math.floor(Math.random() * validBots.length)];
         const suitableTask = getGlobalSuitableTask(true);
 
+        console.log("[ArenaEngine] Selected bot:", randomBot.name, "with task:", suitableTask);
+
         if (suitableTask) {
-            console.log(`[ArenaEngine] Bot ${randomBot.name} đang gửi lời thách đấu: ${suitableTask}`);
             openGlobalBotInvitation(randomBot, suitableTask);
+        } else {
+            console.warn("[ArenaEngine] Failed to find a suitable task for bot challenge.");
         }
+    } else {
+        console.log(`[ArenaEngine] ⏭️ Bỏ qua chu kỳ này: passiveUsed=${passiveUsed}, chance=${triggerChance}`);
     }
 }
 
@@ -285,19 +311,82 @@ window.ArenaEngine = {
     acceptChallenge: acceptGlobalBotChallenge
 };
 
-// Auto start
-document.addEventListener('DOMContentLoaded', () => {
-    const initEngine = () => {
-        if (window.AppState && window.AppState.data && window.AppState.data.user && window.AppState.data.user.role === 'child') {
-            if (!botInvitationInterval) {
-                scheduleNextBotChallenge();
-            }
-        }
-    };
+// Auto start - robust initialization
+let engineStarted = false;
+let subscribed = false;
 
-    if (window.AppState) {
+function initEngine() {
+    if (engineStarted) return false;
+
+    const hasAppState = !!window.AppState;
+    const hasData = hasAppState && !!window.AppState.data;
+    const hasUser = hasData && !!window.AppState.data.user;
+    const hasUserId = hasUser && !!window.AppState.data.user.id;
+    const isChild = hasUserId && window.AppState.data.user.role === 'child';
+
+    if (!isChild) {
+        if (hasUserId && !isChild) {
+            console.log("[ArenaEngine] ⏭️ Not a child user:", window.AppState.data.user.role);
+        }
+        return false;
+    }
+
+    engineStarted = true;
+    console.log("[ArenaEngine] 🚀 Engine STARTED for:", window.AppState.data.user.name);
+
+    // Check passive count
+    const passiveCount = window.AppState.getDailyChallengeCount(window.AppState.data.user.id, 'passive');
+    console.log("[ArenaEngine] 📊 Passive challenges today:", passiveCount, "/ 3");
+
+    scheduleNextBotChallenge();
+    return true;
+}
+
+// Try subscribing to state changes
+function trySubscribe() {
+    if (subscribed) return;
+    if (window.AppState && typeof window.AppState.subscribe === 'function') {
+        subscribed = true;
+        window.AppState.subscribe(() => {
+            if (!engineStarted) initEngine();
+        });
+        console.log("[ArenaEngine] 📡 Subscribed to AppState");
+    }
+}
+
+// Aggressive polling - every 2s for up to 2 minutes
+let pollCount = 0;
+
+function pollInit() {
+    if (engineStarted) return;
+    pollCount++;
+
+    trySubscribe();
+    const started = initEngine();
+
+    if (!started && pollCount < 60) {
+        setTimeout(pollInit, 2000);
+    } else if (!started) {
+        console.warn("[ArenaEngine] ⚠️ Gave up after 2 minutes. AppState ready:", !!window.AppState,
+            "User:", window.AppState?.data?.user?.name || 'none');
+    }
+}
+
+// Start immediately
+pollInit();
+
+// Also try on DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pollInit);
+}
+
+// And on window load as final fallback
+window.addEventListener('load', () => {
+    if (!engineStarted) {
+        console.log("[ArenaEngine] 🔄 Window load - retrying init...");
+        trySubscribe();
         initEngine();
-        window.AppState.subscribe(() => initEngine());
+        if (!engineStarted) pollInit();
     }
 });
 

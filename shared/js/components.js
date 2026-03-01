@@ -98,7 +98,7 @@ window.showLevelUpAlert = (title, message, type = 'success', onConfirm = null) =
                 </div>
                 <div class="space-y-2">
                     <h3 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight leading-none">${title}</h3>
-                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed">${message}</p>
+                    <div class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed">${message}</div>
                 </div>
                 <button id="lu-alert-ok" class="w-full py-4 bg-${config.color === 'primary' ? 'primary' : config.color + '-500'} text-white font-black rounded-2xl hover:opacity-90 shadow-lg shadow-${config.color}-200 dark:shadow-none transition-all uppercase tracking-widest text-sm">
                     Đồng ý
@@ -403,27 +403,28 @@ class AppHeader extends HTMLElement {
         })();
         const titleName = (data.title && data.title.currentTitleName) || 'Tân Binh';
 
-        const menuId = 'header-dropdown-' + Date.now();
+        const mobileMenuId = 'mobile-dropdown-' + Math.random().toString(36).substr(2, 9);
+        const desktopMenuId = 'desktop-dropdown-' + Math.random().toString(36).substr(2, 9);
         return `
             <!-- ═══ MOBILE HEADER (< 768px): Clean & minimal ═══ -->
-            <div class="flex md:hidden items-center gap-1.5 ml-auto">
+            <div class="flex md:hidden items-center gap-2 ml-auto">
                 <!-- All 4 resources compact -->
-                <div class="flex items-center gap-1 font-bold">
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="w-3.5 h-3.5 object-contain" />
-                        <span class="text-[10px] tabular-nums">${user.gold}</span>
+                <div class="flex items-center gap-1 font-black">
+                    <div class="flex items-center gap-0.5 px-1.5 py-1 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="w-4 h-4 object-contain" />
+                        <span class="text-xs tabular-nums">${user.gold}</span>
                     </div>
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="w-3.5 h-3.5 object-contain" />
-                        <span class="text-[10px] tabular-nums">${user.stickers || 0}</span>
+                    <div class="flex items-center gap-0.5 px-1.5 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="w-4 h-4 object-contain" />
+                        <span class="text-xs tabular-nums">${user.stickers || 0}</span>
                     </div>
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="w-3.5 h-3.5 object-contain" />
-                        <span class="text-[10px] tabular-nums">${user.water || 0}</span>
+                    <div class="flex items-center gap-0.5 px-1.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="w-4 h-4 object-contain" />
+                        <span class="text-xs tabular-nums">${user.water || 0}</span>
                     </div>
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="w-3.5 h-3.5 object-contain" />
-                        <span class="text-[10px] tabular-nums">${user.personalityPoints || 0}</span>
+                    <div class="flex items-center gap-0.5 px-1.5 py-1 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="w-4 h-4 object-contain" />
+                        <span class="text-xs tabular-nums">${user.personalityPoints || 0}</span>
                     </div>
                 </div>
 
@@ -435,11 +436,11 @@ class AppHeader extends HTMLElement {
 
                 <!-- 3-dot menu -->
                 <div class="relative">
-                    <button onclick="document.getElementById('${menuId}').classList.toggle('hidden')" class="size-8 flex items-center justify-center rounded-xl text-slate-400 hover:text-primary active:scale-90 transition-all">
+                    <button onclick="document.getElementById('${mobileMenuId}').classList.toggle('hidden')" class="size-8 flex items-center justify-center rounded-xl text-slate-400 hover:text-primary active:scale-90 transition-all">
                         <span class="material-symbols-outlined text-[20px]">more_vert</span>
                     </button>
-                    <div id="${menuId}" class="hidden absolute right-0 top-full mt-2 w-44 bg-white dark:bg-[#2c2215] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-[100]">
-                        <button onclick="window.toggleDarkMode();document.getElementById('${menuId}').classList.add('hidden')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                    <div id="${mobileMenuId}" class="hidden absolute right-0 top-full mt-2 w-44 bg-white dark:bg-[#2c2215] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-[100]">
+                        <button onclick="window.toggleDarkMode();document.getElementById('${mobileMenuId}').classList.add('hidden')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                             <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
                             <span class="material-symbols-outlined text-[20px] hidden dark:inline text-yellow-500">light_mode</span>
                             <span class="dark:hidden">Chế độ tối</span><span class="hidden dark:inline">Chế độ sáng</span>
@@ -447,7 +448,7 @@ class AppHeader extends HTMLElement {
                         <button onclick="window.location.href='../portal/index.html'" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
                             <span class="material-symbols-outlined text-[20px]">group</span> Đổi nhân vật
                         </button>
-                        <button onclick="document.getElementById('${menuId}').classList.add('hidden');if(window.openParentPinModal)window.openParentPinModal()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                        <button onclick="document.getElementById('${mobileMenuId}').classList.add('hidden');if(window.openParentPinModal)window.openParentPinModal()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
                             <span class="material-symbols-outlined text-[20px]">lock</span> Phụ huynh
                         </button>
                         <button onclick="window.AppState.logout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors border-t border-slate-100 dark:border-white/5">
@@ -475,32 +476,28 @@ class AppHeader extends HTMLElement {
                     </div>
 
                     <!-- Resources -->
-                    <div class="flex items-center gap-1.5 font-bold shrink-0">
-                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform" title="Vàng">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-5 object-contain drop-shadow-sm" />
-                            <span class="text-sm tabular-nums">${user.gold}</span>
+                    <div class="flex items-center gap-4 font-black shrink-0">
+                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:scale-105 transition-transform shadow-sm" title="Vàng">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-8 object-contain drop-shadow-sm" />
+                            <span class="text-base tabular-nums">${user.gold}</span>
                         </div>
-                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform" title="Stickers">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-5 object-contain drop-shadow-sm" />
-                            <span class="text-sm tabular-nums">${user.stickers || 0}</span>
+                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:scale-105 transition-transform shadow-sm" title="Huy hiệu">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-8 object-contain drop-shadow-sm" />
+                            <span class="text-base tabular-nums">${user.stickers || 0}</span>
                         </div>
-                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 hover:scale-105 transition-transform cursor-pointer" onclick="window.navigateWithTransition('../tree-growth/index.html')" title="Nước">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-5 object-contain drop-shadow-sm" />
-                            <span class="text-sm tabular-nums">${user.water || 0}</span>
+                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:scale-105 transition-transform shadow-sm" title="Nước">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Droplet.png" class="size-8 object-contain drop-shadow-sm" />
+                            <span class="text-base tabular-nums">${user.water || 0}</span>
                         </div>
-                        <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform" title="Nhân Cách">
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-5 object-contain drop-shadow-sm" />
-                            <span class="text-sm tabular-nums">${user.personalityPoints || 0}</span>
+                        <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:scale-105 transition-transform shadow-sm" title="Điểm nhân cách">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-8 object-contain drop-shadow-sm" />
+                            <span class="text-base tabular-nums">${user.personalityPoints || 0}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Profile & System (Right) -->
                 <div class="flex items-center gap-4 ml-auto">
-                    <button onclick="window.toggleDarkMode()" class="size-9 flex items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl text-slate-400 hover:text-primary transition-all active:scale-95 shadow-sm">
-                        <span class="material-symbols-outlined dark:hidden text-lg">dark_mode</span>
-                        <span class="material-symbols-outlined hidden dark:block text-yellow-500 text-lg">light_mode</span>
-                    </button>
                     <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-white/10">
                         <div class="text-right">
                             <p class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">${displayName}</p>
@@ -511,13 +508,28 @@ class AppHeader extends HTMLElement {
                                  style="background-image: url('${user.avatar}')"></div>
                             <div class="absolute -top-1 -right-1 size-3 bg-emerald-500 border-2 border-white dark:border-[#1a140c] rounded-full shadow-sm animate-pulse"></div>
                         </a>
-                        <div class="flex items-center gap-1 ml-1">
-                            <button onclick="window.location.href='../portal/index.html'" class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Đổi Bé">
-                                <span class="material-symbols-outlined text-[22px]">group</span>
+                        
+                        <!-- Consolidated Desktop Menu -->
+                        <div class="relative ml-1">
+                            <button onclick="document.getElementById('${desktopMenuId}').classList.toggle('hidden')" class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-[24px]">more_vert</span>
                             </button>
-                            <button onclick="window.AppState.logout()" class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất">
-                                <span class="material-symbols-outlined text-[20px]">logout</span>
-                            </button>
+                            <div id="${desktopMenuId}" class="hidden absolute right-0 top-full mt-2 w-48 bg-white dark:bg-[#2c2215] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-[100]">
+                                <button onclick="window.toggleDarkMode();document.getElementById('${desktopMenuId}').classList.add('hidden')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                                    <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
+                                    <span class="material-symbols-outlined text-[20px] hidden dark:inline text-yellow-500">light_mode</span>
+                                    <span class="dark:hidden">Chế độ tối</span><span class="hidden dark:inline">Chế độ sáng</span>
+                                </button>
+                                <button onclick="window.location.href='../portal/index.html'" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                                    <span class="material-symbols-outlined text-[20px]">group</span> Đổi nhân vật
+                                </button>
+                                <button onclick="document.getElementById('${desktopMenuId}').classList.add('hidden');if(window.openParentPinModal)window.openParentPinModal()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                                    <span class="material-symbols-outlined text-[20px]">lock</span> Phụ huynh
+                                </button>
+                                <button onclick="window.AppState.logout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors border-t border-slate-100 dark:border-white/5">
+                                    <span class="material-symbols-outlined text-[20px]">logout</span> Đăng xuất
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -547,6 +559,7 @@ class AppHeader extends HTMLElement {
     }
 
     getParentStats(data) {
+        const menuId = 'parent-dropdown-' + Math.random().toString(36).substr(2, 9);
         return `
             <div class="flex items-center gap-3 md:gap-6 ml-auto">
                 <button onclick="window.openBehaviorLogModal()" class="flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-primary to-orange-500 text-white rounded-[1.5rem] text-xs font-black shadow-lg shadow-primary/30 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all uppercase tracking-widest">
@@ -557,29 +570,33 @@ class AppHeader extends HTMLElement {
                 <notification-bell></notification-bell>
 
                 <div class="flex items-center gap-3 pl-3 md:pl-6 border-l border-slate-200 dark:border-white/10">
-                    <button onclick="window.toggleDarkMode()" class="p-2.5 bg-slate-100 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-primary transition-all active:scale-95">
-                        <span class="material-symbols-outlined dark:hidden">dark_mode</span>
-                        <span class="material-symbols-outlined hidden dark:block text-yellow-500">light_mode</span>
-                    </button>
-                    
                     <div class="text-right hidden sm:block">
                         <p class="text-sm font-black dark:text-white text-slate-800 uppercase tracking-tight">Admin Phụ Huynh</p>
                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Family Manager</p>
                     </div>
                     
-                    <div class="size-10 rounded-xl bg-gradient-to-br from-primary to-orange-500 flex items-center justify-center text-white shadow-lg overflow-hidden">
+                    <div class="size-10 rounded-xl bg-gradient-to-br from-primary to-orange-500 flex items-center justify-center text-white shadow-lg overflow-hidden shrink-0">
                         <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">person</span>
                     </div>
 
-                    <div class="flex items-center gap-1 ml-1">
-                        <button onclick="window.location.href='../portal/index.html'" 
-                                class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90" title="Quản lý Family">
-                            <span class="material-symbols-outlined text-[20px]">home_info</span>
+                    <!-- Consolidated Menu for Parent Actions -->
+                    <div class="relative ml-1">
+                        <button onclick="document.getElementById('${menuId}').classList.toggle('hidden')" class="size-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary transition-all active:scale-90">
+                            <span class="material-symbols-outlined text-[24px]">more_vert</span>
                         </button>
-                        <button onclick="window.AppState.logout()" 
-                                class="size-9 flex items-center justify-center rounded-xl text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 transition-all active:scale-90" title="Đăng xuất hoàn toàn">
-                            <span class="material-symbols-outlined text-[20px]">logout</span>
-                        </button>
+                        <div id="${menuId}" class="hidden absolute right-0 top-full mt-2 w-48 bg-white dark:bg-[#2c2215] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-[100]">
+                            <button onclick="window.toggleDarkMode();document.getElementById('${menuId}').classList.add('hidden')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
+                                <span class="material-symbols-outlined text-[20px] hidden dark:inline text-yellow-500">light_mode</span>
+                                <span class="dark:hidden">Chế độ tối</span><span class="hidden dark:inline">Chế độ sáng</span>
+                            </button>
+                            <button onclick="window.location.href='../portal/index.html'" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors border-t border-slate-100 dark:border-white/5">
+                                <span class="material-symbols-outlined text-[20px]">home_info</span> Quản lý Family
+                            </button>
+                            <button onclick="window.AppState.logout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors border-t border-slate-100 dark:border-white/5">
+                                <span class="material-symbols-outlined text-[20px]">logout</span> Đăng xuất
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -687,7 +704,7 @@ class QuestCard extends HTMLElement {
                         <!-- Micro Reward Row (Icons Only, No numbers as requested) -->
                         <div class="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity mt-1 drop-shadow-sm">
                             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-4 md:size-[18px] object-contain" title="Vàng" />
-                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-4 md:size-[18px] object-contain" title="Nhân cách/EXP" />
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-4 md:size-[18px] object-contain" title="Nhân cách" />
                             ${sticker > 0 ? `
                             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-4 md:size-[18px] object-contain" title="Sticker" />` : ''}
                             ${hasWater ? `
@@ -1481,8 +1498,7 @@ class LeaderboardPodium extends HTMLElement {
                         </div>
                     </div>
                     <div class="relative mb-2 sm:mb-4 group-hover:-translate-y-2 transition-transform duration-300">
-
-                         <img src="${first.avatar}" alt="Top 1" class="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full border-4 border-[#ee9d2b] shadow-[0_0_20px_rgba(238,157,43,0.5)] z-10 relative ${first.isCurrentUser ? 'ring-4 ring-primary ring-offset-4' : ''}">
+                         <img src="${first.avatar}" alt="Top 1" class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full border-4 border-[#ee9d2b] shadow-[0_0_20px_rgba(238,157,43,0.5)] z-10 relative ${first.isCurrentUser ? 'ring-4 ring-primary ring-offset-4' : ''}">
                          <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-yellow-900 text-sm sm:text-base font-black w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full shadow-lg border-2 border-white dark:border-[#221a10] z-20">1</div>
                          <span class="material-symbols-outlined absolute -top-5 -right-2 text-3xl sm:text-4xl text-yellow-400 drop-shadow-md z-20 rotate-12">crown</span>
                     </div>
@@ -1618,7 +1634,7 @@ class LeaderboardTable extends HTMLElement {
             if (mode === 'weekly_xp') return `${user.weeklyXp || 0}`;
             if (mode === 'arena_wins') {
                 const stats = userStatsMap.get(user.id);
-                return `${stats.wins}T - ${stats.draws}H - ${stats.losses}B`;
+                return `<span class="sm:hidden text-[11px] font-black">${stats.wins}T-${stats.draws}H-${stats.losses}B</span><span class="hidden sm:inline">${stats.wins}T - ${stats.draws}H - ${stats.losses}B</span>`;
             }
             if (mode === 'stickers') return user.totalStickers || 0;
             return user.actionStreak || 0;
@@ -1706,45 +1722,45 @@ class LeaderboardTable extends HTMLElement {
             }
 
             return `
-                            <div class="flex items-center justify-between p-4 sm:p-5 bg-white dark:bg-[#1a140c] rounded-[1.5rem] border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:scale-[1.01] hover:shadow-md relative overflow-hidden group">
+                            <div class="flex items-center justify-between p-3 sm:p-5 bg-white dark:bg-[#1a140c] rounded-[1.5rem] border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:scale-[1.01] hover:shadow-md relative overflow-hidden group">
                                 ${user.isCurrentUser ? '<div class="absolute inset-y-0 left-0 w-1.5 bg-primary shadow-[2px_0_10px_rgba(238,157,43,0.3)]"></div>' : ''}
                                 
-                                <div class="flex items-center gap-4 sm:gap-6">
-                                    <div class="flex flex-col items-center justify-center w-8">
-                                        <span class="text-sm sm:text-lg font-black ${rank <= 3 ? (rank === 1 ? 'text-yellow-500' : rank === 2 ? 'text-slate-400' : 'text-orange-400') : 'text-slate-300'}">#${rank}</span>
-                                        ${rank <= 3 ? `<span class="material-symbols-outlined text-xs ${rank === 1 ? 'text-yellow-500' : 'text-slate-300'} transform -mt-1">${rank === 1 ? 'crown' : 'military_tech'}</span>` : ''}
+                                <div class="flex items-center gap-2 sm:gap-6 flex-1 min-w-0">
+                                    <div class="flex flex-col items-center justify-center w-6 sm:w-8 shrink-0">
+                                        <span class="text-xs sm:text-lg font-black ${rank <= 3 ? (rank === 1 ? 'text-yellow-500' : rank === 2 ? 'text-slate-400' : 'text-orange-400') : 'text-slate-300'}">#${rank}</span>
+                                        ${rank <= 3 ? `<span class="material-symbols-outlined text-[10px] sm:text-xs ${rank === 1 ? 'text-yellow-500' : 'text-slate-300'} transform -mt-1">${rank === 1 ? 'crown' : 'military_tech'}</span>` : ''}
                                     </div>
                                     
-                                    <div class="relative">
-                                        <img src="${user.avatar}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 ${user.isCurrentUser ? 'border-primary' : 'border-slate-100 dark:border-slate-800'} shadow-sm">
-                                        ${user.isCurrentUser ? '<div class="absolute -top-1 -right-1 w-4 h-4 bg-primary border-2 border-white dark:border-[#1a140c] rounded-full"></div>' : ''}
+                                    <div class="relative shrink-0">
+                                        <img src="${user.avatar}" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 ${user.isCurrentUser ? 'border-primary' : 'border-slate-100 dark:border-slate-800'} shadow-sm">
+                                        ${user.isCurrentUser ? '<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary border border-white dark:border-[#1a140c] rounded-full"></div>' : ''}
                                     </div>
                                     
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h4 class="font-black text-slate-800 dark:text-white text-sm sm:text-base">${user.name}</h4>
-                                            ${user.isCurrentUser ? '<span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">Bạn</span>' : ''}
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-1.5 flex-nowrap">
+                                            <h4 class="font-black text-slate-800 dark:text-white text-sm sm:text-base truncate max-w-full">${user.name}</h4>
+                                            ${user.isCurrentUser ? '<span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded text-[8px] sm:text-[10px] font-black uppercase tracking-widest flex-shrink-0">Bạn</span>' : ''}
                                         </div>
-                                        <div class="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-slate-400 mt-0.5">
-                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">military_tech</span> Lv.${user.level}</span>
+                                        <div class="flex items-center gap-1.5 text-[9px] sm:text-xs font-bold text-slate-400 mt-0.5">
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px] sm:text-[12px]">military_tech</span> <span class="hidden sm:inline">Lv.</span>${user.level}</span>
                                             <span>•</span>
-                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">monetization_on</span> ${user.gold}</span>
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px] sm:text-[12px]">monetization_on</span> ${user.gold}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-6 sm:gap-12 lg:gap-20">
+                                <div class="flex items-center gap-2 sm:gap-6 lg:gap-12 ml-auto shrink-0">
                                     <!-- Dynamic Title/Collection Section -->
-                                    <div class="hidden sm:flex min-w-[120px] justify-center">
+                                    <div class="hidden sm:flex min-w-[120px] justify-center scale-90 sm:scale-100">
                                         ${titleHtml}
                                     </div>
-
-                                    <div class="flex flex-col items-end min-w-[70px] sm:min-w-[90px]">
-                                        <div class="flex items-center gap-1.5 ${getIconColor()}">
-                                            <span class="material-symbols-outlined text-base sm:text-xl font-bold">${getIcon()}</span>
-                                            <span class="text-base sm:text-xl font-black tabular-nums">${getValue(user)}</span>
+                                    
+                                    <div class="flex flex-col items-end min-w-[50px] sm:min-w-[90px]">
+                                        <div class="flex items-center gap-1 sm:gap-1.5 ${getIconColor()}">
+                                            <span class="material-symbols-outlined text-xs sm:text-xl font-bold">${getIcon()}</span>
+                                            <span class="text-[11px] sm:text-xl font-black tabular-nums whitespace-nowrap">${getValue(user)}</span>
                                         </div>
-                                        <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">${getLabel()}</span>
+                                        <span class="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">${getLabel()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1851,8 +1867,28 @@ class LeaderboardTable extends HTMLElement {
         `;
     }
 }
+window.toggleParentSidebar = (show) => {
+    const aside = document.getElementById('parent-sidebar-aside');
+    const overlay = document.getElementById('parent-sidebar-overlay');
+    if (aside && overlay) {
+        if (show) {
+            aside.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            document.body.style.overflow = 'hidden';
+        } else {
+            aside.classList.add('-translate-x-full');
+            overlay.classList.remove('opacity-100');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+            document.body.style.overflow = '';
+        }
+    }
+};
+
 class ParentSidebar extends HTMLElement {
     connectedCallback() {
+        this.style.display = 'block';
+        this.classList.add('lg:w-72', 'w-0', 'transition-all', 'flex-shrink-0');
         const active = this.getAttribute('active') || 'dashboard';
         this.render(active); // Render immediately with whatever data is available
 
@@ -1871,8 +1907,12 @@ class ParentSidebar extends HTMLElement {
 
     render(active) {
         this.innerHTML = `
-            <aside class="w-72 bg-white dark:bg-[#1a140d] border-r border-slate-100 dark:border-slate-800 flex flex-col hidden lg:flex h-screen sticky top-0 shadow-xl z-[60]">
-                <div class="p-8 border-b border-slate-50 dark:border-slate-800/50">
+            <!-- Sidebar Overlay for Mobile -->
+            <div id="parent-sidebar-overlay" onclick="window.toggleParentSidebar(false)" 
+                 class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[90] hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+
+            <aside id="parent-sidebar-aside" class="w-72 bg-white dark:bg-[#1a140d] border-r border-slate-100 dark:border-slate-800 flex flex-col fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:flex h-screen sticky top-0 shadow-xl z-[100] transition-transform duration-300 ease-in-out">
+                <div class="p-8 border-b border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <img alt="Family Logo" class="size-11 rounded-xl shadow-lg shadow-primary/20 rotate-3 object-cover" src="https://ui-avatars.com/api/?name=L+K&background=ee9d2b&color=fff" />
                         <div>
@@ -1880,6 +1920,9 @@ class ParentSidebar extends HTMLElement {
                             <span class="text-[9px] uppercase tracking-widest font-black text-primary block mt-1">QUẢN TRỊ VIÊN</span>
                         </div>
                     </div>
+                    <button onclick="window.toggleParentSidebar(false)" class="lg:hidden text-slate-400 hover:text-slate-600">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
 
                 <nav class="flex-1 p-6 pt-4 space-y-2 overflow-y-auto">
@@ -1896,10 +1939,8 @@ class ParentSidebar extends HTMLElement {
                     ${this.navLink('settings', 'Cấu hình hệ thống', '../settings/index.html', active === 'settings')}
                 </nav>
 
-
-
                 <div class="p-6 border-t border-slate-50 dark:border-slate-800/50">
-                    <button onclick="navigateWithTransition('../portal/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all">
+                    <button onclick="navigateWithTransition('../portal/index.html')" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:bg-slate-900 transition-all text-xs">
                         <span class="material-symbols-outlined text-xl text-primary">logout</span>
                         <span>Trở về app Của Bé</span>
                     </button>
@@ -2413,36 +2454,45 @@ class ChildNav extends HTMLElement {
     renderDesktop(active) {
         this.innerHTML = `
             <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#1a140c]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-[9999] shadow-[0_-8px_30px_rgba(0,0,0,0.12)]" style="padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);">
-                <nav class="max-w-2xl mx-auto px-2 py-1 flex justify-between items-end relative gap-1">
-                    ${this.dItem('home', 'Chương', 'home/index.html', active === 'home' || active === '')}
-                    ${this.dItem('dashboard', 'Nhiệm vụ', 'dashboard/index.html', active === 'dashboard')}
-                    ${this.dItem('book_5', 'Nhật Ký', 'personality/index.html', active === 'diary')}
-                    ${this.dItem('sports_kabaddi', 'Arena', 'arena/index.html', active === 'arena')}
-                    ${this.dSticker(active === 'stickers')}
-                    ${this.dItem('park', 'Vườn', 'tree-growth/index.html', active === 'tree-growth')}
-                    ${this.dItem('storefront', 'Quà', 'shop/index.html', active === 'shop')}
-                    ${this.dItem('leaderboard', 'Top', 'leaderboard/index.html', active === 'leaderboard')}
+                <nav class="max-w-[1100px] mx-auto px-4 py-2 flex justify-between items-center relative gap-2">
+                    ${this.dItem('home', 'Home', 'home/index.html', active === 'home' || active === '', '#ee9d2b')}
+                    ${this.dItem('target', 'Nhiệm Vụ', 'dashboard/index.html', active === 'dashboard', '#f59e0b')}
+                    ${this.dItem('auto_stories', 'Nhật Ký', 'personality/index.html', active === 'diary', '#ec4899')}
+                    ${this.dItem('swords', 'Đấu Trường', 'arena/index.html', active === 'arena', '#6366f1')}
+                    ${this.dSticker(active === 'stickers', '#a855f7')}
+                    ${this.dItem('park', 'Vườn Cây', 'tree-growth/index.html', active === 'tree-growth', '#10b981')}
+                    ${this.dItem('storefront', 'Kho Quà', 'shop/index.html', active === 'shop', '#f97316')}
+                    ${this.dItem('leaderboard', 'Xếp Hạng', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9')}
                 </nav>
             </div>
             <div class="h-24"></div>
             <titles-modal></titles-modal><parent-pin-modal></parent-pin-modal>
         `;
     }
-    dItem(icon, label, href, isActive) {
-        const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
-        const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
-        return `<a href="../${href}" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[48px] py-2">
-            <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">${icon}</span></div>
-            ${dot}</a>`;
+    dItem(icon, label, href, isActive, color) {
+        const activeStyle = isActive ? `background: ${color}15; color: ${color}; transform: scale(1.1); box-shadow: 0 8px 20px ${color}20;` : 'color: #94a3b8;';
+        return `
+            <a href="../${href}" class="relative flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 ${isActive ? 'ring-2 ring-primary/10' : 'hover:bg-slate-50 dark:hover:bg-white/5'} flex-1 min-w-[75px]" style="${activeStyle}">
+                <div class="mb-1 transition-transform duration-300">
+                    <span class="material-symbols-outlined text-[26px] ${isActive ? 'font-black' : ''}" style="font-variation-settings:'FILL' ${isActive ? 1 : 0}">${icon}</span>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-tighter ${isActive ? '' : 'text-slate-500'}">${label}</span>
+                ${isActive ? `<div class="absolute -bottom-1 w-6 h-1 rounded-full" style="background: ${color}"></div>` : ''}
+            </a>`;
     }
-    dSticker(isActive) {
-        const ac = isActive ? 'text-primary transform -translate-y-2' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300';
-        const dot = isActive ? '<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_5px_#ee9d2b]"></div>' : '';
+    dSticker(isActive, color) {
         const b = window.AppState?.data?.user?.stickers || 0;
-        const badge = b > 0 ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center">${b > 9 ? '9+' : b}</span>` : '';
-        return `<a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center transition-all duration-300 ${ac} flex-1 min-w-[48px] py-2">
-            <div class="${isActive ? 'bg-primary/10 p-2 rounded-xl' : 'p-2'} transition-all duration-300 relative"><span class="material-symbols-outlined text-2xl ${isActive ? 'font-black' : ''}">sell</span>${badge}</div>
-            ${dot}</a>`;
+        const badge = b > 0 ? `<span class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center ring-2 ring-white dark:ring-[#1a140c]">${b > 9 ? '9+' : b}</span>` : '';
+        const activeStyle = isActive ? `background: ${color}15; color: ${color}; transform: scale(1.1); box-shadow: 0 8px 20px ${color}20;` : 'color: #94a3b8;';
+        return `
+            <a href="../sticker-book/index.html" class="relative flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 ${isActive ? 'ring-2 ring-primary/10' : 'hover:bg-slate-50 dark:hover:bg-white/5'} flex-1 min-w-[75px]" style="${activeStyle}">
+                <div class="relative mb-1">
+                    <span class="material-symbols-outlined text-[26px] ${isActive ? 'font-black' : ''}" style="font-variation-settings:'FILL' ${isActive ? 1 : 0}">sell</span>
+                    ${badge}
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-tighter ${isActive ? '' : 'text-slate-500'}">Sticker</span>
+                ${isActive ? `<div class="absolute -bottom-1 w-6 h-1 rounded-full" style="background: ${color}"></div>` : ''}
+            </a>`;
     }
 
     /* ═══ MOBILE: Hamburger FAB + Fullscreen overlay ═══ */
@@ -2465,7 +2515,6 @@ class ChildNav extends HTMLElement {
         const gridItems = items.map(it => {
             const activeBg = it.active ? `background:linear-gradient(135deg,${it.color},${it.color}dd);color:white;box-shadow:0 4px 15px ${it.color}50` : '';
             const activeClass = it.active ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#1a140c]' : 'bg-white/80 dark:bg-white/5 text-slate-600 dark:text-slate-300';
-            const ringColor = it.active ? `ring-[${it.color}]` : '';
             return `<a href="../${it.href}" class="flex flex-col items-center gap-2 p-3 rounded-2xl ${activeClass} active:scale-90 transition-all" style="${activeBg}${it.active ? `;--tw-ring-color:${it.color}` : ''}">
                 <div class="relative"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' ${it.active ? 1 : 0}">${it.icon}</span>${it.badge || ''}</div>
                 <span class="text-[10px] font-bold leading-none">${it.label}</span>
@@ -4667,9 +4716,9 @@ window.showQuestDetail = (titleEnc, descEnc, iconOrUrl, color, reward, xp, water
                         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png" class="size-7 object-contain drop-shadow" />
                         <span class="text-lg font-black text-amber-600">${reward} Vàng</span>
                     </div>
-                    <div class="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-[1.5rem] border border-blue-100 dark:border-blue-500/10 flex flex-col items-center gap-2">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Military%20Medal.png" class="size-7 object-contain drop-shadow" />
-                        <span class="text-lg font-black text-blue-600">${xp} EXP</span>
+                    <div class="bg-rose-50 dark:bg-rose-900/10 p-4 rounded-[1.5rem] border border-rose-100 dark:border-rose-500/10 flex flex-col items-center gap-2">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png" class="size-7 object-contain drop-shadow" />
+                        <span class="text-lg font-black text-rose-600">${xp} NC</span>
                     </div>
                     <div class="bg-purple-50 dark:bg-purple-900/10 p-4 rounded-[1.5rem] border border-purple-100 dark:border-purple-500/10 flex flex-col items-center gap-2">
                         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png" class="size-7 object-contain drop-shadow" />

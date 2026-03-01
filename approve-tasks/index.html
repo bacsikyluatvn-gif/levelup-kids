@@ -104,6 +104,10 @@
                     đã làm xong để thưởng Vàng và XP.</p>
             </div>
             <div class="flex items-center gap-2 md:gap-4 flex-wrap">
+                <button onclick="window.toggleParentSidebar(true)"
+                    class="lg:hidden p-3 bg-primary text-white rounded-2xl shadow-lg shadow-primary/30 hover:scale-110 active:scale-95 transition-all outline-none">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
                 <notification-bell></notification-bell>
                 <div class="flex items-center gap-2">
                     <button id="btn-approve-all" onclick="approveAllRequests()" style="display: none;"
