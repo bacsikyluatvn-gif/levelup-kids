@@ -39,11 +39,17 @@ function getGlobalSuitableTask(isBotInitiated = false) {
 function checkForBotChallenge() {
     console.log("[ArenaEngine] Running periodic check for bot challenges...");
 
-    // Check if any modal is visible
+    // Check if any modal is truly visible (not hidden by CSS or Tailwind classes)
     const isAnyModalVisible = Array.from(document.querySelectorAll('.fixed.inset-0')).some(el => {
-        const isOverlay = el.classList.contains('bg-slate-900/80') || el.classList.contains('bg-slate-900/40') || el.classList.contains('bg-slate-900/90') || el.classList.contains('bg-black') || el.classList.contains('bg-slate-900/60');
-        const isNotHidden = !el.classList.contains('opacity-0') && !el.classList.contains('pointer-events-none') && el.style.display !== 'none';
-        return isOverlay && isNotHidden && el.id !== 'bot-invitation-modal';
+        // Skip our own invitation modal
+        if (el.id === 'bot-invitation-modal') return false;
+        // Skip elements hidden by Tailwind 'hidden' class or display:none
+        if (el.classList.contains('hidden') || el.style.display === 'none') return false;
+        // Skip elements that are invisible (opacity-0 + pointer-events-none)
+        if (el.classList.contains('opacity-0') && el.classList.contains('pointer-events-none')) return false;
+        // Check if it's an overlay-style modal
+        const isOverlay = el.classList.contains('bg-slate-900/80') || el.classList.contains('bg-slate-900/40') || el.classList.contains('bg-slate-900/90') || el.classList.contains('bg-black') || el.classList.contains('bg-slate-900/60') || el.classList.contains('bg-black/60');
+        return isOverlay;
     });
 
     if (isAnyModalVisible || !window.AppState || !window.AppState.data.user) {
