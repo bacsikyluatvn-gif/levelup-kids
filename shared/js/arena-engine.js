@@ -8,9 +8,9 @@ let currentInvitingTask = null;
 let botInvitationInterval = null;
 
 function scheduleNextBotChallenge() {
-    // Tần suất ngẫu nhiên từ 10 đến 15 giây (10000ms - 15000ms) - Testing mode
+    // Tần suất ngẫu nhiên từ 3 đến 10 phút (180000ms - 600000ms)
     const isDebug = window.location.search.includes('debug=true');
-    const randomTime = isDebug ? 5000 : Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
+    const randomTime = isDebug ? 10000 : Math.floor(Math.random() * (600000 - 180000 + 1)) + 180000;
 
     console.log(`[ArenaEngine] 🛡️ Lên lịch kiểm tra thách đấu mới sau ${Math.round(randomTime / 1000)} giây...`);
 

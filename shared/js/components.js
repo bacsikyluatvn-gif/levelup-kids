@@ -2460,6 +2460,7 @@ class ChildNav extends HTMLElement {
                     ${this.dItem('auto_stories', 'Nhật Ký', 'personality/index.html', active === 'diary', '#ec4899')}
                     ${this.dItem('swords', 'Đấu Trường', 'arena/index.html', active === 'arena', '#6366f1')}
                     ${this.dSticker(active === 'stickers', '#a855f7')}
+                    ${this.dItem('workspace_premium', 'Danh Hiệu', 'titles/index.html', active === 'titles', '#e11d48')}
                     ${this.dItem('park', 'Vườn Cây', 'tree-growth/index.html', active === 'tree-growth', '#10b981')}
                     ${this.dItem('storefront', 'Kho Quà', 'shop/index.html', active === 'shop', '#f97316')}
                     ${this.dItem('leaderboard', 'Xếp Hạng', 'leaderboard/index.html', active === 'leaderboard', '#0ea5e9')}
@@ -2507,6 +2508,7 @@ class ChildNav extends HTMLElement {
             { icon: 'auto_stories', label: 'Nhật Ký', href: 'personality/index.html', color: '#ec4899', active: active === 'diary' },
             { icon: 'swords', label: 'Đấu Trường', href: 'arena/index.html', color: '#6366f1', active: active === 'arena' },
             { icon: 'sell', label: 'Sticker', href: 'sticker-book/index.html', color: '#a855f7', active: active === 'stickers', badge: stickerBadge },
+            { icon: 'workspace_premium', label: 'Danh Hiệu', href: 'titles/index.html', color: '#e11d48', active: active === 'titles' },
             { icon: 'park', label: 'Vườn Cây', href: 'tree-growth/index.html', color: '#10b981', active: active === 'tree-growth' },
             { icon: 'storefront', label: 'Kho Quà', href: 'shop/index.html', color: '#f97316', active: active === 'shop' },
             { icon: 'leaderboard', label: 'Xếp Hạng', href: 'leaderboard/index.html', color: '#0ea5e9', active: active === 'leaderboard' },
