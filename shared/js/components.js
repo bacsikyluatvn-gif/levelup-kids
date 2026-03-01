@@ -3275,16 +3275,16 @@ class GrowthDiaryView extends HTMLElement {
         const personalityScore = data.user.personalityPoints || 0;
 
         const milestones = [
-            { score: 0, title: "Bạn Nhỏ Lễ Phép", color: "slate", emoji: "🙇" },
-            { score: 50, title: "Bé Ngoan Đáng Yêu", color: "blue", emoji: "👶" },
-            { score: 150, title: "Dũng Sĩ Tốt Bụng", color: "emerald", emoji: "🛡️" },
-            { score: 350, title: "Trái Tim Ấm Áp", color: "rose", emoji: "💝" },
-            { score: 600, title: "Người Bạn Chân Thành", color: "indigo", emoji: "🤝" },
-            { score: 900, title: "Ngôi Sao Tỏa Sáng", color: "amber", emoji: "⭐" },
-            { score: 1300, title: "Nhà Kiến Tạo Tài Năng", color: "teal", emoji: "🎨" },
-            { score: 1800, title: "Phù Thủy Nhân Ái", color: "violet", emoji: "🧙" },
-            { score: 2400, title: "Người Truyền Cảm Hứng", color: "orange", emoji: "🚀" },
-            { score: 3000, title: "Đại Sứ Hòa Bình", color: "yellow", emoji: "👑" }
+            { score: 0, title: "Bạn Nhỏ Lễ Phép", color: "slate", emoji: "🙇", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Hatching%20Chick.png" },
+            { score: 50, title: "Bé Ngoan Đáng Yêu", color: "blue", emoji: "👶", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Rabbit%20Face.png" },
+            { score: 150, title: "Dũng Sĩ Tốt Bụng", color: "emerald", emoji: "🛡️", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Dog%20Face.png" },
+            { score: 350, title: "Trái Tim Ấm Áp", color: "rose", emoji: "💝", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png" },
+            { score: 600, title: "Người Bạn Chân Thành", color: "indigo", emoji: "🤝", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png" },
+            { score: 900, title: "Ngôi Sao Tỏa Sáng", color: "amber", emoji: "⭐", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Fox.png" },
+            { score: 1300, title: "Nhà Kiến Tạo Tài Năng", color: "teal", emoji: "🎨", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Bear.png" },
+            { score: 1800, title: "Phù Thủy Nhân Ái", color: "violet", emoji: "🧙", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Tiger%20Face.png" },
+            { score: 2400, title: "Người Truyền Cảm Hứng", color: "orange", emoji: "🚀", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Lion.png" },
+            { score: 3000, title: "Đại Sứ Hòa Bình", color: "yellow", emoji: "👑", img: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Unicorn.png" }
         ];
 
         let currentMilestone = milestones[0];
@@ -3788,7 +3788,7 @@ class GrowthDiaryView extends HTMLElement {
                                             <span class="text-[11px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em] mb-4">ĐIỂM NHÂN CÁCH</span>
                                             <div class="flex items-center gap-4">
                                                 <div class="flex items-center justify-center size-10 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-inner">
-                                                    <span class="material-symbols-outlined text-orange-400" style="font-variation-settings: 'FILL' 1">favorite</span>
+                                                    <img src="${currentMilestone.img}" class="size-8 object-contain" alt="${currentMilestone.title}" />
                                                 </div>
                                                 <span class="${personalityScore > 999 ? 'text-4xl sm:text-5xl' : (personalityScore > 99 ? 'text-5xl sm:text-6xl' : 'text-7xl sm:text-8xl')} font-black text-slate-900 dark:text-white tracking-tighter tabular-nums leading-none drop-shadow-sm dark:drop-shadow-2xl transition-all duration-300">${personalityScore}</span>
                                             </div>
@@ -3853,7 +3853,7 @@ class GrowthDiaryView extends HTMLElement {
                                             <div class="relative z-10 size-9 rounded-2xl flex items-center justify-center text-lg transition-all duration-500 
                                                 ${isCurrent ? 'bg-amber-500 text-white scale-125 shadow-lg shadow-amber-500/40' :
                     (isPassed ? 'bg-emerald-500/20 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-white/5 border border-slate-200 dark:border-white/5')}">
-                                                ${m.emoji}
+                                                ${m.img ? `<img src="${m.img}" class="size-7 object-contain" alt="${m.title}">` : m.emoji}
                                                 ${isCurrent ? `<div class="absolute inset-x-0 inset-y-0 rounded-2xl bg-amber-500 animate-ping opacity-20"></div>` : ''}
                                                 
                                                 <!-- Minimalist Tooltip -->
@@ -3876,7 +3876,7 @@ class GrowthDiaryView extends HTMLElement {
                     <section class="max-w-[85rem] mx-auto space-y-10">
                         <div class="flex items-center gap-6">
                             <h4 class="flex items-center gap-3 text-slate-800 dark:text-white font-black text-sm uppercase tracking-[0.4em] whitespace-nowrap">
-                                <span class="material-symbols-outlined text-amber-500">category</span>
+                                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Panda.png" class="size-7 object-contain" />
                                 Hoạt động hôm nay <span class="text-[10px] font-bold text-slate-400 tracking-normal ml-2">(${new Date().toLocaleDateString('vi-VN')})</span>
                             </h4>
                             <div class="h-px flex-1 bg-slate-100 dark:bg-slate-800"></div>
@@ -3891,7 +3891,7 @@ class GrowthDiaryView extends HTMLElement {
                                 <!-- GOOD DEEDS -->
                                 <div class="space-y-4">
                                     <div class="flex items-center gap-3 px-5 py-3 bg-emerald-500/10 text-emerald-500 rounded-2xl w-full border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
-                                        <span class="material-symbols-outlined text-base">verified</span>
+                                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Dog%20Face.png" class="size-6 object-contain" />
                                         <span class="text-xs font-black uppercase tracking-[0.2em]">Việc Làm Tốt</span>
                                     </div>
                                     <div class="space-y-4">
@@ -3904,7 +3904,7 @@ class GrowthDiaryView extends HTMLElement {
                                 <!-- REMINDERS -->
                                 <div class="space-y-4">
                                     <div class="flex items-center gap-3 px-5 py-3 bg-rose-500/10 text-rose-500 rounded-2xl w-full border border-rose-500/20 shadow-lg shadow-rose-500/5">
-                                        <span class="material-symbols-outlined text-base">report</span>
+                                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png" class="size-6 object-contain" />
                                         <span class="text-xs font-black uppercase tracking-[0.2em]">Việc Làm Chưa Tốt</span>
                                     </div>
                                     <div class="space-y-4">
@@ -3919,7 +3919,7 @@ class GrowthDiaryView extends HTMLElement {
                             ${todayGroup.REFLECTION.length > 0 ? `
                                 <div class="col-span-1 md:col-span-2 space-y-6 pt-10 border-t border-slate-100 dark:border-white/5">
                                     <div class="flex items-center gap-3 px-5 py-3 bg-indigo-500/10 text-indigo-500 rounded-2xl w-fit border border-indigo-500/20 shadow-lg shadow-indigo-500/5">
-                                        <span class="material-symbols-outlined text-base">auto_awesome</span>
+                                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Rabbit%20Face.png" class="size-6 object-contain" />
                                         <span class="text-xs font-black uppercase tracking-[0.2em]">Lời Tự Sự Của Con</span>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
